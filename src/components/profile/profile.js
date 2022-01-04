@@ -1,11 +1,11 @@
 import Image from "next/image";
-import LinkTree from "../../src/components/LinkTree/LinkTree";
+import classes from "./profile.module.scss";
 
-export default function Index() {
+export default function Profile() {
   return (
     <>
       <Image
-        src="/images/temp-profile-pic.jpeg"
+        src="/temp-profile-pic.jpeg"
         height={96}
         width={96}
         alt="Aaron Curtis"
@@ -13,7 +13,6 @@ export default function Index() {
       <p>
         <a href="https://www.instagram.com/aaroncurtisyoga">@aaroncurtisyoga</a>
       </p>
-      <LinkTree />
     </>
   );
 }

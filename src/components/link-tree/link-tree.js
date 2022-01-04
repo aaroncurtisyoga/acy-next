@@ -1,20 +1,26 @@
+import classes from "./link-tree.module.scss";
+
 export default function LinkTree() {
   return (
-    <ul>
-      {links.map(({ title, url }) => {
-        return (
-          <li key={title}>
-            <a href={url}>{title}</a>
-          </li>
-        );
-      })}
-    </ul>
+    <section className={classes.wrapper}>
+      <div className={classes.content}>
+        <ul className={classes.linkTree}>
+          {links.map(({ title, url }) => {
+            return (
+              <li key={title} className={classes.link}>
+                <a href={url}>{title}</a>
+              </li>
+            );
+          })}
+        </ul>
+      </div>
+    </section>
   );
 }
 
 const links = [
   {
-    title: "yoga classes sign up",
+    title: "find a yoga class",
     url: "https://clients.mindbodyonline.com/classic/mainclass?studioid=2070",
     desc: "I teach at Yoga District. Hop over to their scheduling site to sign up for a class with me :) ",
   },

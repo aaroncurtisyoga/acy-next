@@ -1,0 +1,31 @@
+$brown: #3d3b3c;
+$white: #fff;
+
+.linkTree {
+  width: 100%;
+  .link {
+    text-decoration: none;
+    background-color: $white;
+    border: 2px solid $white;
+    margin-bottom: 16px;
+    list-style: none;
+    text-align: center;
+    width: 100%;
+    transition: box-shadow 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s,
+      color 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s,
+      border-color 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s,
+      transform 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s,
+      background-color 0.25s cubic-bezier(0.08, 0.59, 0.29, 0.99) 0s;
+    a {
+      display: list-item;
+      color: $brown;
+      padding: 16px 20px;
+    }
+    &:hover {
+      background-color: $brown;
+      a {
+        color: $white;
+      }
+    }
+  }
+}
