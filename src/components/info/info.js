@@ -1,6 +1,6 @@
-import Profile from "../profile/profile";
-import LinkTree from "../link-tree/link-tree";
-import classes from "../link-tree/link-tree.module.scss";
+import Profile from "./profile/profile";
+import LinkTree from "./link-tree/link-tree";
+import classes from "./info.module.scss";
 
 export default function Info() {
   return (

@@ -2,19 +2,17 @@ import classes from "./link-tree.module.scss";
 
 export default function LinkTree() {
   return (
-    <section className={classes.wrapper}>
-      <div className={classes.content}>
-        <ul className={classes.linkTree}>
-          {links.map(({ title, url }) => {
-            return (
-              <li key={title} className={classes.link}>
-                <a href={url}>{title}</a>
-              </li>
-            );
-          })}
-        </ul>
-      </div>
-    </section>
+    <ul className={classes.linkTree}>
+      {links.map(({ title, url }) => {
+        return (
+          <li key={title} className={classes.link}>
+            <a href={url} target={`_blank`}>
+              {title}
+            </a>
+          </li>
+        );
+      })}
+    </ul>
   );
 }
 
