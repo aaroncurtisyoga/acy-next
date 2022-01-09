@@ -6,7 +6,7 @@ export default function Profile() {
     <>
       {/*todo: 1) Change profile img to match IG, 2) Style link*/}
       <Image
-        src="/temp-profile-pic.jpeg"
+        src="/images/temp-profile-pic.jpeg"
         height={96}
         width={96}
         alt="Aaron Curtis"
