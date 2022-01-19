@@ -24,7 +24,7 @@ export default function LinkTree() {
 const links = [
   {
     title: "find a yoga class",
-    url: "https://clients.mindbodyonline.com/classic/mainclass?studioid=2070",
+    url: "https://clients.mindbodyonline.com/classic/ws?studioid=2070&stype=-7&sView=week&sLoc=0",
     desc: "I teach at Yoga District. Hop over to their scheduling site to sign up for a class with me :) ",
     internal: false,
   },

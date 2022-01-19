@@ -3,18 +3,6 @@ import React from "react";
 import classes from "./landingPage.module.scss";
 
 const LandingPage = () => {
-  const handleLinkClick = (e) => {
-    console.log(e.target.name);
-    const linkName = e.target.name;
-    switch (linkName) {
-      case "findAClass":
-        console.log(e.target);
-        break;
-      default:
-        console.log("handleLinkClick() default case triggered");
-    }
-  };
-
   return (
     <section className={classes.landingPageSection}>
       <div className={classes.contentImage}>
@@ -50,7 +38,7 @@ const LandingPage = () => {
               style={{ display: "inline-block" }}
               className={classes.ctaLink}
               name={`findAClass`}
-              href={`https://clients.mindbodyonline.com/classic/mainclass?studioid=2070`}
+              href={`https://clients.mindbodyonline.com/classic/ws?studioid=2070&stype=-7&sView=week&sLoc=0`}
               target={`_blank`}
               data-testid={`find-class-btn`}
             >

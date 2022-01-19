@@ -11,7 +11,6 @@ export default function Profile() {
           height={96}
           width={96}
           alt="Aaron Curtis"
-          borderRadius={"50%"}
           layout={"intrinsic"}
           objectFit="cover"
         />
