@@ -24,7 +24,7 @@ const LandingPage = () => {
           <p className={classes.subHeadlineCopy}>
             Yoga is a great way to stay active. And it can also be a great way
             to heal, build community, and come back to the essentials: mind,
-            body, and breathe. In my classes I try and create a space where we
+            body, and breath. In my classes I try and create a space where we
             can explore these aspects in a healthy and fun way. If you're
             interested, I invite you to join so we can practice, learn, and grow
             together. See you on the mat!
