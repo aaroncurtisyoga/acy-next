@@ -4,15 +4,25 @@ import classes from "./profile.module.scss";
 export default function Profile() {
   return (
     <>
-      {/*todo: 1) Change profile img to match IG, 2) Style link*/}
-      <Image
-        src="/images/temp-profile-pic.jpeg"
-        height={96}
-        width={96}
-        alt="Aaron Curtis"
-      />
+      {/*todo:  Style link*/}
+      <div className={classes.imgWrapper}>
+        <Image
+          src="/images/profile.jpg"
+          height={96}
+          width={96}
+          alt="Aaron Curtis"
+          borderRadius={"50%"}
+          layout={"intrinsic"}
+          objectFit="cover"
+        />
+      </div>
+
       <p>
-        <a href="https://www.instagram.com/aaroncurtisyoga" target={`_blank`}>
+        <a
+          href="https://www.instagram.com/aaroncurtisyoga"
+          target={`_blank`}
+          className={`color-white`}
+        >
           @aaroncurtisyoga
         </a>
       </p>
