@@ -22,8 +22,6 @@ const LandingPage = () => {
           <Image
             src="/images/042321_YogaPose_HandToBigToe.jpg"
             alt="Aaron Curtis Yoga Pose"
-            width={1080}
-            height={1080}
             layout={"fill"}
             objectFit={"cover"}
             objectPosition={"50% 50%"}

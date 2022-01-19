@@ -7,7 +7,7 @@ export default function Profile() {
       {/*todo:  Style link*/}
       <div className={classes.imgWrapper}>
         <Image
-          src="/images/profile.jpg"
+          src="/images/profile.JPG"
           height={96}
           width={96}
           alt="Aaron Curtis"
