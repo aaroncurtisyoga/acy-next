@@ -58,6 +58,12 @@ const Schedule = () => {
           name={"Flow"}
           location={locations.BOULDERING_PROJECT}
         />
+        <Offering
+          link={dcBoulderingProject}
+          time={"12:00pm"}
+          name={"Flow"}
+          location={locations.BOULDERING_PROJECT}
+        />
       </div>
       <br />
 
