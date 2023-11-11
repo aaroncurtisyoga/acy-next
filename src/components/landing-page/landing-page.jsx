@@ -23,11 +23,10 @@ const LandingPage = () => {
         <div className={classes.name}>Aaron Curtis</div>
         <h1 className={classes.headline}>Flow.</h1>
         <p className={classes.subHeadlineCopy}>
-          ✌🏾 What&apos;s up y&apos;all, I&apos;d love to practice with you. I
-          teach most days around D.C. And my classes are inspired from various
-          styles, typically include time for meditation and breath work, and
-          every once in a while, a sound bath for savasana. 🙂 Drop by and say
-          hey.
+          ✌🏾 What&apos;s up y&apos;all, I&apos;d love to practice with you. My
+          classes are inspired from various styles, usually include time for
+          breath work and meditation, and the occasional sound bath for
+          savasana. 🙂 Drop by and say hey.
         </p>
         <br />
         <Schedule />
