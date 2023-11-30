@@ -21,12 +21,11 @@ const LandingPage = () => {
       </div>
       <div className={classes.contentCopy}>
         <div className={classes.name}>Aaron Curtis</div>
-        <h1 className={classes.headline}>Flow.</h1>
+        <h1 className={classes.headline}>Be/Do Good.</h1>
         <p className={classes.subHeadlineCopy}>
-          ✌🏾 What&apos;s up y&apos;all, I&apos;d love to practice with you. My
-          classes are inspired from various styles, usually include time for
-          breath work and meditation, and the occasional sound bath for
-          savasana. 🙂 Drop by and say hey.
+          I study & practice yoga. Focusing on things like pranayama,
+          meditation, and philosophy. If you want to practice together, drop in
+          to a class, workshop, or send me a note 🙂
         </p>
         <br />
         <Schedule />
