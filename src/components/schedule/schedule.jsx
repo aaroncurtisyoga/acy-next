@@ -5,13 +5,10 @@ import Offering from "./offering";
 const Schedule = () => {
   const dcBoulderingProject =
     "https://www.dcboulderingproject.com/yoga-fitness";
-  const yogaDistrictLink = "https://www.bit.ly/yogadistrictaaron";
   const crossFitDcLink = "https://crossfitdc.com/";
 
   const locations = {
     BOULDERING_PROJECT: "Bouldering Project",
-    YOGA_DISTRICT_H: "Yoga District @ H",
-    YOGA_DISTRICT_U: "Yoga District @ 14th",
     CROSSFIT_DC: "CrossFit DC",
   };
   return (
@@ -24,12 +21,6 @@ const Schedule = () => {
           name={"Power Flow"}
           location={locations.BOULDERING_PROJECT}
         />
-        <Offering
-          link={yogaDistrictLink}
-          time={"5:15pm"}
-          name={"Power Flow"}
-          location={locations.YOGA_DISTRICT_H}
-        />
       </div>
       <br />
 
@@ -40,12 +31,6 @@ const Schedule = () => {
           time={"6:30am"}
           name={"Flow"}
           location={locations.BOULDERING_PROJECT}
-        />
-        <Offering
-          link={yogaDistrictLink}
-          time={"5:15pm"}
-          name={"Power Flow"}
-          location={locations.YOGA_DISTRICT_U}
         />
       </div>
       <br />
@@ -78,25 +63,8 @@ const Schedule = () => {
       </div>
       <br />
 
-      <div>
-        <p className={classes.day}>Saturday</p>
-        <Offering
-          link={yogaDistrictLink}
-          time={"10:30am"}
-          name={"Power Flow"}
-          location={locations.YOGA_DISTRICT_H}
-        />
-      </div>
-      <br />
-
       <div className={classes.day}>
         <p className={classes.day}>Sunday</p>
-        <Offering
-          link={yogaDistrictLink}
-          time={"10:45am"}
-          name={"Power Flow"}
-          location={locations.YOGA_DISTRICT_U}
-        />
         <Offering
           link={crossFitDcLink}
           time={"2:00pm"}
