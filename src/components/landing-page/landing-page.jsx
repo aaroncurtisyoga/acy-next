@@ -23,10 +23,10 @@ const LandingPage = () => {
         <div className={classes.name}>Aaron Curtis</div>
         <h1 className={classes.headline}>Be/Do Good.</h1>
         <p className={classes.subHeadlineCopy}>
-          ✌🏾 I study & practice yoga. Focusing on things like pranayama,
-          meditation, and functional/fun movement. If you want to practice
-          together, drop in to a class, workshop, or send me a note so we can
-          set up a private session.
+          ✌🏾 I study & practice yoga. Focusing on things like breathwork,
+          meditation, and functional movement. If you want to practice together,
+          drop in to a class, workshop, or send me a note so we can set up a
+          private session! 🙂 I look forward to practicing with you!
         </p>
         <br />
         <Schedule />
