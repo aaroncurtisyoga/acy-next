@@ -2,6 +2,7 @@ import React from "react";
 import classes from "./landingPage.module.scss";
 
 /* Instagram, Email, YouTube,*/
+/* Todo: Don't hardcode SVG's like this... lot of unnecessary code that's not super clean */
 const IconLinks = () => {
   return (
     <div className={classes.links}>
@@ -55,7 +56,7 @@ const IconLinks = () => {
         </svg>
       </a>
     </div>
-  )
-}
+  );
+};
 
 export default IconLinks;

@@ -13,6 +13,7 @@ const Schedule = () => {
   };
   return (
     <section className={classes.scheduleSection}>
+      <h1>Weekly Classes</h1>
       <div>
         <p className={classes.day}>Monday</p>
         <Offering
@@ -22,8 +23,6 @@ const Schedule = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <br />
-
       <div>
         <p className={classes.day}>Tuesday</p>
         <Offering
@@ -33,9 +32,12 @@ const Schedule = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <br />
-
-      <div className={classes.day}>
+      <div>
+        <p className={classes.day}>
+          <s>Wednesday</s>
+        </p>
+      </div>
+      <div>
         <p className={classes.day}>Thursday</p>
         <Offering
           link={dcBoulderingProject}
@@ -50,7 +52,6 @@ const Schedule = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <br />
 
       <div>
         <p className={classes.day}>Friday</p>
@@ -61,9 +62,12 @@ const Schedule = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <br />
-
-      <div className={classes.day}>
+      <div>
+        <p className={classes.day}>
+          <s>Saturday</s>
+        </p>
+      </div>
+      <div>
         <p className={classes.day}>Sunday</p>
         <Offering
           link={crossFitDcLink}

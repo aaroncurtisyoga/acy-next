@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Fraunces:wght@300;400;600;700&display=swap');
+
 :root {
   --color-white: #fff;
   --color-brown: #3d3b3c;
@@ -8,7 +10,7 @@
 }
 
 html {
-  font-family: Karla, sans-serif;
+  font-family: Fraunces, sans-serif;
   font-size: 16px;
   line-height: 24px;
   font-weight: 700;
@@ -26,6 +28,11 @@ body {
   box-sizing: border-box;
 }
 
+main {
+  display: flex;
+  height: 100vh;
+  }
+
 a {
   color: #0070f3;
   text-decoration: none;
@@ -39,3 +46,20 @@ img {
   max-width: 100%;
   display: block;
 }
+
+section {
+  &#heroImage {
+    display: none;
+    }
+  @media screen and (min-width: 768px) {
+    &#heroImage, &#content {
+      display: flex;
+      flex: 0 0 50%;
+      float: left;
+      height: auto;
+      min-height: 50vh;
+      position: relative;
+      width: 100%;
+      }
+    }
+  }
