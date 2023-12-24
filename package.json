@@ -9,7 +9,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "next": "^13.5.4",
+    "next": "^14.0.2",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "sass": "^1.43.2"
@@ -17,11 +17,13 @@
   "devDependencies": {
     "@types/node": "20.10.5",
     "@types/react": "18.2.45",
+    "@types/react-dom": "18.2.14",
     "autoprefixer": "^10.4.16",
     "eslint": "^8.6.0",
     "eslint-config-next": "^14.0.0",
     "postcss": "^8.4.32",
     "prettier": "^3.0.3",
+    "prettier-plugin-tailwindcss": "0.5.4",
     "tailwindcss": "^3.4.0",
     "typescript": "5.3.3"
   }
