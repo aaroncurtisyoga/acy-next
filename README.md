@@ -1,30 +1,40 @@
 141 lines (104 sloc)  6.31 KB
    
 <h1 align="center">AaronCurtisYoga.com</h1>
-<p align="center">Fullstack Next.js App to manage the yoga business of Aaron Curtis </p>
+<p align="center">Fullstack Next.js App for Aaron Curtis Yoga </p>
 
 ## 📋 <a name="table">Table of Contents</a>
 
-1. 🤖 [Introduction](#introduction)
+1. 🤖 [Intro](#introduction)
 2. 🤸 [Quick Start](#quick-start)
 3. ⚙️ [Tech Stack](#tech-stack)
 4. 🔋 [Features](#features)
 5. ✨ [Get in touch](#contact)
 
 
-## <a name="introduction">🤖 Introduction</a>
+## <a name="introduction">🤖 Intro</a>
 
-This app is set up to help current and prospective yoga students of Aaron to: 
-Learn about me, Find Weekly schedule, Sing Up to Newsletter Sign Up, Register for events (_work in progress_)
+This app is set up to help current and future yoga students: 
+Learn about me, Find my weekly schedule, sign up to my newsletter, and register for events (_work in progress_)
 
 
 ## <a name="quick-start">🤸 Quick Start</a>
-Built with [Next.js](https://nextjs.org/). So, all Next commands work. A few helpful ones:
+
+Before getting started, create a .env in the root of your project and add:
+
+**Set Up Environment Variables**
+
+```env
+MAILCHIMP_API_KEY=
+MAILCHIMP_AUDIENCE_ID=
+MAILCHIMP_API_SERVER=
+```
+
+My app is built with [Next.js](https://nextjs.org/). The common scripts are:
 - `npm run dev`
 - `npm run lint`
 - `npm build` 
 
-[//]: # (todo: insert info re: mailchimp api)
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
@@ -33,24 +43,26 @@ Built with [Next.js](https://nextjs.org/). So, all Next commands work. A few hel
 - TailwindCSS
 - Zod
 - React Hook Form
+- Mailchimp Marketing API ([docs](https://mailchimp.com/developer/marketing/))
 
 ## <a name="features">🔋 Features</a>
 
-👉 **Newsletter:** People can sign up to Newsletter & stay up-to-date w/ upcoming evnets
+👉 **Newsletter:** People can sign up to the Newsletter & stay up-to-date w/ upcoming events
 
-👉 **IN PROGRESS - Authentication:** Secure and efficient authentication.
+👉 **IN PROGRESS - Authentication:** Secure and efficient auth
 
-👉 **UPCOMING - Events (CRUD):** Comprehensive functionality for creating, reading, updating, and deleting events, giving Admin full control over event management.
-- **Create Events:** Admin can  create new events, providing details like the title, date, location, and any additional info
-- **Read Events:** Users can view of all events
-- **Update Events:** Admin can modify event details dynamically, helping confirm that event info stays accurate & up-to-date.
-- **Delete Events:** Admin can remove events from the system
-- 
-👉 **UPCOMING - Search & Filter:** Help users search and filter events
+👉 **UPCOMING - Events (CRUD):** Admins can create, read, update, and delete events
+- **Create Events:** Admins can  create new events, providing details like the title, date, location, etc.
+- **Read Events:** Users can view events
+- **Update Events:** Admins can modify event details to make sure  event info stays accurate & up-to-date
+- **Delete Events:** Admins can remove events from the system
 
-👉 **UPCOMING - Checkout and Pay:** Smooth and secure payment transactions 
+👉 **UPCOMING - Search & Filter:** Users can search and filter events
+
+👉 **UPCOMING - Checkout and Pay:** Users can securely pay for events
 
 
 ## <a name="contact">✨ Get in touch</a>
-The easiest way to reach me is on Instagram. Or, just show up to class! Links to signing up are on my website at [aaroncurtisyoga.com/info](aaroncurtisyoga.com/info)
+* Instagram: [instagram.com/aaroncurtisyoga](https://www.instagram.com/aaroncurtisyoga/)
+* Email: aaroncurtisyoga@gmail.com
 
