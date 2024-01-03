@@ -6,10 +6,12 @@ import { z } from "zod";
 
 import { FormNewsletterSchema } from "@/lib/schema";
 import { addNewsletterEntry } from "@/app/actions";
+import { useState } from "react";
 
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 const NewsletterForm = () => {
+  const [successMsg, setSuccessMsg] = useState("");
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -17,13 +19,12 @@ const NewsletterForm = () => {
     reset,
     setError,
   } = useForm({
-    // resolver: zodResolver(FormNewsletterSchema),
+    resolver: zodResolver(FormNewsletterSchema),
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
     const result = await addNewsletterEntry(data);
 
-    debugger;
     if (result.formErrors) {
       // handle server side form validation errors
       const formErrors = result.formErrors;
@@ -45,6 +46,7 @@ const NewsletterForm = () => {
       return;
     }
 
+    setSuccessMsg(result.message);
     reset();
   };
 
@@ -88,6 +90,7 @@ const NewsletterForm = () => {
           Subscribe
         </button>
         {errors.api && <p role="alert">{`${errors.api.message}`}</p>}
+        {successMsg && <p>{successMsg}</p>}
       </form>
     </div>
   );

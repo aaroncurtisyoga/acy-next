@@ -18,17 +18,19 @@ export async function addNewsletterEntry(data: Inputs) {
     });
 
     try {
-      const addNew = await mailchimp.lists.addListMember(
+      const response = await mailchimp.lists.addListMember(
         String(process.env.MAILCHIMP_AUDIENCE_ID),
         {
           email_address: data.email,
           merge_fields: {
             FNAME: data.first_name,
           },
-          status: "subscribed",
+          status: "pending",
         },
       );
-      return { message: "Successfully subscribed email." };
+      return {
+        message: `Thanks for signing up ${data.first_name}! A confirmation email is being sent to you at ${data.email}. After you confirm, you'll officially be added to my newsletter.`,
+      };
     } catch (error: any) {
       if (
         error.response?.status === 400 &&
