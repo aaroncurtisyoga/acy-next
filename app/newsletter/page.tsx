@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { FormNewsletterSchema } from "@/lib/schema";
-import { serverValidationNewsletterEntry } from "@/app/actions";
+import { addNewsletterEntry } from "@/app/actions";
 
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
@@ -21,23 +21,31 @@ const NewsletterForm = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
-    const validationResult = await serverValidationNewsletterEntry(data);
+    const result = await addNewsletterEntry(data);
 
-    if (validationResult.errors) {
-      const errors = validationResult.errors;
-      if (errors.email) {
-        setError("email", {
+    debugger;
+    if (result.formErrors) {
+      // handle server side form validation errors
+      const formErrors = result.formErrors;
+      for (const formInput in formErrors) {
+        setError(formInput, {
           type: "server",
-          message: errors.email._errors.join(", "),
+          message:
+            formErrors[formInput]._errors?.join(", ") ||
+            formErrors._errors?.join(", "),
         });
       }
-      if (errors.first_name) {
-        setError("first_name", {
-          type: "server",
-          message: errors.first_name._errors.join(", "),
-        });
-      }
+      return;
+    } else if (result.apiError) {
+      // handle errors from mailchimp api
+      setError("api", {
+        type: "server",
+        message: result.message,
+      });
+      return;
     }
+
+    reset();
   };
 
   return (
@@ -79,7 +87,7 @@ const NewsletterForm = () => {
         >
           Subscribe
         </button>
-        {/*{errors.email?.message && <p role="alert">{errors.email?.message}</p>}*/}
+        {errors.api && <p role="alert">{`${errors.api.message}`}</p>}
       </form>
     </div>
   );
