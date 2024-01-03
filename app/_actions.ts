@@ -1,17 +1,27 @@
 "use server";
 
+/*
+ * Todo:
+ *   Handle showing specific form errors, https://www.youtube.com/watch?v=tLhcyBfljYo
+ *   Handle Server mailchimp errors (display below the form?)
+ *   Handle server success (display below the form?) + clear the form
+ * */
 import mailchimp, { ErrorResponse } from "@mailchimp/mailchimp_marketing";
-
 import { z } from "zod";
 import { FormNewsletterSchema } from "@/lib/schema";
-
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 export async function addEmailToNewsletter(data: Inputs) {
-  console.log("Inside the addEmailToNewsletter fn");
   const result = FormNewsletterSchema.safeParse(data);
-  // If server-side form validation successful, then Post to Mailchimp
-  if (result.success) {
+
+  let zodErrors = {};
+  if (result.success === false) {
+    // Return form validation error(s)
+    result.error.issues.forEach((issue) => {
+      zodErrors = { ...zodErrors, [issue.path[0]]: issue.message };
+    });
+    return { errors: zodErrors };
+  } else {
     // Initialize the Mailchimp client
     mailchimp.setConfig({
       apiKey: process.env.MAILCHIMP_API_KEY,
@@ -19,19 +29,18 @@ export async function addEmailToNewsletter(data: Inputs) {
     });
 
     try {
-      console.log("inside try");
       const addNew = await mailchimp.lists.addListMember(
         String(process.env.MAILCHIMP_AUDIENCE_ID),
         {
           email_address: data.email,
+          merge_fields: {
+            FNAME: data.first_name,
+          },
           status: "subscribed",
         },
       );
-      console.log("addNew is");
-      console.log(addNew);
       return { message: "Successfully subscribed email." };
     } catch (error: any) {
-      console.log("Inside catch");
       if (
         error.response?.status === 400 &&
         error.response?.text?.includes("Member Exists")
@@ -46,8 +55,5 @@ export async function addEmailToNewsletter(data: Inputs) {
         message: "Something went wrong, please try again later.",
       };
     }
-  } else {
-    // Todo: Do something if SS Form Validation doesn't work
-    console.log("Server: In the Else statement");
   }
 }

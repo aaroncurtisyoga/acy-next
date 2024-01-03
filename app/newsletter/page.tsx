@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
@@ -11,30 +11,17 @@ type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 const NewsletterForm = () => {
   const {
-    register,
+    formState: { errors, isSubmitting },
     handleSubmit,
+    register,
     reset,
-    formState: { errors },
-  } = useForm<Inputs>({
+    setError,
+  } = useForm({
     resolver: zodResolver(FormNewsletterSchema),
   });
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+  const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
     const result = await addEmailToNewsletter(data);
-
-    if (!result) {
-      console.log("!result");
-      return;
-    }
-
-    if (result.error) {
-      console.log("result.error");
-      console.log(result.error);
-      return;
-    }
-
-    reset();
-    // Todo: Show success message if everything went good
   };
 
   return (
@@ -45,17 +32,34 @@ const NewsletterForm = () => {
       <p className="text-gray-90000">
         Be the first to know for upcoming workshops, classes, and more :)
       </p>
-      {/* server action would usually use the 'action' attr, but w/ use-react-hook it reqs onSubmit*/}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
-        <label>Email Address</label>
+        <label htmlFor={"fname"}>First name</label>
         <input
+          {...register("first_name")}
+          autoComplete="given-name"
+          aria-invalid={errors.first_name ? "true" : "false"}
+          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          id="fname"
+        />
+        {errors.first_name && (
+          <p className="text-red-500">{`${errors.first_name.message}`}</p>
+        )}
+        <label htmlFor="email">Email Address</label>
+        <input
+          {...register("email")}
+          autoComplete="email"
           aria-invalid={errors.email ? "true" : "false"}
           className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
-          {...register("email")}
+          id="email"
+          type="email"
         />
+        {errors.email && (
+          <p className="text-red-500">{`${errors.email.message}`}</p>
+        )}
         <button
-          type="submit"
           className="bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300"
+          disabled={isSubmitting}
+          type="submit"
         >
           Subscribe
         </button>

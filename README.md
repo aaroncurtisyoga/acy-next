@@ -20,7 +20,7 @@ Learn about me, Find my weekly schedule, sign up to my newsletter, and register 
 
 ## <a name="quick-start">🤸 Quick Start</a>
 
-Before getting started, create a .env in the root of your project and add:
+Before getting started, create a .env in the root of your project and
 
 **Set Up Environment Variables**
 
@@ -38,11 +38,10 @@ My app is built with [Next.js](https://nextjs.org/). The common scripts are:
 
 ## <a name="tech-stack">⚙️ Tech Stack</a>
 
-- Next.js
-- TypeScript
-- TailwindCSS
-- Zod
+- Next.js (_TypeScript_)
+- Tailwind
 - React Hook Form
+- Zod
 - Mailchimp Marketing API ([docs](https://mailchimp.com/developer/marketing/))
 
 ## <a name="features">🔋 Features</a>
