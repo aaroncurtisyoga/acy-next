@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 
 import { FormNewsletterSchema } from "@/lib/schema";
-import { addEmailToNewsletter } from "@/app/_actions";
+import { serverValidationNewsletterEntry } from "@/app/actions";
 
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
@@ -17,11 +17,27 @@ const NewsletterForm = () => {
     reset,
     setError,
   } = useForm({
-    resolver: zodResolver(FormNewsletterSchema),
+    // resolver: zodResolver(FormNewsletterSchema),
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
-    const result = await addEmailToNewsletter(data);
+    const validationResult = await serverValidationNewsletterEntry(data);
+
+    if (validationResult.errors) {
+      const errors = validationResult.errors;
+      if (errors.email) {
+        setError("email", {
+          type: "server",
+          message: errors.email._errors.join(", "),
+        });
+      }
+      if (errors.first_name) {
+        setError("first_name", {
+          type: "server",
+          message: errors.first_name._errors.join(", "),
+        });
+      }
+    }
   };
 
   return (
@@ -51,7 +67,7 @@ const NewsletterForm = () => {
           aria-invalid={errors.email ? "true" : "false"}
           className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
           id="email"
-          type="email"
+          // type="email"
         />
         {errors.email && (
           <p className="text-red-500">{`${errors.email.message}`}</p>
