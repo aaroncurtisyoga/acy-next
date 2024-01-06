@@ -7,13 +7,12 @@ import { navLinks } from "@/constants";
 
 const NavItems = () => {
   const pathname = usePathname();
-  // todo: check & see how tailwind example renders there nav items b/c id dont like idea of adding uncessary ul and li if it's not required and just going to be some boilerplate html thats never actually useful for anything
   return (
-    <ul className="flex w-full flex-col items-start gap-5 md:flex-row md:flex-between">
+    <ul className="flex w-full flex-col items-start gap-5 max-sm:mt-4 md:flex-row md:justify-end">
       {navLinks.map((link) => {
         const isActive = pathname === link.href;
         return (
-          <li key={link.name}>
+          <li key={link.name} className={"max-sm:w-full"}>
             <Link
               href={link.href}
               className={clsx("flex-center p-medium-16 whitespace-nowrap", {
