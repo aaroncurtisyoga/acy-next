@@ -4,7 +4,7 @@ import { locations, signUpLinks } from "@/constants";
 
 const Page = () => {
   return (
-    <section>
+    <section className={"p-8"}>
       <h1>Weekly Classes</h1>
       <div>
         <p>Monday</p>

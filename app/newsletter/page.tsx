@@ -51,7 +51,7 @@ const NewsletterForm = () => {
   };
 
   return (
-    <div className="bg-white shadow-lg p-6 rounded-md gap-2 flex flex-col">
+    <section className="bg-white shadow-lg p-8 rounded-md gap-2 flex flex-col">
       <h2 className="text-2xl font-bold text-gray-900 mb-4">
         Subscribe to my Newsletter
       </h2>
@@ -92,7 +92,7 @@ const NewsletterForm = () => {
         {errors.api && <p role="alert">{`${errors.api.message}`}</p>}
         {successMsg && <p>{successMsg}</p>}
       </form>
-    </div>
+    </section>
   );
 };
 

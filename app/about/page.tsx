@@ -1,3 +1,7 @@
 export default function Page() {
-  return <p>about Page</p>;
+  return (
+    <section className={"flex flex-col justify-between p-8"}>
+      about Page
+    </section>
+  );
 }
