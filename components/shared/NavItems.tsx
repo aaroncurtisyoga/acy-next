@@ -1,40 +1,31 @@
-import React from "react";
+"use client";
+
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { clsx } from "clsx";
-
-const links = [
-  { name: "Events", href: "/events" },
-  {
-    name: "Schedule",
-    href: "/schedule",
-  },
-  { name: "About", href: "/about" },
-  { name: "Newsletter", href: "/newsletter" },
-];
+import { navLinks } from "@/constants";
 
 const NavItems = () => {
   const pathname = usePathname();
+  // todo: check & see how tailwind example renders there nav items b/c id dont like idea of adding uncessary ul and li if it's not required and just going to be some boilerplate html thats never actually useful for anything
   return (
-    // todo: mobile, stack vertically, md align in a row for desktop nav
-    <div className={"sm:"}>
-      {links.map((link) => {
+    <ul className="flex w-full flex-col items-start gap-5 md:flex-row md:flex-between">
+      {navLinks.map((link) => {
+        const isActive = pathname === link.href;
         return (
-          <Link
-            key={link.name}
-            href={link.href}
-            className={clsx(
-              "flex h-[48px] grow items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 md:flex-none md:justify-start md:p-2 md:px-3",
-              {
-                "bg-sky-100 text-blue-600": pathname === link.href,
-              },
-            )}
-          >
-            <p className="hidden md:block">{link.name}</p>
-          </Link>
+          <li key={link.name}>
+            <Link
+              href={link.href}
+              className={clsx("flex-center p-medium-16 whitespace-nowrap", {
+                "text-primary-500": isActive === true,
+              })}
+            >
+              <p>{link.name}</p>
+            </Link>
+          </li>
         );
       })}
-    </div>
+    </ul>
   );
 };
 

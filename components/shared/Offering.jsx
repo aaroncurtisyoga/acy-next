@@ -1,5 +1,3 @@
-import React from "react";
-
 function Offering({ time, name, location, link }) {
   return (
     <p>
