@@ -14,21 +14,20 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
         <Header />
-        {/*
-        <main>
-          <section id="heroImage">
-            <Image
+        <main className={"grid grid-cols-[1fr,1fr]"}>
+          <section className={""}>
+            <p>left section</p>
+            {/*<Image
               alt="Yoga posture hand to big toe"
               className="object-cover"
               fill={true}
               priority={true}
               loading="eager"
               src="/images/042321_YogaPose_HandToBigToe.jpg"
-            />
+            />*/}
           </section>
-          <section id="content">{children}</section>
+          {children}
         </main>
-        */}
       </body>
     </html>
   );
