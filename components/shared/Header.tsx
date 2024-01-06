@@ -9,9 +9,11 @@ export default function Header() {
   return (
     <header className={"w-full border-b"}>
       <div className={"wrapper flex items-center justify-between"}>
-        <Link href="/" className="sm:32 md:w-48">
+        <Link href="/" className="sm:32 min-w-fit	">
           <p className={"md:hidden font-bold"}>ACY</p>
-          <p className={"hidden md:block font-bold"}>Aaron Curtis Yoga</p>
+          <p className={"hidden md:block font-bold text-lg max-ine"}>
+            Aaron Curtis Yoga
+          </p>
         </Link>
 
         <MobileNav />

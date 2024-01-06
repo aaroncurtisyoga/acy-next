@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
               objectFit={"cover"}
               layout={"raw"}
               loading="eager"
-              src="/images/042321_YogaPose_HandToBigToe.jpg"
+              src="/images/ScissorHandstand_LowRes-min.jpg"
             />
           </section>
           {children}
