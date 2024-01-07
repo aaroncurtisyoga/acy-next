@@ -1,13 +1,12 @@
-import React from "react";
 import Offering from "@/components/shared/Offering";
 import { locations, signUpLinks } from "@/constants";
 
 const Page = () => {
   return (
     <section className={"p-8"}>
-      <h1>Weekly Classes</h1>
-      <div>
-        <p>Monday</p>
+      <h1 className={"text-3xl mb-8"}>Weekly Schedule</h1>
+      <div className={"mb-6"}>
+        <p className={"text-xl"}>Monday</p>
         <Offering
           link={signUpLinks.dcBoulderingProject}
           time={"6:30am"}
@@ -15,32 +14,8 @@ const Page = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <div>
-        <p>Tuesday</p>
-        <Offering
-          link={signUpLinks.dcBoulderingProject}
-          time={"6:30am"}
-          name={"Flow"}
-          location={locations.BOULDERING_PROJECT}
-        />
-      </div>
-      <div>
-        <p>
-          <s>Wednesday</s>
-        </p>
-      </div>
-      <div>
-        <p>Thursday</p>
-        <Offering
-          link={signUpLinks.dcBoulderingProject}
-          time={"6:30am"}
-          name={"Flow"}
-          location={locations.BOULDERING_PROJECT}
-        />
-      </div>
-
-      <div>
-        <p>Friday</p>
+      <div className={"mb-6"}>
+        <p className={"text-xl"}>Friday</p>
         <Offering
           link={signUpLinks.dcBoulderingProject}
           time={"6:30am"}
@@ -48,13 +23,8 @@ const Page = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <div>
-        <p>
-          <s>Saturday</s>
-        </p>
-      </div>
-      <div>
-        <p>Sunday</p>
+      <div className={"mb-6"}>
+        <p className={"text-xl"}>Sunday</p>
         <Offering
           link={signUpLinks.crossFitDc}
           time={"2:00pm"}

@@ -14,6 +14,6 @@ export const signUpLinks = {
 };
 
 export const locations = {
-  BOULDERING_PROJECT: "Bouldering Project",
+  BOULDERING_PROJECT: "DC Bouldering Project",
   CROSSFIT_DC: "CrossFit DC",
 };

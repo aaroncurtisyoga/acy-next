@@ -1,10 +1,9 @@
 function Offering({ time, name, location, link }) {
   return (
-    <p>
-      {time} - {name} - {location}
-      <a href={link} rel="noreferrer" target="_blank">
-        {" "}
-        <em>Sign Up</em>
+    <p id={"offering"}>
+      {time} - {name} - {location}{" "}
+      <a className={"sign-up"} href={link} rel="noreferrer" target="_blank">
+        Sign Up
       </a>
     </p>
   );

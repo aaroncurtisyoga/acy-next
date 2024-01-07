@@ -84,6 +84,11 @@ body {
 
 /* ========================================== TAILWIND STYLES */
 @layer utilities {
+  /* Todo: Replace w/ Tailwind inline*/
+  #offering a {
+    @apply border-b border-dotted border-black hover:border-solid italic
+  }
+
   .wrapper {
     @apply max-w-7xl lg:mx-auto p-5 md:px-10 xl:px-0 w-full;
   }
