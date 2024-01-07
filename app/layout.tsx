@@ -14,8 +14,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     <html lang="en">
       <body className={`${poppins.variable} antialiased`}>
         <Header />
-        <main className={"grid grid-cols-[1fr,1fr] h-[calc(100vh-64px)]"}>
-          <section className={"relative"}>
+        <main className={"grid md:grid-cols-[1fr,1fr] h-[calc(100vh-64px)]"}>
+          <section className={"hidden md:block  md:relative"}>
             <Image
               alt="Yoga posture hand to big toe"
               className=""
