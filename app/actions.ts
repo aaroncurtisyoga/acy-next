@@ -28,8 +28,10 @@ export async function addNewsletterEntry(data: Inputs) {
           status: "pending",
         },
       );
+      console.log("response is");
+      console.log(response);
       return {
-        message: `Thanks for signing up ${data.first_name}! A confirmation email is being sent to you at ${data.email}. After you confirm, you'll officially be added to my newsletter.`,
+        message: `A confirmation email should be in your inbox soon.`,
       };
     } catch (error: any) {
       if (

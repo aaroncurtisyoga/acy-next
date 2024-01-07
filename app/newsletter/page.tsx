@@ -7,11 +7,12 @@ import { z } from "zod";
 import { FormNewsletterSchema } from "@/lib/schema";
 import { addNewsletterEntry } from "@/app/actions";
 import { useState } from "react";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 const NewsletterForm = () => {
-  const [successMsg, setSuccessMsg] = useState("");
+  const [newsletterEntryAdded, setNewsletterEntryAdded] = useState(false);
   const {
     formState: { errors, isSubmitting },
     handleSubmit,
@@ -23,8 +24,8 @@ const NewsletterForm = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
-    console.log("functionality commented out");
-    /*  const result = await addNewsletterEntry(data);
+    setNewsletterEntryAdded(false);
+    const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
       // handle server side form validation errors
@@ -47,8 +48,8 @@ const NewsletterForm = () => {
       return;
     }
 
-    setSuccessMsg(result.message);
-    reset();*/
+    setNewsletterEntryAdded(true);
+    reset();
   };
 
   return (
@@ -58,25 +59,27 @@ const NewsletterForm = () => {
         Be the first to know about my upcoming workshops, events, and
         long-format classes!
       </p>
-      {/*Todo: Switch form to Radix UI components*/}
+      {/*Todo:  Switch form to Radix UI components*/}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <label htmlFor={"fname"}>First name</label>
         <input
           {...register("first_name")}
           autoComplete="given-name"
           aria-invalid={errors.first_name ? "true" : "false"}
-          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6 "
+          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-1 "
           id="fname"
         />
         {errors.first_name && (
           <p className="text-red-500">{`${errors.first_name.message}`}</p>
         )}
-        <label htmlFor="email">Email Address</label>
+        <label htmlFor="email" className={"mt-3"}>
+          Email Address
+        </label>
         <input
           {...register("email")}
           autoComplete="email"
           aria-invalid={errors.email ? "true" : "false"}
-          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
+          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-1"
           id="email"
           // type="email"
         />
@@ -84,14 +87,26 @@ const NewsletterForm = () => {
           <p className="text-red-500">{`${errors.email.message}`}</p>
         )}
         <button
-          className="bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300"
+          className="bg-blue-500 disabled:cursor-not-allowed disabled:opacity-50 text-white font-medium py-2 px-4 rounded-md hover:bg-blue-600 transition-colors duration-300 mt-6"
           disabled={isSubmitting}
           type="submit"
         >
           Subscribe
         </button>
-        {errors.api && <p role="alert">{`${errors.api.message}`}</p>}
-        {successMsg && <p>{successMsg}</p>}
+        {errors.api && (
+          <Alert className={"mt-4"} variant={"destructive"}>
+            <AlertTitle>Whoops!</AlertTitle>
+            <AlertDescription>{`${errors.api.message}`}</AlertDescription>
+          </Alert>
+        )}
+        {newsletterEntryAdded && (
+          <Alert className={"mt-4"} variant={"success"}>
+            <AlertTitle>All set!</AlertTitle>
+            <AlertDescription>
+              A confirmation email should be in your inbox soon.
+            </AlertDescription>
+          </Alert>
+        )}
       </form>
     </section>
   );

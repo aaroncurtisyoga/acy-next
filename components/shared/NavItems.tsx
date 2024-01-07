@@ -18,7 +18,7 @@ const NavItems = () => {
               className={clsx(
                 "flex-center p-medium-16 whitespace-nowrap md:text-lg",
                 {
-                  "text-blue-700": isActive === true,
+                  "text-blue-500": isActive === true,
                 },
               )}
             >

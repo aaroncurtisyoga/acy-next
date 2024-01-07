@@ -42,7 +42,7 @@ My app is built with [Next.js](https://nextjs.org/). The common scripts are:
 - Tailwind
 - React Hook Form
 - Zod
-- Mailchimp Marketing API ([docs](https://mailchimp.com/developer/marketing/))
+- Mailchimp Marketing API ([docs -- specifically lists.addListMember /lists/{list_id}/members](https://mailchimp.com/developer/marketing/))
 
 ## <a name="features">🔋 Features</a>
 
