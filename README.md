@@ -1,7 +1,7 @@
 141 lines (104 sloc)  6.31 KB
    
-<h1 align="center">AaronCurtisYoga.com</h1>
-<p align="center">Fullstack Next.js App for Aaron Curtis Yoga </p>
+<h1 style="text-align: center;">AaronCurtisYoga.com</h1>
+<p style="text-align: center;">Fullstack Next.js App for Aaron Curtis Yoga </p>
 
 ## 📋 <a name="table">Table of Contents</a>
 
