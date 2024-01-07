@@ -4,7 +4,7 @@ export default function Home() {
       <p className={"md:text-lg"}>
         Exploring health, happiness, and healing through the practice of yoga
       </p>
-      <div className={"text-5xl md:text-8xl"}>
+      <div className={"text-4xl md:text-5xl lg:text-8xl"}>
         <h1>Flow</h1>
         <h1>Breathe</h1>
         <h1>Meditate</h1>

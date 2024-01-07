@@ -11,7 +11,7 @@ export default function Header() {
       <div className={"wrapper flex items-center justify-between"}>
         <Link href="/" className="sm:32 min-w-fit	">
           <p className={"md:hidden font-bold"}>ACY</p>
-          <p className={"hidden md:block font-semibold text-lg max-ine"}>
+          <p className={"hidden md:block font-semibold text-lg"}>
             Aaron Curtis Yoga
           </p>
         </Link>

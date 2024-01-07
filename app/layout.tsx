@@ -16,7 +16,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         <Header />
         <main
           className={
-            "grid md:grid-cols-[1fr,1fr] h-[calc(100vh-64px)] max-w-screen-2xl lg:mx-auto"
+            "grid md:grid-cols-[1fr,1fr] h-[calc(100vh-66px)] max-w-screen-2xl lg:mx-auto"
           }
         >
           <section className={"hidden md:block  md:relative"}>
