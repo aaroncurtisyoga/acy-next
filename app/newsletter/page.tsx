@@ -23,7 +23,8 @@ const NewsletterForm = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
-    const result = await addNewsletterEntry(data);
+    console.log("functionality commented out");
+    /*  const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
       // handle server side form validation errors
@@ -47,24 +48,24 @@ const NewsletterForm = () => {
     }
 
     setSuccessMsg(result.message);
-    reset();
+    reset();*/
   };
 
   return (
-    <section className="bg-white shadow-lg p-8 rounded-md gap-2 flex flex-col">
-      <h2 className="text-2xl font-bold text-gray-900 mb-4">
-        Subscribe to my Newsletter
-      </h2>
-      <p className="text-gray-90000">
-        Be the first to know for upcoming workshops, classes, and more :)
+    <section className="bg-white shadow-lg rounded-md gap-2 flex flex-col p-6 md:p-8">
+      <h2 className="text-3xl mb-8">Subscribe to my Newsletter</h2>
+      <p className="mb-6">
+        Be the first to know about my upcoming workshops, events, and
+        long-format classes!
       </p>
+      {/*Todo: Switch form to Radix UI components*/}
       <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col">
         <label htmlFor={"fname"}>First name</label>
         <input
           {...register("first_name")}
           autoComplete="given-name"
           aria-invalid={errors.first_name ? "true" : "false"}
-          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-6 "
           id="fname"
         />
         {errors.first_name && (
@@ -75,7 +76,7 @@ const NewsletterForm = () => {
           {...register("email")}
           autoComplete="email"
           aria-invalid={errors.email ? "true" : "false"}
-          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-4"
           id="email"
           // type="email"
         />
