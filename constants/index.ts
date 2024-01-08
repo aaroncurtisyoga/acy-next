@@ -22,7 +22,7 @@ export const faqInfo = [
   {
     question: "How often do you practice?",
     answer:
-      "Most days! Even if it’s for a couple minutes. The majority of my yoga practice is breathwork and meditation. Although I love public asana classes, and try to go whenever I can. I also do CrossFit and modify the workouts to prioritize increasing isometric strength for arm balances & inversions.\n",
+      "The majority of my yoga practice is breathwork and meditation. I feel my best when I do this daily. I also love taking Vinyasa classes in-person & online whenever I can. But these days a lot of my movement comes from CrossFit. I modify the workouts to prioritize building strength for arm balances & inversions.",
   },
   {
     question: "What level are your Vinyasa classes?",
