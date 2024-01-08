@@ -81,7 +81,7 @@ const NewsletterForm = () => {
           aria-invalid={errors.email ? "true" : "false"}
           className="border disabled:cursor-not-allowed disabled:opacity-50 border-gray-300 bg:gray-50 rounded-md py-2 px-4 focus:outline-none focus:ring-2 focus:ring-blue-500 mb-1"
           id="email"
-          // type="email"
+          type="email"
         />
         {errors.email && (
           <p className="text-red-500">{`${errors.email.message}`}</p>
