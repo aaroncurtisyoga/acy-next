@@ -10,11 +10,11 @@ export default function Page() {
   return (
     <section className={"flex flex-col p-8"}>
       <h1 className={"text-3xl mb-8"}>FAQ</h1>
-      <Accordion type="multiple">
+      <Accordion type="single">
         {faqInfo.map((faq, index) => {
           return (
             <AccordionItem key={faq.question} value={`item-${index}`}>
-              <AccordionTrigger className={"text-lg md:text-xl"}>
+              <AccordionTrigger className={"text-lg md:text-xl text-left"}>
                 {faq.question}
               </AccordionTrigger>
               <AccordionContent>

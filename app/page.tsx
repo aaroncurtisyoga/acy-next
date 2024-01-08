@@ -2,7 +2,7 @@ export default function Home() {
   return (
     <section className={"flex flex-col justify-between p-6 md:p-8"}>
       <p className={"md:text-lg"}>
-        Exploring health, happiness, and healing through the practice of yoga
+        Exploring health, happiness, and healing through the practice of yoga.
       </p>
       <div className={"text-4xl md:text-5xl lg:text-8xl"}>
         <h1>Flow</h1>
