@@ -1,5 +1,5 @@
+import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import { Bars3Icon } from "@heroicons/react/24/solid";
 import NavItems from "@/components/shared/NavItems";
 
 const MobileNav = () => {
@@ -7,7 +7,7 @@ const MobileNav = () => {
     <nav className={"md:hidden"}>
       <Sheet>
         <SheetTrigger className="align-middle">
-          <Bars3Icon className="h-6 w-6" />
+          <Menu className="h-6 w-6" />
         </SheetTrigger>
         <SheetContent className={"flex flex-col gap-6 bg-white md:hidden"}>
           <NavItems />
