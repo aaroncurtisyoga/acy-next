@@ -9,12 +9,12 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={`${poppins.variable} antialiased flex flex-col h-dvh`}>
-        <SpeedInsights />
         <Header />
         <main
           className={
@@ -35,6 +35,8 @@ export default function Layout({ children }: { children: React.ReactNode }) {
           </section>
           {children}
         </main>
+        <Analytics />
+        <SpeedInsights />
       </body>
     </html>
   );
