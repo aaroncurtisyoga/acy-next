@@ -10,8 +10,7 @@ export async function addNewsletterEntry(data: Inputs) {
 
   if (formValidationResult.success === false) {
     return { formErrors: formValidationResult.error.format() };
-  }
-  /* else {
+  } else {
     // Init Mailchimp client
     mailchimp.setConfig({
       apiKey: process.env.MAILCHIMP_API_KEY,
@@ -29,8 +28,6 @@ export async function addNewsletterEntry(data: Inputs) {
           status: "pending",
         },
       );
-      console.log("response is");
-      console.log(response);
       return {
         message: `A confirmation email should be in your inbox soon.`,
       };
@@ -51,5 +48,5 @@ export async function addNewsletterEntry(data: Inputs) {
           "Sorry. Something went wrong. Email me at aaroncurtisyoga@gmail.com and I'll add you manually!",
       };
     }
-  }*/
+  }
 }

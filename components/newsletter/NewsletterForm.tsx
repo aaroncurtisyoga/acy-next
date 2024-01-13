@@ -22,9 +22,9 @@ import { FormNewsletterSchema } from "@/lib/schema";
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 const NewsletterForm = () => {
-  const [newsletterEntryAdded, setNewsletterEntryAdded] = useState();
+  const [newsletterEntryAdded, setNewsletterEntryAdded] = useState(false);
   const form = useForm<z.infer<typeof FormNewsletterSchema>>({
-    // resolver: zodResolver(FormNewsletterSchema),
+    resolver: zodResolver(FormNewsletterSchema),
     defaultValues: {
       first_name: "",
       email: "",
@@ -48,17 +48,16 @@ const NewsletterForm = () => {
         });
       }
       return;
-    }
-    /* else if (result.apiError) {
+    } else if (result.apiError) {
       // handle errors from mailchimp api
-      form.setError("api", {
+      form.setError("root", {
         type: "server",
         message: result.message,
       });
       return;
     }
 
-    setNewsletterEntryAdded(true);*/
+    setNewsletterEntryAdded(true);
     form.reset();
   };
 
