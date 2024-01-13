@@ -16,13 +16,16 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
 import { addNewsletterEntry } from "@/app/actions";
-import { FormNewsletterSchema } from "@/lib/schema";
-type Inputs = z.infer<typeof FormNewsletterSchema>;
+import { newsletterFormSchema } from "@/lib/schema";
+import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { AlertWrapper } from "@/components/shared/AlertWrapper";
+import { AlertTriangle } from "lucide-react";
+type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
   const [newsletterEntryAdded, setNewsletterEntryAdded] = useState(false);
-  const form = useForm<z.infer<typeof FormNewsletterSchema>>({
-    resolver: zodResolver(FormNewsletterSchema),
+  const form = useForm<z.infer<typeof newsletterFormSchema>>({
+    resolver: zodResolver(newsletterFormSchema),
     defaultValues: {
       first_name: "",
       email: "",
@@ -30,7 +33,7 @@ const NewsletterForm = () => {
   });
 
   const handleFormErrors = (
-    formErrors: z.ZodFormattedError<typeof FormNewsletterSchema>,
+    formErrors: z.ZodFormattedError<typeof newsletterFormSchema>,
   ) => {
     for (const formInput in formErrors) {
       // @ts-ignore
@@ -44,6 +47,7 @@ const NewsletterForm = () => {
   };
 
   const handleApiErrors = (result: { apiError?: string; message?: string }) => {
+    console.log("handleApiErrors");
     form.setError("root", {
       type: "server",
       message: result.message,
@@ -97,9 +101,29 @@ const NewsletterForm = () => {
             </FormItem>
           )}
         />
-        <Button variant={"outline"} type={"submit"} className={"mt-8 w-full"}>
+
+        <Button variant={"default"} type={"submit"} className={"my-8 w-full"}>
           Subscribe
         </Button>
+        {form.formState.errors?.root && (
+          <AlertWrapper
+            title={"An error occurred"}
+            description={form.formState.errors.root.message}
+            variant={"destructive"}
+          >
+            <AlertTriangle />
+          </AlertWrapper>
+        )}
+
+        {/* Todo: how to handle showing success msg */}
+        {newsletterEntryAdded && (
+          <Alert className={"mt-4"} variant={"success"}>
+            <AlertTitle>All set!</AlertTitle>
+            <AlertDescription>
+              A confirmation email should be in your inbox soon.
+            </AlertDescription>
+          </Alert>
+        )}
       </form>
     </Form>
   );
