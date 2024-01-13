@@ -17,9 +17,8 @@ import { Button } from "@/components/ui/button";
 
 import { addNewsletterEntry } from "@/app/actions";
 import { newsletterFormSchema } from "@/lib/schema";
-import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { AlertWrapper } from "@/components/shared/AlertWrapper";
-import { AlertTriangle } from "lucide-react";
+import { AlertTriangle, Mail } from "lucide-react";
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
@@ -114,15 +113,14 @@ const NewsletterForm = () => {
             <AlertTriangle />
           </AlertWrapper>
         )}
-
-        {/* Todo: how to handle showing success msg */}
         {newsletterEntryAdded && (
-          <Alert className={"mt-4"} variant={"success"}>
-            <AlertTitle>All set!</AlertTitle>
-            <AlertDescription>
-              A confirmation email should be in your inbox soon.
-            </AlertDescription>
-          </Alert>
+          <AlertWrapper
+            title={"All set!"}
+            description={"A confirmation email should be in your inbox soon."}
+            variant={"success"}
+          >
+            <Mail />
+          </AlertWrapper>
         )}
       </form>
     </Form>
