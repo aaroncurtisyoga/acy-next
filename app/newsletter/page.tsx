@@ -1,4 +1,4 @@
-import NewsletterForm from "@/components/shared/NewsletterForm";
+import NewsletterForm from "@/components/newsletter/NewsletterForm";
 
 const NewsletterPage = () => {
   return (

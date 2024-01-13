@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -14,13 +15,16 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+
+import { addNewsletterEntry } from "@/app/actions";
 import { FormNewsletterSchema } from "@/lib/schema";
 
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 const NewsletterForm = () => {
+  const [newsletterEntryAdded, setNewsletterEntryAdded] = useState();
   const form = useForm<z.infer<typeof FormNewsletterSchema>>({
-    resolver: zodResolver(FormNewsletterSchema),
+    // resolver: zodResolver(FormNewsletterSchema),
     defaultValues: {
       first_name: "",
       email: "",
@@ -29,14 +33,14 @@ const NewsletterForm = () => {
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
     console.log(data);
-    /*  setNewsletterEntryAdded(false);
+    // setNewsletterEntryAdded(false);
     const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
       // handle server side form validation errors
       const formErrors = result.formErrors;
       for (const formInput in formErrors) {
-        setError(formInput, {
+        form.setError(formInput, {
           type: "server",
           message:
             formErrors[formInput]._errors?.join(", ") ||
@@ -44,7 +48,8 @@ const NewsletterForm = () => {
         });
       }
       return;
-    } else if (result.apiError) {
+    }
+    /* else if (result.apiError) {
       // handle errors from mailchimp api
       form.setError("api", {
         type: "server",
@@ -53,8 +58,8 @@ const NewsletterForm = () => {
       return;
     }
 
-    setNewsletterEntryAdded(true);
-    form.reset();*/
+    setNewsletterEntryAdded(true);*/
+    form.reset();
   };
 
   return (
@@ -77,7 +82,7 @@ const NewsletterForm = () => {
           control={form.control}
           name={"email"}
           render={({ field }) => (
-            <FormItem>
+            <FormItem className={"mt-3"}>
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input {...field} type="email" />

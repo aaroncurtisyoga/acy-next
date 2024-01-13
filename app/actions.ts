@@ -10,7 +10,8 @@ export async function addNewsletterEntry(data: Inputs) {
 
   if (formValidationResult.success === false) {
     return { formErrors: formValidationResult.error.format() };
-  } else {
+  }
+  /* else {
     // Init Mailchimp client
     mailchimp.setConfig({
       apiKey: process.env.MAILCHIMP_API_KEY,
@@ -50,5 +51,5 @@ export async function addNewsletterEntry(data: Inputs) {
           "Sorry. Something went wrong. Email me at aaroncurtisyoga@gmail.com and I'll add you manually!",
       };
     }
-  }
+  }*/
 }

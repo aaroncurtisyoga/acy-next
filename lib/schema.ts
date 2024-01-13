@@ -7,6 +7,6 @@ export const FormNewsletterSchema = z.object({
   first_name: z
     .string({ required_error: "Name is required" })
     .trim()
-    .min(1)
+    .min(1, { message: "Name is required" })
     .max(100, "100 characters max"),
 });
