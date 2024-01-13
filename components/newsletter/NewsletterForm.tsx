@@ -37,7 +37,8 @@ const NewsletterForm = () => {
 
     if (result.formErrors) {
       // handle server side form validation errors
-      const formErrors = result.formErrors;
+      const formErrors: z.ZodFormattedError<typeof FormNewsletterSchema> =
+        result.formErrors;
       for (const formInput in formErrors) {
         form.setError(formInput, {
           type: "server",
