@@ -1,5 +1,4 @@
 "use client";
-
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -18,7 +17,6 @@ import { Button } from "@/components/ui/button";
 
 import { addNewsletterEntry } from "@/app/actions";
 import { FormNewsletterSchema } from "@/lib/schema";
-
 type Inputs = z.infer<typeof FormNewsletterSchema>;
 
 const NewsletterForm = () => {
@@ -31,29 +29,38 @@ const NewsletterForm = () => {
     },
   });
 
+  const handleFormErrors = (
+    formErrors: z.ZodFormattedError<typeof FormNewsletterSchema>,
+  ) => {
+    for (const formInput in formErrors) {
+      // @ts-ignore
+      form.setError(formInput, {
+        type: "server",
+        message:
+          formErrors[formInput]._errors?.join(", ") ||
+          formErrors._errors?.join(", "),
+      });
+    }
+  };
+
+  const handleApiErrors = (result: { apiError?: string; message?: string }) => {
+    form.setError("root", {
+      type: "server",
+      message: result.message,
+    });
+  };
+
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
     setNewsletterEntryAdded(false);
     const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
-      // handle server side form validation errors
-      const formErrors: z.ZodFormattedError<typeof FormNewsletterSchema> =
-        result.formErrors;
-      for (const formInput in formErrors) {
-        form.setError(formInput, {
-          type: "server",
-          message:
-            formErrors[formInput]._errors?.join(", ") ||
-            formErrors._errors?.join(", "),
-        });
-      }
+      handleFormErrors(result.formErrors);
       return;
-    } else if (result.apiError) {
-      // handle errors from mailchimp api
-      form.setError("root", {
-        type: "server",
-        message: result.message,
-      });
+    }
+
+    if (result.apiError) {
+      handleApiErrors(result);
       return;
     }
 
