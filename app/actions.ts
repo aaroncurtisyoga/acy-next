@@ -2,11 +2,11 @@
 
 import { z } from "zod";
 import mailchimp from "@mailchimp/mailchimp_marketing";
-import { FormNewsletterSchema } from "@/lib/schema";
-type Inputs = z.infer<typeof FormNewsletterSchema>;
+import { newsletterFormSchema } from "@/lib/schema";
+type Inputs = z.infer<typeof newsletterFormSchema>;
 
 export async function addNewsletterEntry(data: Inputs) {
-  const formValidationResult = FormNewsletterSchema.safeParse(data);
+  const formValidationResult = newsletterFormSchema.safeParse(data);
 
   if (formValidationResult.success === false) {
     return { formErrors: formValidationResult.error.format() };
@@ -28,8 +28,6 @@ export async function addNewsletterEntry(data: Inputs) {
           status: "pending",
         },
       );
-      console.log("response is");
-      console.log(response);
       return {
         message: `A confirmation email should be in your inbox soon.`,
       };
