@@ -32,8 +32,7 @@ const NewsletterForm = () => {
   });
 
   const onSubmit: SubmitHandler<Inputs> = async (data: FieldValues) => {
-    console.log(data);
-    // setNewsletterEntryAdded(false);
+    setNewsletterEntryAdded(false);
     const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
