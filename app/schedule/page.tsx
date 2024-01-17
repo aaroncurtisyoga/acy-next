@@ -7,6 +7,7 @@ const Page = () => {
       <h1 className={"text-3xl mb-8"}>Weekly Schedule</h1>
       <div className={"mb-6"}>
         <p className={"text-xl"}>Monday</p>
+        <hr className={"md:hidden"} />
         <Offering
           link={signUpLinks.dcBoulderingProject}
           time={"6:30am"}
@@ -16,6 +17,7 @@ const Page = () => {
       </div>
       <div className={"mb-6"}>
         <p className={"text-xl"}>Tuesday</p>
+        <hr className={"md:hidden"} />
         <Offering
           link={signUpLinks.dcBoulderingProject}
           time={"6:30am"}
@@ -30,6 +32,7 @@ const Page = () => {
       </div>
       <div className={"mb-6"}>
         <p className={"text-xl"}>Thursday</p>
+        <hr className={"md:hidden"} />
         <Offering
           link={signUpLinks.dcBoulderingProject}
           time={"6:30am"}
@@ -45,6 +48,7 @@ const Page = () => {
       </div>
       <div className={"mb-6"}>
         <p className={"text-xl"}>Friday</p>
+        <hr className={"md:hidden"} />
         <Offering
           link={signUpLinks.dcBoulderingProject}
           time={"6:30am"}
@@ -59,6 +63,7 @@ const Page = () => {
       </div>
       <div>
         <p className={"text-xl"}>Sunday</p>
+        <hr className={"md:hidden"} />
         <Offering
           link={signUpLinks.crossFitDc}
           time={"2:00pm"}
