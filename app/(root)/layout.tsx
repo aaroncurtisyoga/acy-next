@@ -3,7 +3,7 @@
 import { usePathname } from "next/navigation";
 import Header from "@/components/shared/Header";
 import Image from "next/image";
-import handstandPicture from "../public/images/HandstandScissorLeg.png";
+import handstandPicture from "@/public/images/HandstandScissorLeg.png";
 import "@/app/globals.css";
 
 import { SpeedInsights } from "@vercel/speed-insights/next";
