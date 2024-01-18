@@ -1,5 +1,4 @@
 "use client";
-
 import Link from "next/link";
 import React from "react";
 import NavItems from "@/components/shared/NavItems";
