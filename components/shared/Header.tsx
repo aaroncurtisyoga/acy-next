@@ -3,6 +3,8 @@ import Link from "next/link";
 import React from "react";
 import NavItems from "@/components/shared/NavItems";
 import MobileNav from "@/components/shared/MobileNav";
+import { SignedOut } from "@clerk/nextjs";
+import { Button } from "@/components/ui/button";
 
 export default function Header() {
   return (
@@ -14,13 +16,18 @@ export default function Header() {
             Aaron Curtis Yoga
           </p>
         </Link>
-
         <MobileNav />
-
         {/* Desktop nav*/}
         <nav className={"hidden md:flex justify-end w-full"}>
           <NavItems />
         </nav>
+        <div className={""}>
+          <SignedOut>
+            <Button asChild className={"rounded-full"} size={"lg"}>
+              <Link href={"/sign-in"}>Login</Link>
+            </Button>
+          </SignedOut>
+        </div>
       </div>
     </header>
   );
