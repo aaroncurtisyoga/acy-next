@@ -7,6 +7,7 @@ import { cn } from "@/lib/utils";
 import Header from "@/components/shared/Header";
 import handstandPicture from "@/public/images/HandstandScissorLeg.png";
 import "@/app/globals.css";
+import Footer from "@/components/shared/Footer";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
@@ -36,6 +37,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         </section>
         {children}
       </main>
+      <Footer />
     </div>
   );
 }
