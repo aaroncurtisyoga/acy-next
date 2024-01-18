@@ -3,12 +3,12 @@
 import type { PutBlobResult } from "@vercel/blob";
 import { useState, useRef } from "react";
 
-export default function AvatarUploadPage() {
+export default function Upload() {
   const inputFileRef = useRef<HTMLInputElement>(null);
   const [blob, setBlob] = useState<PutBlobResult | null>(null);
   return (
     <>
-      <h1>Upload Your Avatar</h1>
+      <h1>Upload Your File</h1>
 
       <form
         onSubmit={async (event) => {
@@ -23,7 +23,7 @@ export default function AvatarUploadPage() {
           const file = inputFileRef.current.files[0];
 
           const response = await fetch(
-            `/api/avatar/upload?filename=${file.name}`,
+            `/api/uploadBlob?filename=${file.name}`,
             {
               method: "POST",
               body: file,
