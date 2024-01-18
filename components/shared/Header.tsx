@@ -3,7 +3,7 @@ import Link from "next/link";
 import React from "react";
 import NavItems from "@/components/shared/NavItems";
 import MobileNav from "@/components/shared/MobileNav";
-import { SignedOut } from "@clerk/nextjs";
+import { SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 
 export default function Header() {
@@ -22,6 +22,9 @@ export default function Header() {
           <NavItems />
         </nav>
         <div className={""}>
+          <div>
+            <UserButton afterSignOutUrl={"/"} />
+          </div>
           <SignedOut>
             <Button asChild className={"rounded-full"} size={"lg"}>
               <Link href={"/sign-in"}>Login</Link>
