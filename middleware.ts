@@ -4,6 +4,7 @@ export default authMiddleware({
   // Let users access these routes even if not logged in
   publicRoutes: [
     "/",
+    "/dashboard",
     "/faq",
     "/newsletter",
     "/schedule",

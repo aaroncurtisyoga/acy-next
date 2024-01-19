@@ -13,11 +13,11 @@ export interface IEvent extends Document {
   isFree: boolean;
   url?: string;
   category?: {
-    _id: Types.ObjectId;
+    _id: string;
     name: string;
   };
   organizer?: {
-    _id: Types.ObjectId;
+    _id: string;
     firstName: string;
     lastName: string;
   };
