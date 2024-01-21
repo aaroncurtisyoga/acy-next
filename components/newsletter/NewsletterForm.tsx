@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { addNewsletterEntry } from "@/app/actions";
 import { newsletterFormSchema } from "@/lib/schema";
 import { AlertWrapper } from "@/components/shared/AlertWrapper";
-import { AlertTriangle, Mail } from "lucide-react";
+import { AlertTriangle, Mail, Loader } from "lucide-react";
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
@@ -101,8 +101,17 @@ const NewsletterForm = () => {
           )}
         />
 
-        <Button variant={"default"} type={"submit"} className={"my-8 w-full"}>
-          Subscribe
+        <Button
+          variant={"default"}
+          type={"submit"}
+          className={"my-8 w-full"}
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? (
+            <Loader className={"animate-spin"} />
+          ) : (
+            "Subscribe"
+          )}
         </Button>
         {form.formState.errors?.root && (
           <AlertWrapper
