@@ -1,7 +1,11 @@
 import { Webhook } from "svix";
 import { headers } from "next/headers";
 import { WebhookEvent } from "@clerk/nextjs/server";
-import { createUser } from "@/lib/mongodb/database/actions/user.actions";
+import {
+  createUser,
+  deleteUser,
+  updateUser,
+} from "@/lib/mongodb/database/actions/user.actions";
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
 
@@ -51,7 +55,7 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get the ID and type
+  // Get the type
   const eventType = evt.type;
 
   // Create a new user in database when a Clerk user is created
@@ -79,5 +83,30 @@ export async function POST(req: Request) {
     }
 
     return NextResponse.json({ message: "OK", user: newUser });
+  }
+
+  // Update user in database when a Clerk user is updated
+  if (eventType === "user.updated") {
+    const { id, image_url, first_name, last_name, username } = evt.data;
+
+    const user = {
+      firstName: first_name,
+      lastName: last_name,
+      username: username!,
+      photo: image_url,
+    };
+
+    const updatedUser = await updateUser(id, user);
+
+    return NextResponse.json({ message: "OK", user: updatedUser });
+  }
+
+  // Delete a user in database when a Clerk user is deleted
+  if (eventType === "user.deleted") {
+    const { id } = evt.data;
+
+    const deletedUser = await deleteUser(id!);
+
+    return NextResponse.json({ message: "OK", user: deletedUser });
   }
 }
