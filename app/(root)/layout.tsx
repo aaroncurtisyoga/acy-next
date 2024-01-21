@@ -2,7 +2,7 @@
 
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { cn } from "@/lib/utils/cn";
+import { cn } from "@/lib/utils";
 
 import Header from "@/components/shared/Header";
 import handstandPicture from "@/public/images/HandstandScissorLeg.png";
