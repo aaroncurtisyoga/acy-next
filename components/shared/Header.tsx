@@ -1,8 +1,6 @@
-"use client";
 import Link from "next/link";
-import React from "react";
-import NavItems from "@/components/shared/NavItems";
-import MobileNav from "@/components/shared/MobileNav";
+import NavItems from "@/components/shared/nav/NavItems";
+import MobileNav from "@/components/shared/nav/MobileNav";
 import { SignedOut, UserButton } from "@clerk/nextjs";
 import { Button } from "@/components/ui/button";
 

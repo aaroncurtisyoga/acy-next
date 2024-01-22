@@ -1,4 +1,6 @@
-export const navLinks = [
+import { checkRole } from "@/lib/utils";
+
+export const userLinks = [
   { name: "Events", href: "/events" },
   {
     name: "Schedule",
@@ -6,6 +8,11 @@ export const navLinks = [
   },
   { name: "Newsletter", href: "/newsletter" },
   { name: "FAQ", href: "/faq" },
+];
+
+export const adminLinks = [
+  { name: "Create Event", href: "/create/event" },
+  { name: "Admin", href: "/admin" },
 ];
 
 export const signUpLinks = {
