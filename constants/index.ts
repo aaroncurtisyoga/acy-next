@@ -1,5 +1,3 @@
-import { checkRole } from "@/lib/utils";
-
 export const userLinks = [
   { name: "Events", href: "/events" },
   {
@@ -11,8 +9,8 @@ export const userLinks = [
 ];
 
 export const adminLinks = [
-  { name: "Create Event", href: "/create/event" },
-  { name: "Admin", href: "/admin" },
+  { name: "Create Event", href: "/events/create" },
+  { name: "Admin", href: "/dashboard" },
 ];
 
 export const signUpLinks = {

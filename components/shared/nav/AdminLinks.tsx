@@ -1,12 +1,11 @@
 import Link from "next/link";
 import { checkRole } from "@/lib/utils";
-import { clsx } from "clsx";
 import { adminLinks } from "@/constants";
 
-const AdminLinks = () => {
-  if (!checkRole("admin")) {
-    return null;
-  }
+export default async function AdminLinks() {
+  // if (!checkRole("admin")) {
+  //   return null;
+  // }
 
   return (
     <>
@@ -15,12 +14,7 @@ const AdminLinks = () => {
           <li key={link.name} className={"max-sm:w-full"}>
             <Link
               href={link.href}
-              className={clsx(
-                "flex-center p-medium-16 whitespace-nowrap md:text-lg",
-                {
-                  "text-blue-500": link.href === "/admin/dashboard",
-                },
-              )}
+              className={"flex-center p-medium-16 whitespace-nowrap md:text-lg"}
             >
               <p>{link.name}</p>
             </Link>
@@ -29,6 +23,4 @@ const AdminLinks = () => {
       })}
     </>
   );
-};
-
-export default AdminLinks;
+}
