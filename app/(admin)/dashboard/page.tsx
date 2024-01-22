@@ -16,49 +16,51 @@ export default async function AdminDashboard(params: {
   const users = query ? await clerkClient.users.getUserList({ query }) : [];
 
   return (
-    <div className={"flex flex-col"}>
+    <div className={""}>
       <h1>This is the admin dashboard</h1>
 
       <SearchUsers />
 
-      {users.map((user) => {
-        return (
-          <div key={user.id}>
-            <div>
-              {user.firstName} {user.lastName}
+      <div className="w-full">
+        {users.map((user) => {
+          return (
+            <div key={user.id}>
+              <div>
+                {user.firstName} {user.lastName}
+              </div>
+              <div>
+                {
+                  user.emailAddresses.find(
+                    (email) => email.id === user.primaryEmailAddressId,
+                  )?.emailAddress
+                }
+              </div>
+              <div>{user.publicMetadata.role as string}</div>
+              <div>
+                <form action={setRole}>
+                  <input type="hidden" value={user.id} name="id" />
+                  <input type="hidden" value="admin" name="role" />
+                  <button type="submit">Make Admin</button>
+                </form>
+              </div>
+              <div>
+                <form action={setRole}>
+                  <input type="hidden" value={user.id} name="id" />
+                  <input type="hidden" value="moderator" name="role" />
+                  <button type="submit">Make Moderator</button>
+                </form>
+              </div>
+              <div>
+                <form action={setRole}>
+                  <input type="hidden" value={user.id} name="id" />
+                  <input type="hidden" value="end-user" name="role" />
+                  <button type="submit">Make End-User</button>
+                </form>
+              </div>
             </div>
-            <div>
-              {
-                user.emailAddresses.find(
-                  (email) => email.id === user.primaryEmailAddressId,
-                )?.emailAddress
-              }
-            </div>
-            <div>{user.publicMetadata.role as string}</div>
-            <div>
-              <form action={setRole}>
-                <input type="hidden" value={user.id} name="id" />
-                <input type="hidden" value="admin" name="role" />
-                <button type="submit">Make Admin</button>
-              </form>
-            </div>
-            <div>
-              <form action={setRole}>
-                <input type="hidden" value={user.id} name="id" />
-                <input type="hidden" value="moderator" name="role" />
-                <button type="submit">Make Moderator</button>
-              </form>
-            </div>
-            <div>
-              <form action={setRole}>
-                <input type="hidden" value={user.id} name="id" />
-                <input type="hidden" value="end-user" name="role" />
-                <button type="submit">Make End-User</button>
-              </form>
-            </div>
-          </div>
-        );
-      })}
+          );
+        })}
+      </div>
     </div>
   );
 }

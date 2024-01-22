@@ -72,6 +72,7 @@ const NewsletterForm = () => {
   };
 
   return (
+    // Todo: Use same styles as create event form
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField

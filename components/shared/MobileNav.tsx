@@ -1,6 +1,6 @@
 import { Menu } from "lucide-react";
 import { Sheet, SheetContent, SheetTrigger } from "@/components/ui/sheet";
-import NavItems from "@/components/shared/nav/NavItems";
+import NavItems from "@/components/shared/NavItems";
 
 const MobileNav = () => {
   return (

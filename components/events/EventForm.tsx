@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -10,9 +11,11 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 import { EventFormSchema } from "@/lib/schema";
+import { Textarea } from "@/components/ui/textarea";
+import { eventDefaultValues } from "@/constants";
 
 type EventFormProps = {
   userId: string;
@@ -20,17 +23,10 @@ type EventFormProps = {
 };
 
 const EventForm = ({ userId, type }: EventFormProps) => {
+  const initialValues = eventDefaultValues;
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
-    defaultValues: {
-      title: "",
-      description: "",
-      location: "",
-      startDateTime: "",
-      endDateTime: "",
-      url: "",
-      category: "",
-    },
+    defaultValues: initialValues,
   });
 
   async function onSubmit(values: z.infer<typeof EventFormSchema>) {}
@@ -58,7 +54,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               </FormItem>
             )}
           />
-          <FormField
+          {/* <FormField
             control={form.control}
             name="categoryId"
             render={({ field }) => (
@@ -72,10 +68,10 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                 <FormMessage />
               </FormItem>
             )}
-          />
+          />*/}
         </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
+        {/*        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="description"
@@ -92,7 +88,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               </FormItem>
             )}
           />
-          {/*<FormField
+          <FormField
             control={form.control}
             name="imageUrl"
             render={({ field }) => (
@@ -107,7 +103,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                 <FormMessage />
               </FormItem>
             )}
-          />*/}
+          />
         </div>
 
         <div className="flex flex-col gap-5 md:flex-row">
@@ -281,7 +277,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               </FormItem>
             )}
           />
-        </div>
+        </div>*/}
 
         <Button
           type="submit"

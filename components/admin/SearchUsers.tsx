@@ -1,6 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
 
 const SearchUsers = () => {
   const router = useRouter();
@@ -8,7 +9,6 @@ const SearchUsers = () => {
 
   return (
     <div>
-      {/* Todo: refactor to use shad cn components */}
       <form
         onSubmit={async (e) => {
           e.preventDefault();
@@ -17,10 +17,11 @@ const SearchUsers = () => {
           const queryTerm = formData.get("search") as string;
           router.push(pathname + "?search=" + queryTerm);
         }}
+        className={"flex flex-col w-full"}
       >
         <label htmlFor="search">Search for Users</label>
         <input id="search" name="search" type="text" />
-        <button type="submit">Submit</button>
+        <Button type="submit">Submit</Button>
       </form>
     </div>
   );

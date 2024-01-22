@@ -21,7 +21,7 @@ export const EventFormSchema = z.object({
   imageUrl: z.string(),
   startDateTime: z.date(),
   endDateTime: z.date(),
-  category: z.string(),
+  categoryId: z.string(),
   price: z.string(),
   isFree: z.boolean(),
   url: z.string().url({ message: "URL must be valid" }),

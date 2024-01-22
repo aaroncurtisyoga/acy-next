@@ -40,3 +40,16 @@ export const faqInfo = [
       " classes. Sign up to the newsletter to get an update on when these are. If you’re interested in having me teach an event at your studio or location, please reach out at aaroncurtisyoga@gmail.com\n",
   },
 ];
+
+export const eventDefaultValues = {
+  title: "",
+  description: "",
+  location: "",
+  imageUrl: "",
+  startDateTime: new Date(),
+  endDateTime: new Date(),
+  categoryId: "",
+  price: "",
+  isFree: false,
+  url: "",
+};

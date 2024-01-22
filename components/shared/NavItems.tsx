@@ -1,5 +1,5 @@
-import AdminLinks from "@/components/shared/nav/AdminLinks";
-import UserLinks from "@/components/shared/nav/UserLinks";
+import AdminLinks from "@/components/shared/AdminLinks";
+import UserLinks from "@/components/shared/UserLinks";
 
 export default function NavItems() {
   return (
