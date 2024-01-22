@@ -3,9 +3,9 @@ import { checkRole } from "@/lib/utils";
 import { adminLinks } from "@/constants";
 
 export default async function AdminLinks() {
-  // if (!checkRole("admin")) {
-  //   return null;
-  // }
+  if (!checkRole("admin")) {
+    return null;
+  }
 
   return (
     <>
