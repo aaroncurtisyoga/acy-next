@@ -1,8 +1,4 @@
 export const navLinks = [
-  {
-    name: "Create Event",
-    href: "/events/create",
-  },
   { name: "Events", href: "/events" },
   {
     name: "Schedule",

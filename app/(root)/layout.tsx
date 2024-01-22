@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
         className={cn(
           "transition-all duration-150 grow grid md:grid-cols-[1fr,1fr] 11rem)] w-full max-w-screen-2xl lg:mx-auto",
           {
-            "md:grid-cols-[1fr,6fr] 11rem)]": isEventsPage,
+            "md:grid-cols-[0fr,6fr] 11rem)]": isEventsPage,
           },
         )}
       >

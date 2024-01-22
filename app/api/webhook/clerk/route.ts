@@ -58,8 +58,8 @@ export async function POST(req: Request) {
   // Get the type
   const eventType = evt.type;
 
-  // Create a new user in database when a Clerk user is created
-  if (eventType === "user.created") {
+  // Create a new user in database when a Clerk user is create
+  if (eventType === "user.create") {
     const { id, email_addresses, image_url, first_name, last_name } = evt.data;
 
     const user = {

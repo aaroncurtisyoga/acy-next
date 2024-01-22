@@ -8,9 +8,6 @@ import { setRole } from "@/app/(admin)/actions";
 export default async function AdminDashboard(params: {
   searchParams: { search?: string };
 }) {
-  const ADMIN_ROLE = "admin";
-  const { sessionClaims } = auth();
-
   // If the user does not have the admin role, redirect them to the home page
   if (!checkRole("admin")) {
     redirect("/");
@@ -22,9 +19,6 @@ export default async function AdminDashboard(params: {
   return (
     <div className={"flex flex-col"}>
       <h1>This is the admin dashboard</h1>
-      <p>
-        This page is restricted to users with the &apos;{ADMIN_ROLE}&apos; role.
-      </p>
 
       <SearchUsers />
 
