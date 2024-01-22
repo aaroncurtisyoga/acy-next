@@ -48,7 +48,7 @@ My app is built with [Next.js](https://nextjs.org/). The common scripts are:
 
 👉 **Newsletter:** People can sign up to the Newsletter & stay up-to-date w/ upcoming events
 
-👉 **IN PROGRESS - Authentication:** Secure and efficient auth
+👉 **Authentication:** Auth with Clerk
 
 👉 **UPCOMING - Events (CRUD):** Admins can create, read, update, and delete events
 - **Create Events:** Admins can  create new events, providing details like the title, date, location, etc.
