@@ -11,8 +11,6 @@ const UserSchema = new Schema({
     required: true,
     unique: true,
   },
-  // Todo: Might not need username. Consider removing at a later date.
-  username: { type: String, required: true, unique: true },
   firstName: { type: String, required: true },
   lastName: { type: String, required: true },
   photo: { type: String, required: true },
