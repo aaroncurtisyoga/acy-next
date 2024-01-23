@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -20,6 +21,7 @@ import Dropdown from "@/components/ui/Dropdown";
 import FileUpload from "@/components/shared/FileUpload";
 import { useState } from "react";
 import type { PutBlobResult } from "@vercel/blob";
+import { Checkbox } from "@/components/ui/checkbox";
 
 type EventFormProps = {
   userId: string;
@@ -122,7 +124,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                         width={24}
                         height={24}
                       />
-
+                      {/* Todo: See if Google API Exists to allow me to enter verified addresses. Then, render that verified address out too */}
                       <Input
                         placeholder="Event location or Online"
                         {...field}
@@ -135,7 +137,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               )}
             />
           </div>
-          {/*
+
           <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
@@ -279,7 +281,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                 </FormItem>
               )}
             />
-          </div>*/}
+          </div>
 
           <Button
             type="submit"
