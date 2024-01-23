@@ -128,7 +128,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                       />
                       {/* Todo: See if Google API Exists to allow me to enter verified addresses. Then, render that verified address out too */}
                       <Input
-                        placeholder="Event location or Online"
+                        placeholder="Location"
                         {...field}
                         className="input-field"
                       />
@@ -238,7 +238,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                                   htmlFor="isFree"
                                   className="whitespace-nowrap pr-3 leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                                 >
-                                  Free Ticket
+                                  Free Pass
                                 </label>
                                 <Checkbox
                                   onCheckedChange={field.onChange}
