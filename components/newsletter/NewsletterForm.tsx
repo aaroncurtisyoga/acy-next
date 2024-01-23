@@ -79,11 +79,15 @@ const NewsletterForm = () => {
           name={"first_name"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First Name</FormLabel>
+              {/*<FormLabel>First Name</FormLabel>*/}
               <FormControl>
-                <Input {...field} type="text" />
+                <Input
+                  {...field}
+                  className={"input-field pb-6"}
+                  placeholder={"First Name"}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className={"pl-3"} />
             </FormItem>
           )}
         />
@@ -92,11 +96,16 @@ const NewsletterForm = () => {
           name={"email"}
           render={({ field }) => (
             <FormItem className={"mt-3"}>
-              <FormLabel>Email</FormLabel>
+              {/*<FormLabel>Email</FormLabel>*/}
               <FormControl>
-                <Input {...field} type="email" />
+                <Input
+                  {...field}
+                  type="email"
+                  className={"input-field"}
+                  placeholder={"Email Address"}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className={"pl-3"} />
             </FormItem>
           )}
         />
