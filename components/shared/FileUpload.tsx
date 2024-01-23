@@ -3,7 +3,7 @@
 import type { PutBlobResult } from "@vercel/blob";
 import { useRef } from "react";
 import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { Link } from "lucide-react";
 
 export default function FileUpload({ imageUrl, setImageUrl }) {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -27,20 +27,25 @@ export default function FileUpload({ imageUrl, setImageUrl }) {
   // Todo: List out images already uploaded in Store. Allow user to select from those images and just then just fired setImageUrl with that previously uploaded image
 
   return (
-    <div className={"flex justify-between"}>
-      <input ref={inputFileRef} type="file" required />
-      <Button type="button" variant={"outline"} onClick={() => uploadImage()}>
-        Upload
-      </Button>
+    <div className={"flex flex-col"}>
+      <div className={"flex w-full justify-between"}>
+        <input ref={inputFileRef} type="file" required />
+        <Button type="button" variant={"outline"} onClick={() => uploadImage()}>
+          Upload
+        </Button>
+      </div>
+
+      {/* Todo: Maybe change to display in modal */}
       {imageUrl && (
-        <div className="flex h-full w-full flex-1 justify-center ">
-          <Image
-            src={imageUrl}
-            alt="image"
-            width={250}
-            height={250}
-            className=" object-cover object-center"
-          />
+        <div className={"w-full"}>
+          <a
+            href={imageUrl}
+            target="_blank"
+            className={"text-blue-500 hover:text-blue-800"}
+          >
+            <Link width={16} className={"float-left mr-1"} /> Link to uploaded
+            image
+          </a>
         </div>
       )}
     </div>
