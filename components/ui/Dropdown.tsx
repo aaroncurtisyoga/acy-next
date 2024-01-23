@@ -33,22 +33,22 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const [newCategory, setNewCategory] = useState("");
 
-  const handleAddCategory = () => {
+  /*  const handleAddCategory = () => {
     createCategory({
       categoryName: newCategory.trim(),
     }).then((category) => {
       setCategories((prevState) => [...prevState, category]);
     });
-  };
+  };*/
 
   useEffect(() => {
-    const getCategories = async () => {
+    /*const getCategories = async () => {
       const categoryList = await getAllCategories();
 
       categoryList && setCategories(categoryList as ICategory[]);
     };
 
-    getCategories();
+    getCategories();*/
   }, []);
 
   return (
@@ -87,7 +87,7 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
             <AlertDialogFooter>
               <AlertDialogCancel>Cancel</AlertDialogCancel>
               <AlertDialogAction
-                onClick={() => startTransition(handleAddCategory)}
+              // onClick={() => startTransition(handleAddCategory)}
               >
                 Add
               </AlertDialogAction>
