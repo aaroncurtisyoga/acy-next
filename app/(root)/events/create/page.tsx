@@ -11,9 +11,9 @@ const CreateEvent = () => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.userId as string;
   return (
-    <section>
-      <h3>create event</h3>
-      <div className={"wrapper my-8"}>
+    <section className={"wrapper"}>
+      <h3>Create Event</h3>
+      <div className={"my-8"}>
         <EventForm userId={userId} type={"Create"} />
       </div>
     </section>

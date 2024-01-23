@@ -16,6 +16,7 @@ import { Input } from "@/components/ui/input";
 import { EventFormSchema } from "@/lib/schema";
 import { Textarea } from "@/components/ui/textarea";
 import { eventDefaultValues } from "@/constants";
+import Dropdown from "@/components/ui/Dropdown";
 
 type EventFormProps = {
   userId: string;
@@ -54,7 +55,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               </FormItem>
             )}
           />
-          {/* <FormField
+          <FormField
             control={form.control}
             name="categoryId"
             render={({ field }) => (
@@ -68,7 +69,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                 <FormMessage />
               </FormItem>
             )}
-          />*/}
+          />
         </div>
 
         {/*        <div className="flex flex-col gap-5 md:flex-row">
