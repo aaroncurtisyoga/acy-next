@@ -15,7 +15,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 
-import { addNewsletterEntry } from "@/app/(root)/actions";
+import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
 import { newsletterFormSchema } from "@/lib/schema";
 import { AlertWrapper } from "@/components/shared/AlertWrapper";
 import { AlertTriangle, Mail } from "lucide-react";
