@@ -108,7 +108,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
             />
           </div>
 
-          {/*<div className="flex flex-col gap-5 md:flex-row">
+          <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
               name="location"
@@ -135,7 +135,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               )}
             />
           </div>
-
+          {/*
           <div className="flex flex-col gap-5 md:flex-row">
             <FormField
               control={form.control}
