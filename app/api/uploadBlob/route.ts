@@ -1,7 +1,10 @@
 import { put } from "@vercel/blob";
 import { NextResponse } from "next/server";
 
-// Vercel blob documentation: https://vercel.com/docs/storage/vercel-blob/client-upload
+/*
+   Vercel Blob Documentation:
+   https://vercel.com/docs/storage/vercel-blob/client-upload
+*/
 export async function POST(request: Request): Promise<NextResponse> {
   const { searchParams } = new URL(request.url);
   const filename = searchParams.get("filename");
