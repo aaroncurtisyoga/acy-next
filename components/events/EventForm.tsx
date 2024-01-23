@@ -1,6 +1,8 @@
 "use client";
 
+import type { PutBlobResult } from "@vercel/blob";
 import Image from "next/image";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -14,14 +16,14 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import { EventFormSchema } from "@/lib/schema";
 import { Textarea } from "@/components/ui/textarea";
-import { eventDefaultValues } from "@/constants";
 import Dropdown from "@/components/ui/Dropdown";
 import FileUpload from "@/components/shared/FileUpload";
-import { useState } from "react";
-import type { PutBlobResult } from "@vercel/blob";
 import { Checkbox } from "@/components/ui/checkbox";
+
+import { EventFormSchema } from "@/lib/schema";
+import { eventDefaultValues } from "@/constants";
+import "react-datepicker/dist/react-datepicker.css";
 
 type EventFormProps = {
   userId: string;
@@ -145,7 +147,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                    <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                       <Image
                         src="/assets/icons/calendar.svg"
                         alt="calendar"
@@ -153,7 +155,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                         height={24}
                         className="filter-grey"
                       />
-                      <p className="ml-3 whitespace-nowrap text-grey-600">
+                      <p className="mx-3 whitespace-nowrap text-grey-600">
                         Start Date:
                       </p>
                       <DatePicker
@@ -177,7 +179,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                    <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                       <Image
                         src="/assets/icons/calendar.svg"
                         alt="calendar"
@@ -185,7 +187,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                         height={24}
                         className="filter-grey"
                       />
-                      <p className="ml-3 whitespace-nowrap text-grey-600">
+                      <p className="mx-3 whitespace-nowrap text-grey-600">
                         End Date:
                       </p>
                       <DatePicker
@@ -211,7 +213,7 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl>
-                    <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
+                    <div className="flex items-center h-[54px] w-full overflow-hidden rounded-full bg-grey-50 px-4 py-2">
                       <Image
                         src="/assets/icons/dollar.svg"
                         alt="dollar"
