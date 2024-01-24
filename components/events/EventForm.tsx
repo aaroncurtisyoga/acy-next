@@ -1,8 +1,6 @@
 "use client";
 
-import type { PutBlobResult } from "@vercel/blob";
 import Image from "next/image";
-import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -30,15 +28,21 @@ type EventFormProps = {
   type: "Create" | "Update";
 };
 
+/* Todo
+ *   1. Add externalSignUpUrl to Model and downstream areas
+ *   2. Upgrade Text Area to Rich Text Editor
+ * */
 const EventForm = ({ userId, type }: EventFormProps) => {
   const initialValues = eventDefaultValues;
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
     defaultValues: initialValues,
   });
-  const [imageUrl, setImageUrl] = useState<PutBlobResult | null>(null);
 
-  async function onSubmit(values: z.infer<typeof EventFormSchema>) {}
+  async function onSubmit(values: z.infer<typeof EventFormSchema>) {
+    console.log("Form values: ", values);
+    //    todo: no imageUrl? show ui error. see newsletter component for example in progrmatically displayiing errors
+  }
 
   return (
     <>
@@ -55,8 +59,8 @@ const EventForm = ({ userId, type }: EventFormProps) => {
                 <FormItem className="w-full">
                   <FormControl>
                     <Input
-                      placeholder="Event title"
                       {...field}
+                      placeholder="Event title"
                       className="input-field"
                     />
                   </FormControl>
@@ -104,7 +108,10 @@ const EventForm = ({ userId, type }: EventFormProps) => {
               render={({ field }) => (
                 <FormItem className="w-full">
                   <FormControl className="h-72">
-                    <FileUpload imageUrl={imageUrl} setImageUrl={setImageUrl} />
+                    <FileUpload
+                      imageUrl={field.value}
+                      onFieldChange={field.onChange}
+                    />
                   </FormControl>
                   <FormMessage />
                 </FormItem>

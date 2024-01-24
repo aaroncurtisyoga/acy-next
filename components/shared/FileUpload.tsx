@@ -5,7 +5,12 @@ import { useRef } from "react";
 import { Button } from "@/components/ui/button";
 import { Link } from "lucide-react";
 
-export default function FileUpload({ imageUrl, setImageUrl }) {
+/* Todo
+ *   1. Add Gallery of images already uploaded that Admin can choose from
+ *   2. Add Image Preview
+ *   3. Disable button while uploading
+ * */
+export default function FileUpload({ imageUrl, onFieldChange }: any) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const uploadImage = async () => {
@@ -21,10 +26,8 @@ export default function FileUpload({ imageUrl, setImageUrl }) {
     });
     const newBlob = (await response.json()) as PutBlobResult;
 
-    setImageUrl(newBlob.url);
+    onFieldChange(newBlob.url);
   };
-
-  // Todo: List out images already uploaded in Store. Allow user to select from those images and just then just fired setImageUrl with that previously uploaded image
 
   return (
     <div className={"flex flex-col"}>
@@ -35,7 +38,6 @@ export default function FileUpload({ imageUrl, setImageUrl }) {
         </Button>
       </div>
 
-      {/* Todo: Maybe change to display in modal */}
       {imageUrl && (
         <div className={"w-full"}>
           <a
