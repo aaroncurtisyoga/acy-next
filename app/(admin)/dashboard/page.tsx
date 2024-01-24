@@ -57,6 +57,7 @@ export default async function AdminDashboard(params: {
                   <button type="submit">Make End-User</button>
                 </form>
               </div>
+              <hr />
             </div>
           );
         })}

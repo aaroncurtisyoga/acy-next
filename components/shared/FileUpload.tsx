@@ -14,7 +14,6 @@ export default function FileUpload({ imageUrl, onFieldChange }: any) {
   const inputFileRef = useRef<HTMLInputElement>(null);
 
   const uploadImage = async () => {
-    console.log("handleImageUpload triggered");
     if (!inputFileRef.current?.files) {
       throw new Error("No file selected");
     }

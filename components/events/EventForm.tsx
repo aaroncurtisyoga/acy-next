@@ -22,17 +22,19 @@ import { Checkbox } from "@/components/ui/checkbox";
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
 import "react-datepicker/dist/react-datepicker.css";
+import { useRouter } from "next/navigation";
+import { createEvent } from "@/lib/actions/event.actions";
 
 type EventFormProps = {
-  userId: string;
   type: "Create" | "Update";
 };
 
 /* Todo
- *   1. Add externalSignUpUrl to Model and downstream areas
+ *   1. Add isHostedExternally and externalSignUpUrl to Event Model and downstream areas
  *   2. Upgrade Text Area to Rich Text Editor
  * */
-const EventForm = ({ userId, type }: EventFormProps) => {
+const EventForm = ({ type }: EventFormProps) => {
+  const router = useRouter();
   const initialValues = eventDefaultValues;
   const form = useForm<z.infer<typeof EventFormSchema>>({
     resolver: zodResolver(EventFormSchema),
@@ -40,8 +42,27 @@ const EventForm = ({ userId, type }: EventFormProps) => {
   });
 
   async function onSubmit(values: z.infer<typeof EventFormSchema>) {
-    console.log("Form values: ", values);
-    //    todo: no imageUrl? show ui error. see newsletter component for example in progrmatically displayiing errors
+    console.log("onSubmit hit");
+    if (!values.imageUrl) {
+      form.setError("imageUrl", {
+        type: "custom",
+        message: "Image is required",
+      });
+      return;
+    }
+
+    if (type === "Create") {
+      try {
+        const newEvent = await createEvent({ event: values, path: "/profile" });
+
+        if (newEvent) {
+          form.reset();
+          router.push(`/events/${newEvent._id}`);
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
 
   return (
