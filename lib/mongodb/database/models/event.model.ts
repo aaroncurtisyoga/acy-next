@@ -9,9 +9,10 @@ export interface IEvent extends Document {
   createdAt: Date;
   description?: string;
   endDateTime: Date;
+  externalSignUpUrl?: string;
   imageUrl: string;
   isFree: boolean;
-  isSignUpManagedExternally?: boolean;
+  isHostedExternally?: boolean;
   location?: string;
   price?: string;
   startDateTime: Date;
@@ -24,9 +25,10 @@ const EventSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   description: { type: String, required: false },
   endDateTime: { type: Date, default: Date.now },
+  externalSignUpUrl: { type: String, required: false },
   imageUrl: { type: String, required: true },
   isFree: { type: Boolean, default: false },
-  isSignUpManagedExternally: { type: Boolean, required: false },
+  isHostedExternally: { type: Boolean, required: false },
   location: { type: String, required: false },
   price: { type: String },
   startDateTime: { type: Date, default: Date.now },
