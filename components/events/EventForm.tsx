@@ -185,7 +185,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
                       width={24}
                       height={24}
                     />
-                    {/* Todo: See if Google API Exists to allow me to enter verified addresses. Then, render that verified address out too */}
                     <Input
                       placeholder="Location"
                       {...field}
@@ -360,7 +359,10 @@ const EventForm = ({ event, type }: EventFormProps) => {
 export default EventForm;
 
 /* Todo
- *   1. Account for isHostedExternally and externalSignUpUrl to Event Model and
- *  downstream areas
- *   2. Upgrade Text Area to Rich Text Editor
- * */
+      1. Account for isHostedExternally and externalSignUpUrl to Event Model
+       and downstream areas
+      2. Upgrade Text Area to Rich Text Editor
+      3.  See if Google API Exists to allow me to enter verified address
+      4. Research the ideal length for a description. How many characters
+       does eventBrite and Meetup allow for event description?
+*/
