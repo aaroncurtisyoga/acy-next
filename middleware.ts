@@ -8,6 +8,7 @@ export default authMiddleware({
     "/faq",
     "/newsletter",
     "/schedule",
+    "/events",
     "/events/:id",
     "/api/webhook/clerk",
     "/api/webhook/stripe",
