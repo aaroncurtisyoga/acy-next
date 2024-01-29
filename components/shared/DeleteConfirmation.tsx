@@ -1,9 +1,8 @@
 "use client";
 
-import { useTransition } from "react";
-import { usePathname } from "next/navigation";
 import Image from "next/image";
-
+import { usePathname } from "next/navigation";
+import { useTransition } from "react";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -15,7 +14,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-
 import { deleteEvent } from "@/lib/actions/event.actions";
 
 export const DeleteConfirmation = ({ eventId }: { eventId: string }) => {

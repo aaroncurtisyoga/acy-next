@@ -5,7 +5,11 @@ import { connectToDatabase } from "@/lib/mongodb/database";
 import { handleError } from "@/lib/utils";
 import Event from "@/lib/mongodb/database/models/event.model";
 import Category from "@/lib/mongodb/database/models/category.model";
-import { DeleteEventParams, GetAllEventsParams } from "@/types";
+import {
+  DeleteEventParams,
+  GetAllEventsParams,
+  UpdateEventParams,
+} from "@/types";
 
 export async function createEvent({ event, path }) {
   try {
@@ -75,3 +79,22 @@ const populateEvent = (query: any) => {
     select: "_id name",
   });
 };
+
+export async function updateEvent({ event, path }: UpdateEventParams) {
+  try {
+    await connectToDatabase();
+
+    const eventToUpdate = await Event.findById(event._id);
+
+    const updatedEvent = await Event.findByIdAndUpdate(
+      event._id,
+      { ...event, category: event.categoryId },
+      { new: true },
+    );
+    revalidatePath(path);
+
+    return JSON.parse(JSON.stringify(updatedEvent));
+  } catch (error) {
+    handleError(error);
+  }
+}

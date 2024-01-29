@@ -31,7 +31,7 @@ export default function FileUpload({ imageUrl, onFieldChange }: any) {
   return (
     <div className={"flex flex-col"}>
       <div className={"flex w-full justify-between"}>
-        <input ref={inputFileRef} type="file" required />
+        <input ref={inputFileRef} type="file" />
         <Button type="button" variant={"outline"} onClick={() => uploadImage()}>
           Upload
         </Button>
