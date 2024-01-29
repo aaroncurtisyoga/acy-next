@@ -5,11 +5,7 @@ import { connectToDatabase } from "@/lib/mongodb/database";
 import { handleError } from "@/lib/utils";
 import Event from "@/lib/mongodb/database/models/event.model";
 import Category from "@/lib/mongodb/database/models/category.model";
-import {
-  DeleteEventParams,
-  GetAllEventsParams,
-  UpdateEventParams,
-} from "@/types";
+import { DeleteEventParams, GetAllEventsParams } from "@/types";
 
 export async function createEvent({ event, path }) {
   try {
@@ -80,7 +76,7 @@ const populateEvent = (query: any) => {
   });
 };
 
-export async function updateEvent({ event, path }: UpdateEventParams) {
+export async function updateEvent({ event, path }) {
   try {
     await connectToDatabase();
 

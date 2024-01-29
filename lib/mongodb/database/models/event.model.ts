@@ -9,10 +9,10 @@ export interface IEvent extends Document {
   createdAt: Date;
   description?: string;
   endDateTime: Date;
-  externalSignUpUrl?: string;
+  // externalSignUpUrl?: string;
   imageUrl: string;
   isFree: boolean;
-  isHostedExternally?: boolean;
+  // isHostedExternally?: boolean;
   location?: string;
   price?: string;
   startDateTime: Date;
