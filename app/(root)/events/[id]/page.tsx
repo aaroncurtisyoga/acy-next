@@ -77,3 +77,7 @@ const EventDetails = async ({ params: { id } }: SearchParamProps) => {
 };
 
 export default EventDetails;
+
+/* Todo:
+      1. If the event isFree, then provide a way for people to donate
+* */

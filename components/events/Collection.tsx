@@ -1,5 +1,5 @@
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import Card from "@/components/events/Card";
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
 type CollectionProps = {
   data: IEvent[];
