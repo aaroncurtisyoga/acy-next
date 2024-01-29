@@ -9,10 +9,10 @@ export interface IEvent extends Document {
   createdAt: Date;
   description?: string;
   endDateTime: Date;
-  // externalSignUpUrl?: string;
+  externalSignUpUrl?: string;
   imageUrl: string;
   isFree: boolean;
-  // isHostedExternally?: boolean;
+  isHostedExternally?: boolean;
   location?: string;
   price?: string;
   startDateTime: Date;
@@ -40,3 +40,7 @@ const EventSchema = new Schema({
 const Event = models.Event || model("Event", EventSchema);
 
 export default Event;
+
+/* Todo
+ *   1. Remove URL from schema & downstream locations
+ * */
