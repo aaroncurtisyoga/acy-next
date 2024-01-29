@@ -6,6 +6,7 @@ import { newsletterFormSchema } from "@/lib/schema";
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
 export async function addNewsletterEntry(data: Inputs) {
+  // Validate form data
   const formValidationResult = newsletterFormSchema.safeParse(data);
 
   if (formValidationResult.success === false) {

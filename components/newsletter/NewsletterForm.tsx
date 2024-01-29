@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
 import { newsletterFormSchema } from "@/lib/schema";
 import { AlertWrapper } from "@/components/shared/AlertWrapper";
-import { AlertTriangle, Mail } from "lucide-react";
+import { AlertTriangle, Mail, Loader } from "lucide-react";
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
@@ -79,11 +79,15 @@ const NewsletterForm = () => {
           name={"first_name"}
           render={({ field }) => (
             <FormItem>
-              <FormLabel>First Name</FormLabel>
+              {/*<FormLabel>First Name</FormLabel>*/}
               <FormControl>
-                <Input {...field} type="text" />
+                <Input
+                  {...field}
+                  className={"input-field pb-6"}
+                  placeholder={"First Name"}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className={"pl-3"} />
             </FormItem>
           )}
         />
@@ -92,17 +96,31 @@ const NewsletterForm = () => {
           name={"email"}
           render={({ field }) => (
             <FormItem className={"mt-3"}>
-              <FormLabel>Email</FormLabel>
+              {/*<FormLabel>Email</FormLabel>*/}
               <FormControl>
-                <Input {...field} type="email" />
+                <Input
+                  {...field}
+                  type="email"
+                  className={"input-field"}
+                  placeholder={"Email Address"}
+                />
               </FormControl>
-              <FormMessage />
+              <FormMessage className={"pl-3"} />
             </FormItem>
           )}
         />
 
-        <Button variant={"default"} type={"submit"} className={"my-8 w-full"}>
-          Subscribe
+        <Button
+          variant={"default"}
+          type={"submit"}
+          className={"my-8 w-full"}
+          disabled={form.formState.isSubmitting}
+        >
+          {form.formState.isSubmitting ? (
+            <Loader className={"animate-spin"} />
+          ) : (
+            "Subscribe"
+          )}
         </Button>
         {form.formState.errors?.root && (
           <AlertWrapper
