@@ -3,7 +3,7 @@
 <h1 style="text-align: center;">AaronCurtisYoga.com</h1>
 <p style="text-align: center;">Fullstack Next.js App for Aaron Curtis Yoga </p>
 
-## 📋 <a name="table">Table of Contents</a>
+## <a name="table">Table of Contents</a>
 
 1. [Intro](#introduction)
 2. [Quick Start](#quick-start)
@@ -25,7 +25,7 @@ Before getting started, create a .env in the root of your project and
 **Set Up Environment Variables**
 
 ```env
-[//]: # (For Vercel Blob Storage)
+[//]: # (Vercel Blob Storage for Images)
 BLOB_READ_WRITE_TOKEN=
 
 CLERK_SECRET_KEY=
@@ -44,6 +44,11 @@ NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
 
 [//]: # (For Clerk)
 WEBHOOK_SECRET=
+
+[//]: # (For Stripe) https://dashboard.stripe.com/apikeys
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
+STRIPE_SECRET_KEY=
+STRIPE_WEBHOOK_SECRET=
 ```
 
 My app is built with [Next.js](https://nextjs.org/). The common scripts are:
