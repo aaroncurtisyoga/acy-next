@@ -7,10 +7,8 @@ import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 type CardProps = {
   event: IEvent;
   hasOrderLink?: boolean;
-  hidePrice?: boolean;
-  isAdmin: boolean;
 };
-const Card = ({ event, hasOrderLink, hidePrice }) => {
+const Card = ({ event, hasOrderLink }: CardProps) => {
   const isAdmin = checkRole("admin");
   const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;

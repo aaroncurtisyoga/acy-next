@@ -49,6 +49,8 @@ WEBHOOK_SECRET=
 NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
+
+NEXT_PUBLIC_SERVER_URL
 ```
 
 My app is built with [Next.js](https://nextjs.org/). The common scripts are:

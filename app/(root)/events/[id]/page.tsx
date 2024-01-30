@@ -1,11 +1,13 @@
 import Image from "next/image";
 import { SearchParamProps } from "@/types";
+
+import Collection from "@/components/events/Collection";
+import CheckoutButton from "@/components/events/CheckoutButton";
 import {
   getEventById,
   getRelatedEventsByCategory,
 } from "@/lib/actions/event.actions";
 import { formatDateTime } from "@/lib/utils";
-import Collection from "@/components/events/Collection";
 
 const EventDetails = async ({
   params: { id },
@@ -45,7 +47,7 @@ const EventDetails = async ({
               </div>
             </div>
 
-            {/*<CheckoutButton event={event} />*/}
+            <CheckoutButton event={event} />
 
             <div className="flex flex-col gap-5">
               <div className="flex gap-2 md:gap-3">
@@ -85,7 +87,7 @@ const EventDetails = async ({
       </section>
       {/* Events with  the same category */}
       <section className={"wrapper"}>
-        <h3 className={"h3-bold"}>Related Events</h3>
+        <h3 className={"h3-bold"}>Similar Events</h3>
         <Collection
           data={relatedEvents?.data}
           emptyTitle={"No Events Founds"}
@@ -103,5 +105,6 @@ const EventDetails = async ({
 export default EventDetails;
 
 /* Todo:
-      1. If the event isFree, then provide a way for people to donate
+      1. If the event isFree, then provide a way for people to donate,
+      2. Do not show "Similar Events" portion if there are no related events
 * */

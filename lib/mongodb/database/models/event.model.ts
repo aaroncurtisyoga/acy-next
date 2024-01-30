@@ -14,7 +14,7 @@ export interface IEvent extends Document {
   isFree: boolean;
   isHostedExternally?: boolean;
   location?: string;
-  price?: string;
+  price: string;
   startDateTime: Date;
   title: string;
   url?: string;
