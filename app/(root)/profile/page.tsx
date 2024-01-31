@@ -1,19 +1,19 @@
 import Link from "next/link";
 import React from "react";
 import { auth } from "@clerk/nextjs";
+
 import { Button } from "@/components/ui/button";
 import Collection from "@/components/events/Collection";
-import { SearchParamProps } from "@/types";
-
 import { IOrder } from "@/lib/mongodb/database/models/order.model";
-// import { getOrdersByUser } from "@/lib/actions/order.actions";
+import { getOrdersByUser } from "@/lib/actions/order.actions";
+import { SearchParamProps } from "@/types";
 
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.metadata?.userId as string;
   const ordersPage = Number(searchParams?.ordersPage) || 1;
-  // const orders = await getOrdersByUser({ userId, page: ordersPage });
-  // const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
+  const orders = await getOrdersByUser({ userId, page: ordersPage });
+  const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
@@ -24,7 +24,7 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
           </Button>
         </div>
       </section>
-      {/*      <section className="wrapper my-8">
+      <section className="wrapper my-8">
         <Collection
           data={orderedEvents}
           emptyTitle="No event tickets purchased yet"
@@ -35,7 +35,7 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
           urlParamName="ordersPage"
           totalPages={orders?.totalPages}
         />
-      </section>*/}
+      </section>
     </>
   );
 };

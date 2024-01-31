@@ -10,13 +10,13 @@ export default authMiddleware({
     "/schedule",
     "/events",
     "/events/:id",
-    "/api/webhook/clerk",
-    "/api/webhook/stripe",
+    "/api/webhooks/clerk",
+    "/api/webhooks/stripe",
     "/api/uploadBlob",
   ],
   ignoredRoutes: [
-    "/api/webhook/clerk",
-    "/api/webhook/stripe",
+    "/api/webhooks/clerk",
+    "/api/webhooks/stripe",
     "/api/uploadBlob",
   ],
 });
