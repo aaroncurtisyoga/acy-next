@@ -126,6 +126,35 @@ export async function getOrdersByEvent({
   }
 }
 
+export async function getAttendeesByEvent(eventId) {
+  /* Todo: Clean up so only [] of attendees is returned to reduce payload
+       size and make FE logic simpler
+       */
+  try {
+    await connectToDatabase();
+
+    if (!eventId) throw new Error("Event ID is required");
+
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: "users",
+          localField: "buyer",
+          foreignField: "_id",
+          as: "buyer",
+        },
+      },
+      {
+        $unwind: "$buyer",
+      },
+    ]);
+
+    return JSON.parse(JSON.stringify(orders));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
 export async function getOrdersByUser({
   userId,
   limit = 3,

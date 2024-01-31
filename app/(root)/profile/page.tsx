@@ -13,9 +13,7 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const userId = sessionClaims?.metadata?.userId as string;
   const ordersPage = Number(searchParams?.ordersPage) || 1;
   const orders = await getOrdersByUser({ userId, page: ordersPage });
-  console.log(orders);
   const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
-  console.log(orderedEvents);
   return (
     <>
       <section className="bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">
