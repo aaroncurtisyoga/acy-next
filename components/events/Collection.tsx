@@ -1,5 +1,6 @@
 import Card from "@/components/events/Card";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { checkRole } from "@/lib/utils";
 
 type CollectionProps = {
   data: IEvent[];
@@ -27,10 +28,9 @@ const Collection = ({
         <div className="flex flex-col items-center gap-10">
           <ul className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 lg:grid-cols-3 xl:gap-10">
             {data.map((event) => {
-              const hasOrderLink = collectionType === "Events_Organized";
               return (
                 <li key={event._id} className="flex justify-center">
-                  <Card event={event} hasOrderLink={hasOrderLink} />
+                  <Card event={event} hasOrderLink={checkRole("admin")} />
                 </li>
               );
             })}

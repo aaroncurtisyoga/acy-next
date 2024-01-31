@@ -107,4 +107,5 @@ export default EventDetails;
 /* Todo:
       1. If the event isFree, then provide a way for people to donate,
       2. Do not show "Similar Events" portion if there are no related events
+      3. Show list of people who've singed up (First Name, Last Name Initial)
 * */
