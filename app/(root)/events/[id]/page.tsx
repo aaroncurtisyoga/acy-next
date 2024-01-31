@@ -106,8 +106,8 @@ const EventDetails = async ({
           emptyStateSubtext={"Please visit back soon to check in for events."}
           collectionType={"All_Events"}
           limit={6}
-          page={1}
-          totalPages={2}
+          page={searchParams.page as string}
+          totalPages={relatedEvents?.totalPages}
         />
       </section>
     </>

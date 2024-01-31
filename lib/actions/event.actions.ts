@@ -36,6 +36,7 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
   }
 }
 
+/* Todo: Filter out expired events, i.e events where dateNow > endDate */
 export async function getAllEvents({
   query,
   limit = 6,
