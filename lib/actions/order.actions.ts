@@ -12,7 +12,9 @@ import { handleError } from "../utils";
 import { ObjectId } from "mongodb";
 import User from "@/lib/mongodb/database/models/user.model";
 import Order from "@/lib/mongodb/database/models/order.model";
+import Event from "@/lib/mongodb/database/models/event.model";
 import { connectToDatabase } from "@/lib/mongodb/database";
+import Category from "@/lib/mongodb/database/models/category.model";
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -142,11 +144,10 @@ export async function getOrdersByUser({
       .limit(limit)
       .populate({
         path: "event",
-        model: "Event",
+        model: Event,
         populate: {
-          path: "organizer",
-          model: User,
-          select: "_id firstName lastName",
+          path: "category",
+          model: Category,
         },
       });
 

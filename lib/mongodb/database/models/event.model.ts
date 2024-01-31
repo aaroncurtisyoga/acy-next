@@ -2,6 +2,7 @@ import { Document, model, models, Schema } from "mongoose";
 
 export interface IEvent extends Document {
   _id: string;
+
   category?: {
     _id: string;
     name: string;
