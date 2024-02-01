@@ -51,16 +51,18 @@ export async function getAllEvents({
     const categoryCondition = category
       ? await getCategoryByName(category)
       : null;
+    const dateCondition = { endDateTime: { $gt: new Date() } };
     const conditions = {
       $and: [
         titleCondition,
         categoryCondition ? { category: categoryCondition._id } : {},
+        dateCondition,
       ],
     };
 
     const skipAmount = (Number(page) - 1) * limit;
     const eventsQuery = Event.find(conditions)
-      .sort({ createdAt: "desc" })
+      .sort({ createdAt: "asc" })
       .skip(skipAmount)
       .limit(limit);
 
