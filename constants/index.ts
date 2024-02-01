@@ -51,5 +51,4 @@ export const eventDefaultValues = {
   categoryId: "",
   price: "",
   isFree: false,
-  url: "",
 };

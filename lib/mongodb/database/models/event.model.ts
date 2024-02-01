@@ -18,7 +18,6 @@ export interface IEvent extends Document {
   price: string;
   startDateTime: Date;
   title: string;
-  url?: string;
 }
 
 const EventSchema = new Schema({
@@ -34,7 +33,6 @@ const EventSchema = new Schema({
   price: { type: String },
   startDateTime: { type: Date, default: Date.now },
   title: { type: String, required: true },
-  url: { type: String },
 });
 
 // Use existing model. Or create new instance of the model
