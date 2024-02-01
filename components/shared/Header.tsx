@@ -19,7 +19,7 @@ export default function Header() {
         <nav className={"hidden md:flex justify-end w-full"}>
           <NavItems />
         </nav>
-        <div className={""}>
+        <div className={"pl-5"}>
           <div>
             <UserButton afterSignOutUrl={"/"} />
           </div>
