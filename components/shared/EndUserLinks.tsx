@@ -5,7 +5,7 @@ import { clsx } from "clsx";
 import { userLinks } from "@/constants";
 import { usePathname } from "next/navigation";
 
-const UserLinks = () => {
+const EndUserLinks = () => {
   const pathname = usePathname();
 
   return (
@@ -32,4 +32,4 @@ const UserLinks = () => {
   );
 };
 
-export default UserLinks;
+export default EndUserLinks;

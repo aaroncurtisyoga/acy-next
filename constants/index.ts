@@ -13,6 +13,8 @@ export const adminLinks = [
   { name: "Admin", href: "/dashboard" },
 ];
 
+export const authenticatedLinks = [{ name: "My Profile", href: "/profile" }];
+
 export const signUpLinks = {
   crossFitDc: "https://crossfitdc.com/",
   dcBoulderingProject: "https://www.dcboulderingproject.com/yoga-fitness",
