@@ -8,7 +8,7 @@ import { faqInfo } from "@/constants";
 
 export default function Page() {
   return (
-    <section className={"flex flex-col p-8"}>
+    <section className={"wrapper flex flex-col p-8"}>
       <h1 className={"text-3xl mb-8"}>FAQ</h1>
       <Accordion type="single">
         {faqInfo.map((faq, index) => {
