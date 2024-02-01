@@ -5,7 +5,7 @@ import Collection from "@/components/events/Collection";
 import CheckoutButton from "@/components/events/CheckoutButton";
 import {
   getEventById,
-  getRelatedEventsByCategory,
+  getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
 import { getAttendeesByEvent } from "@/lib/actions/order.actions";
 import { formatDateTime } from "@/lib/utils";
@@ -15,11 +15,12 @@ const EventDetails = async ({
   searchParams,
 }: SearchParamProps) => {
   const event = await getEventById(id);
-  const relatedEvents = await getRelatedEventsByCategory({
+  const eventsWithSameCategory = await getEventsWithSameCategory({
     categoryId: event.category._id,
     eventId: event._id,
     page: searchParams.page as string,
   });
+  console.log(eventsWithSameCategory);
   const attendees = await getAttendeesByEvent(id);
   return (
     <>
@@ -80,36 +81,24 @@ const EventDetails = async ({
               <p className="p-bold-20 text-grey-600">What to expect:</p>
               <p className="p-medium-16 lg:p-regular-18">{event.description}</p>
             </div>
-            {/* Attendees */}
-            {attendees.length && (
-              <div>
-                <p>Attendees ({attendees.length})</p>
-                <ul>
-                  {attendees.map((attendee) => (
-                    <li key={attendee.buyer._id}>
-                      {attendee.buyer.firstName}{" "}
-                      {attendee.buyer.lastName.charAt(0)}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            )}
           </div>
         </div>
       </section>
       {/* Events with  the same category */}
-      <section className={"wrapper"}>
-        <h3 className={"h3-bold"}>Similar Events</h3>
-        <Collection
-          data={relatedEvents?.data}
-          emptyTitle={"No Events Founds"}
-          emptyStateSubtext={"Please visit back soon to check in for events."}
-          collectionType={"All_Events"}
-          limit={6}
-          page={searchParams.page as string}
-          totalPages={relatedEvents?.totalPages}
-        />
-      </section>
+      {eventsWithSameCategory?.data.length && (
+        <section className={"wrapper"}>
+          <h3 className={"h3-bold"}>Similar Events</h3>
+          <Collection
+            data={eventsWithSameCategory?.data}
+            emptyTitle={"No Events Founds"}
+            emptyStateSubtext={"Please visit back soon to check in for events."}
+            collectionType={"All_Events"}
+            limit={6}
+            page={searchParams.page as string}
+            totalPages={eventsWithSameCategory?.totalPages}
+          />
+        </section>
+      )}
     </>
   );
 };

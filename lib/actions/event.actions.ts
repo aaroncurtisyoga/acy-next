@@ -80,7 +80,7 @@ const getCategoryByName = async (name: string) => {
   return Category.findOne({ name: { $regex: name, $options: "i" } });
 };
 
-export async function getRelatedEventsByCategory({
+export async function getEventsWithSameCategory({
   categoryId,
   eventId,
   limit = 3,
