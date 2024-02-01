@@ -72,7 +72,3 @@ const Card = ({ event, hasOrderLink }: CardProps) => {
 };
 
 export default Card;
-
-/* Todo
- *   Img Optimization: Use smaller file for Cards
- * */

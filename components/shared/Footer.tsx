@@ -1,10 +1,6 @@
 import React from "react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 
-/* Todo
- *   Improve styles
- *   Make icons actual links
- * */
 const Footer = () => {
   return (
     <footer className={"w-full border-t"}>

@@ -127,9 +127,6 @@ export async function getOrdersByEvent({
 }
 
 export async function getAttendeesByEvent(eventId) {
-  /* Todo: Clean up so only [] of attendees is returned to reduce payload
-       size and make FE logic simpler
-       */
   try {
     await connectToDatabase();
 

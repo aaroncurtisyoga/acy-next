@@ -84,7 +84,6 @@ body {
 
 /* ========================================== TAILWIND STYLES */
 @layer utilities {
-  /* Todo: Replace w/ Tailwind inline*/
   #offering a {
     @apply border-b border-dotted border-black hover:border-solid italic
   }

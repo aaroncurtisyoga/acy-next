@@ -47,9 +47,3 @@ export default function FileUpload({ imageUrl, onFieldChange }: any) {
     </div>
   );
 }
-
-/* Todo
- *   1. Add Gallery of images already uploaded that Admin can choose from
- *   2. Add Image Preview
- *   3. Disable button while uploading (
- * */
