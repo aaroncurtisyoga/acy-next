@@ -7,7 +7,6 @@ import {
   getEventById,
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
-import { getAttendeesByEvent } from "@/lib/actions/order.actions";
 import { formatDateTime } from "@/lib/utils";
 
 const EventDetails = async ({
@@ -21,7 +20,6 @@ const EventDetails = async ({
     page: searchParams.page as string,
   });
   console.log(eventsWithSameCategory);
-  const attendees = await getAttendeesByEvent(id);
   return (
     <>
       <section className="flex justify-center bg-primary-50 bg-dotted-pattern bg-contain">
