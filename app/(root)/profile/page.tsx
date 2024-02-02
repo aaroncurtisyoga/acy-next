@@ -7,7 +7,11 @@ import Collection from "@/components/events/Collection";
 import { IOrder } from "@/lib/mongodb/database/models/order.model";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import { SearchParamProps } from "@/types";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Profile",
+};
 const ProfilePage = async ({ searchParams }: SearchParamProps) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.metadata?.userId as string;

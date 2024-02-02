@@ -1,6 +1,10 @@
 import Offering from "@/components/shared/Offering";
 import { locations, signUpLinks } from "@/constants";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Schedule",
+};
 const Page = () => {
   return (
     <section className={"wrapper"}>

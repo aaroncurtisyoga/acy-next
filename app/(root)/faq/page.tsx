@@ -5,6 +5,11 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 import { faqInfo } from "@/constants";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "FAQ",
+};
 
 export default function Page() {
   return (

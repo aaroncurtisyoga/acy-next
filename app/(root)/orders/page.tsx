@@ -3,13 +3,16 @@ import { getOrdersByEvent } from "@/lib/actions/order.actions";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Orders",
+};
 const Orders = async ({ searchParams }: SearchParamProps) => {
   const eventId = (searchParams?.eventId as string) || "";
   const searchText = (searchParams?.query as string) || "";
 
   const orders = await getOrdersByEvent({ eventId, searchString: searchText });
-  console.log(orders);
   return (
     <>
       <section className=" bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10">

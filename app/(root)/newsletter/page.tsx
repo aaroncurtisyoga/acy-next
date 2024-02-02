@@ -1,5 +1,9 @@
 import NewsletterForm from "@/components/newsletter/NewsletterForm";
+import { Metadata } from "next";
 
+export const metadata: Metadata = {
+  title: "Newsletter",
+};
 const NewsletterPage = () => {
   return (
     <section className="wrapper bg-white  rounded-md gap-2 flex flex-col">
