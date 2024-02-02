@@ -5,7 +5,7 @@ export const userLinks = [
     href: "/schedule",
   },
   { name: "Newsletter", href: "/newsletter" },
-  { name: "FAQ", href: "/faq" },
+  // { name: "FAQ", href: "/faq" },
 ];
 
 export const adminLinks = [
