@@ -39,12 +39,6 @@ const Page = () => {
           name={"Flow"}
           location={locations.BOULDERING_PROJECT}
         />
-        <Offering
-          link={signUpLinks.dcBoulderingProject}
-          time={"12:00pm"}
-          name={"Flow"}
-          location={locations.BOULDERING_PROJECT}
-        />
       </div>
       <div className={"mb-6"}>
         <p className={"text-xl"}>Friday</p>
