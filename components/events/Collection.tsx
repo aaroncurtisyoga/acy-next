@@ -23,6 +23,8 @@ const Collection = ({
   collectionType,
   urlParamName,
 }: CollectionProps) => {
+  const isAdmin = checkRole("admin");
+
   return (
     <>
       {data.length > 0 ? (
@@ -31,7 +33,7 @@ const Collection = ({
             {data.map((event) => {
               return (
                 <li key={event._id} className="flex justify-center">
-                  <Card event={event} hasOrderLink={checkRole("admin")} />
+                  <Card event={event} isAdmin={isAdmin} />
                 </li>
               );
             })}

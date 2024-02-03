@@ -1,15 +1,14 @@
 import Image from "next/image";
 import Link from "next/link";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
-import { checkRole, formatDateTime } from "@/lib/utils";
+import { formatDateTime } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
 
 type CardProps = {
+  isAdmin: boolean;
   event: IEvent;
-  hasOrderLink?: boolean;
 };
-const Card = ({ event, hasOrderLink }: CardProps) => {
-  const isAdmin = checkRole("admin");
+const Card = ({ isAdmin, event }: CardProps) => {
   const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;
   return (
@@ -42,9 +41,9 @@ const Card = ({ event, hasOrderLink }: CardProps) => {
         <Image
           src={imageUrl}
           alt={`People doing ${category}`}
-          sizes={""}
+          sizes={"400px"}
           width={400} // todo: what is this supposed to be?
-          height={50}
+          height={50} // todo: what is this supposed to be?
         />
         <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
           <div className="flex gap-2">
