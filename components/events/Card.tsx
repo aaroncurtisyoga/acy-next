@@ -12,7 +12,7 @@ const Card = ({ isAdmin, event }: CardProps) => {
   const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;
   return (
-    <div className={"flex flex-col"}>
+    <>
       {isAdmin && (
         <div className="flex flex-row gap-4 p-3 justify-between">
           <Link href={`/orders?eventId=${_id}`} className="flex gap-2">
@@ -31,40 +31,32 @@ const Card = ({ isAdmin, event }: CardProps) => {
           </div>
         </div>
       )}
-      <Link
-        href={`/events/${_id}`}
+      <div
         className={
-          "flex min-h-[380px] md:min-h-[438px] w-full max-w-[400px]" +
-          " flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg"
+          "flex flex-col w-full max-w-[400px] min-h-[340px] overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg"
         }
       >
-        {/* Todo: Use small image here */}
-        <Image
-          src={imageUrl}
-          alt={`People doing ${category}`}
-          // sizes={"400px"}
-          width={400}
-          height={153.75}
-        />
-        <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
-          <div className="flex gap-2">
-            <span className=" w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
-              {isFree ? "FREE" : `$${price}`}
-            </span>
-            <p className=" w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
-              {category.name}
-            </p>
-          </div>
-          <p className="text-grey-500">
-            {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
-            {formatDateTime(startDateTime).timeOnly}
-          </p>
-          <Link href={`/events/${_id}`}>
-            <p className="text-lg line-clamp-2 flex-1 text-black">{title}</p>
-          </Link>
+        <Link href={`/events/${_id}`} className={"flex-col "}>
+          <Image
+            src={imageUrl}
+            alt={`People doing ${category}`}
+            // sizes={"400px"}
+            width={400}
+            height={153.75}
+            style={{ width: "100%", height: "140px", objectFit: "cover" }}
+          />
+          <p className="text-lg line-clamp-2 flex-1 text-black">{title}</p>
+        </Link>
+        <p className="text-grey-500">
+          {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
+          {formatDateTime(startDateTime).timeOnly}
+        </p>
+        <p>{event.location}</p>
+        <div className="flex gap-2">
+          <span className="">{isFree ? "Free" : `$${price}`}</span>
         </div>
-      </Link>
-    </div>
+      </div>
+    </>
   );
 };
 
