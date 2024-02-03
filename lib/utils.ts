@@ -30,6 +30,12 @@ export const formatDateTime = (dateString: Date) => {
     day: "numeric", // numeric day of the month (e.g., '25')
   };
 
+  const dateOptionsWithoutYear: Intl.DateTimeFormatOptions = {
+    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
+    month: "short", // abbreviated month name (e.g., 'Oct')
+    day: "numeric", // numeric day of the month (e.g., '25')
+  };
+
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric", // numeric hour (e.g., '8')
     minute: "numeric", // numeric minute (e.g., '30')
@@ -46,6 +52,11 @@ export const formatDateTime = (dateString: Date) => {
     dateOptions,
   );
 
+  const formattedDateWithoutYear: string = new Date(dateString).toLocaleString(
+    "en-US",
+    dateOptionsWithoutYear,
+  );
+
   const formattedTime: string = new Date(dateString).toLocaleString(
     "en-US",
     timeOptions,
@@ -54,6 +65,7 @@ export const formatDateTime = (dateString: Date) => {
   return {
     dateTime: formattedDateTime,
     dateOnly: formattedDate,
+    dateOnlyWithoutYear: formattedDateWithoutYear,
     timeOnly: formattedTime,
   };
 };

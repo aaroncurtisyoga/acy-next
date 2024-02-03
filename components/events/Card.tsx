@@ -34,7 +34,8 @@ const Card = ({ isAdmin, event }: CardProps) => {
       <Link
         href={`/events/${_id}`}
         className={
-          "group flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]"
+          "flex min-h-[380px] md:min-h-[438px] w-full max-w-[400px]" +
+          " flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg"
         }
       >
         {/* Todo: Use small image here */}
@@ -55,7 +56,8 @@ const Card = ({ isAdmin, event }: CardProps) => {
             </p>
           </div>
           <p className="p-medium-16 p-medium-18 text-grey-500">
-            {formatDateTime(startDateTime).dateTime}
+            {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
+            {formatDateTime(startDateTime).timeOnly}
           </p>
           <Link href={`/events/${_id}`}>
             <p className="p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black">
