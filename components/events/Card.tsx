@@ -42,27 +42,25 @@ const Card = ({ isAdmin, event }: CardProps) => {
         <Image
           src={imageUrl}
           alt={`People doing ${category}`}
-          sizes={"400px"}
-          width={400} // todo: what is this supposed to be?
-          height={50} // todo: what is this supposed to be?
+          // sizes={"400px"}
+          width={400}
+          height={153.75}
         />
         <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
           <div className="flex gap-2">
-            <span className="p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
+            <span className=" w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
               {isFree ? "FREE" : `$${price}`}
             </span>
-            <p className="p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
+            <p className=" w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
               {category.name}
             </p>
           </div>
-          <p className="p-medium-16 p-medium-18 text-grey-500">
+          <p className="text-grey-500">
             {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
             {formatDateTime(startDateTime).timeOnly}
           </p>
           <Link href={`/events/${_id}`}>
-            <p className="p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black">
-              {title}
-            </p>
+            <p className="text-lg line-clamp-2 flex-1 text-black">{title}</p>
           </Link>
         </div>
       </Link>

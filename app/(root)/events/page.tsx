@@ -23,7 +23,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
   return (
     <>
       <section className={"wrapper flex flex-col gap-8 md:gap-12"}>
-        <h1 className={"h2-bold"}>Events</h1>
+        <h1 className={""}>Events</h1>
         <div className="flex w-full flex-col gap-5 md:flex-row">
           <Search />
           <CategoryFilter />

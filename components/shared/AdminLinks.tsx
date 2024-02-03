@@ -14,7 +14,7 @@ export default async function AdminLinks() {
           <li key={link.name} className={"max-sm:w-full"}>
             <Link
               href={link.href}
-              className={"flex-center p-medium-16 whitespace-nowrap md:text-lg"}
+              className={"flex-center whitespace-nowrap md:text-lg"}
             >
               <p>{link.name}</p>
             </Link>

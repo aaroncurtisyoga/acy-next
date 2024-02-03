@@ -63,14 +63,14 @@ const Dropdown = ({ value, onChangeHandler }: DropdownProps) => {
               <SelectItem
                 key={category._id}
                 value={category._id}
-                className="select-item p-regular-14"
+                className="select-item "
               >
                 {category.name}
               </SelectItem>
             ))}
           {/* Add new category */}
           <AlertDialog>
-            <AlertDialogTrigger className="p-medium-14 flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">
+            <AlertDialogTrigger className="= flex w-full rounded-sm py-3 pl-8 text-primary-500 hover:bg-primary-50 focus:text-primary-500">
               Add new category
             </AlertDialogTrigger>
             <AlertDialogContent className="bg-white">

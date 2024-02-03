@@ -17,12 +17,9 @@ const UserLinks = () => {
           <li key={link.name} className={"max-sm:w-full"}>
             <Link
               href={link.href}
-              className={clsx(
-                "flex-center p-medium-16 whitespace-nowrap md:text-lg",
-                {
-                  "text-blue-500": isActive === true,
-                },
-              )}
+              className={clsx("flex-center whitespace-nowrap md:text-lg", {
+                "text-blue-500": isActive === true,
+              })}
             >
               <p>{link.name}</p>
             </Link>
