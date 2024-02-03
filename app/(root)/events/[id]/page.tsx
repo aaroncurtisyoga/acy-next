@@ -82,7 +82,7 @@ const EventDetails = async ({
         </div>
       </section>
       {/* Events with  the same category */}
-      {eventsWithSameCategory?.data.length && (
+      {!!eventsWithSameCategory?.data.length && (
         <section className={"wrapper"}>
           <h3 className={"h3-bold"}>Similar Events</h3>
           <Collection

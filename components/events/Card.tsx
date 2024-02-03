@@ -13,60 +13,58 @@ const Card = ({ event, hasOrderLink }: CardProps) => {
   const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;
   return (
-    <div className="group relative flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]">
-      <Link
-        href={`/events/${_id}`}
-        style={{ backgroundImage: `url(${imageUrl})` }}
-        className="flex-center flex-grow bg-gray-50 bg-cover bg-center text-grey-500"
-      />
-
+    <div className={"flex flex-col"}>
       {isAdmin && (
-        <div className="absolute right-2 top-2 flex flex-col gap-4 rounded-xl bg-white p-3 shadow-sm transition-all">
-          <Link href={`/events/${_id}/update`}>
-            <Image
-              src="/assets/icons/edit.svg"
-              alt="edit"
-              width={20}
-              height={20}
-            />
+        <div className="flex flex-row gap-4 p-3 justify-between">
+          <Link href={`/orders?eventId=${_id}`} className="flex gap-2">
+            <p className="text-primary-500">Order Details</p>
           </Link>
-
-          <DeleteConfirmation eventId={_id} />
-        </div>
-      )}
-
-      <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
-        <div className="flex gap-2">
-          <span className="p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
-            {isFree ? "FREE" : `$${price}`}
-          </span>
-          <p className="p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
-            {category.name}
-          </p>
-        </div>
-
-        <p className="p-medium-16 p-medium-18 text-grey-500">
-          {formatDateTime(startDateTime).dateTime}
-        </p>
-        <Link href={`/events/${_id}`}>
-          <p className="p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black">
-            {title}
-          </p>
-        </Link>
-        <div className="flex-between w-full">
-          {hasOrderLink && (
-            <Link href={`/orders?eventId=${_id}`} className="flex gap-2">
-              <p className="text-primary-500">Order Details</p>
+          <div className={"flex gap-2"}>
+            <Link href={`/events/${_id}/update`}>
               <Image
-                src="/assets/icons/arrow.svg"
-                alt="search"
-                width={10}
-                height={10}
+                src="/assets/icons/edit.svg"
+                alt="edit"
+                width={20}
+                height={20}
               />
             </Link>
-          )}
+            <DeleteConfirmation eventId={_id} />
+          </div>
         </div>
-      </div>
+      )}
+      <Link
+        href={`/events/${_id}`}
+        className={
+          "group flex min-h-[380px] w-full max-w-[400px] flex-col overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg md:min-h-[438px]"
+        }
+      >
+        {/* Todo: Use small image here */}
+        <Image
+          src={imageUrl}
+          alt={`People doing ${category}`}
+          sizes={""}
+          width={400} // todo: what is this supposed to be?
+          height={50}
+        />
+        <div className="flex min-h-[230px] flex-col gap-3 p-5 md:gap-4">
+          <div className="flex gap-2">
+            <span className="p-semibold-14 w-min rounded-full bg-green-100 px-4 py-1 text-green-60">
+              {isFree ? "FREE" : `$${price}`}
+            </span>
+            <p className="p-semibold-14 w-min rounded-full bg-grey-500/10 px-4 py-1 text-grey-500 line-clamp-1">
+              {category.name}
+            </p>
+          </div>
+          <p className="p-medium-16 p-medium-18 text-grey-500">
+            {formatDateTime(startDateTime).dateTime}
+          </p>
+          <Link href={`/events/${_id}`}>
+            <p className="p-medium-16 md:p-medium-20 line-clamp-2 flex-1 text-black">
+              {title}
+            </p>
+          </Link>
+        </div>
+      </Link>
     </div>
   );
 };
