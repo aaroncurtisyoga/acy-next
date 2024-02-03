@@ -15,7 +15,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
 
   const events = await getAllEvents({
     category,
-    limit: 6,
+    limit: 8,
     page,
     query: searchText,
   });
