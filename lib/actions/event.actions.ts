@@ -38,7 +38,7 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
 
 export async function getAllEvents({
   query,
-  limit = 6,
+  limit = 8,
   page,
   category,
 }: GetAllEventsParams) {

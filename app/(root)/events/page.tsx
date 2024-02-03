@@ -33,7 +33,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
           emptyTitle={"No Events Founds"}
           emptyStateSubtext={"Please visit back soon to check in for events."}
           collectionType={"All_Events"}
-          limit={6}
+          limit={8}
           page={page}
           totalPages={events?.totalPages}
         />
