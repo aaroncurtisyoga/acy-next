@@ -1,5 +1,4 @@
 export const userLinks = [
-  { name: "Events", href: "/events" },
   {
     name: "Schedule",
     href: "/schedule",
