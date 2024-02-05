@@ -32,7 +32,7 @@ const Collection = ({
           <ul className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-10">
             {data.map((event) => {
               return (
-                <li key={event._id} className="flex justify-center">
+                <li key={event._id}>
                   <Card event={event} isAdmin={isAdmin} />
                 </li>
               );

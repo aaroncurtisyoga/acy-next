@@ -21,24 +21,22 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
   });
 
   return (
-    <>
-      <section className={"wrapper flex flex-col gap-8 md:gap-12"}>
-        <h1 className={"text-2xl"}>Yoga | Breathwork | Meditation</h1>
-        <div className="flex w-full flex-col gap-5 md:flex-row">
-          <Search />
-          <CategoryFilter />
-        </div>
-        <Collection
-          data={events?.data}
-          emptyTitle={"No Events Founds"}
-          emptyStateSubtext={"Please visit back soon to check in for events."}
-          collectionType={"All_Events"}
-          limit={8}
-          page={page}
-          totalPages={events?.totalPages}
-        />
-      </section>
-    </>
+    <section className={"wrapper flex flex-col gap-8 mt-2"}>
+      <h1 className={"text-lg"}>Yoga | Breathwork | Meditation</h1>
+      <div className="flex w-full flex-col gap-5 md:flex-row">
+        <Search />
+        <CategoryFilter />
+      </div>
+      <Collection
+        data={events?.data}
+        emptyTitle={"No Events Founds"}
+        emptyStateSubtext={"Please visit back soon to check in for events."}
+        collectionType={"All_Events"}
+        limit={8}
+        page={page}
+        totalPages={events?.totalPages}
+      />
+    </section>
   );
 };
 
