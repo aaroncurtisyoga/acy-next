@@ -45,17 +45,17 @@ const Card = ({ isAdmin, event }: CardProps) => {
             height={140}
             style={{ width: "100%", height: "140px", objectFit: "cover" }}
           />
-          <p className="text-lg line-clamp-2 flex-1 text-black pt-3 px-3">
+          <p className="text-lg line-clamp-2 flex-1 text-black pt-2 px-3">
             {title}
           </p>
         </Link>
-        <div className={"pt-3 px-3"}>
-          <p className="text-grey-500 ">
+        <div className={"pt-1 px-3"}>
+          <p className="md:text-sm mb-1/2 font-semibold">
             {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
             {formatDateTime(startDateTime).timeOnly}
           </p>
-          <p>{event.location}</p>
-          <span className="">{isFree ? "Free" : `$${price}`}</span>
+          <p className={"md:text-sm mt-1"}>{event.location}</p>
+          <p className="mt-2">{isFree ? "Free" : `$${price}`}</p>
         </div>
       </div>
     </>
