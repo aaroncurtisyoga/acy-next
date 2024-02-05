@@ -49,7 +49,7 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
                   orders.map((row: IOrderItem) => (
                     <tr
                       key={row._id}
-                      className=" lg:p-regular-16 border-b "
+                      className="border-b"
                       style={{ boxSizing: "border-box" }}
                     >
                       <td className="min-w-[250px] py-4 text-primary-500">
