@@ -12,10 +12,7 @@ export default async function AdminLinks() {
       {adminLinks.map((link) => {
         return (
           <li key={link.name} className={"max-sm:w-full"}>
-            <Link
-              href={link.href}
-              className={"flex-center whitespace-nowrap md:text-lg"}
-            >
+            <Link href={link.href} className={"flex-center whitespace-nowrap"}>
               <p>{link.name}</p>
             </Link>
           </li>

@@ -7,7 +7,7 @@ import { Button } from "@/components/ui/button";
 export default function Header() {
   return (
     <header className={"w-full border-b"}>
-      <div className={"wrapper flex items-center justify-between"}>
+      <div className={"wrapper md:py-4 flex items-center justify-between"}>
         <Link href="/" className="sm:32 min-w-fit	">
           <p className={"md:hidden font-bold"}>ACY</p>
           <p className={"hidden md:block font-semibold text-lg"}>
@@ -24,7 +24,7 @@ export default function Header() {
             <UserButton afterSignOutUrl={"/"} />
           </div>
           <SignedOut>
-            <Button asChild className={"rounded-full"} size={"lg"}>
+            <Button asChild className={"rounded-full"} size={"sm"}>
               <Link href={"/sign-in"}>Login</Link>
             </Button>
           </SignedOut>
