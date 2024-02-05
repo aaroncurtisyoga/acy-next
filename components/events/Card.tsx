@@ -33,7 +33,8 @@ const Card = ({ isAdmin, event }: CardProps) => {
       )}
       <div
         className={
-          "flex flex-col w-full max-w-[400px] min-h-[340px] overflow-hidden rounded-xl bg-white shadow-md transition-all hover:shadow-lg"
+          "flex flex-col w-full max-w-[400px] min-h-[300px] overflow-hidden" +
+          " rounded-xl bg-white shadow-md transition-all hover:shadow-lg"
         }
       >
         <Link href={`/events/${_id}`} className={"flex-col hover:underline"}>
