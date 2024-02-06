@@ -40,21 +40,25 @@ const EventDetails = async ({
             </div>
           </div>
           {/* Date & Share Btn */}
-          <div className="flex flex-between event-wrapper-width pt-5 pb-2">
+          <div className="flex flex-between event-wrapper-width pt-5 md:pt-12 pb-2">
             <p className={"text-base lg:text-lg font-semibold text-gray-600"}>
-              {formatDateTime(event.startDateTime).dateOnlyWithoutYear}{" "}
+              {formatDateTime(event.startDateTime).dateOnlyWithoutYear} •{" "}
+              {event.category.name}
             </p>
             <Share className={"cursor-pointer text-base lg:text-lg"} />
           </div>
           <div className={"md:flex md:event-wrapper-width"}>
             {/* Content Left ie Details */}
             <div className={"flex-1 px-5 md:px-0"}>
-              <h1 className={"text-[2rem] md:text-[3.25rem] font-extrabold"}>
+              <h1
+                className={
+                  "text-[2rem] md:text-[3.25rem] font-extrabold md:mb-8"
+                }
+              >
                 {event.title}
               </h1>
-              <p className={"text-base mb-3"}>{event.category.name}</p>
               <h2 className={"text-2xl font-bold mb-3"}>Date and time</h2>
-              <div className={"flex gap-4 items-center mb-6"}>
+              <div className={"flex gap-4 items-center mb-6 md:mb-8"}>
                 <CalendarCheck2 size={14} />
                 <p className={"text-sm"}>
                   {formatDateTime(event.startDateTime).dateLongWithoutYear} •{" "}
@@ -63,18 +67,22 @@ const EventDetails = async ({
                 </p>
               </div>
               <h2 className={"text-2xl font-bold mb-3"}>Location</h2>
-              <div className={"flex items-center mb-6 gap-4"}>
+              <div className={"flex items-center mb-6 gap-4 md:mb-8"}>
                 <MapPin size={14} />
                 <p className={"text-sm"}>{event.location}</p>
               </div>
               {!event.isFree && (
-                <>
+                <div className={"mb-3 md:mb-8"}>
                   <h2 className={"text-2xl font-bold"}>Refund Policy</h2>
-                  <p>Todo: Insert refund policy here</p>
-                </>
+                  <p>
+                    Refunds are easy. Just send me an email at
+                    AaronCurtisYoga@gmail.com, and I'll provide a 100% refund.
+                    No questions asked.
+                  </p>
+                </div>
               )}
               <h2 className={"text-2xl font-bold mb-3"}>About this event</h2>
-              <p>{event.description}</p>
+              <p className={"md:mb-8"}>{event.description}</p>
             </div>
             {/* Content Right ie Primary CTA */}
             <div
