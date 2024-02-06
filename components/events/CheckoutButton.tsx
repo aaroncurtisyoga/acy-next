@@ -8,14 +8,21 @@ import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Button } from "../ui/button";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import Checkout from "@/components/events/Checkout";
+import { cn } from "@/lib/utils";
 
-const CheckoutButton = ({ event }: { event: IEvent }) => {
+const CheckoutButton = ({
+  event,
+  className,
+}: {
+  event: IEvent;
+  className?: string;
+}) => {
   const { user } = useUser();
   const userId = user?.publicMetadata.userId as string;
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
   return (
-    <div className="flex items-center gap-3">
+    <div className={cn("flex items-center", className)}>
       {hasEventFinished ? (
         <p className="p-2 text-red-400">
           Sorry, tickets are no longer available.
@@ -23,7 +30,7 @@ const CheckoutButton = ({ event }: { event: IEvent }) => {
       ) : (
         <>
           <SignedOut>
-            <Button asChild className="button rounded-full" size="lg">
+            <Button asChild className="button " size="lg">
               <Link href="/sign-in">Get Tickets</Link>
             </Button>
           </SignedOut>

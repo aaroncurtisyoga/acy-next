@@ -1,4 +1,6 @@
 import Image from "next/image";
+import { Share } from "lucide-react";
+
 import { SearchParamProps } from "@/types";
 
 import Collection from "@/components/events/Collection";
@@ -20,69 +22,62 @@ const EventDetails = async ({
     page: searchParams.page as string,
   });
   return (
-    <>
-      <section className="flex justify-center">
-        <div className="grid grid-cols-1 2xl:max-w-6xl">
-          <Image
-            src={event.imageUrl}
-            alt="hero image"
-            width={1000}
-            height={1000}
-            className="h-full max-h-[50vw] md:max-h-[470px] object-cover object-center overflow-hidden"
-          />
-
-          <div className="flex w-full flex-col gap-8 p-5 md:p-10">
-            <div className="flex flex-col gap-6">
-              <h2 className="">{event.title}</h2>
-              <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
-                <div className="flex gap-3">
-                  <p className=" rounded-full bg-green-500/10 px-5 py-2 text-green-700">
-                    {event.isFree ? "FREE" : `$${event.price}`}
-                  </p>
-                  <p className=" rounded-full bg-grey-500/10 px-4 py-2.5 text-grey-500">
-                    {event.category.name}
-                  </p>
-                </div>
-              </div>
-            </div>
-
-            <CheckoutButton event={event} />
-
-            <div className="flex flex-col gap-5">
-              <div className="flex gap-2 md:gap-3">
-                <Image
-                  src="/assets/icons/calendar.svg"
-                  alt="calendar"
-                  width={32}
-                  height={32}
-                />
-                <div className=" lg:p-regular-20 flex flex-wrap items-center">
-                  <p>{formatDateTime(event.startDateTime).dateOnly} / </p>
-                  <p>{formatDateTime(event.startDateTime).timeOnly} - </p>
-                  <p>{formatDateTime(event.endDateTime).timeOnly}</p>
-                </div>
-              </div>
-
-              <div className=" flex items-center gap-3">
-                <Image
-                  src="/assets/icons/location.svg"
-                  alt="location"
-                  width={32}
-                  height={32}
-                />
-                <p className=" lg:p-regular-20">{event.location}</p>
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-2">
-              <p className=" text-grey-600">What to expect:</p>
-              <p className="">{event.description}</p>
-            </div>
+    <div className={"flex flex-col"}>
+      <section className="flex flex-col w-full md:items-center">
+        <Image
+          src={event.imageUrl}
+          alt="hero image"
+          width={940}
+          height={470}
+          className="h-full max-h-[50vw] md:max-h-[470px] object-cover object-center overflow-hidden"
+          sizes={"(max-width:480px) 480px, (max-width:600px) 600px, 940px"}
+        />
+        {/* Date & Share Btn */}
+        <div className="flex flex-between wrapper">
+          <p className={"text-base lg:text-lg font-semibold text-gray-700"}>
+            {formatDateTime(event.startDateTime).dateOnlyWithoutYear}{" "}
+          </p>
+          {/* Todo:
+                  On hover: "Share event" tooltip. On Click, copy event URL to
+                  Clipboard
+             */}
+          <Share className={"cursor-pointer text-base lg:text-lg"} />
+        </div>
+        <div className={"md:flex"}>
+          {/* Content Left ie Details */}
+          <div className={"flex-1 wrapper"}>
+            <h1 className={"text-5xl md:text-[3.25rem] font-extrabold"}>
+              {event.title}
+            </h1>
+            <h2 className={"text-2xl font-bold"}>Date and time</h2>
+            <h2 className={"text-2xl font-bold"}>Location</h2>
+            {!event.isFree && (
+              <>
+                <h2 className={"text-2xl font-bold"}>Refund Policy</h2>
+                <p>Todo: Insert refund policy here</p>
+              </>
+            )}
+            <h2 className={"text-2xl font-bold "}>About this event</h2>
+          </div>
+          {/* Content Right ie Primary CTA */}
+          <div
+            id={"event-checkout"}
+            className={
+              "fixed bottom-0 z-10 bg-white shadow-lg md:shadow-none" +
+              " border-t-2 md:border-t-0 md:relative w-full " +
+              " flex-1 md:max-w-[360px] h-[140px] md:h-auto"
+            }
+          >
+            <p className={"text-center"}>
+              {event.isFree ? "Free" : `$${event.price}`}
+            </p>
+            <CheckoutButton event={event} className={"justify-center"} />
           </div>
         </div>
       </section>
       {/* Events with  the same category */}
-      {!!eventsWithSameCategory?.data.length && (
+
+      {/*{!!eventsWithSameCategory?.data.length && (
         <section className={"wrapper"}>
           <h3 className={""}>Similar Events</h3>
           <Collection
@@ -95,8 +90,8 @@ const EventDetails = async ({
             totalPages={eventsWithSameCategory?.totalPages}
           />
         </section>
-      )}
-    </>
+      )}*/}
+    </div>
   );
 };
 

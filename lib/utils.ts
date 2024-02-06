@@ -32,7 +32,7 @@ export const formatDateTime = (dateString: Date) => {
 
   const dateOptionsWithoutYear: Intl.DateTimeFormatOptions = {
     weekday: "short", // abbreviated weekday name (e.g., 'Mon')
-    month: "short", // abbreviated month name (e.g., 'Oct')
+    month: "long", // full month name (e.g., 'October')
     day: "numeric", // numeric day of the month (e.g., '25')
   };
 
