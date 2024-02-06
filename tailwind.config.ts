@@ -18,6 +18,9 @@ const config = {
       },
     },
     extend: {
+      aspectRatio: {
+        "2/1": "2 / 1",
+      },
       colors: {
         primary: {
           500: "#624CF5",
