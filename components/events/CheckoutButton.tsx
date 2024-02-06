@@ -30,8 +30,8 @@ const CheckoutButton = ({
       ) : (
         <>
           <SignedOut>
-            <Button asChild className="w-full md:w-auto " size="lg">
-              <Link href="/sign-in">Get Ticket</Link>
+            <Button asChild className="w-full " size="lg">
+              <Link href="/sign-in">Sign Up</Link>
             </Button>
           </SignedOut>
 
