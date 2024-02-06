@@ -24,22 +24,28 @@ export const formatDateTime = (dateString: Date) => {
   };
 
   const dateOptions: Intl.DateTimeFormatOptions = {
-    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
-    month: "short", // abbreviated month name (e.g., 'Oct')
-    year: "numeric", // numeric year (e.g., '2023')
-    day: "numeric", // numeric day of the month (e.g., '25')
+    weekday: "short",
+    month: "short",
+    year: "numeric",
+    day: "numeric",
   };
 
   const dateOptionsWithoutYear: Intl.DateTimeFormatOptions = {
-    weekday: "short", // abbreviated weekday name (e.g., 'Mon')
-    month: "long", // full month name (e.g., 'October')
-    day: "numeric", // numeric day of the month (e.g., '25')
+    weekday: "short",
+    month: "long",
+    day: "numeric",
+  };
+
+  const dateOptionsLongWithoutYear: Intl.DateTimeFormatOptions = {
+    weekday: "long",
+    month: "long",
+    day: "numeric",
   };
 
   const timeOptions: Intl.DateTimeFormatOptions = {
-    hour: "numeric", // numeric hour (e.g., '8')
-    minute: "numeric", // numeric minute (e.g., '30')
-    hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+    hour: "numeric",
+    minute: "numeric",
+    hour12: true,
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
@@ -57,6 +63,10 @@ export const formatDateTime = (dateString: Date) => {
     dateOptionsWithoutYear,
   );
 
+  const formattedDateLongWithoutYear: string = new Date(
+    dateString,
+  ).toLocaleString("en-US", dateOptionsLongWithoutYear);
+
   const formattedTime: string = new Date(dateString).toLocaleString(
     "en-US",
     timeOptions,
@@ -66,11 +76,10 @@ export const formatDateTime = (dateString: Date) => {
     dateTime: formattedDateTime,
     dateOnly: formattedDate,
     dateOnlyWithoutYear: formattedDateWithoutYear,
+    dateLongWithoutYear: formattedDateLongWithoutYear,
     timeOnly: formattedTime,
   };
 };
-
-export const convertFileToUrl = (file: File) => URL.createObjectURL(file);
 
 export const formatPrice = (price: string) => {
   const amount = parseFloat(price);

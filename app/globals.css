@@ -89,7 +89,7 @@
   }
 
   .wrapper-width {
-    @apply max-w-7xl lg:mx-auto md:px-10 xl:px-0 w-full;
+    @apply max-w-7xl lg:mx-auto px-5 md:px-10 xl:px-0 w-full;
   }
 
   .flex-center {
@@ -112,10 +112,6 @@
 
   .textarea {
     @apply bg-grey-50 flex flex-1 placeholder:text-grey-500  px-5 py-3 border-none focus-visible:ring-transparent !important;
-  }
-
-  .button {
-    @apply rounded-full h-[54px];
   }
 
   .select-item {
