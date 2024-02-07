@@ -1,21 +1,14 @@
 import Image from "next/image";
-import { CalendarCheck2, MapPin, Share } from "lucide-react";
-
-import { SearchParamProps } from "@/types";
-
+import { CalendarCheck2, MapPin } from "lucide-react";
 import Collection from "@/components/events/Collection";
 import CheckoutButton from "@/components/events/CheckoutButton";
+import ShareEvent from "@/components/events/ShareEvent";
 import {
   getEventById,
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
+import { SearchParamProps } from "@/types";
 import { formatDateTime } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 const EventDetails = async ({
   params: { id },
@@ -51,16 +44,7 @@ const EventDetails = async ({
               {formatDateTime(event.startDateTime).dateOnlyWithoutYear} •{" "}
               {event.category.name}
             </p>
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <Share className={"cursor-pointer text-base lg:text-lg"} />
-                </TooltipTrigger>
-                <TooltipContent>
-                  <p>Share event</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <ShareEvent eventId={event._id} />
           </div>
           <div className={"md:flex md:event-wrapper-width"}>
             {/* Content Left ie Details */}
