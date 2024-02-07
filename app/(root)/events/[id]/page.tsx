@@ -10,6 +10,12 @@ import {
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
 import { formatDateTime } from "@/lib/utils";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 const EventDetails = async ({
   params: { id },
@@ -45,7 +51,16 @@ const EventDetails = async ({
               {formatDateTime(event.startDateTime).dateOnlyWithoutYear} •{" "}
               {event.category.name}
             </p>
-            <Share className={"cursor-pointer text-base lg:text-lg"} />
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <Share className={"cursor-pointer text-base lg:text-lg"} />
+                </TooltipTrigger>
+                <TooltipContent>
+                  <p>Share event</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
           </div>
           <div className={"md:flex md:event-wrapper-width"}>
             {/* Content Left ie Details */}
