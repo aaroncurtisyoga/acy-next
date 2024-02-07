@@ -6,7 +6,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className={"flex flex-col min-h-dvh"}>
       <Header />
-      <main>{children}</main>
+      <main className={"grow grid w-full"}>{children}</main>
       <Footer />
     </div>
   );
