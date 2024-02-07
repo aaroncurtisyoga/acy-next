@@ -24,18 +24,24 @@ const EventDetails = async ({
     <>
       <div className={"flex flex-col"}>
         <section className="flex flex-col w-full md:items-center">
-          <div className="event-hero-wrapper w-full">
-            <div className={"w-full flex justify-center"}>
-              <Image
-                src={event.imgLarge}
-                alt="hero image"
-                width={940}
-                height={470}
-                className="h-full max-h-[50vw] md:max-h-[470px] object-cover object-center overflow-hidden"
-                sizes={
-                  "(max-width:480px) 480px, (max-width:600px) 600px, 940px"
-                }
+          <div className="event-hero-wrapper w-full relative">
+            <div className={"event-hero"}>
+              <div
+                className={"event-hero-background"}
+                style={{ backgroundImage: `url(${event.imgThumbnail})` }}
               />
+              <div className={"m-auto md:w-[940px]"}>
+                <Image
+                  src={event.imgLarge}
+                  alt="hero image"
+                  width={940}
+                  height={470}
+                  className="h-full max-h-[50vw] md:max-h-[470px] object-cover object-center overflow-hidden relative z-10"
+                  sizes={
+                    "(max-width:480px) 480px, (max-width:600px) 600px, 940px"
+                  }
+                />
+              </div>
             </div>
           </div>
           {/* Date & Share Btn */}
