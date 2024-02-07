@@ -9,7 +9,7 @@ type CardProps = {
   event: IEvent;
 };
 const Card = ({ isAdmin, event }: CardProps) => {
-  const { _id, category, imageUrl, isFree, price, startDateTime, title } =
+  const { _id, category, imgLarge, isFree, price, startDateTime, title } =
     event;
   return (
     <>
@@ -40,7 +40,7 @@ const Card = ({ isAdmin, event }: CardProps) => {
       >
         <Link href={`/events/${_id}`} className={"flex-col hover:underline"}>
           <Image
-            src={imageUrl}
+            src={imgLarge}
             alt={`People doing ${category.name}`}
             sizes={"400px"}
             width={400}
