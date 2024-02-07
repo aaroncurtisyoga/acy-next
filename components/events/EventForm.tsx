@@ -13,6 +13,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
+import ViewImages from "@/components/events/ViewImages";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -138,6 +139,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
           />
         </div>
 
+        <div className="flex flex-col gap-5 md:flex-row">
+          <ViewImages />
+        </div>
         <div className="flex flex-col gap-5">
           <FormField
             control={form.control}

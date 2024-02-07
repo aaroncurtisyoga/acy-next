@@ -46,7 +46,6 @@ const NewsletterForm = () => {
   };
 
   const handleApiErrors = (result: { apiError?: string; message?: string }) => {
-    console.log("handleApiErrors");
     form.setError("root", {
       type: "server",
       message: result.message,

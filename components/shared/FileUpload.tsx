@@ -14,7 +14,7 @@ export default function FileUpload({ imageUrl, onFieldChange }: any) {
     }
 
     const file = inputFileRef.current.files[0];
-    const response = await fetch(`/api/uploadBlob?filename=${file.name}`, {
+    const response = await fetch(`/api/upload-blob?filename=${file.name}`, {
       method: "POST",
       body: file,
     });
