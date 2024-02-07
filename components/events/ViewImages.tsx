@@ -8,7 +8,7 @@ const ViewImages = () => {
   return (
     <div>
       <Button type="button" variant={"outline"} onClick={() => openModal()}>
-        Open Modal
+        View Images Already Uploaded
       </Button>
     </div>
   );
