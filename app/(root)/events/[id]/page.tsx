@@ -28,7 +28,7 @@ const EventDetails = async ({
           <div className="event-hero-wrapper w-full">
             <div className={"w-full flex justify-center"}>
               <Image
-                src={event.imageUrl}
+                src={event.imgLarge}
                 alt="hero image"
                 width={940}
                 height={470}

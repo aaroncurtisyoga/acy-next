@@ -25,6 +25,7 @@ import { eventDefaultValues } from "@/constants";
 import "react-datepicker/dist/react-datepicker.css";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { Label } from "@/components/ui/label";
 
 type EventFormProps = {
   event?: IEvent;
@@ -76,10 +77,10 @@ const EventForm = ({ event, type }: EventFormProps) => {
   }
 
   async function onSubmit(values: z.infer<typeof EventFormSchema>) {
-    if (!values.imageUrl) {
-      form.setError("imageUrl", {
-        type: "custom",
-        message: "Image is required",
+    if (!values.imgLarge || !values.imgThumbnail) {
+      form.setError("root.random", {
+        type: "random",
+        message: "Dont forget to upload images",
       });
       return;
     }
@@ -156,9 +157,26 @@ const EventForm = ({ event, type }: EventFormProps) => {
           />
           <FormField
             control={form.control}
-            name="imageUrl"
+            name="imgLarge"
             render={({ field }) => (
               <FormItem className="w-full">
+                <Label htmlFor="imgLarge">Img large 940x470</Label>
+                <FormControl className="h-72">
+                  <FileUpload
+                    imageUrl={field.value}
+                    onFieldChange={field.onChange}
+                  />
+                </FormControl>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
+          <FormField
+            control={form.control}
+            name="imgThumbnail"
+            render={({ field }) => (
+              <FormItem className="w-full">
+                <Label htmlFor="imgThumbnail">Img thumbnail 50x25</Label>
                 <FormControl className="h-72">
                   <FileUpload
                     imageUrl={field.value}

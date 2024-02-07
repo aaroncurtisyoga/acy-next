@@ -2,7 +2,6 @@ import { Document, model, models, Schema } from "mongoose";
 
 export interface IEvent extends Document {
   _id: string;
-
   category?: {
     _id: string;
     name: string;
@@ -11,7 +10,8 @@ export interface IEvent extends Document {
   description?: string;
   endDateTime: Date;
   externalSignUpUrl?: string;
-  imageUrl: string;
+  imgLarge: string; // 940 x 470
+  imgThumbnail: string; // 50 x 25
   isFree: boolean;
   isHostedExternally?: boolean;
   location?: string;
@@ -26,7 +26,8 @@ const EventSchema = new Schema({
   description: { type: String, required: false },
   endDateTime: { type: Date, default: Date.now },
   externalSignUpUrl: { type: String, required: false },
-  imageUrl: { type: String, required: true },
+  imgLarge: String,
+  imgThumbnail: String,
   isFree: { type: Boolean, default: false },
   isHostedExternally: { type: Boolean, required: false },
   location: { type: String, required: false },
