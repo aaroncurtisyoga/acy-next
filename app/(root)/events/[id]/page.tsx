@@ -52,7 +52,7 @@ const EventDetails = async ({
             <div className={"flex-1 px-5 md:px-0"}>
               <h1
                 className={
-                  "text-[2rem] md:text-[3.25rem] font-extrabold md:mb-8"
+                  "text-[2rem] md:text-[3.25rem] font-extrabold mb-5 md:mb-8"
                 }
               >
                 {event.title}
@@ -72,17 +72,17 @@ const EventDetails = async ({
                 <p className={"text-sm"}>{event.location}</p>
               </div>
               {!event.isFree && (
-                <div className={"mb-3 md:mb-8"}>
-                  <h2 className={"text-2xl font-bold"}>Refund Policy</h2>
+                <div className={"mb-6 md:mb-8"}>
+                  <h2 className={"text-2xl font-bold mb-3"}>Refund Policy</h2>
                   <p>
                     Refunds are easy. Just send me an email at
-                    AaronCurtisYoga@gmail.com, and I'll provide a 100% refund.
-                    No questions asked.
+                    AaronCurtisYoga@gmail.com, and I&lsquo;ll provide a 100%
+                    refund. No questions asked.
                   </p>
                 </div>
               )}
               <h2 className={"text-2xl font-bold mb-3"}>About this event</h2>
-              <p className={"md:mb-8"}>{event.description}</p>
+              <p className={"mb-14"}>{event.description}</p>
             </div>
             {/* Content Right ie Primary CTA */}
             <div
@@ -90,7 +90,8 @@ const EventDetails = async ({
               className={
                 "fixed bottom-0 z-10 bg-white " +
                 " border-t-2  md:border-[1px] md:rounded-2xl md:relative" +
-                " w-full flex-1 md:max-w-[360px] h-[140px] p-[24px]"
+                " w-full flex-1 md:max-w-[360px] h-[140px] p-[24px]" +
+                " md:sticky md:top-5 md:mt-[20px]"
               }
             >
               <p className={"text-center text-lg mb-3"}>
@@ -102,17 +103,23 @@ const EventDetails = async ({
         </section>
       </div>
       {!!eventsWithSameCategory?.data.length && (
-        <section className={"event-wrapper-width"}>
-          <h3 className={""}>Other events with Aaron you may like:</h3>
-          <Collection
-            data={eventsWithSameCategory?.data}
-            emptyTitle={"No Events Founds"}
-            emptyStateSubtext={"Please visit back soon to check in for events."}
-            collectionType={"All_Events"}
-            limit={3}
-            page={searchParams.page as string}
-            totalPages={eventsWithSameCategory?.totalPages}
-          />
+        <section className={"bg-gray-100 w-full py-6 md:py-8"}>
+          <div className="event-wrapper-width">
+            <h3 className={"text-lg font-bold text-gray-800 mb-6"}>
+              Other events with Aaron you may like:
+            </h3>
+            <Collection
+              data={eventsWithSameCategory?.data}
+              emptyTitle={"No Events Founds"}
+              emptyStateSubtext={
+                "Please visit back soon to check in for events."
+              }
+              collectionType={"All_Events"}
+              limit={3}
+              page={searchParams.page as string}
+              totalPages={eventsWithSameCategory?.totalPages}
+            />
+          </div>
         </section>
       )}
     </>
