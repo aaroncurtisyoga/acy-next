@@ -23,7 +23,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             src={handstandPicture}
           />
         </section>
-        <div>
+        <div className={"p-6 md:p-8"}>
           <AboutLinks />
           {children}
         </div>

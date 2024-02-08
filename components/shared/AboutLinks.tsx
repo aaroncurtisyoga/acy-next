@@ -1,16 +1,30 @@
+"use client";
+
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { aboutLinks } from "@/constants";
+import { clsx } from "clsx";
 
 function AboutLinks() {
-  return (
-    <div className={"flex pt-[20px] mx-8"}>
-      <Link href="/about/schedule" className="">
-        <p className={"hidden md:block font-semibold text-lg"}>Schedule</p>
-      </Link>
-      <span className={"mx-4"}>•</span>
+  const pathname = usePathname();
 
-      <Link href="/about/newsletter" className="sm:32 min-w-fit	">
-        <p className={"hidden md:block font-semibold text-lg"}>Newsletter</p>
-      </Link>
+  return (
+    <div className={"flex pt-[20px] gap-5 wrapper"}>
+      {aboutLinks.map((link) => {
+        const isActive = pathname.includes(link.href);
+        return (
+          <li key={link.name} className={"hover:underline"}>
+            <Link
+              href={link.href}
+              className={clsx("flex-center whitespace-nowrap", {
+                "text-blue-500": isActive === true,
+              })}
+            >
+              <p>{link.name}</p>
+            </Link>
+          </li>
+        );
+      })}
     </div>
   );
 }

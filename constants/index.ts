@@ -1,3 +1,14 @@
+export const aboutLinks = [
+  {
+    name: "Schedule",
+    href: "/about/schedule",
+  },
+  {
+    name: "Newsletter",
+    href: "/about/newsletter",
+  },
+];
+
 export const userLinks = [
   {
     name: "Upcoming Events",
