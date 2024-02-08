@@ -13,7 +13,7 @@ function AboutLinks() {
       {aboutLinks.map((link) => {
         const isActive = pathname.includes(link.href);
         return (
-          <li key={link.name} className={"hover:underline"}>
+          <li key={link.name} className={"underline hover:text-blue-500"}>
             <Link
               href={link.href}
               className={clsx("flex-center whitespace-nowrap", {
