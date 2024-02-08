@@ -1,5 +1,9 @@
 export const userLinks = [
   {
+    name: "Upcoming Events",
+    href: "/",
+  },
+  {
     name: "About",
     href: "/about",
   },
