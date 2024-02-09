@@ -9,15 +9,18 @@ function AboutLinks() {
   const pathname = usePathname();
 
   return (
-    <div className={"flex pt-[20px] gap-5 wrapper"}>
+    <div className={"flex pt-[20px] gap-3 wrapper"}>
       {aboutLinks.map((link) => {
         const isActive = pathname.includes(link.href);
         return (
-          <li key={link.name} className={"underline hover:text-blue-500"}>
+          <li
+            key={link.name}
+            className={"font-medium text-blue-600 hover:underline"}
+          >
             <Link
               href={link.href}
               className={clsx("flex-center whitespace-nowrap", {
-                "text-blue-500": isActive === true,
+                underline: isActive === true,
               })}
             >
               <p>{link.name}</p>
