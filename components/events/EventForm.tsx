@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -31,6 +32,7 @@ import {
   Dialog,
   DialogContent,
   DialogDescription,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -43,6 +45,7 @@ type EventFormProps = {
 
 const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
+  const [selectedImg, setSelectedImg] = useState("");
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -212,7 +215,15 @@ const EventForm = ({ event, type }: EventFormProps) => {
                 Storage
               </DialogDescription>
             </DialogHeader>
-            <ImageGallery />
+            <ImageGallery setSelectedImg={setSelectedImg} />
+            <DialogFooter className={"flex sm:justify-around w-full"}>
+              <Button type="button" variant="default" disabled={!selectedImg}>
+                Set as Primary 940x470 img
+              </Button>
+              <Button type="button" variant="outline" disabled={!selectedImg}>
+                Set as Small 50x25 Img
+              </Button>
+            </DialogFooter>
           </DialogContent>
         </Dialog>
 

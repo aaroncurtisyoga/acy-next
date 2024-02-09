@@ -4,7 +4,7 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import { AspectRatio } from "@/components/ui/aspect-ratio";
 
-const ImageGallery = () => {
+const ImageGallery = ({ setSelectedImg }) => {
   const [images, setImages] = useState([]);
 
   useEffect(() => {
@@ -28,8 +28,9 @@ const ImageGallery = () => {
       {images.map((image: any) => (
         <AspectRatio
           key={image.pathname}
-          ratio={2 / 1}
+          ratio={2}
           className="bg-muted relative overflow-hidden rounded-xl group cursor-pointer"
+          onClick={() => setSelectedImg(image.url)}
         >
           <Image
             src={image.url}
