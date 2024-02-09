@@ -13,7 +13,7 @@ import {
   FormItem,
   FormMessage,
 } from "@/components/ui/form";
-import ViewImages from "@/components/events/ViewImages";
+import ImageGallery from "@/components/events/ImageGallery";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
@@ -27,6 +27,14 @@ import "react-datepicker/dist/react-datepicker.css";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { Label } from "@/components/ui/label";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 type EventFormProps = {
   event?: IEvent;
@@ -190,9 +198,23 @@ const EventForm = ({ event, type }: EventFormProps) => {
           />
         </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
-          <ViewImages />
-        </div>
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button type="button" variant={"outline"}>
+              View Images from Vercel Blob Storage
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-white">
+            <DialogHeader>
+              <DialogTitle>Browse Images</DialogTitle>
+              <DialogDescription>
+                Here are all the images you have uploaded to the Vercel Blob
+                Storage
+              </DialogDescription>
+            </DialogHeader>
+            <ImageGallery />
+          </DialogContent>
+        </Dialog>
 
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
