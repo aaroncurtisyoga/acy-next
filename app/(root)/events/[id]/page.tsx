@@ -40,6 +40,7 @@ const EventDetails = async ({
                   sizes={
                     "(max-width:480px) 480px, (max-width:600px) 600px, 940px"
                   }
+                  priority={true}
                 />
               </div>
             </div>

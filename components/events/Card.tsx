@@ -47,6 +47,7 @@ const Card = ({ isAdmin, event }: CardProps) => {
             height={140}
             className={"aspect-[2/1] w-full h-auto md:h-[140px]"}
             style={{ objectFit: "cover" }}
+            priority={true}
           />
           <p className="text-lg line-clamp-2 flex-1 text-black pt-2 px-3">
             {title}
