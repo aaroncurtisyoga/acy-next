@@ -27,6 +27,7 @@ const ImageGallery = () => {
     <section className="px-2 my-3 grid grid-cols gap-2 grid-cols-gallery">
       {images.map((image: any) => (
         <AspectRatio
+          key={image.pathname}
           ratio={2 / 1}
           className="bg-muted relative overflow-hidden rounded-xl group cursor-pointer"
         >
