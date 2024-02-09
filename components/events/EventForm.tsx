@@ -217,10 +217,28 @@ const EventForm = ({ event, type }: EventFormProps) => {
             </DialogHeader>
             <ImageGallery setSelectedImg={setSelectedImg} />
             <DialogFooter className={"flex sm:justify-around w-full"}>
-              <Button type="button" variant="default" disabled={!selectedImg}>
+              <Button
+                type="button"
+                variant="default"
+                disabled={!selectedImg}
+                onClick={() => {
+                  console.log("start click registered");
+                  form.setValue("imgLarge", selectedImg);
+                  setSelectedImg("");
+                  console.log("stop click registered");
+                }}
+              >
                 Set as Primary 940x470 img
               </Button>
-              <Button type="button" variant="outline" disabled={!selectedImg}>
+              <Button
+                type="button"
+                variant="outline"
+                disabled={!selectedImg}
+                onClick={() => {
+                  form.setValue("imgThumbnail", selectedImg);
+                  setSelectedImg("");
+                }}
+              >
                 Set as Small 50x25 Img
               </Button>
             </DialogFooter>
