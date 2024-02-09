@@ -207,30 +207,21 @@ const EventForm = ({ event, type }: EventFormProps) => {
               View Images from Vercel Blob Storage
             </Button>
           </DialogTrigger>
-          <DialogContent className="bg-white">
-            <DialogHeader>
-              <DialogTitle>Browse Images</DialogTitle>
-              <DialogDescription>
-                Here are all the images you have uploaded to the Vercel Blob
-                Storage
-              </DialogDescription>
-            </DialogHeader>
-            <ImageGallery setSelectedImg={setSelectedImg} />
-            <DialogFooter className={"flex sm:justify-around w-full"}>
+          <DialogContent className="bg-white min-w-[95vw] max-h-[85vh] overflow-scroll">
+            <DialogHeader className={"flex flex-row gap-3 items-baseline"}>
               <Button
                 type="button"
                 variant="default"
                 disabled={!selectedImg}
                 onClick={() => {
-                  console.log("start click registered");
                   form.setValue("imgLarge", selectedImg);
                   setSelectedImg("");
-                  console.log("stop click registered");
                 }}
               >
                 Set as Primary 940x470 img
               </Button>
               <Button
+                className={"mt-[0px] m-[0px]"}
                 type="button"
                 variant="outline"
                 disabled={!selectedImg}
@@ -241,7 +232,8 @@ const EventForm = ({ event, type }: EventFormProps) => {
               >
                 Set as Small 50x25 Img
               </Button>
-            </DialogFooter>
+            </DialogHeader>
+            <ImageGallery setSelectedImg={setSelectedImg} />
           </DialogContent>
         </Dialog>
 

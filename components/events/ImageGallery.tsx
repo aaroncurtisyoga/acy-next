@@ -24,7 +24,7 @@ const ImageGallery = ({ setSelectedImg }) => {
   };
 
   return (
-    <section className="px-2 my-3 grid grid-cols gap-2 grid-cols-gallery">
+    <section className="grid grid-cols grid-cols-3 gap-2 ">
       {images.map((image: any) => (
         <AspectRatio
           key={image.pathname}
@@ -37,7 +37,7 @@ const ImageGallery = ({ setSelectedImg }) => {
             alt={image.pathname}
             fill={true}
             className={"object-cover group-hover:opacity-75"}
-            sizes={"470px"}
+            sizes={"940px"}
           />
         </AspectRatio>
       ))}
