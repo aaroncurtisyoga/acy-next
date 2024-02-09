@@ -19,31 +19,7 @@ const Page = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <div className={"mb-6"}>
-        <p className={"text-xl"}>Tuesday</p>
-        <hr className={"md:hidden"} />
-        <Offering
-          link={signUpLinks.dcBoulderingProject}
-          time={"6:30am"}
-          name={"Flow"}
-          location={locations.BOULDERING_PROJECT}
-        />
-      </div>
-      <div className={"mb-6"}>
-        <p className={"text-xl"}>
-          <s>Wednesday</s>
-        </p>
-      </div>
-      <div className={"mb-6"}>
-        <p className={"text-xl"}>Thursday</p>
-        <hr className={"md:hidden"} />
-        <Offering
-          link={signUpLinks.dcBoulderingProject}
-          time={"6:30am"}
-          name={"Flow"}
-          location={locations.BOULDERING_PROJECT}
-        />
-      </div>
+
       <div className={"mb-6"}>
         <p className={"text-xl"}>Friday</p>
         <hr className={"md:hidden"} />
@@ -54,11 +30,7 @@ const Page = () => {
           location={locations.BOULDERING_PROJECT}
         />
       </div>
-      <div className={"mb-6"}>
-        <p className={"text-xl"}>
-          <s>Saturday</s>
-        </p>
-      </div>
+
       <div>
         <p className={"text-xl"}>Sunday</p>
         <hr className={"md:hidden"} />
