@@ -6,11 +6,6 @@ export default function Home() {
       </p>
       <br />
       <p>
-        Wherever this message finds you, I hope you’re able to find a second to
-        pause. Take a deep breath. And be present in a moment of gratitude.
-      </p>
-      <br />
-      <p>
         I’m constantly inspired by everything yoga has to teach. The philosophy,
         the physical movement, the meditation, and the breathwork. It’s my goal
         to take what I’ve learned in my own study of the practice, combined with
@@ -22,10 +17,14 @@ export default function Home() {
         If one of the events on this site resonates with you. Please sign up.
         It’d be great to connect in person. And, if you’re interested in
         collaborating on a professional level – please feel free to email me
-        anytime.
+        anytime at{" "}
+        <a
+          href="mailto:aaroncurtisyoga@gmail.com"
+          className={"text-blue-500" + " hover:text-blue-700"}
+        >
+          aaroncurtisyoga@gmail.com
+        </a>
       </p>
-      <br />
-      <p>Wishing you freedom and happiness.</p>
       <br />
       <p>Sincerely,</p>
       <p>Aaron</p>
