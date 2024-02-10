@@ -1,7 +1,11 @@
-import Link from "next/link";
 import Image from "next/image";
 import handstandPicture from "@/public/assets/images/HandstandScissorLeg.png";
 import AboutLinks from "@/components/shared/AboutLinks";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "About",
+};
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (
