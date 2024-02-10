@@ -15,9 +15,6 @@ const poppins = Poppins({
 export const metadata: Metadata = {
   title: { template: "%s | Aaron Curtis Yoga", default: "Aaron Curtis Yoga" },
   description: "Yoga Events & Education",
-  icons: {
-    icon: "@/public/favicon.ico",
-  },
 };
 
 export default function RootLayout({
