@@ -11,7 +11,7 @@ const Footer = () => {
         </div>
         <div className={"flex justify-between"}>
           <Link
-            href={"https://www.youtube.com/@yogawithaaron"}
+            href={"https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"}
             target={"_blank"}
           >
             <Youtube />
