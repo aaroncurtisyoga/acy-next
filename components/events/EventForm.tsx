@@ -31,10 +31,7 @@ import { Label } from "@/components/ui/label";
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
-  DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 
@@ -156,7 +153,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormControl className="h-72">
+                <FormControl className="h-56">
                   <Textarea
                     placeholder="Description"
                     {...field}
