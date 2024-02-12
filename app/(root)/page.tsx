@@ -22,7 +22,6 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
 
   return (
     <section className={"wrapper flex flex-col gap-8 mt-2"}>
-      <h1 className={"text-lg"}>Yoga | Breathwork | Meditation</h1>
       <div className="flex w-full flex-col gap-5 md:flex-row">
         <Search />
         <CategoryFilter />
