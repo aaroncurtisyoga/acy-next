@@ -34,7 +34,7 @@ const Card = ({ isAdmin, event }: CardProps) => {
       <div
         className={
           "flex flex-col w-full md:max-w-[400px]" +
-          " md:min-h-[300px] overflow-hidden" +
+          " md:min-h-[280px] overflow-hidden" +
           " rounded-sm bg-white shadow-md transition-all hover:shadow-lg"
         }
       >
@@ -59,7 +59,6 @@ const Card = ({ isAdmin, event }: CardProps) => {
             {formatDateTime(startDateTime).timeOnly}
           </p>
           <p className={"md:text-sm mt-1"}>{event.location}</p>
-          <p className="mt-2">{isFree ? "Free" : `$${price}`}</p>
         </div>
       </div>
     </>
