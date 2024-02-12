@@ -9,7 +9,6 @@ const CreateEvent = () => {
     redirect("/");
   }
   const { sessionClaims } = auth();
-  const userId = sessionClaims?.userId as string;
   return (
     <section className={"wrapper"}>
       <h3>Create Event</h3>
