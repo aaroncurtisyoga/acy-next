@@ -200,7 +200,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
             )}
           />
         </div>
-
         <Dialog>
           <DialogTrigger asChild>
             <Button type="button" variant={"outline"}>
