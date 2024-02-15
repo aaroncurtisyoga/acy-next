@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { Input } from "../ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
+import { Label } from "@/components/ui/label";
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -36,7 +37,12 @@ const Search = () => {
 
   return (
     <div className="w-full">
-      <Input type="text" onChange={(e) => setQuery(e.target.value)} />
+      <Label htmlFor="search">Search for Events</Label>
+      <Input
+        id="search"
+        type="text"
+        onChange={(e) => setQuery(e.target.value)}
+      />
     </div>
   );
 };

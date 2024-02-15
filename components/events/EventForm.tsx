@@ -12,6 +12,7 @@ import {
   FormControl,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import ImageGallery from "@/components/events/ImageGallery";
@@ -119,8 +120,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="title"
             render={({ field }) => (
               <FormItem className="w-full">
+                <FormLabel>Name</FormLabel>
                 <FormControl>
-                  <Input {...field} placeholder="Event title" />
+                  <Input {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -131,6 +133,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="categoryId"
             render={({ field }) => (
               <FormItem className="w-full">
+                <FormLabel>Category</FormLabel>
                 <FormControl>
                   <Dropdown
                     onChangeHandler={field.onChange}
@@ -149,12 +152,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="description"
             render={({ field }) => (
               <FormItem className="w-full">
-                <FormControl className="h-56">
-                  <Textarea
-                    placeholder="Description"
-                    {...field}
-                    className=" rounded-2xl"
-                  />
+                <FormLabel>Description</FormLabel>
+                <FormControl>
+                  <Textarea {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -162,13 +162,13 @@ const EventForm = ({ event, type }: EventFormProps) => {
           />
         </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
+        <div className="flex flex-col gap-5 md:flex-row items-end">
           <FormField
             control={form.control}
             name="imgLarge"
             render={({ field }) => (
               <FormItem className="w-full">
-                <Label htmlFor="imgLarge">Img large 940x470</Label>
+                <Label>Large Image: 940 x 470</Label>
                 <FormControl className="h-72">
                   <FileUpload
                     imageUrl={field.value}
@@ -184,7 +184,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="imgThumbnail"
             render={({ field }) => (
               <FormItem className="w-full">
-                <Label htmlFor="imgThumbnail">Img thumbnail 50x25</Label>
+                <Label>Small Image: 50 x 25</Label>
                 <FormControl className="h-72">
                   <FileUpload
                     imageUrl={field.value}
@@ -195,42 +195,42 @@ const EventForm = ({ event, type }: EventFormProps) => {
               </FormItem>
             )}
           />
+          <Dialog>
+            <DialogTrigger asChild>
+              <Button type="button" variant={"outline"}>
+                View Images from Vercel Blob Storage
+              </Button>
+            </DialogTrigger>
+            <DialogContent className="bg-white min-w-[95vw] max-h-[85vh] overflow-scroll">
+              <DialogHeader className={"flex flex-row gap-3 items-baseline"}>
+                <Button
+                  type="button"
+                  variant="default"
+                  disabled={!selectedImg}
+                  onClick={() => {
+                    form.setValue("imgLarge", selectedImg);
+                    setSelectedImg("");
+                  }}
+                >
+                  Set as Primary 940x470 img
+                </Button>
+                <Button
+                  className={"mt-[0px] m-[0px]"}
+                  type="button"
+                  variant="outline"
+                  disabled={!selectedImg}
+                  onClick={() => {
+                    form.setValue("imgThumbnail", selectedImg);
+                    setSelectedImg("");
+                  }}
+                >
+                  Set as Small 50x25 Img
+                </Button>
+              </DialogHeader>
+              <ImageGallery setSelectedImg={setSelectedImg} />
+            </DialogContent>
+          </Dialog>
         </div>
-        <Dialog>
-          <DialogTrigger asChild>
-            <Button type="button" variant={"outline"}>
-              View Images from Vercel Blob Storage
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="bg-white min-w-[95vw] max-h-[85vh] overflow-scroll">
-            <DialogHeader className={"flex flex-row gap-3 items-baseline"}>
-              <Button
-                type="button"
-                variant="default"
-                disabled={!selectedImg}
-                onClick={() => {
-                  form.setValue("imgLarge", selectedImg);
-                  setSelectedImg("");
-                }}
-              >
-                Set as Primary 940x470 img
-              </Button>
-              <Button
-                className={"mt-[0px] m-[0px]"}
-                type="button"
-                variant="outline"
-                disabled={!selectedImg}
-                onClick={() => {
-                  form.setValue("imgThumbnail", selectedImg);
-                  setSelectedImg("");
-                }}
-              >
-                Set as Small 50x25 Img
-              </Button>
-            </DialogHeader>
-            <ImageGallery setSelectedImg={setSelectedImg} />
-          </DialogContent>
-        </Dialog>
 
         <div className="flex flex-col gap-5 md:flex-row">
           <FormField
@@ -238,23 +238,23 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="location"
             render={({ field }) => (
               <FormItem className="w-full">
+                <FormLabel>Location</FormLabel>
                 <FormControl>
                   <div className="flex-center w-full">
-                    <Input placeholder="Location" {...field} />
+                    <Input {...field} />
                   </div>
                 </FormControl>
                 <FormMessage />
               </FormItem>
             )}
           />
-        </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
           <FormField
             control={form.control}
             name="startDateTime"
             render={({ field }) => (
               <FormItem className="w-full">
+                <FormLabel>Start Time/Date</FormLabel>
                 <FormControl>
                   <DatePicker
                     selected={field.value}
@@ -275,6 +275,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="endDateTime"
             render={({ field }) => (
               <FormItem className="w-full">
+                <FormLabel>End Time/Date</FormLabel>
                 <FormControl>
                   <DatePicker
                     selected={field.value}
@@ -291,14 +292,15 @@ const EventForm = ({ event, type }: EventFormProps) => {
           />
         </div>
 
-        <div className="flex flex-col gap-5 md:flex-row">
+        <div className="grid grid-cols-3 gap-5 md:flex-row items-end">
           <FormField
             control={form.control}
             name="price"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="">
+                <FormLabel>Price</FormLabel>
                 <FormControl>
-                  <Input type="number" placeholder="Price" {...field} />
+                  <Input type="number" {...field} />
                 </FormControl>
                 <FormMessage />
               </FormItem>
@@ -309,14 +311,16 @@ const EventForm = ({ event, type }: EventFormProps) => {
             name="isFree"
             render={({ field }) => (
               <FormItem>
-                <FormControl>
-                  <Checkbox
-                    onCheckedChange={field.onChange}
-                    checked={field.value}
-                    id="isFree"
-                    className="mr-2 h-5 w-5 border-2"
-                  />
-                </FormControl>
+                <div className="items-top flex space-x-2">
+                  <FormControl>
+                    <Checkbox
+                      onCheckedChange={field.onChange}
+                      checked={field.value}
+                      id="isFree"
+                    />
+                  </FormControl>
+                  <FormLabel>Is Free</FormLabel>
+                </div>
                 <FormMessage />
               </FormItem>
             )}
