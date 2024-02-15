@@ -46,7 +46,7 @@ const EventDetails = async ({
             </div>
           </div>
           {/* Date & Share Btn */}
-          <div className="flex flex-between event-wrapper-width pt-5 md:pt-12 pb-2">
+          <div className="flex justify-between items-center event-wrapper-width pt-5 md:pt-12 pb-2">
             <p className={"text-base lg:text-lg font-semibold text-gray-600"}>
               {formatDateTime(event.startDateTime).dateOnlyWithoutYear} •{" "}
               {event.category.name}

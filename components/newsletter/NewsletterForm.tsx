@@ -82,7 +82,7 @@ const NewsletterForm = () => {
               <FormControl>
                 <Input
                   {...field}
-                  className={"input-field pb-6"}
+                  className={"pb-6"}
                   placeholder={"First Name"}
                 />
               </FormControl>
@@ -97,12 +97,7 @@ const NewsletterForm = () => {
             <FormItem className={"mt-3"}>
               {/*<FormLabel>Email</FormLabel>*/}
               <FormControl>
-                <Input
-                  {...field}
-                  type="email"
-                  className={"input-field"}
-                  placeholder={"Email Address"}
-                />
+                <Input {...field} type="email" placeholder={"Email Address"} />
               </FormControl>
               <FormMessage className={"pl-3"} />
             </FormItem>

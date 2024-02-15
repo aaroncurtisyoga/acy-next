@@ -49,20 +49,14 @@ const CategoryFilter = () => {
 
   return (
     <Select onValueChange={(value: string) => onSelectCategory(value)}>
-      <SelectTrigger className="select-field">
+      <SelectTrigger>
         <SelectValue placeholder="Category" />
       </SelectTrigger>
       <SelectContent>
-        <SelectItem value="All" className="select-item">
-          All
-        </SelectItem>
+        <SelectItem value="All">All</SelectItem>
 
         {categories.map((category) => (
-          <SelectItem
-            value={category.name}
-            key={category._id}
-            className="select-item "
-          >
+          <SelectItem value={category.name} key={category._id}>
             {category.name}
           </SelectItem>
         ))}
