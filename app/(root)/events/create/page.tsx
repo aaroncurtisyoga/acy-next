@@ -2,6 +2,7 @@ import EventForm from "@/components/events/EventForm";
 import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
+import LocationInput from "@/components/shared/LocationInput";
 
 const CreateEvent = () => {
   // If the user does not have the admin role, redirect them to the home page
@@ -13,7 +14,8 @@ const CreateEvent = () => {
     <section className={"wrapper"}>
       <h3>Create Event</h3>
       <div className={"my-8"}>
-        <EventForm type={"Create"} />
+        {/*<EventForm type={"Create"} />*/}
+        <LocationInput />
       </div>
     </section>
   );
