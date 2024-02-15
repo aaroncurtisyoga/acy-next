@@ -6,11 +6,7 @@ import { Input } from "../ui/input";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 
-const Search = ({
-  placeholder = "Search Upcoming Events",
-}: {
-  placeholder?: string;
-}) => {
+const Search = () => {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -39,12 +35,8 @@ const Search = ({
   }, [query, searchParams, router]);
 
   return (
-    <div className="flex-center w-full">
-      <Input
-        type="text"
-        placeholder={placeholder}
-        onChange={(e) => setQuery(e.target.value)}
-      />
+    <div className="w-full">
+      <Input type="text" onChange={(e) => setQuery(e.target.value)} />
     </div>
   );
 };
