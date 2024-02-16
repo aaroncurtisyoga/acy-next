@@ -5,7 +5,6 @@ import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { DevTool } from "@hookform/devtools";
 import * as z from "zod";
 import {
   Form,
@@ -443,7 +442,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
         >
           {form.formState.isSubmitting ? "Submitting..." : `${type} Event `}
         </Button>
-        <DevTool control={form.control} />
       </form>
     </Form>
   );
