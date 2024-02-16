@@ -5,6 +5,7 @@ import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { DevTool } from "@hookform/devtools";
 import * as z from "zod";
 import {
   Form,
@@ -71,7 +72,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
     resolver: zodResolver(EventFormSchema),
     defaultValues: eventInitialValues,
   });
-  const [suggestions, setSuggestions] = useState([]);
+  const [locationSuggestions, setLocationSuggestions] = useState([]);
   const sessionTokenRef = useRef<string>();
   const timeoutRef = useRef<NodeJS.Timeout>();
 
@@ -130,7 +131,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
     clearTimeout(timeoutRef.current);
 
     if (!inputValue || inputValue.trim().length <= 3) {
-      setSuggestions([]);
+      setLocationSuggestions([]);
       return;
     }
 
@@ -149,7 +150,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         },
         (predictions, status) => {
           if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-            setSuggestions([]);
+            setLocationSuggestions([]);
             return;
           }
           if (
@@ -159,23 +160,11 @@ const EventForm = ({ event, type }: EventFormProps) => {
             console.log("Error fetching location suggestions");
             return;
           }
-          setSuggestions(predictions);
+          setLocationSuggestions(predictions);
         },
       );
     }, 350);
   };
-
-  const languages = [
-    { label: "English", value: "en" },
-    { label: "French", value: "fr" },
-    { label: "German", value: "de" },
-    { label: "Spanish", value: "es" },
-    { label: "Portuguese", value: "pt" },
-    { label: "Russian", value: "ru" },
-    { label: "Japanese", value: "ja" },
-    { label: "Korean", value: "ko" },
-    { label: "Chinese", value: "zh" },
-  ] as const;
 
   return (
     <Form {...form}>
@@ -309,7 +298,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
               <Command>
                 <FormItem className="flex flex-col">
                   <FormLabel>Location</FormLabel>
-                  <Popover>
+                  <Popover open={!!locationSuggestions.length}>
                     <PopoverTrigger asChild>
                       <FormControl>
                         <CommandInput
@@ -323,31 +312,20 @@ const EventForm = ({ event, type }: EventFormProps) => {
                     </PopoverTrigger>
                     <PopoverContent className="w-[200px] p-0">
                       <CommandGroup>
-                        {languages.map((language) => (
+                        {locationSuggestions.map((location) => (
                           <CommandItem
-                            value={language.label}
-                            key={language.value}
+                            value={location.description}
+                            key={location.place_id}
                             onSelect={() => {
-                              form.setValue("location", language.value);
+                              form.setValue("location", location);
                             }}
                           >
-                            {language.label}
-                            <CheckIcon
-                              className={cn(
-                                "ml-auto h-4 w-4",
-                                language.value === field.value
-                                  ? "opacity-100"
-                                  : "opacity-0",
-                              )}
-                            />
+                            {location.description}
                           </CommandItem>
                         ))}
                       </CommandGroup>
                     </PopoverContent>
                   </Popover>
-                  <FormDescription>
-                    This is the language that will be used in the dashboard.
-                  </FormDescription>
                   <FormMessage />
                 </FormItem>
               </Command>
@@ -440,6 +418,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         >
           {form.formState.isSubmitting ? "Submitting..." : `${type} Event `}
         </Button>
+        <DevTool control={form.control} />
       </form>
     </Form>
   );
