@@ -1,8 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -10,6 +9,7 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -35,6 +35,21 @@ import {
   DialogHeader,
   DialogTrigger,
 } from "@/components/ui/dialog";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import { cn } from "@/lib/utils";
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+} from "@/components/ui/command";
+import { CheckIcon, ChevronsUpDown } from "lucide-react";
+import { getGoogleMapsApiClient } from "@/lib/googleMaps";
 
 type EventFormProps = {
   event?: IEvent;
@@ -56,6 +71,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
     resolver: zodResolver(EventFormSchema),
     defaultValues: eventInitialValues,
   });
+  const [suggestions, setSuggestions] = useState([]);
+  const sessionTokenRef = useRef<string>();
+  const timeoutRef = useRef<NodeJS.Timeout>();
 
   async function createNewEvent(values: z.infer<typeof EventFormSchema>) {
     try {
@@ -107,6 +125,57 @@ const EventForm = ({ event, type }: EventFormProps) => {
       }
     }
   }
+
+  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
+    clearTimeout(timeoutRef.current);
+
+    if (!inputValue || inputValue.trim().length <= 3) {
+      setSuggestions([]);
+      return;
+    }
+
+    timeoutRef.current = setTimeout(async () => {
+      const google = await getGoogleMapsApiClient();
+      if (!sessionTokenRef.current) {
+        sessionTokenRef.current =
+          new google.maps.places.AutocompleteSessionToken();
+      }
+
+      // @see https://developers.google.com/maps/documentation/javascript/place-autocomplete
+      await new google.maps.places.AutocompleteService().getPlacePredictions(
+        {
+          input: inputValue,
+          sessionToken: sessionTokenRef.current,
+        },
+        (predictions, status) => {
+          if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
+            setSuggestions([]);
+            return;
+          }
+          if (
+            status !== google.maps.places.PlacesServiceStatus.OK ||
+            !predictions
+          ) {
+            console.log("Error fetching location suggestions");
+            return;
+          }
+          setSuggestions(predictions);
+        },
+      );
+    }, 350);
+  };
+
+  const languages = [
+    { label: "English", value: "en" },
+    { label: "French", value: "fr" },
+    { label: "German", value: "de" },
+    { label: "Spanish", value: "es" },
+    { label: "Portuguese", value: "pt" },
+    { label: "Russian", value: "ru" },
+    { label: "Japanese", value: "ja" },
+    { label: "Korean", value: "ko" },
+    { label: "Chinese", value: "zh" },
+  ] as const;
 
   return (
     <Form {...form}>
@@ -237,13 +306,63 @@ const EventForm = ({ event, type }: EventFormProps) => {
             control={form.control}
             name="location"
             render={({ field }) => (
-              <FormItem className="w-full">
+              <FormItem className="flex flex-col">
                 <FormLabel>Location</FormLabel>
-                <FormControl>
-                  <div className="flex-center w-full">
-                    <Input {...field} />
-                  </div>
-                </FormControl>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-[200px] justify-between",
+                          !field.value && "text-muted-foreground",
+                        )}
+                      >
+                        {/* Todo: Might need refactoring bc likely to be obj
+                         and not string*/}
+                        {field.value ? field.value : "Search location"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search framework..."
+                        className="h-9"
+                        onValueChange={(value) => {
+                          loadGoogleMapsLocationSuggestions(value);
+                        }}
+                      />
+                      <CommandEmpty>No framework found.</CommandEmpty>
+                      <CommandGroup>
+                        {languages.map((language) => (
+                          <CommandItem
+                            value={language.label}
+                            key={language.value}
+                            onSelect={() => {
+                              form.setValue("location", language.value);
+                            }}
+                          >
+                            {language.label}
+                            <CheckIcon
+                              className={cn(
+                                "ml-auto h-4 w-4",
+                                language.value === field.value
+                                  ? "opacity-100"
+                                  : "opacity-0",
+                              )}
+                            />
+                          </CommandItem>
+                        ))}
+                      </CommandGroup>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
+                <FormDescription>
+                  This is the language that will be used in the dashboard.
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
