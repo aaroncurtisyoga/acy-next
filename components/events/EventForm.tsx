@@ -330,7 +330,17 @@ const EventForm = ({ event, type }: EventFormProps) => {
                             value={location.description}
                             key={location.place_id}
                             onSelect={() => {
-                              form.setValue("location", location);
+                              form.setValue("location", {
+                                description: location.description,
+                                placeId: location.place_id,
+                                structuredFormatting: {
+                                  mainText:
+                                    location.structured_formatting.main_text,
+                                  secondaryText:
+                                    location.structured_formatting
+                                      .secondary_text,
+                                },
+                              });
                               setLocationSearch(location.description);
                               setIsOpenLocationDropdown(false);
                             }}

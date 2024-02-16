@@ -14,7 +14,14 @@ export interface IEvent extends Document {
   imgThumbnail: string; // 50 x 25
   isFree: boolean;
   isHostedExternally?: boolean;
-  location?: string;
+  location: {
+    description: string;
+    placeId: string;
+    structuredFormatting: {
+      mainText: string;
+      secondaryText: string;
+    };
+  };
   price: string;
   startDateTime: Date;
   title: string;
@@ -30,7 +37,14 @@ const EventSchema = new Schema({
   imgThumbnail: String,
   isFree: { type: Boolean, default: false },
   isHostedExternally: { type: Boolean, required: false },
-  location: { type: String, required: false },
+  location: {
+    description: String,
+    placeId: String,
+    structuredFormatting: {
+      mainText: String,
+      secondaryText: String,
+    },
+  },
   price: { type: String },
   startDateTime: { type: Date, default: Date.now },
   title: { type: String, required: true },

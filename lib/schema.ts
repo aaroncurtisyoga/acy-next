@@ -17,7 +17,15 @@ export const EventFormSchema = z.object({
     .string()
     .min(3, "Must be at least 3 letters ")
     .max(2000, "Should not be more than 2000 characters"),
-  location: z.string().min(3, "Must be at least 3 characters"),
+  location: {
+    // @ts-ignore
+    description: z.string(),
+    placeId: z.string(),
+    structuredFormatting: {
+      mainText: z.string(),
+      secondaryText: z.string(),
+    },
+  },
   imgLarge: z.string(),
   imgThumbnail: z.string(),
   startDateTime: z.date(),

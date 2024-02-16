@@ -58,7 +58,14 @@ export const faqInfo = [
 export const eventDefaultValues = {
   title: "",
   description: "",
-  location: "",
+  location: {
+    description: "",
+    placeId: "",
+    structuredFormatting: {
+      mainText: "",
+      secondaryText: "",
+    },
+  },
   imageUrl: "",
   startDateTime: new Date(),
   endDateTime: new Date(),
