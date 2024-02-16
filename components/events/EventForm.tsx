@@ -306,36 +306,22 @@ const EventForm = ({ event, type }: EventFormProps) => {
             control={form.control}
             name="location"
             render={({ field }) => (
-              <FormItem className="flex flex-col">
-                <FormLabel>Location</FormLabel>
-                <Popover>
-                  <PopoverTrigger asChild>
-                    <FormControl>
-                      <Button
-                        variant="outline"
-                        role="combobox"
-                        className={cn(
-                          "w-[200px] justify-between",
-                          !field.value && "text-muted-foreground",
-                        )}
-                      >
-                        {/* Todo: Might need refactoring bc likely to be obj
-                         and not string*/}
-                        {field.value ? field.value : "Search location"}
-                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
-                      </Button>
-                    </FormControl>
-                  </PopoverTrigger>
-                  <PopoverContent className="w-[200px] p-0">
-                    <Command>
-                      <CommandInput
-                        placeholder="Search framework..."
-                        className="h-9"
-                        onValueChange={(value) => {
-                          loadGoogleMapsLocationSuggestions(value);
-                        }}
-                      />
-                      <CommandEmpty>No framework found.</CommandEmpty>
+              <Command>
+                <FormItem className="flex flex-col">
+                  <FormLabel>Location</FormLabel>
+                  <Popover>
+                    <PopoverTrigger asChild>
+                      <FormControl>
+                        <CommandInput
+                          placeholder="Search framework..."
+                          className="h-9"
+                          onValueChange={(value) => {
+                            loadGoogleMapsLocationSuggestions(value);
+                          }}
+                        />
+                      </FormControl>
+                    </PopoverTrigger>
+                    <PopoverContent className="w-[200px] p-0">
                       <CommandGroup>
                         {languages.map((language) => (
                           <CommandItem
@@ -357,14 +343,14 @@ const EventForm = ({ event, type }: EventFormProps) => {
                           </CommandItem>
                         ))}
                       </CommandGroup>
-                    </Command>
-                  </PopoverContent>
-                </Popover>
-                <FormDescription>
-                  This is the language that will be used in the dashboard.
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+                    </PopoverContent>
+                  </Popover>
+                  <FormDescription>
+                    This is the language that will be used in the dashboard.
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              </Command>
             )}
           />
 
