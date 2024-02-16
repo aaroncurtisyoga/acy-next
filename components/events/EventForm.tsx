@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -49,8 +49,8 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { CheckIcon, ChevronsUpDown } from "lucide-react";
 import { getGoogleMapsApiClient } from "@/lib/googleMaps";
+import AutocompletePrediction = google.maps.places.AutocompletePrediction;
 
 type EventFormProps = {
   event?: IEvent;
@@ -72,9 +72,15 @@ const EventForm = ({ event, type }: EventFormProps) => {
     resolver: zodResolver(EventFormSchema),
     defaultValues: eventInitialValues,
   });
+  const [locationSearch, setLocationSearch] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const sessionTokenRef = useRef<string>();
   const timeoutRef = useRef<NodeJS.Timeout>();
+
+  useEffect(() => {
+    // This gets debounced inside the fn itself
+    loadGoogleMapsLocationSuggestions(locationSearch);
+  }, [locationSearch]);
 
   async function createNewEvent(values: z.infer<typeof EventFormSchema>) {
     try {
@@ -148,7 +154,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
           input: inputValue,
           sessionToken: sessionTokenRef.current,
         },
-        (predictions, status) => {
+        (predictions: Array<AutocompletePrediction>, status) => {
           if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
             setLocationSuggestions([]);
             return;
@@ -305,8 +311,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
                           placeholder="Search framework..."
                           className="h-9"
                           onValueChange={(value) => {
-                            loadGoogleMapsLocationSuggestions(value);
+                            setLocationSearch(value);
                           }}
+                          value={locationSearch}
                         />
                       </FormControl>
                     </PopoverTrigger>
@@ -318,6 +325,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
                             key={location.place_id}
                             onSelect={() => {
                               form.setValue("location", location);
+                              setLocationSearch(location.description);
                             }}
                           >
                             {location.description}
