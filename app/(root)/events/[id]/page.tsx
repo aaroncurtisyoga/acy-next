@@ -75,7 +75,7 @@ const EventDetails = async ({
               <h2 className={"text-2xl font-bold mb-3"}>Location</h2>
               <div className={"flex items-center mb-6 gap-4 md:mb-8"}>
                 <MapPin size={14} />
-                <p className={"text-sm"}>{event.location}</p>
+                <p className={"text-sm"}>{event.location.description}</p>
               </div>
               {!event.isFree && (
                 <div className={"mb-6 md:mb-8"}>
