@@ -74,6 +74,8 @@ const EventForm = ({ event, type }: EventFormProps) => {
   });
   const [locationSearch, setLocationSearch] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
+  const [isOpenLocationDropdown, setIsOpenLocationDropdown] = useState(false);
+
   const sessionTokenRef = useRef<string>();
   const timeoutRef = useRef<NodeJS.Timeout>();
 
@@ -167,6 +169,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
             return;
           }
           setLocationSuggestions(predictions);
+          setIsOpenLocationDropdown(true);
         },
       );
     }, 350);
@@ -304,11 +307,14 @@ const EventForm = ({ event, type }: EventFormProps) => {
               <Command>
                 <FormItem className="flex flex-col">
                   <FormLabel>Location</FormLabel>
-                  <Popover open={!!locationSuggestions.length}>
+                  <Popover
+                    open={isOpenLocationDropdown}
+                    onOpenChange={setIsOpenLocationDropdown}
+                  >
                     <PopoverTrigger asChild>
                       <FormControl>
                         <CommandInput
-                          placeholder="Search framework..."
+                          placeholder="Find location..."
                           className="h-9"
                           onValueChange={(value) => {
                             setLocationSearch(value);
@@ -326,6 +332,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
                             onSelect={() => {
                               form.setValue("location", location);
                               setLocationSearch(location.description);
+                              setIsOpenLocationDropdown(false);
                             }}
                           >
                             {location.description}
