@@ -74,15 +74,23 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const [locationSearch, setLocationSearch] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [isOpenLocationDropdown, setIsOpenLocationDropdown] = useState(false);
-
   const sessionTokenRef = useRef<string>();
   const timeoutRef = useRef<NodeJS.Timeout>();
+  const watchStartDateTime = form.watch("startDateTime");
 
   useEffect(() => {
     // This gets debounced inside the fn itself
     loadGoogleMapsLocationSuggestions(locationSearch);
   }, [locationSearch]);
 
+  useEffect(() => {
+    if (watchStartDateTime > form.getValues("endDateTime")) {
+      form.setValue(
+        "endDateTime",
+        new Date(watchStartDateTime.getTime() + 60 * 60 * 1000),
+      );
+    }
+  }, [form, watchStartDateTime]);
   async function createNewEvent(values: z.infer<typeof EventFormSchema>) {
     try {
       const newEvent = await createEvent({ event: values, path: "/events" });
