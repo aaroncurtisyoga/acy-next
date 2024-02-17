@@ -182,6 +182,58 @@ const EventForm = ({ event, type }: EventFormProps) => {
     }, 350);
   };
 
+  /*  const getLocationDetails = async (location: any) => {
+  console.log("getLocationDetails", location);
+  //  Set the location input to the selected location
+  // setLocationSearch(location.description);
+  // setIsOpenLocationDropdown(false);
+
+  const google = await getGoogleMapsApiClient();
+  // Clear the session token, it can only be used in one request
+  const sessionToken = sessionTokenRef.current;
+  sessionTokenRef.current = undefined;
+  // @see https://developers.google.com/maps/documentation/javascript/places
+  await new google.maps.places.PlacesService().getDetails(
+    {
+      placeId: location.place_id,
+      fields: [
+        // you can pick the fields you want for your application
+        // @see https://developers.google.com/maps/documentation/javascript/place-data-fields
+        "name",
+        "geometry.location",
+        "url",
+      ],
+      // pass the session token so all autocomplete requests are counted as part of this places request
+      sessionToken,
+    },
+    (place, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        console.log("place", place);
+        //  todo: set form state here
+        return place;
+      } else {
+        return status;
+      }
+    },
+  );
+};*/
+
+  const handleLocationSelect = async (location) => {
+    // Todo: get lat/lng from logic in fn above THEN set location formstate
+    //  (prob new fn for that ...) setFormState
+    console.log("location", location);
+    form.setValue("location", {
+      description: location.description,
+      placeId: location.place_id,
+      structuredFormatting: {
+        mainText: location.structured_formatting.main_text,
+        secondaryText: location.structured_formatting.secondary_text,
+      },
+    });
+    setLocationSearch(location.description);
+    setIsOpenLocationDropdown(false);
+  };
+
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
@@ -324,20 +376,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
                         <CommandItem
                           value={location.description}
                           key={location.place_id}
-                          onSelect={() => {
-                            form.setValue("location", {
-                              description: location.description,
-                              placeId: location.place_id,
-                              structuredFormatting: {
-                                mainText:
-                                  location.structured_formatting.main_text,
-                                secondaryText:
-                                  location.structured_formatting.secondary_text,
-                              },
-                            });
-                            setLocationSearch(location.description);
-                            setIsOpenLocationDropdown(false);
-                          }}
+                          onSelect={() => handleLocationSelect(location)}
                         >
                           {location.description}
                         </CommandItem>
