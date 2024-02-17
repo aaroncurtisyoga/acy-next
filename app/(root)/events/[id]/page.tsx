@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { CalendarCheck2, MapPin } from "lucide-react";
+import { CalendarCheck2 } from "lucide-react";
 import Collection from "@/components/events/Collection";
 import CheckoutButton from "@/components/events/CheckoutButton";
 import ShareEvent from "@/components/events/ShareEvent";
