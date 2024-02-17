@@ -48,6 +48,8 @@ import {
 } from "@/components/ui/command";
 import { getGoogleMapsApiClient } from "@/lib/googleMaps";
 import AutocompletePrediction = google.maps.places.AutocompletePrediction;
+import { autocompleteSuggestions } from "@/lib/actions/google.actions";
+import { PlaceAutocompleteResponse } from "@googlemaps/google-maps-services-js";
 
 type EventFormProps = {
   event?: IEvent;
@@ -78,7 +80,14 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   useEffect(() => {
     // This gets debounced inside the fn itself
-    loadGoogleMapsLocationSuggestions(locationSearch);
+    // loadGoogleMapsLocationSuggestions(locationSearch);
+    if (!locationSearch || locationSearch.trim().length <= 3) {
+      return;
+    }
+    autocompleteSuggestions(locationSearch).then((r: any) => {
+      setLocationSuggestions(r);
+      setIsOpenLocationDropdown(true);
+    });
   }, [locationSearch]);
 
   useEffect(() => {
@@ -140,7 +149,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
     }
   }
 
-  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
+  /*  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
     clearTimeout(timeoutRef.current);
 
     if (!inputValue || inputValue.trim().length <= 3) {
@@ -178,7 +187,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         },
       );
     }, 350);
-  };
+  };*/
 
   return (
     <Form {...form}>
