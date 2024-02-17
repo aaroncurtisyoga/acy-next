@@ -184,263 +184,249 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   return (
     <Form {...form}>
-      <form
-        onSubmit={form.handleSubmit(onSubmit)}
-        className={"flex flex-col gap-5"}
-      >
-        <div className="flex flex-col gap-5 md:flex-row">
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Name</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="categoryId"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Category</FormLabel>
-                <FormControl>
-                  <Dropdown
-                    onChangeHandler={field.onChange}
-                    value={field.value}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+      <form onSubmit={form.handleSubmit(onSubmit)}>
+        <FormField
+          control={form.control}
+          name="title"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Name</FormLabel>
+              <FormControl>
+                <Input {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="categoryId"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Category</FormLabel>
+              <FormControl>
+                <Dropdown
+                  onChangeHandler={field.onChange}
+                  value={field.value}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        <div className="flex flex-col gap-5">
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Description</FormLabel>
-                <FormControl>
-                  <Textarea {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
-        <div className="flex flex-col gap-5 md:flex-row items-end">
-          <FormField
-            control={form.control}
-            name="imgLarge"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <Label>Large Image: 940 x 470</Label>
-                <FormControl className="h-72">
-                  <FileUpload
-                    imageUrl={field.value}
-                    onFieldChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="imgThumbnail"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <Label>Small Image: 50 x 25</Label>
-                <FormControl className="h-72">
-                  <FileUpload
-                    imageUrl={field.value}
-                    onFieldChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <Dialog>
-            <DialogTrigger asChild>
-              <Button type="button" variant={"outline"}>
-                View Images from Vercel Blob Storage
+        <FormField
+          control={form.control}
+          name="imgLarge"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <Label>Large Image: 940 x 470</Label>
+              <FormControl className="h-72">
+                <FileUpload
+                  imageUrl={field.value}
+                  onFieldChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="imgThumbnail"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <Label>Small Image: 50 x 25</Label>
+              <FormControl className="h-72">
+                <FileUpload
+                  imageUrl={field.value}
+                  onFieldChange={field.onChange}
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <Dialog>
+          <DialogTrigger asChild>
+            <Button type="button" variant={"outline"}>
+              View Images from Vercel Blob Storage
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="bg-white min-w-[95vw] max-h-[85vh] overflow-scroll">
+            <DialogHeader className={"flex flex-row gap-3 items-baseline"}>
+              <Button
+                type="button"
+                variant="default"
+                disabled={!selectedImg}
+                onClick={() => {
+                  form.setValue("imgLarge", selectedImg);
+                  setSelectedImg("");
+                }}
+              >
+                Set as Primary 940x470 img
               </Button>
-            </DialogTrigger>
-            <DialogContent className="bg-white min-w-[95vw] max-h-[85vh] overflow-scroll">
-              <DialogHeader className={"flex flex-row gap-3 items-baseline"}>
-                <Button
-                  type="button"
-                  variant="default"
-                  disabled={!selectedImg}
-                  onClick={() => {
-                    form.setValue("imgLarge", selectedImg);
-                    setSelectedImg("");
-                  }}
-                >
-                  Set as Primary 940x470 img
-                </Button>
-                <Button
-                  className={"mt-[0px] m-[0px]"}
-                  type="button"
-                  variant="outline"
-                  disabled={!selectedImg}
-                  onClick={() => {
-                    form.setValue("imgThumbnail", selectedImg);
-                    setSelectedImg("");
-                  }}
-                >
-                  Set as Small 50x25 Img
-                </Button>
-              </DialogHeader>
-              <ImageGallery setSelectedImg={setSelectedImg} />
-            </DialogContent>
-          </Dialog>
-        </div>
+              <Button
+                className={"mt-[0px] m-[0px]"}
+                type="button"
+                variant="outline"
+                disabled={!selectedImg}
+                onClick={() => {
+                  form.setValue("imgThumbnail", selectedImg);
+                  setSelectedImg("");
+                }}
+              >
+                Set as Small 50x25 Img
+              </Button>
+            </DialogHeader>
+            <ImageGallery setSelectedImg={setSelectedImg} />
+          </DialogContent>
+        </Dialog>
 
-        <div className="flex flex-col gap-5 md:flex-row">
-          <FormField
-            control={form.control}
-            name="location"
-            render={({ field }) => (
-              <Command>
-                <FormItem className="flex flex-col">
-                  <FormLabel>Location</FormLabel>
-                  <Popover
-                    open={isOpenLocationDropdown}
-                    onOpenChange={setIsOpenLocationDropdown}
-                  >
-                    <PopoverTrigger asChild>
-                      <FormControl>
-                        <CommandInput
-                          placeholder="Find location..."
-                          className="h-9"
-                          onValueChange={(value) => {
-                            setLocationSearch(value);
+        <FormField
+          control={form.control}
+          name="location"
+          render={({ field }) => (
+            <Command>
+              <FormItem className="flex flex-col">
+                <FormLabel>Location</FormLabel>
+                <Popover
+                  open={isOpenLocationDropdown}
+                  onOpenChange={setIsOpenLocationDropdown}
+                >
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <CommandInput
+                        placeholder="Find location..."
+                        className="h-9"
+                        onValueChange={(value) => {
+                          setLocationSearch(value);
+                        }}
+                        value={locationSearch}
+                      />
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[200px] p-0">
+                    <CommandGroup>
+                      {locationSuggestions.map((location) => (
+                        <CommandItem
+                          value={location.description}
+                          key={location.place_id}
+                          onSelect={() => {
+                            form.setValue("location", {
+                              description: location.description,
+                              placeId: location.place_id,
+                              structuredFormatting: {
+                                mainText:
+                                  location.structured_formatting.main_text,
+                                secondaryText:
+                                  location.structured_formatting.secondary_text,
+                              },
+                            });
+                            setLocationSearch(location.description);
+                            setIsOpenLocationDropdown(false);
                           }}
-                          value={locationSearch}
-                        />
-                      </FormControl>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-[200px] p-0">
-                      <CommandGroup>
-                        {locationSuggestions.map((location) => (
-                          <CommandItem
-                            value={location.description}
-                            key={location.place_id}
-                            onSelect={() => {
-                              form.setValue("location", {
-                                description: location.description,
-                                placeId: location.place_id,
-                                structuredFormatting: {
-                                  mainText:
-                                    location.structured_formatting.main_text,
-                                  secondaryText:
-                                    location.structured_formatting
-                                      .secondary_text,
-                                },
-                              });
-                              setLocationSearch(location.description);
-                              setIsOpenLocationDropdown(false);
-                            }}
-                          >
-                            {location.description}
-                          </CommandItem>
-                        ))}
-                      </CommandGroup>
-                    </PopoverContent>
-                  </Popover>
-                  <FormMessage />
-                </FormItem>
-              </Command>
-            )}
-          />
+                        >
+                          {location.description}
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </PopoverContent>
+                </Popover>
+                <FormMessage />
+              </FormItem>
+            </Command>
+          )}
+        />
 
-          <FormField
-            control={form.control}
-            name="startDateTime"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>Start Time/Date</FormLabel>
+        <FormField
+          control={form.control}
+          name="startDateTime"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>Start Time/Date</FormLabel>
+              <FormControl>
+                <DatePicker
+                  selected={field.value}
+                  onChange={(date: Date) => field.onChange(date)}
+                  showTimeSelect
+                  timeInputLabel="Time:"
+                  dateFormat="MM/dd/yyyy h:mm aa"
+                  wrapperClassName="datePicker"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="endDateTime"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormLabel>End Time/Date</FormLabel>
+              <FormControl>
+                <DatePicker
+                  selected={field.value}
+                  onChange={(date: Date) => field.onChange(date)}
+                  showTimeSelect
+                  timeInputLabel="Time:"
+                  dateFormat="MM/dd/yyyy h:mm aa"
+                  wrapperClassName="datePicker"
+                />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="price"
+          render={({ field }) => (
+            <FormItem className="">
+              <FormLabel>Price</FormLabel>
+              <FormControl>
+                <Input type="number" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="isFree"
+          render={({ field }) => (
+            <FormItem>
+              <div className="items-top flex space-x-2">
                 <FormControl>
-                  <DatePicker
-                    selected={field.value}
-                    onChange={(date: Date) => field.onChange(date)}
-                    showTimeSelect
-                    timeInputLabel="Time:"
-                    dateFormat="MM/dd/yyyy h:mm aa"
-                    wrapperClassName="datePicker"
+                  <Checkbox
+                    onCheckedChange={field.onChange}
+                    checked={field.value}
+                    id="isFree"
                   />
                 </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          <FormField
-            control={form.control}
-            name="endDateTime"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <FormLabel>End Time/Date</FormLabel>
-                <FormControl>
-                  <DatePicker
-                    selected={field.value}
-                    onChange={(date: Date) => field.onChange(date)}
-                    showTimeSelect
-                    timeInputLabel="Time:"
-                    dateFormat="MM/dd/yyyy h:mm aa"
-                    wrapperClassName="datePicker"
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
-
-        <div className="grid grid-cols-3 gap-5 md:flex-row items-end">
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem className="">
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input type="number" {...field} />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="isFree"
-            render={({ field }) => (
-              <FormItem>
-                <div className="items-top flex space-x-2">
-                  <FormControl>
-                    <Checkbox
-                      onCheckedChange={field.onChange}
-                      checked={field.value}
-                      id="isFree"
-                    />
-                  </FormControl>
-                  <FormLabel>Is Free</FormLabel>
-                </div>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-        </div>
+                <FormLabel>Is Free</FormLabel>
+              </div>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
 
         <Button
           type="submit"
