@@ -149,46 +149,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
     }
   }
 
-  /*  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
-    clearTimeout(timeoutRef.current);
-
-    if (!inputValue || inputValue.trim().length <= 3) {
-      setLocationSuggestions([]);
-      return;
-    }
-
-    timeoutRef.current = setTimeout(async () => {
-      const google = await getGoogleMapsApiClient();
-      if (!sessionTokenRef.current) {
-        sessionTokenRef.current =
-          new google.maps.places.AutocompleteSessionToken();
-      }
-
-      // @see https://developers.google.com/maps/documentation/javascript/place-autocomplete
-      await new google.maps.places.AutocompleteService().getPlacePredictions(
-        {
-          input: inputValue,
-          sessionToken: sessionTokenRef.current,
-        },
-        (predictions: Array<AutocompletePrediction>, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-            setLocationSuggestions([]);
-            return;
-          }
-          if (
-            status !== google.maps.places.PlacesServiceStatus.OK ||
-            !predictions
-          ) {
-            console.log("Error fetching location suggestions");
-            return;
-          }
-          setLocationSuggestions(predictions);
-          setIsOpenLocationDropdown(true);
-        },
-      );
-    }, 350);
-  };*/
-
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>

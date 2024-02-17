@@ -17,14 +17,9 @@ export const autocompleteSuggestions = async (search) => {
       },
     })
     .then((r: PlaceAutocompleteResponse) => {
-      console.log("r.data.predictions", r.data.predictions);
       return r.data.predictions;
     })
     .catch((e) => {
-      console.log(
-        "e.response.data.error_message",
-        e.response.data.error_message,
-      );
       return e.response.data.error_message;
     });
 };
