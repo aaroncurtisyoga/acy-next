@@ -1,5 +1,5 @@
 import Image from "next/image";
-import handstandPicture from "@/public/assets/images/HandstandScissorLeg.png";
+import handstandPicture from "@/public/assets/images/ScissorHandstand_LowRes-min.jpg";
 import AboutLinks from "@/components/shared/AboutLinks";
 import { Metadata } from "next";
 

@@ -3,6 +3,7 @@ import Link from "next/link";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 import { DeleteConfirmation } from "@/components/shared/DeleteConfirmation";
+import { Edit } from "lucide-react";
 
 type CardProps = {
   isAdmin: boolean;
@@ -20,12 +21,7 @@ const Card = ({ isAdmin, event }: CardProps) => {
           </Link>
           <div className={"flex gap-2"}>
             <Link href={`/events/${_id}/update`}>
-              <Image
-                src="/assets/icons/edit.svg"
-                alt="edit"
-                width={20}
-                height={20}
-              />
+              <Edit width={20} height={20} />
             </Link>
             <DeleteConfirmation eventId={_id} />
           </div>
@@ -58,7 +54,9 @@ const Card = ({ isAdmin, event }: CardProps) => {
             {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
             {formatDateTime(startDateTime).timeOnly}
           </p>
-          <p className={"md:text-sm mt-1"}>{event.location}</p>
+          <p className={"md:text-sm mt-1"}>
+            {event.location.structuredFormatting.mainText}
+          </p>
         </div>
       </div>
     </>
