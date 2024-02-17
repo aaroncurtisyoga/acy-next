@@ -40,10 +40,8 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { cn } from "@/lib/utils";
 import {
   Command,
-  CommandEmpty,
   CommandGroup,
   CommandInput,
   CommandItem,
@@ -214,7 +212,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="description"
@@ -228,7 +225,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
             </FormItem>
           )}
         />
-
         <FormField
           control={form.control}
           name="imgLarge"
