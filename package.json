@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
-    "@googlemaps/google-maps-services-js": "^3.3.42",
+    "@googlemaps/js-api-loader": "^1.16.2",
     "@hookform/resolvers": "^3.3.4",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -50,6 +50,7 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
+    "@types/google.maps": "^3.55.3",
     "@types/mailchimp__mailchimp_marketing": "^3.0.17",
     "@types/node": "20.10.5",
     "@types/react": "18.2.45",

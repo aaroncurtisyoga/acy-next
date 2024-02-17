@@ -80,14 +80,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   useEffect(() => {
     // This gets debounced inside the fn itself
-    // loadGoogleMapsLocationSuggestions(locationSearch);
-    if (!locationSearch || locationSearch.trim().length <= 3) {
-      return;
-    }
-    autocompleteSuggestions(locationSearch).then((r: any) => {
-      setLocationSuggestions(r);
-      setIsOpenLocationDropdown(true);
-    });
+    loadGoogleMapsLocationSuggestions(locationSearch);
   }, [locationSearch]);
 
   useEffect(() => {
@@ -149,7 +142,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
     }
   }
 
-  /*  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
+  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
     clearTimeout(timeoutRef.current);
 
     if (!inputValue || inputValue.trim().length <= 3) {
@@ -187,7 +180,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         },
       );
     }, 350);
-  };*/
+  };
 
   return (
     <Form {...form}>
