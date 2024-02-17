@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import EventForm from "@/components/events/EventForm";
+import EventForm from "@/components/events/EventForm/EventForm";
 import { checkRole } from "@/lib/utils";
 import { getEventById } from "@/lib/actions/event.actions";
 
