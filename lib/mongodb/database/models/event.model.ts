@@ -15,12 +15,13 @@ export interface IEvent extends Document {
   isFree: boolean;
   isHostedExternally?: boolean;
   location: {
-    description: string;
-    placeId: string;
-    structuredFormatting: {
-      mainText: string;
-      secondaryText: string;
+    formattedAddress: string;
+    geometry: {
+      lat: number;
+      lng: number;
     };
+    name: string;
+    placeId: string;
   };
   price: string;
   startDateTime: Date;
@@ -38,12 +39,13 @@ const EventSchema = new Schema({
   isFree: { type: Boolean, default: false },
   isHostedExternally: { type: Boolean, required: false },
   location: {
-    description: String,
-    placeId: String,
-    structuredFormatting: {
-      mainText: String,
-      secondaryText: String,
+    formattedAddress: String,
+    geometry: {
+      lat: Number,
+      lng: Number,
     },
+    name: String,
+    placeId: String,
   },
   price: { type: String },
   startDateTime: { type: Date, default: Date.now },

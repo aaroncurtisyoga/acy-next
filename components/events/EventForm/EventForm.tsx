@@ -48,8 +48,10 @@ import {
 } from "@/components/ui/command";
 import { getGoogleMapsApiClient } from "@/lib/googleMaps";
 import AutocompletePrediction = google.maps.places.AutocompletePrediction;
-import { autocompleteSuggestions } from "@/lib/actions/google.actions";
-import { PlaceAutocompleteResponse } from "@googlemaps/google-maps-services-js";
+import {
+  autocompleteSuggestions,
+  placeDetails,
+} from "@/lib/actions/google.actions";
 
 type EventFormProps = {
   event?: IEvent;
@@ -79,11 +81,10 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const watchStartDateTime = form.watch("startDateTime");
 
   useEffect(() => {
-    // loadGoogleMapsLocationSuggestions(locationSearch);
     if (!locationSearch || locationSearch.trim().length <= 3) {
       return;
     }
-    autocompleteSuggestions(locationSearch).then((r: any) => {
+    autocompleteSuggestions(locationSearch).then((r) => {
       setLocationSuggestions(r);
       setIsOpenLocationDropdown(true);
     });
@@ -148,95 +149,18 @@ const EventForm = ({ event, type }: EventFormProps) => {
     }
   }
 
-  const loadGoogleMapsLocationSuggestions = async (inputValue: string) => {
-    clearTimeout(timeoutRef.current);
-
-    if (!inputValue || inputValue.trim().length <= 3) {
-      setLocationSuggestions([]);
-      return;
-    }
-
-    timeoutRef.current = setTimeout(async () => {
-      const google = await getGoogleMapsApiClient();
-      if (!sessionTokenRef.current) {
-        sessionTokenRef.current =
-          new google.maps.places.AutocompleteSessionToken();
-      }
-
-      // @see https://developers.google.com/maps/documentation/javascript/place-autocomplete
-      await new google.maps.places.AutocompleteService().getPlacePredictions(
-        {
-          input: inputValue,
-          sessionToken: sessionTokenRef.current,
-        },
-        (predictions: Array<AutocompletePrediction>, status) => {
-          if (status === google.maps.places.PlacesServiceStatus.ZERO_RESULTS) {
-            setLocationSuggestions([]);
-            return;
-          }
-          if (
-            status !== google.maps.places.PlacesServiceStatus.OK ||
-            !predictions
-          ) {
-            console.log("Error fetching location suggestions");
-            return;
-          }
-          setLocationSuggestions(predictions);
-          setIsOpenLocationDropdown(true);
-        },
-      );
-    }, 350);
+  const handleSelectLocation = async (placeId: string) => {
+    await placeDetails(placeId).then((r) => setValueLocation(r));
   };
 
-  /*  const getLocationDetails = async (location: any) => {
-  console.log("getLocationDetails", location);
-  //  Set the location input to the selected location
-  // setLocationSearch(location.description);
-  // setIsOpenLocationDropdown(false);
-
-  const google = await getGoogleMapsApiClient();
-  // Clear the session token, it can only be used in one request
-  const sessionToken = sessionTokenRef.current;
-  sessionTokenRef.current = undefined;
-  // @see https://developers.google.com/maps/documentation/javascript/places
-  await new google.maps.places.PlacesService().getDetails(
-    {
-      placeId: location.place_id,
-      fields: [
-        // you can pick the fields you want for your application
-        // @see https://developers.google.com/maps/documentation/javascript/place-data-fields
-        "name",
-        "geometry.location",
-        "url",
-      ],
-      // pass the session token so all autocomplete requests are counted as part of this places request
-      sessionToken,
-    },
-    (place, status) => {
-      if (status === google.maps.places.PlacesServiceStatus.OK) {
-        console.log("place", place);
-        //  todo: set form state here
-        return place;
-      } else {
-        return status;
-      }
-    },
-  );
-};*/
-
-  const handleLocationSelect = async (location) => {
-    // Todo: get lat/lng from logic in fn above THEN set location formstate
-    //  (prob new fn for that ...) setFormState
-    console.log("location", location);
+  const setValueLocation = async (placeDetails) => {
     form.setValue("location", {
-      description: location.description,
-      placeId: location.place_id,
-      structuredFormatting: {
-        mainText: location.structured_formatting.main_text,
-        secondaryText: location.structured_formatting.secondary_text,
-      },
+      formattedAddress: placeDetails.formatted_address,
+      geometry: placeDetails.geometry.location,
+      name: placeDetails.name,
+      placeId: placeDetails.place_id,
     });
-    setLocationSearch(location.description);
+    setLocationSearch(placeDetails.formatted_address);
     setIsOpenLocationDropdown(false);
   };
 
@@ -382,7 +306,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
                         <CommandItem
                           value={location.description}
                           key={location.place_id}
-                          onSelect={() => handleLocationSelect(location)}
+                          onSelect={() =>
+                            handleSelectLocation(location.place_id)
+                          }
                         >
                           {location.description}
                         </CommandItem>
