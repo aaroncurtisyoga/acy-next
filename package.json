@@ -10,8 +10,8 @@
   },
   "dependencies": {
     "@clerk/nextjs": "^4.29.3",
-    "@googlemaps/js-api-loader": "^1.16.2",
     "@googlemaps/google-maps-services-js": "^3.3.42",
+    "@googlemaps/js-api-loader": "^1.16.2",
     "@hookform/resolvers": "^3.3.4",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@radix-ui/react-accordion": "^1.1.2",
@@ -26,6 +26,7 @@
     "@radix-ui/react-separator": "^1.0.3",
     "@radix-ui/react-slot": "^1.0.2",
     "@radix-ui/react-tooltip": "^1.0.7",
+    "@react-google-maps/api": "^2.19.3",
     "@stripe/stripe-js": "^2.4.0",
     "@vercel/analytics": "^1.1.1",
     "@vercel/blob": "^0.21.0",
