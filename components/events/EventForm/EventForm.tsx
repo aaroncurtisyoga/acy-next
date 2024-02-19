@@ -79,8 +79,14 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const watchStartDateTime = form.watch("startDateTime");
 
   useEffect(() => {
-    // This gets debounced inside the fn itself
-    loadGoogleMapsLocationSuggestions(locationSearch);
+    // loadGoogleMapsLocationSuggestions(locationSearch);
+    if (!locationSearch || locationSearch.trim().length <= 3) {
+      return;
+    }
+    autocompleteSuggestions(locationSearch).then((r: any) => {
+      setLocationSuggestions(r);
+      setIsOpenLocationDropdown(true);
+    });
   }, [locationSearch]);
 
   useEffect(() => {
