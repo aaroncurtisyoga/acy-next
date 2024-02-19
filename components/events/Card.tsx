@@ -54,9 +54,7 @@ const Card = ({ isAdmin, event }: CardProps) => {
             {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
             {formatDateTime(startDateTime).timeOnly}
           </p>
-          <p className={"md:text-sm mt-1"}>
-            {event.location.structuredFormatting.mainText}
-          </p>
+          <p className={"md:text-sm mt-1"}>{event.location.name}</p>
         </div>
       </div>
     </>
