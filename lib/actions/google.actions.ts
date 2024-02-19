@@ -30,7 +30,7 @@ export const placeDetails = async (placeId) => {
       params: {
         place_id: placeId,
         key: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-        fields: ["name", "geometry", "place_id", "formatted_address"],
+        fields: ["formatted_address", "geometry", "name", "place_id"],
       },
     })
     .then((r) => {
