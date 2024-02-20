@@ -46,8 +46,6 @@ import {
   CommandInput,
   CommandItem,
 } from "@/components/ui/command";
-import { getGoogleMapsApiClient } from "@/lib/googleMaps";
-import AutocompletePrediction = google.maps.places.AutocompletePrediction;
 import {
   autocompleteSuggestions,
   placeDetails,
