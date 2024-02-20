@@ -25,12 +25,6 @@ export type GetAllEventsParams = {
   page: number;
 };
 
-export type GetEventsByUserParams = {
-  userId: string;
-  limit?: number;
-  page: number;
-};
-
 export type GetRelatedEventsByCategoryParams = {
   categoryId: string;
   eventId: string;
