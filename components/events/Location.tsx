@@ -17,10 +17,11 @@ const Location = ({ location }) => {
           <p className={"text-sm"}>{location.name}</p>
           <p className={"text-sm"}>{location.formattedAddress}</p>
           <Accordion type="multiple">
-            <AccordionItem value={"googleMap"} className={"border-none"}>
-              <AccordionTrigger className={"text-left"}>
-                Show Map
-              </AccordionTrigger>
+            <AccordionItem
+              value={"googleMap"}
+              className={"border-none text-blue-700"}
+            >
+              <AccordionTrigger>Show Map</AccordionTrigger>
               <AccordionContent>
                 <Map geometry={location.geometry} />
               </AccordionContent>
