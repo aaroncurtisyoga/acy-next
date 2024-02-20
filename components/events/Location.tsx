@@ -1,5 +1,12 @@
 import { MapPin } from "lucide-react";
 import Map from "@/components/shared/Map";
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/components/ui/accordion";
+
 const Location = ({ location }) => {
   return (
     <>
@@ -9,9 +16,17 @@ const Location = ({ location }) => {
         <div>
           <p className={"text-sm"}>{location.name}</p>
           <p className={"text-sm"}>{location.formattedAddress}</p>
-          <p className={"text-sm"}>Show map</p>
+          <Accordion type="multiple">
+            <AccordionItem value={"googleMap"} className={"border-none"}>
+              <AccordionTrigger className={"text-left"}>
+                Show Map
+              </AccordionTrigger>
+              <AccordionContent>
+                <Map geometry={location.geometry} />
+              </AccordionContent>
+            </AccordionItem>
+          </Accordion>
         </div>
-        <Map geometry={location.geometry} />
       </div>
     </>
   );
