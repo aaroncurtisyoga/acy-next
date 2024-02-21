@@ -1,16 +1,9 @@
 "use client";
 
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
-import { getAllCategories } from "@/lib/actions/category.actions";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { getAllCategories } from "@/lib/actions/category.actions";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
 
 const CategoryFilter = () => {
@@ -48,7 +41,9 @@ const CategoryFilter = () => {
   };
 
   return (
-    <Select onValueChange={(value: string) => onSelectCategory(value)}>
+    <div>
+      select dropdownOld
+      {/*    <Select onValueChange={(value: string) => onSelectCategory(value)}>
       <SelectTrigger>
         <SelectValue placeholder="Category" />
       </SelectTrigger>
@@ -61,7 +56,8 @@ const CategoryFilter = () => {
           </SelectItem>
         ))}
       </SelectContent>
-    </Select>
+    </Select>*/}
+    </div>
   );
 };
 
