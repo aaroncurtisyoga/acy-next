@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
@@ -9,7 +9,6 @@ import * as z from "zod";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,7 +24,6 @@ import { Checkbox } from "@/components/ui/checkbox";
 
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
-import "react-datepicker/dist/react-datepicker.css";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { Label } from "@/components/ui/label";
@@ -55,6 +53,7 @@ type EventFormProps = {
   event?: IEvent;
   type: "Create" | "Update";
 };
+import "react-datepicker/dist/react-datepicker.css";
 
 const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
@@ -74,8 +73,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const [locationSearch, setLocationSearch] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
   const [isOpenLocationDropdown, setIsOpenLocationDropdown] = useState(false);
-  const sessionTokenRef = useRef<string>();
-  const timeoutRef = useRef<NodeJS.Timeout>();
   const watchStartDateTime = form.watch("startDateTime");
 
   useEffect(() => {

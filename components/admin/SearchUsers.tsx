@@ -17,7 +17,6 @@ const SearchUsers = () => {
           const queryTerm = formData.get("search") as string;
           router.push(pathname + "?search=" + queryTerm);
         }}
-        className={"flex flex-col w-full"}
       >
         <label htmlFor="search">Search for Users</label>
         <input id="search" name="search" type="text" />
