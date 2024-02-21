@@ -6,6 +6,7 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "@/components/ui/accordion";
+import DirectionLinks from "@/components/events/DirectionLinks";
 
 const Location = ({ location }) => {
   return (
@@ -24,6 +25,7 @@ const Location = ({ location }) => {
               <AccordionTrigger>Show Map</AccordionTrigger>
               <AccordionContent>
                 <Map geometry={location.geometry} />
+                <DirectionLinks location={location} />
               </AccordionContent>
             </AccordionItem>
           </Accordion>

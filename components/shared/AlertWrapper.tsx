@@ -1,7 +1,8 @@
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
+import { ReactNode } from "react";
 
 interface AlertWrapperProps {
-  children: React.ReactNode;
+  children: ReactNode;
   title: string;
   description: string;
   variant?: "default" | "destructive" | "success";
