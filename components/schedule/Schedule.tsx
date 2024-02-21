@@ -1,11 +1,11 @@
-import Offering from "@/components/shared/Offering";
 import { locations, signUpLinks } from "@/constants";
 import { Metadata } from "next";
+import Offering from "@/components/schedule/Offering";
 
 export const metadata: Metadata = {
   title: "Schedule",
 };
-const Page = () => {
+const Schedule = () => {
   return (
     <section>
       <h1>Weekly Schedule</h1>
@@ -43,4 +43,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Schedule;
