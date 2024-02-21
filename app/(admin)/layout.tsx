@@ -1,14 +1,11 @@
 import { Metadata } from "next";
+import { ReactNode } from "react";
 
 export const metadata: Metadata = {
   title: "Admin",
 };
-const Layout = ({ children }: { children: React.ReactNode }) => {
-  return (
-    <div className="flex-center min-h-screen w-full bg-primary-50 bg-dotted-pattern bg-cover bg-fixed bg-center">
-      {children}
-    </div>
-  );
+const Layout = ({ children }: { children: ReactNode }) => {
+  return <div>{children}</div>;
 };
 
 export default Layout;
