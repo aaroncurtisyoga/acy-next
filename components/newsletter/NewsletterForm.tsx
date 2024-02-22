@@ -66,8 +66,8 @@ const NewsletterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input defaultValue="First name" {...register("first_name")} />
-      <input defaultValue="Email address" {...register("email")} />
+      <input placeholder="First name" {...register("first_name")} />
+      <input placeholder="Email address" {...register("email")} />
       <input type="submit" disabled={isSubmitting} />
     </form>
   );
