@@ -2,7 +2,6 @@ import Link from "next/link";
 import React from "react";
 import { auth } from "@clerk/nextjs";
 
-import { Button } from "@/components/ui/button";
 import Collection from "@/components/events/Collection";
 import { IOrder } from "@/lib/mongodb/database/models/order.model";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
