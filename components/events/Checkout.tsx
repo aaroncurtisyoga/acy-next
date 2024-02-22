@@ -1,7 +1,5 @@
 import React, { useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-
-import { Button } from "../ui/button";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { checkoutOrder } from "@/lib/actions/order.actions";
 

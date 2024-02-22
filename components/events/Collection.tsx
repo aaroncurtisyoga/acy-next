@@ -20,7 +20,6 @@ const Collection = ({
   emptyStateSubtext,
   page,
   totalPages = 0,
-  collectionType,
   urlParamName,
 }: CollectionProps) => {
   const isAdmin = checkRole("admin");
@@ -28,8 +27,8 @@ const Collection = ({
   return (
     <>
       {data.length > 0 ? (
-        <div className="flex flex-col items-center gap-10">
-          <ul className="grid w-full grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:gap-10">
+        <div>
+          <ul>
             {data.map((event) => {
               return (
                 <li key={event._id}>
@@ -48,9 +47,9 @@ const Collection = ({
           )}
         </div>
       ) : (
-        <div className="flex-center wrapper min-h-[200px] w-full flex-col gap-3 rounded-[14px] bg-grey-50 py-28 text-center">
-          <h3 className="">{emptyTitle}</h3>
-          <p className="">{emptyStateSubtext}</p>
+        <div>
+          <h3>{emptyTitle}</h3>
+          <p>{emptyStateSubtext}</p>
         </div>
       )}
     </>

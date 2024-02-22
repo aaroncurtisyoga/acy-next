@@ -2,7 +2,6 @@
 
 import Image from "next/image";
 import { useEffect, useState } from "react";
-import { AspectRatio } from "@/components/ui/aspect-ratio";
 
 const ImageGallery = ({ setSelectedImg }) => {
   const [images, setImages] = useState([]);
@@ -24,22 +23,16 @@ const ImageGallery = ({ setSelectedImg }) => {
   };
 
   return (
-    <section className="grid grid-cols grid-cols-3 gap-2 ">
+    <section>
       {images.map((image: any) => (
-        <AspectRatio
+        <Image
           key={image.pathname}
-          ratio={2}
-          className="bg-muted relative overflow-hidden rounded-xl group cursor-pointer"
+          src={image.url}
+          alt={image.pathname}
+          fill={true}
+          sizes={"940px"}
           onClick={() => setSelectedImg(image.url)}
-        >
-          <Image
-            src={image.url}
-            alt={image.pathname}
-            fill={true}
-            className={"object-cover group-hover:opacity-75"}
-            sizes={"940px"}
-          />
-        </AspectRatio>
+        />
       ))}
     </section>
   );

@@ -2,13 +2,6 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Check, Share } from "lucide-react";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 
 function ShareEvent({ eventId }: { eventId: string }) {
   const pathname = usePathname();
@@ -27,21 +20,7 @@ function ShareEvent({ eventId }: { eventId: string }) {
     setIsRecentlyCopied(true);
   };
 
-  return (
-    <TooltipProvider delayDuration={0}>
-      <Tooltip>
-        <TooltipTrigger
-          onClick={handeClick}
-          className={"text-base" + " lg:text-lg cursor-pointer"}
-        >
-          {isRecentlyCopied ? <Check /> : <Share />}
-        </TooltipTrigger>
-        <TooltipContent>
-          <p>Copy link to event</p>
-        </TooltipContent>
-      </Tooltip>
-    </TooltipProvider>
-  );
+  return <p onClick={handeClick}>Copy link to event</p>;
 }
 
 export default ShareEvent;
