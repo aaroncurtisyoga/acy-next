@@ -1,24 +1,12 @@
 "use client";
+
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-
 import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
 import { newsletterFormSchema } from "@/lib/schema";
-import { AlertWrapper } from "@/components/shared/AlertWrapper";
-import { AlertTriangle, Mail, Loader } from "lucide-react";
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
@@ -71,20 +59,17 @@ const NewsletterForm = () => {
   };
 
   return (
-    <Form {...form}>
+    <p>newsletter form</p>
+    /* <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)}>
         <FormField
           control={form.control}
           name={"first_name"}
           render={({ field }) => (
             <FormItem>
-              {/*<FormLabel>First Name</FormLabel>*/}
+              {/!*<FormLabel>First Name</FormLabel>*!/}
               <FormControl>
-                <Input
-                  {...field}
-                  className={"pb-6"}
-                  placeholder={"First Name"}
-                />
+                <Input {...field} placeholder={"First Name"} />
               </FormControl>
               <FormMessage className={"pl-3"} />
             </FormItem>
@@ -95,47 +80,32 @@ const NewsletterForm = () => {
           name={"email"}
           render={({ field }) => (
             <FormItem className={"mt-3"}>
-              {/*<FormLabel>Email</FormLabel>*/}
+              {/!*<FormLabel>Email</FormLabel>*!/}
               <FormControl>
                 <Input {...field} type="email" placeholder={"Email Address"} />
               </FormControl>
-              <FormMessage className={"pl-3"} />
+              <FormMessage />
             </FormItem>
           )}
         />
 
-        <Button
-          variant={"default"}
-          type={"submit"}
-          className={"my-8 w-full"}
-          disabled={form.formState.isSubmitting}
-        >
-          {form.formState.isSubmitting ? (
-            <Loader className={"animate-spin"} />
-          ) : (
-            "Subscribe"
-          )}
-        </Button>
+        <button type={"submit"} disabled={form.formState.isSubmitting}>
+          {form.formState.isSubmitting ? <p>Loading...</p> : "Subscribe"}
+        </button>
         {form.formState.errors?.root && (
-          <AlertWrapper
-            title={"An error occurred"}
-            description={form.formState.errors.root.message}
-            variant={"destructive"}
-          >
-            <AlertTriangle />
-          </AlertWrapper>
+          <>
+            <p>an error occurred</p>
+            <p>{form.formState.errors.root.message}</p>
+          </>
         )}
         {newsletterEntryAdded && (
-          <AlertWrapper
-            title={"All set!"}
-            description={"A confirmation email should be in your inbox soon."}
-            variant={"success"}
-          >
-            <Mail />
-          </AlertWrapper>
+          <>
+            <p>All Set!</p>
+            <p>A confirmation email should be in your inbox soon.</p>
+          </>
         )}
       </form>
-    </Form>
+    </Form>*/
   );
 };
 
