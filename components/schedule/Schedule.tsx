@@ -1,10 +1,11 @@
-import { locations, signUpLinks } from "@/constants";
 import { Metadata } from "next";
+import { locations, signUpLinks } from "@/constants";
 import Offering from "@/components/schedule/Offering";
 
 export const metadata: Metadata = {
   title: "Schedule",
 };
+
 const Schedule = () => {
   return (
     <section>

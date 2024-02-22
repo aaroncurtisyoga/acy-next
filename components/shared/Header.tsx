@@ -1,7 +1,7 @@
 import Link from "next/link";
+import { SignedOut, UserButton } from "@clerk/nextjs";
 import NavItems from "@/components/shared/NavItems";
 import MobileNav from "@/components/shared/MobileNav";
-import { SignedOut, UserButton } from "@clerk/nextjs";
 
 export default function Header() {
   return (
@@ -13,9 +13,9 @@ export default function Header() {
             Aaron Curtis Yoga
           </p>
         </Link>
-        <MobileNav />
+        {/*<MobileNav />*/}
         {/* Desktop nav*/}
-        <nav className={"hidden md:flex justify-end w-full"}>
+        <nav className={"flex justify-end w-full"}>
           <NavItems />
         </nav>
         <div className={"pl-5"}>

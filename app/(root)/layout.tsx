@@ -2,7 +2,7 @@ import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import "@/app/globals.css";
 import Image from "next/image";
-import handstandPicture from "@/public/handstand.jpg";
+import handstandPicture from "@/public/assets/images/ScissorHandstand_LowRes-min.jpg";
 
 export default function Layout({ children }: { children: React.ReactNode }) {
   return (

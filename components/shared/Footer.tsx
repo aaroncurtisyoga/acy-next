@@ -1,6 +1,6 @@
+import Link from "next/link";
 import React from "react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
-import Link from "next/link";
 
 const Footer = () => {
   return (

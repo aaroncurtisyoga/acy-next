@@ -6,7 +6,6 @@ export default function NavItems() {
   return (
     <ul className="flex w-full flex-col items-start gap-5 max-sm:mt-4 md:flex-row md:justify-end">
       <AdminLinks />
-      <EndUserLinks />
       <AuthenticatedLinks />
     </ul>
   );
