@@ -2,8 +2,6 @@
 
 import type { PutBlobResult } from "@vercel/blob";
 import { useRef } from "react";
-import { Button } from "@/components/ui/button";
-import { Link } from "lucide-react";
 
 export default function FileUpload({ imageUrl, onFieldChange }: any) {
   const inputFileRef = useRef<HTMLInputElement>(null);
@@ -24,23 +22,18 @@ export default function FileUpload({ imageUrl, onFieldChange }: any) {
   };
 
   return (
-    <div className={"flex flex-col"}>
-      <div className={"flex w-full justify-between"}>
+    <div>
+      <div>
         <input ref={inputFileRef} type="file" />
-        <Button type="button" variant={"outline"} onClick={() => uploadImage()}>
+        <button type="button" onClick={() => uploadImage()}>
           Upload
-        </Button>
+        </button>
       </div>
 
       {imageUrl && (
-        <div className={"w-full"}>
-          <a
-            href={imageUrl}
-            target="_blank"
-            className={"text-blue-500 hover:text-blue-800"}
-          >
-            <Link width={16} className={"float-left mr-1"} /> Link to uploaded
-            image
+        <div>
+          <a href={imageUrl} target="_blank">
+            Link to uploaded image
           </a>
         </div>
       )}

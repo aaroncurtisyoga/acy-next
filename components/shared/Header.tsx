@@ -2,7 +2,6 @@ import Link from "next/link";
 import NavItems from "@/components/shared/NavItems";
 import MobileNav from "@/components/shared/MobileNav";
 import { SignedOut, UserButton } from "@clerk/nextjs";
-import { Button } from "@/components/ui/button";
 
 export default function Header() {
   return (
@@ -24,9 +23,9 @@ export default function Header() {
             <UserButton afterSignOutUrl={"/"} />
           </div>
           <SignedOut>
-            <Button asChild className={"rounded-full"} size={"sm"}>
+            <button>
               <Link href={"/sign-in"}>Login</Link>
-            </Button>
+            </button>
           </SignedOut>
         </div>
       </div>

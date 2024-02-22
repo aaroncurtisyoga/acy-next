@@ -1,9 +1,8 @@
 "use client";
 
 import Link from "next/link";
-import { clsx } from "clsx";
-import { userLinks } from "@/constants";
 import { usePathname } from "next/navigation";
+import { userLinks } from "@/constants";
 
 const EndUserLinks = () => {
   const pathname = usePathname();
@@ -13,13 +12,8 @@ const EndUserLinks = () => {
       {userLinks.map((link) => {
         const isActive = pathname === link.href;
         return (
-          <li key={link.name} className={"max-sm:w-full"}>
-            <Link
-              href={link.href}
-              className={clsx("flex-center whitespace-nowrap", {
-                "text-blue-500": isActive === true,
-              })}
-            >
+          <li key={link.name}>
+            <Link href={link.href}>
               <p>{link.name}</p>
             </Link>
           </li>

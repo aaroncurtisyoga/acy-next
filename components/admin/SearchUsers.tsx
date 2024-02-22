@@ -1,7 +1,6 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Button } from "@/components/ui/button";
 
 const SearchUsers = () => {
   const router = useRouter();
@@ -20,7 +19,7 @@ const SearchUsers = () => {
       >
         <label htmlFor="search">Search for Users</label>
         <input id="search" name="search" type="text" />
-        <Button type="submit">Submit</Button>
+        <button type="submit">Submit</button>
       </form>
     </div>
   );
