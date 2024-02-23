@@ -1,14 +1,15 @@
+import { ReactNode } from "react";
 import Header from "@/components/shared/Header";
 import Footer from "@/components/shared/Footer";
 import "@/app/globals.css";
 import Image from "next/image";
 import handstandPicture from "@/public/assets/images/ScissorHandstand_LowRes-min.jpg";
 
-export default function Layout({ children }: { children: React.ReactNode }) {
+export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div>
+    <div className={"flex flex-col min-h-dvh"}>
       <Header />
-      <main>
+      <main className={"grow grid w-full"}>
         <div>
           {/*<Image
             alt="Yoga posture hand to big toe"
