@@ -1,11 +1,8 @@
 "use client";
 
-import Image from "next/image";
-import { useEffect, useState } from "react";
-import { Input } from "../ui/input";
-import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Label } from "@/components/ui/label";
+import { useEffect, useState } from "react";
+import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
 const Search = () => {
   const [query, setQuery] = useState("");
@@ -37,8 +34,8 @@ const Search = () => {
 
   return (
     <div className="w-full">
-      <Label htmlFor="search">Search for Events</Label>
-      <Input
+      <label htmlFor="search">Search for Events</label>
+      <input
         id="search"
         type="text"
         onChange={(e) => setQuery(e.target.value)}

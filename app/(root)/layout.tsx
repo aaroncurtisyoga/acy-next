@@ -10,7 +10,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
       <Header />
       <main>
         <div>
-          <Image
+          {/*<Image
             alt="Yoga posture hand to big toe"
             // className="object-cover"
             fill={true}
@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
             placeholder={"blur"}
             loading="eager"
             src={handstandPicture}
-          />
+          />*/}
           {children}
         </div>
       </main>
