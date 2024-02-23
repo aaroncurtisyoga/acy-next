@@ -1,14 +1,14 @@
 import { ReactNode } from "react";
-import HeaderOld from "@/components/shared/HeaderOld";
 import Footer from "@/components/shared/Footer";
 import "@/app/globals.css";
 import Image from "next/image";
 import handstandPicture from "@/public/assets/images/ScissorHandstand_LowRes-min.jpg";
+import Header from "@/components/shared/Header";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={"flex flex-col min-h-dvh"}>
-      <HeaderOld />
+      <Header />
       <main className={"grow grid w-full"}>
         <div>
           {/*<Image
@@ -24,7 +24,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           {children}
         </div>
       </main>
-      <Footer />
+      {/*<Footer />*/}
     </div>
   );
 }

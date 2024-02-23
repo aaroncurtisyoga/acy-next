@@ -50,7 +50,7 @@
   background-color: transparent;
   width: 100%;
   /*outline: none;*/
-  @apply py-2 px-3 rounded-md border border-input
+  @apply py-2 px-3 rounded-md border
 }
 
 .react-datepicker__day--selected {
