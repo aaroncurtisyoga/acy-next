@@ -172,38 +172,7 @@ const EventFormOld = ({ event, type }: EventFormProps) => {
               </FormItem>
             )}
           />
-          <FormField
-            control={form.control}
-            name="imgLarge"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <Label>Large Image: 940 x 470</Label>
-                <FormControl className="h-72">
-                  <FileUpload
-                    imageUrl={field.value}
-                    onFieldChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-          <FormField
-            control={form.control}
-            name="imgThumbnail"
-            render={({ field }) => (
-              <FormItem className="w-full">
-                <Label>Small Image: 50 x 25</Label>
-                <FormControl className="h-72">
-                  <FileUpload
-                    imageUrl={field.value}
-                    onFieldChange={field.onChange}
-                  />
-                </FormControl>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+
           <Dialog>
             <DialogTrigger asChild>
               <Button type="button" variant={"outline"}>

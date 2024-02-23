@@ -18,9 +18,9 @@ export default async function AdminDashboard(params: {
   return (
     <div>
       <h1>This is the admin dashboard</h1>
-
+      <hr />
+      <h1>Set Permission Rights</h1>
       <SearchUsers />
-
       <div>
         {users.map((user) => {
           return (
@@ -62,6 +62,41 @@ export default async function AdminDashboard(params: {
           );
         })}
       </div>
+      <hr />
+      <h1>Add Event Images</h1>
+      <p>insert form here</p>
+      {/*      <FormField
+        control={form.control}
+        name="imgLarge"
+        render={({ field }) => (
+          <FormItem className="w-full">
+            <Label>Large Image: 940 x 470</Label>
+            <FormControl className="h-72">
+              <FileUpload
+                imageUrl={field.value}
+                onFieldChange={field.onChange}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />
+      <FormField
+        control={form.control}
+        name="imgThumbnail"
+        render={({ field }) => (
+          <FormItem className="w-full">
+            <Label>Small Image: 50 x 25</Label>
+            <FormControl className="h-72">
+              <FileUpload
+                imageUrl={field.value}
+                onFieldChange={field.onChange}
+              />
+            </FormControl>
+            <FormMessage />
+          </FormItem>
+        )}
+      />*/}
     </div>
   );
 }

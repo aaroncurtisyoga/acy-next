@@ -1,105 +1,19 @@
 import type { Config } from "tailwindcss";
+import { nextui } from "@nextui-org/react";
 
-const config = {
-  darkMode: ["class"],
+const config: Config = {
   content: [
-    "./pages/**/*.{ts,tsx}",
-    "./components/**/*.{ts,tsx}",
-    "./app/**/*.{ts,tsx}",
-    "./src/**/*.{ts,tsx}",
+    "./pages/**/*.{js,ts,jsx,tsx,mdx}",
+    "./components/**/*.{js,ts,jsx,tsx,mdx}",
+    "./app/**/*.{js,ts,jsx,tsx,mdx}",
+    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
-  prefix: "",
   theme: {
-    container: {
-      center: true,
-      padding: "2rem",
-      screens: {
-        "2xl": "1400px",
-      },
-    },
     extend: {
-      animation: {
-        "accordion-down": "accordion-down 0.2s ease-out",
-        "accordion-up": "accordion-up 0.2s ease-out",
-      },
-      aspectRatio: {
-        "2/1": "2 / 1",
-      },
-      borderRadius: {
-        lg: "var(--radius)",
-        md: "calc(var(--radius) - 2px)",
-        sm: "calc(var(--radius) - 4px)",
-      },
-      colors: {
-        primary: {
-          500: "#624CF5",
-          50: " #F6F8FD",
-          DEFAULT: "#624CF5",
-          foreground: "hsl(var(--primary-foreground))",
-        },
-        coral: {
-          500: "#15BF59",
-        },
-        goodGreen: {
-          300: "rgb(0, 164, 51)",
-          500: "rgb(0, 113, 63)",
-        },
-        grey: {
-          600: "#545454",
-          500: "#757575",
-          400: "#AFAFAF",
-          50: "#F6F6F6",
-        },
-        black: "#000000",
-        white: "#FFFFFF",
-        border: "hsl(var(--border))",
-        input: "hsl(var(--input))",
-        ring: "hsl(var(--ring))",
-        foreground: "hsl(var(--foreground))",
-        secondary: {
-          DEFAULT: "hsl(var(--secondary))",
-          foreground: "hsl(var(--secondary-foreground))",
-        },
-        destructive: {
-          DEFAULT: "hsl(var(--destructive))",
-          foreground: "hsl(var(--destructive-foreground))",
-        },
-        muted: {
-          DEFAULT: "hsl(var(--muted))",
-          foreground: "hsl(var(--muted-foreground))",
-        },
-        accent: {
-          DEFAULT: "hsl(var(--accent))",
-          foreground: "hsl(var(--accent-foreground))",
-        },
-        popover: {
-          DEFAULT: "hsl(var(--popover))",
-          foreground: "hsl(var(--popover-foreground))",
-        },
-        card: {
-          DEFAULT: "hsl(var(--card))",
-          foreground: "hsl(var(--card-foreground))",
-        },
-      },
-      fontFamily: {
-        poppins: ["var(--font-poppins)"],
-      },
-      gridTemplateColumns: {
-        gallery: "repeat(auto-fit, minmax(250px, 1fr))",
-      },
-      keyframes: {
-        "accordion-down": {
-          from: { height: "0" },
-          to: { height: "var(--radix-accordion-content-height)" },
-        },
-        "accordion-up": {
-          from: { height: "var(--radix-accordion-content-height)" },
-          to: { height: "0" },
-        },
-      },
+      backgroundImage: {},
     },
   },
-  plugins: [require("tailwindcss-animate")],
-} satisfies Config;
-
+  darkMode: "class",
+  plugins: [nextui()],
+};
 export default config;

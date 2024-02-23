@@ -1,5 +1,5 @@
 import { ReactNode } from "react";
-import Header from "@/components/shared/Header";
+import HeaderOld from "@/components/shared/HeaderOld";
 import Footer from "@/components/shared/Footer";
 import "@/app/globals.css";
 import Image from "next/image";
@@ -8,7 +8,7 @@ import handstandPicture from "@/public/assets/images/ScissorHandstand_LowRes-min
 export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={"flex flex-col min-h-dvh"}>
-      <Header />
+      <HeaderOld />
       <main className={"grow grid w-full"}>
         <div>
           {/*<Image

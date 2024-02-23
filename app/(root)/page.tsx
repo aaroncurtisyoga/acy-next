@@ -22,7 +22,8 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
 
   return (
     <section>
-      <div>
+      homepage
+      {/*<div>
         <Search />
         <CategoryFilter />
       </div>
@@ -34,7 +35,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
         limit={8}
         page={page}
         totalPages={events?.totalPages}
-      />
+      />*/}
     </section>
   );
 };
