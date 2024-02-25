@@ -9,21 +9,9 @@ export const aboutLinks = [
   },
 ];
 
-export const userLinks = [
-  {
-    name: "Upcoming Events",
-    href: "/",
-  },
-  {
-    name: "About",
-    href: "/about",
-  },
-];
+export const userLinks = [];
 
-export const adminLinks = [
-  { name: "Create Event", href: "/events/create" },
-  { name: "Admin", href: "/dashboard" },
-];
+export const adminLinks = [{ name: "Admin", href: "/dashboard" }];
 
 export const authenticatedLinks = [{ name: "My Profile", href: "/profile" }];
 
