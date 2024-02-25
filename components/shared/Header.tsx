@@ -28,11 +28,13 @@ export default function Header() {
   const [menuItems, setMenuItems] = useState([...userLinks]);
 
   useEffect(() => {
+    if (!isLoaded) return;
     if (isSignedIn) {
+      const isAdmin = user?.publicMetadata.role === "admin";
       setMenuItems((prevState) => [...prevState, ...authenticatedLinks]);
-    }
-    if (user?.publicMetadata.role === "admin") {
-      setMenuItems((prevState) => [...prevState, ...adminLinks]);
+      isAdmin && setMenuItems((prevState) => [...prevState, ...adminLinks]);
+    } else {
+      setMenuItems([...userLinks]);
     }
   }, [isLoaded, user, isSignedIn]);
 
@@ -54,7 +56,7 @@ export default function Header() {
             </Link>
           </NavbarItem>
         ))}
-        <NavbarItem>
+        <NavbarItem className={"min-w-[32px]"}>
           <SignedIn>
             <UserButton afterSignOutUrl={"/"} />
           </SignedIn>
