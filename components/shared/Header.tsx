@@ -1,6 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { router } from "next/client";
+import { useEffect, useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -8,7 +10,6 @@ import {
   UserButton,
   useUser,
 } from "@clerk/nextjs";
-import { useCallback, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -17,23 +18,24 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-  Link,
 } from "@nextui-org/react";
 import { adminLinks, authenticatedLinks, userLinks } from "@/constants";
 
-export default function App() {
+export default function Header() {
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const menuItems = useCallback(() => {
-    const menuItems = [...userLinks];
-    if (isLoaded && isSignedIn) menuItems.push([...authenticatedLinks]);
-    if (isLoaded && user?.publicMetadata.role === "admin") {
-      menuItems.push([...adminLinks]);
+  const [menuItems, setMenuItems] = useState([...userLinks]);
+
+  useEffect(() => {
+    if (isSignedIn) {
+      setMenuItems((prevState) => [...prevState, ...authenticatedLinks]);
     }
-    return menuItems;
-  }, [isLoaded, isSignedIn, user]);
-  const list = menuItems();
+    if (user?.publicMetadata.role === "admin") {
+      setMenuItems((prevState) => [...prevState, ...adminLinks]);
+    }
+  }, [isLoaded, user, isSignedIn]);
+
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
       <NavbarContent>
@@ -45,6 +47,13 @@ export default function App() {
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
+        {menuItems.map((link, index) => (
+          <NavbarItem key={`${link.name}-${index}`}>
+            <Link className="w-full" href={link.href}>
+              {link.name}
+            </Link>
+          </NavbarItem>
+        ))}
         <NavbarItem>
           <SignedIn>
             <UserButton afterSignOutUrl={"/"} />
@@ -61,24 +70,21 @@ export default function App() {
         />
       </NavbarContent>
       <NavbarMenu>
-        {list.map(({ name, href }, index) => (
-          <NavbarMenuItem key={`${name}-${index}`}>
-            <Link color="primary" className="w-full" href={href} size="lg">
-              {name}
-            </Link>
+        {menuItems.map((link, index) => (
+          <NavbarMenuItem key={`${link.name}-${index}`}>
+            <Link href={link.href}>{link.name}</Link>
           </NavbarMenuItem>
         ))}
-        {/*<NavbarMenuItem>
+        <NavbarMenuItem>
           <SignedIn>
             <button onClick={() => signOut(() => router.push("/"))}>
               Logout
             </button>
-            <Link href={"/sign-in"}>Logout</Link>
           </SignedIn>
           <SignedOut>
             <Link href={"/sign-in"}>Login</Link>
           </SignedOut>
-        </NavbarMenuItem>*/}
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );
