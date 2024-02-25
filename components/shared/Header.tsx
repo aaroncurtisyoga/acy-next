@@ -1,6 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { router } from "next/client";
+import {
+  SignedIn,
+  SignedOut,
+  useClerk,
+  UserButton,
+  useUser,
+} from "@clerk/nextjs";
+import { useCallback, useState } from "react";
 import {
   Navbar,
   NavbarBrand,
@@ -10,21 +18,22 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   Link,
-  Button,
 } from "@nextui-org/react";
-import { userLinks } from "@/constants";
-import { UserButton } from "@clerk/nextjs";
+import { adminLinks, authenticatedLinks, userLinks } from "@/constants";
 
 export default function App() {
+  const { signOut } = useClerk();
+  const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const getMenuItems = () => {
+  const menuItems = useCallback(() => {
     const menuItems = [...userLinks];
-    // todo: if signedIn, show My Profile links
-    // todo: if admin, show Admin links
+    if (isLoaded && isSignedIn) menuItems.push([...authenticatedLinks]);
+    if (isLoaded && user?.publicMetadata.role === "admin") {
+      menuItems.push([...adminLinks]);
+    }
     return menuItems;
-  };
-  const menuItems = getMenuItems();
-
+  }, [isLoaded, isSignedIn, user]);
+  const list = menuItems();
   return (
     <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
       <NavbarContent>
@@ -35,10 +44,14 @@ export default function App() {
           </p>
         </NavbarBrand>
       </NavbarContent>
-
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
         <NavbarItem>
-          <UserButton afterSignOutUrl={"/"} />
+          <SignedIn>
+            <UserButton afterSignOutUrl={"/"} />
+          </SignedIn>
+          <SignedOut>
+            <Link href={"/sign-in"}>Login</Link>
+          </SignedOut>
         </NavbarItem>
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">
@@ -48,29 +61,24 @@ export default function App() {
         />
       </NavbarContent>
       <NavbarMenu>
-        {menuItems.map((item, index) => (
-          <NavbarMenuItem key={`${item}-${index}`}>
-            <Link
-              color={
-                index === 2
-                  ? "primary"
-                  : index === menuItems.length - 1
-                    ? "danger"
-                    : "foreground"
-              }
-              className="w-full"
-              href="#"
-              size="lg"
-            >
-              {item}
+        {list.map(({ name, href }, index) => (
+          <NavbarMenuItem key={`${name}-${index}`}>
+            <Link color="primary" className="w-full" href={href} size="lg">
+              {name}
             </Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
-          <Link color={"danger"} className="w-full" href="#" size="lg">
-            Logout
-          </Link>
-        </NavbarMenuItem>
+        {/*<NavbarMenuItem>
+          <SignedIn>
+            <button onClick={() => signOut(() => router.push("/"))}>
+              Logout
+            </button>
+            <Link href={"/sign-in"}>Logout</Link>
+          </SignedIn>
+          <SignedOut>
+            <Link href={"/sign-in"}>Login</Link>
+          </SignedOut>
+        </NavbarMenuItem>*/}
       </NavbarMenu>
     </Navbar>
   );
