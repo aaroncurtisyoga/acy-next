@@ -4,11 +4,6 @@ export const newsletterFormSchema = z.object({
   email: z
     .string({ required_error: "Email address is required" })
     .email({ message: "Invalid email address" }),
-  first_name: z
-    .string({ required_error: "Name is required" })
-    .trim()
-    .min(1, { message: "Name is required" })
-    .max(100, "100 characters max"),
 });
 
 export const EventFormSchema = z.object({
