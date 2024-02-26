@@ -41,6 +41,19 @@
   }
 }
 
+@layer utilities {
+  #offering a {
+    @apply border-b border-dotted border-black hover:border-solid italic
+  }
+
+  .wrapper {
+    @apply w-full max-w-7xl lg:mx-auto p-6;
+  }
+
+  .wrapper-width {
+    @apply w-full max-w-7xl lg:mx-auto px-6 ;
+  }
+}
 /* REACT-DATEPICKER STYLES */
 .datePicker {
   width: 100%;

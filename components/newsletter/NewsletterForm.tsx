@@ -64,11 +64,12 @@ const NewsletterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        placeholder="Email address"
-        variant={"underlined"}
-        {...register("email")}
-      />
+      {/*<Input*/}
+      {/*  placeholder="Email address"*/}
+      {/*  variant={"underlined"}*/}
+      {/*  {...register("email")}*/}
+      {/*/>*/}
+      <p>form hello</p>
     </form>
   );
 };

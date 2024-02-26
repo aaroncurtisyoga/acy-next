@@ -40,7 +40,7 @@ export default function Header() {
   }, [isLoaded, user, isSignedIn]);
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} isBordered>
+    <Navbar onMenuOpenChange={setIsMenuOpen} isBordered maxWidth="xl">
       <NavbarContent>
         <NavbarBrand>
           <p className="sm:hidden font-bold text-inherit">ACY</p>

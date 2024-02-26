@@ -9,7 +9,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <div className={"flex flex-col min-h-dvh"}>
       <Header />
-      <main className={"grow grid w-full"}>
+      <main className={"grow grid w-full max-w-7xl"}>
         <div>
           {/*<Image
             alt="Yoga posture hand to big toe"

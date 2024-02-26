@@ -1,15 +1,15 @@
 import Link from "next/link";
-import React from "react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
+import NewsletterForm from "@/components/newsletter/NewsletterForm";
 
 const Footer = () => {
   return (
-    <footer className={"w-full border-t"}>
-      <div className="wrapper flex md:justify-between">
-        <div className={"text-sm hidden md:block"}>
-          © {new Date().getFullYear()} Aaron Curtis Yoga
+    <footer className={"border-t py-unit-6"}>
+      <div className={"flex justify-between wrapper-width"}>
+        <div>
+          <NewsletterForm />
         </div>
-        <div className={"flex justify-between"}>
+        <div className={"flex"}>
           <Link
             href={"https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"}
             target={"_blank"}
@@ -31,6 +31,12 @@ const Footer = () => {
           >
             <Instagram />
           </Link>
+        </div>
+        <div>
+          <p className="text-tiny">
+            © {new Date().getFullYear()} All Rights Reserved
+          </p>
+          <p className="text-tiny">Made by Aaron</p>
         </div>
       </div>
     </footer>
