@@ -3,6 +3,7 @@
 import { SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Input } from "@nextui-org/react";
 
 import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
 import { newsletterFormSchema } from "@/lib/schema";
@@ -18,7 +19,6 @@ const NewsletterForm = () => {
   } = useForm<Inputs>({
     resolver: zodResolver(newsletterFormSchema),
     defaultValues: {
-      first_name: "",
       email: "",
     },
   });
@@ -47,7 +47,6 @@ const NewsletterForm = () => {
     });
   };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("NewsletterForm onSubmit: triggered");
     const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
@@ -60,15 +59,16 @@ const NewsletterForm = () => {
       return;
     }
 
-    console.log("NewsletterForm onSubmit: end of fn");
     reset();
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <input placeholder="First name" {...register("first_name")} />
-      <input placeholder="Email address" {...register("email")} />
-      <input type="submit" disabled={isSubmitting} />
+      <Input
+        placeholder="Email address"
+        variant={"underlined"}
+        {...register("email")}
+      />
     </form>
   );
 };

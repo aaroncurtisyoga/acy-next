@@ -23,30 +23,25 @@ export async function addNewsletterEntry(data: Inputs) {
         String(process.env.MAILCHIMP_AUDIENCE_ID),
         {
           email_address: data.email,
-          merge_fields: {
-            FNAME: data.first_name,
-          },
           status: "pending",
         },
       );
       return {
         message: `A confirmation email should be in your inbox soon.`,
       };
-    } catch (error: any) {
+    } catch (error) {
       if (
         error.response?.status === 400 &&
         error.response?.text?.includes("Member Exists")
       ) {
         return {
           apiError: "ALREADY_SUBSCRIBED",
-          message:
-            "Looks like you're already subscribed. Keep an eye out for emails from Aaron!",
+          message: "Looks like you're already subscribed.",
         };
       }
       return {
         apiError: "Failed to subscribe.",
-        message:
-          "Sorry. Something went wrong. Email me at aaroncurtisyoga@gmail.com and I'll add you manually!",
+        message: "Sorry. Something went wrong. Please try again later!",
       };
     }
   }
