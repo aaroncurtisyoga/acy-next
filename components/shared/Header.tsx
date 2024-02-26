@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { router } from "next/client";
+import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import {
   SignedIn,
@@ -22,6 +22,7 @@ import {
 import { adminLinks, authenticatedLinks, userLinks } from "@/constants";
 
 export default function Header() {
+  const router = useRouter();
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -81,6 +82,7 @@ export default function Header() {
           <SignedIn>
             <button
               className={"ms-auto"}
+              type="button"
               onClick={() => signOut(() => router.push("/"))}
             >
               Logout
