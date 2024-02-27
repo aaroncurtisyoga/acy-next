@@ -19,7 +19,7 @@ export async function addNewsletterEntry(data: Inputs) {
     });
 
     try {
-      const response = await mailchimp.lists.addListMember(
+      await mailchimp.lists.addListMember(
         String(process.env.MAILCHIMP_AUDIENCE_ID),
         {
           email_address: data.email,

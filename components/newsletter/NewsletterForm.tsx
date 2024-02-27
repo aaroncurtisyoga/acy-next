@@ -39,7 +39,7 @@ const NewsletterForm = () => {
   ) => {
     for (const formInput in formErrors) {
       // @ts-ignore
-      form.setError(formInput, {
+      setError(formInput, {
         type: "server",
         message:
           formErrors[formInput]._errors?.join(", ") ||
@@ -71,18 +71,16 @@ const NewsletterForm = () => {
     return <ArrowRight className={"text-default-900"} />;
   };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    console.log("data", data);
     const result = await addNewsletterEntry(data);
-
     if (result.formErrors) {
       handleErrorsFromServerSideValidation(result.formErrors);
       return;
     }
 
-    // if (result.apiError) {
-    //   handleErrorsFromMailchimpApi(result);
-    //   return;
-    // }
+    if (result.apiError) {
+      handleErrorsFromMailchimpApi(result);
+      return;
+    }
   };
 
   return (
@@ -124,7 +122,10 @@ const NewsletterForm = () => {
               field.onChange(e);
             }}
             disabled={isSubmitting}
-            errorMessage={errors.email && errors.email.message}
+            errorMessage={
+              (errors.email && errors.email.message) ||
+              (errors.root && errors.root.message)
+            }
             endContent={
               <button
                 className="focus:outline-none"
