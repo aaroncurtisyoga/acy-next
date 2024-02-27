@@ -1,10 +1,11 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input, Spinner } from "@nextui-org/react";
-import { ArrowRight } from "lucide-react";
+import { ArrowRight, Check } from "lucide-react";
 import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
 import { newsletterFormSchema } from "@/lib/schema";
 
@@ -23,6 +24,15 @@ const NewsletterForm = () => {
       email: "",
     },
   });
+  const [resetFormOnNextInput, setResetFormOnNextInput] = useState(false);
+
+  useEffect(() => {
+    // Flag form to reset on next input. Done this way so success message
+    // can persist until the user starts typing again.
+    if (isSubmitSuccessful) {
+      setResetFormOnNextInput(true);
+    }
+  }, [reset, isSubmitSuccessful]);
 
   const handleErrorsFromServerSideValidation = (
     formErrors: z.ZodFormattedError<typeof newsletterFormSchema>,
@@ -48,21 +58,31 @@ const NewsletterForm = () => {
     });
   };
 
+  const determineFormIcon = (
+    isSubmitting: boolean,
+    isSubmitSuccessful: boolean,
+  ) => {
+    if (isSubmitting) {
+      return <Spinner size={"sm"} />;
+    }
+    if (isSubmitSuccessful) {
+      return <Check className={"text-success"} />;
+    }
+    return <ArrowRight className={"text-default-900"} />;
+  };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     console.log("data", data);
-    /* const result = await addNewsletterEntry(data);
+    const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
       handleErrorsFromServerSideValidation(result.formErrors);
       return;
     }
 
-    if (result.apiError) {
-      handleErrorsFromMailchimpApi(result);
-      return;
-    }
-
-    reset();*/
+    // if (result.apiError) {
+    //   handleErrorsFromMailchimpApi(result);
+    //   return;
+    // }
   };
 
   return (
@@ -76,10 +96,15 @@ const NewsletterForm = () => {
         render={({ field }) => (
           <Input
             classNames={{
-              description: "text-default-600",
+              description: "text-default-900",
               label: "font-medium",
+              mainWrapper: "min-w-unit-64",
             }}
-            description={"Be the first to know about events & more!"}
+            description={`${
+              isSubmitSuccessful
+                ? "Thank you for signing up!"
+                : "Be the first to know about events & more!"
+            }`}
             type={"email"}
             label={"Newsletter:"}
             labelPlacement="outside"
@@ -87,18 +112,26 @@ const NewsletterForm = () => {
             name={"email"}
             placeholder={"Email"}
             value={field.value}
+            onBeforeInput={() => {
+              if (resetFormOnNextInput) {
+                reset({
+                  email: "",
+                });
+                setResetFormOnNextInput(false);
+              }
+            }}
             onChange={(e) => {
               field.onChange(e);
             }}
             disabled={isSubmitting}
             errorMessage={errors.email && errors.email.message}
             endContent={
-              <button className="focus:outline-none" type="submit">
-                {isSubmitting ? (
-                  <Spinner />
-                ) : (
-                  <ArrowRight className="text-default-900 flex-shrink-0" />
-                )}
+              <button
+                className="focus:outline-none"
+                type="submit"
+                disabled={isSubmitting}
+              >
+                {determineFormIcon(isSubmitting, isSubmitSuccessful)}
               </button>
             }
             {...field}
@@ -110,18 +143,3 @@ const NewsletterForm = () => {
 };
 
 export default NewsletterForm;
-
-/*
-<Button
-  variant={"default"}
-  type={"submit"}
-  className={"my-8 w-full"}
-  disabled={form.formState.isSubmitting}
->
-  {form.formState.isSubmitting ? (
-    <Loader className={"animate-spin"} />
-  ) : (
-    "Subscribe"
-  )}
-</Button>
-*/

@@ -3,7 +3,7 @@ import { z } from "zod";
 export const newsletterFormSchema = z.object({
   email: z
     .string({ required_error: "Email address is required" })
-    .email({ message: "Invalid email address" }),
+    .email({ message: "Please enter a valid email address" }),
 });
 
 export const EventFormSchema = z.object({
