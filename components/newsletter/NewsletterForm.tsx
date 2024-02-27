@@ -16,7 +16,7 @@ const NewsletterForm = () => {
     handleSubmit,
     reset,
     setError,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Inputs>({
     resolver: zodResolver(newsletterFormSchema),
     defaultValues: {
@@ -47,7 +47,9 @@ const NewsletterForm = () => {
       message: result.message,
     });
   };
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    console.log("data", data);
     /* const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
@@ -73,7 +75,10 @@ const NewsletterForm = () => {
         }}
         render={({ field }) => (
           <Input
-            classNames={{ description: "text-default-600" }}
+            classNames={{
+              description: "text-default-600",
+              label: "font-medium",
+            }}
             description={"Be the first to know about events & more!"}
             type={"email"}
             label={"Newsletter:"}
@@ -86,6 +91,7 @@ const NewsletterForm = () => {
               field.onChange(e);
             }}
             disabled={isSubmitting}
+            errorMessage={errors.email && errors.email.message}
             endContent={
               <button className="focus:outline-none" type="submit">
                 {isSubmitting ? (
