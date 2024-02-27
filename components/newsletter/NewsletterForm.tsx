@@ -1,6 +1,6 @@
 "use client";
 
-import { SubmitHandler, useForm } from "react-hook-form";
+import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input } from "@nextui-org/react";
@@ -11,10 +11,10 @@ type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
   const {
-    register,
+    control,
     handleSubmit,
-    setError,
     reset,
+    setError,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(newsletterFormSchema),
@@ -64,12 +64,30 @@ const NewsletterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      {/*<Input*/}
-      {/*  placeholder="Email address"*/}
-      {/*  variant={"underlined"}*/}
-      {/*  {...register("email")}*/}
-      {/*/>*/}
-      <p>form hello</p>
+      <Controller
+        name={"email"}
+        control={control}
+        rules={{
+          required: true,
+        }}
+        render={({ field }) => (
+          <Input
+            description={"Be the first to know about events & more!"}
+            type={"email"}
+            label={"Newsletter:"}
+            labelPlacement="outside"
+            variant="underlined"
+            name={"email"}
+            placeholder={"Email"}
+            value={field.value}
+            onChange={(e) => {
+              field.onChange(e);
+            }}
+            disabled={isSubmitting}
+            {...field}
+          />
+        )}
+      />
     </form>
   );
 };
