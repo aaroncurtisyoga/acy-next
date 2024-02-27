@@ -3,10 +3,11 @@
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/react";
-
+import { Input, Spinner } from "@nextui-org/react";
+import { ArrowRight } from "lucide-react";
 import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
 import { newsletterFormSchema } from "@/lib/schema";
+
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
 const NewsletterForm = () => {
@@ -47,7 +48,7 @@ const NewsletterForm = () => {
     });
   };
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const result = await addNewsletterEntry(data);
+    /* const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
       handleErrorsFromServerSideValidation(result.formErrors);
@@ -59,7 +60,7 @@ const NewsletterForm = () => {
       return;
     }
 
-    reset();
+    reset();*/
   };
 
   return (
@@ -72,6 +73,7 @@ const NewsletterForm = () => {
         }}
         render={({ field }) => (
           <Input
+            classNames={{ description: "text-default-600" }}
             description={"Be the first to know about events & more!"}
             type={"email"}
             label={"Newsletter:"}
@@ -84,6 +86,15 @@ const NewsletterForm = () => {
               field.onChange(e);
             }}
             disabled={isSubmitting}
+            endContent={
+              <button className="focus:outline-none" type="submit">
+                {isSubmitting ? (
+                  <Spinner />
+                ) : (
+                  <ArrowRight className="text-default-900 flex-shrink-0" />
+                )}
+              </button>
+            }
             {...field}
           />
         )}
@@ -93,3 +104,18 @@ const NewsletterForm = () => {
 };
 
 export default NewsletterForm;
+
+/*
+<Button
+  variant={"default"}
+  type={"submit"}
+  className={"my-8 w-full"}
+  disabled={form.formState.isSubmitting}
+>
+  {form.formState.isSubmitting ? (
+    <Loader className={"animate-spin"} />
+  ) : (
+    "Subscribe"
+  )}
+</Button>
+*/
