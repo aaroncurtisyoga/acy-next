@@ -1,15 +1,22 @@
 import Link from "next/link";
+import { Link as NextUiLink } from "@nextui-org/react";
+
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 import NewsletterForm from "@/components/newsletter/NewsletterForm";
 
 const Footer = () => {
   return (
-    <footer className={"border-t py-unit-6"}>
-      <div className={"flex justify-between wrapper-width"}>
+    <footer className={"border-t py-unit-6 bg-zinc-50"}>
+      <div
+        className={
+          "wrapper-width flex flex-col items-center md:flex-row" +
+          " md:justify-between md:items-start *:flex-1 gap-unit-8 md:gap-0"
+        }
+      >
         <div>
           <NewsletterForm />
         </div>
-        <div className={"flex"}>
+        <div className={"flex justify-center"}>
           <Link
             href={"https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"}
             target={"_blank"}
@@ -32,11 +39,27 @@ const Footer = () => {
             <Instagram />
           </Link>
         </div>
-        <div>
-          <p className="text-tiny">
-            © {new Date().getFullYear()} All Rights Reserved
+        <div
+          className={
+            "text-center md:text-end *:mb-unit-4 *:md:mb-unit-2" +
+            " *:text-tiny"
+          }
+        >
+          <p>© {new Date().getFullYear()} All Rights Reserved</p>
+          <p>Made by Aaron Curtis</p>
+          <p>
+            Reach out{" "}
+            <NextUiLink
+              isExternal
+              size="sm"
+              underline={"hover"}
+              className={"text-tiny"}
+              href="mailto:aaroncurtisyoga@gmail.com"
+            >
+              {" "}
+              by Email
+            </NextUiLink>
           </p>
-          <p className="text-tiny">Made by Aaron</p>
         </div>
       </div>
     </footer>

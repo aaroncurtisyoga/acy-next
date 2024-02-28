@@ -96,7 +96,7 @@ const NewsletterForm = () => {
             classNames={{
               description: "text-default-900",
               label: "font-medium",
-              mainWrapper: "min-w-unit-64",
+              mainWrapper: "w-unit-64",
             }}
             description={`${
               isSubmitSuccessful
