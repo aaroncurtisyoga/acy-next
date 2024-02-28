@@ -9,7 +9,7 @@ const Footer = () => {
     <footer className={"border-t py-unit-6 bg-zinc-50"}>
       <div
         className={
-          "wrapper-width flex flex-col items-center md:flex-row" +
+          "wrapper-width flex flex-col justify-center md:flex-row" +
           " md:justify-between md:items-start *:flex-1 gap-unit-8 md:gap-0"
         }
       >

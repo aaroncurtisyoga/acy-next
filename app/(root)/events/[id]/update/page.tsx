@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import EventForm from "@/components/events/EventFormOld/EventFormOld";
+import EventForm from "@/components/events/EventForm";
 import { checkRole } from "@/lib/utils";
 import { getEventById } from "@/lib/actions/event.actions";
 
@@ -16,7 +16,7 @@ const UpdateEvent = async ({ params: { id } }: UpdateEventProps) => {
 
   const event = await getEventById(id);
   return (
-    <section>
+    <section className={"wrapper"}>
       <h3>Update Event</h3>
       <div>
         <EventForm type={"Update"} event={event} />

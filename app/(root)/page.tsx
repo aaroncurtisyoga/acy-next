@@ -18,6 +18,16 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
 
   return (
     <section className={"wrapper flex flex-col"}>
+      {/*<Image
+            alt="Yoga posture hand to big toe"
+            // className="object-cover"
+            fill={true}
+            sizes="(min-width: 1640px) 768px, calc(45vw + 39px)"
+            priority={true}
+            placeholder={"blur"}
+            loading="eager"
+            src={handstandPicture}
+          />*/}
       homepage
       {/*
       <div>

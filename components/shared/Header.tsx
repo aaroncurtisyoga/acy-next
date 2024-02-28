@@ -72,16 +72,15 @@ export default function Header() {
           className="sm:hidden"
         />
       </NavbarContent>
-      <NavbarMenu>
+      <NavbarMenu className="items-end">
         {menuItems.map((link, index) => (
-          <NavbarMenuItem key={`${link.name}-${index}`} className={"ms-auto"}>
+          <NavbarMenuItem key={`${link.name}-${index}`}>
             <Link href={link.href}>{link.name}</Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem className={"ms-auto"}>
+        <NavbarMenuItem>
           <SignedIn>
             <button
-              className={"ms-auto"}
               type="button"
               onClick={() => signOut(() => router.push("/"))}
             >
