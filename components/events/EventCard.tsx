@@ -3,10 +3,10 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Edit } from "lucide-react";
+import EventCardAdminButtons from "@/components/events/EventCardAdminButtons";
+
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
-import { deleteEvent } from "@/lib/actions/event.actions";
 
 type CardProps = {
   isAdmin: boolean;
@@ -19,26 +19,7 @@ const EventCard = ({ isAdmin, event }: CardProps) => {
     event;
   return (
     <>
-      {isAdmin && (
-        <div className="flex flex-row gap-4 p-3 justify-between">
-          <Link href={`/orders?eventId=${_id}`} className="flex gap-2">
-            <p className="text-primary-500">Order Details</p>
-          </Link>
-          <div className={"flex gap-2"}>
-            <Link href={`/events/${_id}/update`}>
-              <Edit width={20} height={20} />
-            </Link>
-            {/* todo: display confirmation msg in modal */}
-            <button
-              onClick={async () =>
-                await deleteEvent({ eventId: _id, path: pathname })
-              }
-            >
-              delete event
-            </button>
-          </div>
-        </div>
-      )}
+      {isAdmin && <EventCardAdminButtons id={_id} pathname={pathname} />}
       <div
         className={
           "flex flex-col w-full md:max-w-[400px]" +
