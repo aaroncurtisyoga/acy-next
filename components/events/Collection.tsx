@@ -1,4 +1,4 @@
-import Card from "@/components/events/Card";
+import EventCard from "@/components/events/EventCard";
 import Pagination from "@/components/events/Pagination";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { checkRole } from "@/lib/utils";
@@ -32,7 +32,7 @@ const Collection = ({
             {data.map((event) => {
               return (
                 <li key={event._id}>
-                  <Card event={event} isAdmin={isAdmin} />
+                  <EventCard event={event} isAdmin={isAdmin} />
                 </li>
               );
             })}
