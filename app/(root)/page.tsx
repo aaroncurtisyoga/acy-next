@@ -17,12 +17,14 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
   });
 
   return (
-    <section>
+    <section className={"wrapper flex flex-col"}>
       homepage
-      {/*<div>
+      {/*
+      <div>
         <Search />
         <CategoryFilter />
       </div>
+      */}
       <Collection
         data={events?.data}
         emptyTitle={"No Events Founds"}
@@ -31,7 +33,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
         limit={8}
         page={page}
         totalPages={events?.totalPages}
-      />*/}
+      />
     </section>
   );
 };

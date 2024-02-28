@@ -30,10 +30,12 @@ const EventCardAdminButtons = ({
           <p className="text-primary-500">Order Details</p>
         </Link>
         <div className={"flex gap-2"}>
-          <Link href={`/events/${id}/update`}>
-            <Edit width={20} height={20} />
-          </Link>
-          <Button onPress={onOpen}>
+          <Button isIconOnly variant={"ghost"} color={"primary"}>
+            <Link href={`/events/${id}/update`}>
+              <Edit width={20} height={20} />
+            </Link>
+          </Button>
+          <Button isIconOnly onPress={onOpen} color={"danger"}>
             <Trash width={20} height={20} />
           </Button>
         </div>
