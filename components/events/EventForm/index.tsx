@@ -6,17 +6,17 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
 import * as z from "zod";
+import Category from "@/components/events/EventForm/Category";
+import Description from "@/components/events/EventForm/Description";
+import EndDate from "@/components/events/EventForm/EndDate";
+import Location from "@/components/events/EventForm/Location";
+import Price from "@/components/events/EventForm/Price";
+import StartDate from "@/components/events/EventForm/StartDate";
+import Title from "@/components/events/EventForm/Dates";
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
-import Title from "@/components/events/EventForm/Dates";
-import Category from "@/components/events/EventForm/Category";
-import Description from "@/components/events/EventForm/Description";
-import Price from "@/components/events/EventForm/Price";
-import StartDate from "@/components/events/EventForm/StartDate";
-import EndDate from "@/components/events/EventForm/EndDate";
-import Location from "@/components/events/EventForm/Location";
 
 type EventFormProps = {
   event?: IEvent;
@@ -72,7 +72,7 @@ const Index = ({ event, type }: EventFormProps) => {
       <Price control={control} isSubmitting={isSubmitting} errors={errors} />
       <StartDate control={control} isSubmitting={isSubmitting} />
       <EndDate control={control} isSubmitting={isSubmitting} />
-      <Location control={control} />
+      <Location control={control} setValue={setValue} />
 
       <Button color={"primary"} type="submit">
         {type} Event
