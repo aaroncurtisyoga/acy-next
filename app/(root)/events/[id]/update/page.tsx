@@ -17,7 +17,7 @@ const UpdateEvent = async ({ params: { id } }: UpdateEventProps) => {
   const event = await getEventById(id);
   return (
     <section className={"wrapper"}>
-      <h3>Update Event</h3>
+      <h1>Update Event</h1>
       <div>
         <Index type={"Update"} event={event} />
       </div>

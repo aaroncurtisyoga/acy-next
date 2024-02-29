@@ -11,7 +11,7 @@ const CreateEvent = () => {
   const { sessionClaims } = auth();
   return (
     <section className={"wrapper"}>
-      <h3>Create Event</h3>
+      <h1>Create Event</h1>
       <div className={"my-8"}>
         <EventForm type={"Create"} />
       </div>

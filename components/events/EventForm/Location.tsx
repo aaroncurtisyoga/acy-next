@@ -5,28 +5,27 @@ import {
   autocompleteSuggestions,
   placeDetails,
 } from "@/lib/actions/google.actions";
+import _ from "lodash";
 
 const Location = ({ control, setValue }) => {
-  const [isOpen, setIsOpen] = React.useState(false);
+  const [, setIsOpen] = React.useState(false);
   const [locationSearch, setLocationSearch] = useState("");
   const [locationSuggestions, setLocationSuggestions] = useState([]);
 
   useEffect(() => {
     if (!locationSearch || locationSearch.trim().length <= 3) return;
-
-    console.log("useEffect locationSearch");
-    autocompleteSuggestions(locationSearch).then((result) => {
-      console.log("autocompleteSuggestions", result);
+    const debouncedAutocomplete = _.debounce(autocompleteSuggestions, 2000);
+    debouncedAutocomplete(locationSearch).then((result) => {
       setLocationSuggestions(result);
       setIsOpen(true);
     });
   }, [locationSearch]);
 
   const handleSelectLocation = async (placeId: string) => {
-    await placeDetails(placeId).then((r) => setValueLocation(r));
+    await placeDetails(placeId).then((r) => setLocationValueInReactHookForm(r));
   };
 
-  const setValueLocation = async (placeDetails) => {
+  const setLocationValueInReactHookForm = async (placeDetails) => {
     setValue("location", {
       formattedAddress: placeDetails.formatted_address,
       geometry: placeDetails.geometry.location,
@@ -41,10 +40,6 @@ const Location = ({ control, setValue }) => {
     setLocationSearch(value);
   };
 
-  const onSelectionChange = (e) => {
-    console.log("onSelectionChange", e);
-  };
-
   return (
     <Controller
       control={control}
@@ -52,14 +47,12 @@ const Location = ({ control, setValue }) => {
       render={({ field }) => (
         <Autocomplete
           description="Select an address from the dropdown"
-          // isLoading={}
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}
           onOpenChange={setIsOpen}
           onInputChange={onInputChange}
           onKeyDown={(e) => e.continuePropagation()}
-          onSelectionChange={onSelectionChange}
         >
           {locationSuggestions.map((location) => (
             <AutocompleteItem
