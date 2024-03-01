@@ -23,7 +23,7 @@ type EventFormProps = {
   type: "Create" | "Update";
 };
 
-const Index = ({ event, type }: EventFormProps) => {
+const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
@@ -81,4 +81,4 @@ const Index = ({ event, type }: EventFormProps) => {
   );
 };
 
-export default Index;
+export default EventForm;
