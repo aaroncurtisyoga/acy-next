@@ -1,27 +1,49 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Input } from "@nextui-org/react";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
+
+import { SearchUsersFormSchema } from "@/lib/schema";
+import React from "react";
 
 const SearchUsers = () => {
   const router = useRouter();
   const pathname = usePathname();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<z.infer<typeof SearchUsersFormSchema>>({
+    resolver: zodResolver(SearchUsersFormSchema),
+    defaultValues: { search: "" },
+  });
+  const onSubmit = async (data: z.infer<typeof SearchUsersFormSchema>) => {
+    router.push(`${pathname}?search=${data.search}`);
+  };
 
   return (
-    <div>
-      <form
-        onSubmit={async (e) => {
-          e.preventDefault();
-          const form = e.currentTarget;
-          const formData = new FormData(form);
-          const queryTerm = formData.get("search") as string;
-          router.push(pathname + "?search=" + queryTerm);
-        }}
-      >
-        <label htmlFor="search">Search for Users</label>
-        <input id="search" name="search" type="text" />
-        <button type="submit">Submit</button>
-      </form>
-    </div>
+    <form onSubmit={handleSubmit(onSubmit)}>
+      <Controller
+        control={control}
+        name={"search"}
+        render={({ field }) => (
+          <Input
+            disabled={isSubmitting}
+            errorMessage={errors.search?.message}
+            label={"Search"}
+            onChange={(e) => field.onChange(e)}
+            variant="bordered"
+            {...field}
+          />
+        )}
+      />
+      <Button type="submit" color={"secondary"}>
+        Submit
+      </Button>
+    </form>
   );
 };
 

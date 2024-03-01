@@ -29,3 +29,7 @@ export const EventFormSchema = z.object({
   price: z.string(),
   isFree: z.boolean(),
 });
+
+export const SearchUsersFormSchema = z.object({
+  search: z.string(),
+});
