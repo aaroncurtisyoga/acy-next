@@ -10,8 +10,7 @@ export interface IEvent extends Document {
   description?: string;
   endDateTime: Date;
   externalSignUpUrl?: string;
-  imgLarge: string; // 940 x 470
-  imgThumbnail: string; // 50 x 25
+  imageUrl: string; // 940 x 470
   isFree: boolean;
   isHostedExternally?: boolean;
   location: {
@@ -34,8 +33,7 @@ const EventSchema = new Schema({
   description: { type: String, required: false },
   endDateTime: { type: Date, default: Date.now },
   externalSignUpUrl: { type: String, required: false },
-  imgLarge: String,
-  imgThumbnail: String,
+  imageUrl: String,
   isFree: { type: Boolean, default: false },
   isHostedExternally: { type: Boolean, required: false },
   location: {

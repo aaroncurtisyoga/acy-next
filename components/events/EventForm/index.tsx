@@ -17,6 +17,7 @@ import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
+import ImagePicker from "@/components/events/EventForm/ImagePicker";
 
 type EventFormProps = {
   event?: IEvent;
@@ -73,6 +74,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
       <StartDate control={control} isSubmitting={isSubmitting} />
       <EndDate control={control} isSubmitting={isSubmitting} />
       <Location control={control} setValue={setValue} />
+      <ImagePicker setValue={setValue} />
 
       <Button color={"primary"} type="submit">
         {type} Event
