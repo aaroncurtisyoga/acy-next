@@ -10,6 +10,11 @@ const useAutocompleteSuggestions = () => {
 
   const debouncedAutocomplete = useRef(
     _.debounce((value) => {
+      if (!value.trim()) {
+        setSuggestions([]);
+        return;
+      }
+
       autocompleteSuggestions(value).then((r) => {
         setSuggestions(r);
       });
