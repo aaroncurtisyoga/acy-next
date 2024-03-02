@@ -5,11 +5,12 @@ import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
 const Location = ({ control, setValue }) => {
-  const [, setIsOpen] = useState(false);
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: string) => {
-    await placeDetails(placeId).then((r) => setLocationValueInReactHookForm(r));
+    await placeDetails(placeId).then((place) =>
+      setLocationValueInReactHookForm(place),
+    );
   };
 
   const setLocationValueInReactHookForm = async (placeDetails) => {
@@ -19,8 +20,6 @@ const Location = ({ control, setValue }) => {
       name: placeDetails.name,
       placeId: placeDetails.place_id,
     });
-    // setLocationSearch(placeDetails.formatted_address);
-    setIsOpen(false);
   };
 
   const onInputChange = (value: string) => {
@@ -37,7 +36,6 @@ const Location = ({ control, setValue }) => {
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}
-          onOpenChange={setIsOpen}
           onInputChange={onInputChange}
           onKeyDown={(e) => e.continuePropagation()}
         >
