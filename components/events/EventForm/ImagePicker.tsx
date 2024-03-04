@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -19,48 +19,52 @@ const ImagePicker = ({ setValue }) => {
   const [selectedImgUrl, setSelectedImgUrl] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
+  const setHeroImage = () => setValue("imgLarge", selectedImgUrl);
+
   const handleGetImages = async () => {
     console.log("handelGetImages called");
     const images = await getImages();
     setImages(images);
   };
 
-  const setHeroImage = () => setValue("imgLarge", selectedImgUrl);
+  const handleOnPress = () => {
+    handleGetImages();
+    onOpen();
+  };
 
   return (
     <>
-      <Button variant={"bordered"} onPress={onOpen}>
+      <Button variant={"bordered"} size={"lg"} onPress={handleOnPress}>
         Choose an image
       </Button>
-      <Modal
-        isOpen={isOpen}
-        onOpenChange={(isOpen) => {
-          console.log("onOpenChange called");
-          onOpenChange();
-          if (isOpen) {
-            handleGetImages();
-          }
-        }}
-      >
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size={"full"}>
         <ModalContent>
           {(onClose) => (
             <>
               <ModalHeader className="flex flex-col gap-1">
                 Choose a hero image
               </ModalHeader>
-              <ModalBody>
+              <ModalBody
+                className={"grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4"}
+              >
                 {images?.map((image: any) => (
-                  <Image
-                    key={image.pathname}
-                    src={image.url}
-                    alt={image.pathname}
-                    fill={true}
-                    sizes={"940px"}
-                    onClick={() => setSelectedImgUrl(image.url)}
-                    className={cn({
-                      "border-1 border-primary": selectedImgUrl === image.url,
-                    })}
-                  />
+                  <div key={image.pathname} className={"relative "}>
+                    <Image
+                      src={image.url}
+                      alt={image.pathname}
+                      sizes={"470px"}
+                      onClick={() => setSelectedImgUrl(image.url)}
+                      className={cn(
+                        "object-cover overflow-hidden  rounded-small" +
+                          " hover:opacity-75 hover:cursor-pointer",
+                        {
+                          "border-1 border-primary":
+                            selectedImgUrl === image.url,
+                        },
+                      )}
+                      fill={true}
+                    />
+                  </div>
                 ))}
               </ModalBody>
               <ModalFooter>

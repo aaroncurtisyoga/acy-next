@@ -63,19 +63,21 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <Title control={control} isSubmitting={isSubmitting} errors={errors} />
-      <Category control={control} errors={errors} />
+      <div className="grid grid-cols-3 gap-2">
+        <Title control={control} isSubmitting={isSubmitting} errors={errors} />
+        <Category control={control} errors={errors} />
+        <Location control={control} setValue={setValue} />
+        <StartDate control={control} isSubmitting={isSubmitting} />
+        <EndDate control={control} isSubmitting={isSubmitting} />
+        <Price control={control} isSubmitting={isSubmitting} errors={errors} />
+        <ImagePicker setValue={setValue} />
+      </div>
+
       <Description
         control={control}
         isSubmitting={isSubmitting}
         errors={errors}
       />
-      <Price control={control} isSubmitting={isSubmitting} errors={errors} />
-      <StartDate control={control} isSubmitting={isSubmitting} />
-      <EndDate control={control} isSubmitting={isSubmitting} />
-      <Location control={control} setValue={setValue} />
-      <ImagePicker setValue={setValue} />
-
       <Button color={"primary"} type="submit">
         {type} Event
       </Button>

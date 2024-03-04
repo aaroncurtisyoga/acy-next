@@ -26,13 +26,9 @@ const EventDetails = async ({
         <section>
           <div className="event-hero-wrapper">
             <div className={"event-hero"}>
-              <div
-                className={"event-hero-background"}
-                style={{ backgroundImage: `url(${event.imgThumbnail})` }}
-              />
               <div>
                 <Image
-                  src={event.imgLarge}
+                  src={event.imageUrl}
                   alt="hero image"
                   width={940}
                   height={470}

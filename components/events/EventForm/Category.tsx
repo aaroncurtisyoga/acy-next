@@ -21,7 +21,6 @@ const Category = ({ control, errors }) => {
       name={"categoryId"}
       render={({ field }) => (
         <Select
-          className={"max-w-xs"}
           errorMessage={errors.categoryId?.message}
           label={"Category"}
           variant={"bordered"}
