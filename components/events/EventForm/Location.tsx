@@ -32,7 +32,7 @@ const Location = ({ control, setValue }) => {
       name={"location"}
       render={({ field }) => (
         <Autocomplete
-          description="Select an address from the dropdown"
+          // description="Select an address from the dropdown"
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}

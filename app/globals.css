@@ -60,7 +60,7 @@
 }
 
 .react-datepicker__input-container input {
-  @apply bg-transparent w-full py-2 px-3 rounded-medium border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent;
+  @apply bg-transparent w-full py-2 px-3 rounded-medium border-2 border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-600 focus:border-transparent h-14;
 }
 
 .react-datepicker__day--selected {

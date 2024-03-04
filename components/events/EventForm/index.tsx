@@ -62,8 +62,8 @@ const EventForm = ({ event, type }: EventFormProps) => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-3 gap-2">
+    <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
+      <div className="grid grid-cols-3 gap-5">
         <Title control={control} isSubmitting={isSubmitting} errors={errors} />
         <Category control={control} errors={errors} />
         <Location control={control} setValue={setValue} />
@@ -72,13 +72,12 @@ const EventForm = ({ event, type }: EventFormProps) => {
         <Price control={control} isSubmitting={isSubmitting} errors={errors} />
         <ImagePicker setValue={setValue} />
       </div>
-
       <Description
         control={control}
         isSubmitting={isSubmitting}
         errors={errors}
       />
-      <Button color={"primary"} type="submit">
+      <Button color={"primary"} type="submit" className={"w-full"}>
         {type} Event
       </Button>
     </form>
