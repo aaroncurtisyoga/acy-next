@@ -12,6 +12,7 @@ const EndDate = ({ control, isSubmitting }) => {
         <DatePicker
           disabled={isSubmitting}
           dateFormat="MM/dd/yyyy h:mm aa"
+          enableTabLoop={false}
           onChange={(date: Date) => field.onChange(date)}
           placeholderText={"End Date/Time"}
           selected={field.value}

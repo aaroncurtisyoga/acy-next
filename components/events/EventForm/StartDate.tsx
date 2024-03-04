@@ -11,6 +11,7 @@ const StartDate = ({ control, isSubmitting }) => {
         <DatePicker
           disabled={isSubmitting}
           dateFormat="MM/dd/yyyy h:mm aa"
+          enableTabLoop={false}
           onChange={(date: Date) => field.onChange(date)}
           placeholderText={"Start Date/Time"}
           selected={field.value}
