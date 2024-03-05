@@ -10,7 +10,7 @@ const Hero = ({ imageUrl }) => {
           className="object-cover object-center overflow-hidden relative"
           fill={true}
           priority={true}
-          sizes={"(max-width:480px) 480px, (max-width:600px) 600px, 940px"}
+          sizes="(min-width: 1280px) 1200px, calc(93.75vw + 19px)"
           src={imageUrl}
         />
       </div>
