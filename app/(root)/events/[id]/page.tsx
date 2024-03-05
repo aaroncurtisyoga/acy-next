@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { CalendarCheck2 } from "lucide-react";
 import Collection from "@/components/events/Collection";
 import CheckoutButton from "@/components/events/CheckoutButton";
@@ -9,7 +8,8 @@ import {
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
 import { formatDateTime } from "@/lib/utils";
-import Location from "@/components/events/Location";
+import Location from "@/components/events/EventPage/Location";
+import Hero from "@/components/events/EventPage/Hero";
 
 const EventPage = async ({
   params: { id },
@@ -24,18 +24,7 @@ const EventPage = async ({
   return (
     <>
       <section className="flex flex-col w-full md:items-center">
-        <div className="event-hero-wrapper w-full relative">
-          <div className={"event-hero"}>
-            <Image
-              alt="Event Hero Image"
-              className="object-cover object-center overflow-hidden relative z-10"
-              fill={true}
-              priority={true}
-              sizes={"(max-width:480px) 480px, (max-width:600px) 600px, 940px"}
-              src={event.imageUrl}
-            />
-          </div>
-        </div>
+        <Hero imageUrl={event.imageUrl} />
         <div className="flex justify-between items-center event-wrapper-width pt-5 md:pt-12 pb-2">
           <p className={"text-base lg:text-lg font-semibold text-gray-600"}>
             {formatDateTime(event.startDateTime).dateOnlyWithoutYear} •{" "}

@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { checkoutOrder } from "@/lib/actions/order.actions";
+import { Button } from "@nextui-org/react";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
@@ -36,9 +37,9 @@ const Checkout = ({ event, userId }: CheckoutProps) => {
 
   return (
     <form action={onCheckout} method="post">
-      <button type="submit">
+      <Button type="submit">
         {event.isFree ? "Get Ticket" : "Buy Ticket"}
-      </button>
+      </Button>
     </form>
   );
 };

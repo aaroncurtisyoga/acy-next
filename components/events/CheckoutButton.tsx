@@ -5,6 +5,7 @@ import React from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import Checkout from "@/components/events/Checkout";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { Button } from "@nextui-org/react";
 
 const CheckoutButton = ({ event }: { event: IEvent; className?: string }) => {
   const { user } = useUser();
@@ -18,9 +19,9 @@ const CheckoutButton = ({ event }: { event: IEvent; className?: string }) => {
       ) : (
         <>
           <SignedOut>
-            <button type="button">
+            <Button type="button">
               <Link href="/sign-in">Sign Up</Link>
-            </button>
+            </Button>
           </SignedOut>
 
           <SignedIn>
