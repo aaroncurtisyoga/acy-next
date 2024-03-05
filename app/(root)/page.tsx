@@ -1,8 +1,9 @@
+// todo: i think the search and category filters can be in a filter dropdown?
 import Collection from "@/components/events/Collection";
 import { getAllEvents } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import Search from "@/components/shared/Search";
-import CategoryFilter from "@/components/events/CategoryFilter";
+// import Search from "@/components/shared/Search";
+// import CategoryFilter from "@/components/events/CategoryFilter";
 
 const EventsPage = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
@@ -36,10 +37,10 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
       </div>
       */}
       <Collection
-        data={events?.data}
-        emptyTitle={"No Events Founds"}
-        emptyStateSubtext={"Please visit back soon to check in for events."}
         collectionType={"All_Events"}
+        data={events?.data}
+        emptyStateSubtext={"Please visit back soon to check in for events."}
+        emptyTitle={"No Events Founds"}
         limit={8}
         page={page}
         totalPages={events?.totalPages}

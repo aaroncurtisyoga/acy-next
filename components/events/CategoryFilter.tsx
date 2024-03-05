@@ -1,3 +1,5 @@
+/* Todo: Maybe have one category component that can be used everywhere? */
+
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";

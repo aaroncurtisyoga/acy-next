@@ -1,5 +1,5 @@
 import { redirect } from "next/navigation";
-import Index from "@/components/events/EventForm";
+import EventForm from "@/components/events/EventForm";
 import { checkRole } from "@/lib/utils";
 import { getEventById } from "@/lib/actions/event.actions";
 
@@ -19,7 +19,7 @@ const UpdateEvent = async ({ params: { id } }: UpdateEventProps) => {
     <section className={"wrapper"}>
       <h1>Update Event</h1>
       <div>
-        <Index type={"Update"} event={event} />
+        <EventForm type={"Update"} event={event} />
       </div>
     </section>
   );

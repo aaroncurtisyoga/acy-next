@@ -2,6 +2,8 @@
 
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Button, Tooltip } from "@nextui-org/react";
+import { Check, Share } from "lucide-react";
 
 function ShareEvent({ eventId }: { eventId: string }) {
   const pathname = usePathname();
@@ -20,7 +22,11 @@ function ShareEvent({ eventId }: { eventId: string }) {
     setIsRecentlyCopied(true);
   };
 
-  return <p onClick={handeClick}>Copy link to event</p>;
+  return (
+    <Tooltip content={`Copy link to event`}>
+      <Button isIconOnly>{isRecentlyCopied ? <Check /> : <Share />}</Button>
+    </Tooltip>
+  );
 }
 
 export default ShareEvent;

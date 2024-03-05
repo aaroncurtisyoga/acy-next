@@ -16,6 +16,7 @@ export async function createEvent({ event, path }) {
     await connectToDatabase();
     const newEvent = await Event.create({
       ...event,
+      isFree: parseInt(event.price) === 0,
       category: event.categoryId,
     });
     revalidatePath(path);
@@ -139,7 +140,11 @@ export async function updateEvent({ event, path }) {
 
     const updatedEvent = await Event.findByIdAndUpdate(
       event._id,
-      { ...event, category: event.categoryId },
+      {
+        ...event,
+        isFree: parseInt(event.price) === 0,
+        category: event.categoryId,
+      },
       { new: true },
     );
     revalidatePath(path);
