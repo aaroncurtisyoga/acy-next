@@ -12,7 +12,7 @@ import EndDate from "@/components/events/EventForm/EndDate";
 import Location from "@/components/events/EventForm/Location";
 import Price from "@/components/events/EventForm/Price";
 import StartDate from "@/components/events/EventForm/StartDate";
-import Title from "@/components/events/EventForm/Dates";
+import Title from "@/components/events/EventForm/Title";
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
@@ -38,8 +38,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
     control,
     getValues,
     handleSubmit,
-    reset,
-    setError,
     setValue,
     watch,
     formState: { errors, isSubmitting },
@@ -65,18 +63,30 @@ const EventForm = ({ event, type }: EventFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
       <div className="grid grid-cols-3 gap-5">
         <Title control={control} isSubmitting={isSubmitting} errors={errors} />
-        <Category control={control} errors={errors} />
-        <Location control={control} setValue={setValue} />
-        <StartDate control={control} isSubmitting={isSubmitting} />
-        <EndDate control={control} isSubmitting={isSubmitting} />
+        <Category
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+        <Location control={control} setValue={setValue} errors={errors} />
+        <StartDate
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+        <EndDate
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
         <Price control={control} isSubmitting={isSubmitting} errors={errors} />
-        <ImagePicker setValue={setValue} />
+        {/*   <ImagePicker setValue={setValue} />*/}
       </div>
-      <Description
+      {/*<Description
         control={control}
         isSubmitting={isSubmitting}
         errors={errors}
-      />
+      />*/}
       <Button color={"primary"} type="submit" className={"w-full"}>
         {type} Event
       </Button>

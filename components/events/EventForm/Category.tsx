@@ -4,7 +4,7 @@ import { Controller } from "react-hook-form";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
 import { getAllCategories } from "@/lib/actions/category.actions";
 
-const Category = ({ control, errors }) => {
+const Category = ({ control, errors, isSubmitting }) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const getCategories = async () => {
     const categoryList = await getAllCategories();
@@ -21,6 +21,8 @@ const Category = ({ control, errors }) => {
       name={"categoryId"}
       render={({ field }) => (
         <Select
+          onChange={(e) => field.onChange(e)}
+          disabled={isSubmitting}
           errorMessage={errors.categoryId?.message}
           label={"Category"}
           variant={"bordered"}

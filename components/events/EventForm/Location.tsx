@@ -4,7 +4,7 @@ import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
-const Location = ({ control, setValue }) => {
+const Location = ({ control, setValue, errors }) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: string) => {
@@ -32,7 +32,8 @@ const Location = ({ control, setValue }) => {
       name={"location"}
       render={({ field }) => (
         <Autocomplete
-          // description="Select an address from the dropdown"
+          description="Select an address from the dropdown"
+          errorMessage={errors.location?.formattedAddress?.message}
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}
