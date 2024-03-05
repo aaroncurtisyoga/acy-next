@@ -3,7 +3,7 @@
 import Link from "next/link";
 import React from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
-import Checkout from "@/components/events/Checkout";
+import Checkout from "@/components/events/EventPage/Checkout";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { Button } from "@nextui-org/react";
 

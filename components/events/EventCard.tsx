@@ -15,7 +15,7 @@ type CardProps = {
 
 const EventCard = ({ isAdmin, event }: CardProps) => {
   const pathname = usePathname();
-  const { _id, category, imgLarge, isFree, price, startDateTime, title } =
+  const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;
   return (
     <div
@@ -29,7 +29,7 @@ const EventCard = ({ isAdmin, event }: CardProps) => {
         {/* todo: does there need to be a border radius added here to
            soften those edges */}
         <Image
-          src={imgLarge}
+          src={imageUrl}
           alt={`People doing ${category.name}`}
           sizes={"400px"}
           width={400}

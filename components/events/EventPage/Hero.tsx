@@ -7,7 +7,7 @@ const Hero = ({ imageUrl }) => {
       <div className={"event-hero h-[50vw] md:h-[500px]"}>
         <Image
           alt="Event Hero Image"
-          className="object-cover object-center overflow-hidden relative z-10"
+          className="object-cover object-center overflow-hidden relative"
           fill={true}
           priority={true}
           sizes={"(max-width:480px) 480px, (max-width:600px) 600px, 940px"}
