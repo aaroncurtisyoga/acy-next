@@ -15,7 +15,7 @@ function ShareEvent({ eventId }: { eventId: string }) {
       }, 2000);
     }
   }, [isRecentlyCopied]);
-  const handeClick = async () => {
+  const handleClick = async () => {
     await navigator.clipboard.writeText(
       `${window.location.origin}/events/${eventId}`,
     );
@@ -24,7 +24,14 @@ function ShareEvent({ eventId }: { eventId: string }) {
 
   return (
     <Tooltip content={`Copy link to event`}>
-      <Button isIconOnly>{isRecentlyCopied ? <Check /> : <Share />}</Button>
+      <Button
+        isIconOnly
+        onClick={handleClick}
+        radius={"full"}
+        variant={"light"}
+      >
+        {isRecentlyCopied ? <Check /> : <Share />}
+      </Button>
     </Tooltip>
   );
 }
