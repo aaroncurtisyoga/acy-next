@@ -11,14 +11,13 @@ import {
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
 import Headline from "@/components/events/EventPage/Headline";
-import title from "@/components/events/EventForm/Title";
 
 const EventPage = async ({
   params: { id },
   searchParams,
 }: SearchParamProps) => {
   const event = await getEventById(id);
-  const { _id, category, imageUrl, startDateTime, endDateTime } = event;
+  const { _id, category, imageUrl, startDateTime, endDateTime, title } = event;
   const eventsWithSameCategory = await getEventsWithSameCategory({
     categoryId: category._id,
     eventId: _id,
@@ -28,29 +27,29 @@ const EventPage = async ({
     <>
       <section className="flex flex-col w-full md:items-center">
         <Hero imageUrl={imageUrl} />
-        <div className={"wrapper md:flex"}>
+        <div className={"wrapper flex flex-col"}>
           <Subheading
             category={category}
             id={_id}
             startDateTime={startDateTime}
           />
-          <div className={"flex-1 px-5 md:px-0"}>
+          <div className={"px-5 md:px-0"}>
             <Headline title={title} />
             <DateAndTime
               startDateTime={startDateTime}
               endDateTime={endDateTime}
             />
-            {/*  <Location location={event.location} />*/}
-            {/*{!event.isFree && (*/}
-            {/*  <div className={"mb-6 md:mb-8"}>*/}
-            {/*    <h2 className={"text-2xl font-bold mb-3"}>Refund Policy</h2>*/}
-            {/*    <p>*/}
-            {/*      Refunds are easy. Just send me an email at*/}
-            {/*      AaronCurtisYoga@gmail.com, and I&lsquo;ll provide a 100%*/}
-            {/*      refund. No questions asked.*/}
-            {/*    </p>*/}
-            {/*  </div>*/}
-            {/*)}*/}
+            <Location location={event.location} />
+            {!event.isFree && (
+              <div className={"mb-6 md:mb-8"}>
+                <h2 className={"text-2xl font-bold mb-3"}>Refund Policy</h2>
+                <p>
+                  Refunds are easy. Just send me an email at
+                  AaronCurtisYoga@gmail.com, and I&lsquo;ll provide a 100%
+                  refund. No questions asked.
+                </p>
+              </div>
+            )}
             <h2 className={"text-2xl font-bold mb-3"}>About this event</h2>
             <p className={"mb-14"}>{event.description}</p>
           </div>
