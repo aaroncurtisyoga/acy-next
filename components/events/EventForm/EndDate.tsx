@@ -24,7 +24,7 @@ const EndDate = ({ control, errors, isSubmitting }) => {
           {errors.endDateTime?.message && (
             <div className="p-1 flex relative flex-col gap-1.5">
               <div className="text-tiny text-danger">
-                {errors.startDateTime.message}
+                {errors.endDateTime.message}
               </div>
             </div>
           )}
