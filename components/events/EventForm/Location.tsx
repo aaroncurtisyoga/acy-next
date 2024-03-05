@@ -32,7 +32,6 @@ const Location = ({ control, setValue, errors }) => {
       name={"location"}
       render={({ field }) => (
         <Autocomplete
-          description="Select an address from the dropdown"
           errorMessage={errors.location?.formattedAddress?.message}
           label="Location"
           placeholder="Search for a location"

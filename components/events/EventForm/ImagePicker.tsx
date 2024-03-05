@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -14,29 +14,41 @@ import {
 import { getImages } from "@/lib/actions/blob.actions";
 import { cn } from "@/lib/utils";
 
-const ImagePicker = ({ setValue }) => {
+const ImagePicker = ({ errors, setValue }) => {
   const [images, setImages] = useState([]);
   const [selectedImgUrl, setSelectedImgUrl] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
-  const setHeroImage = () => setValue("imgLarge", selectedImgUrl);
+  const setHeroImage = () => setValue("imageUrl", selectedImgUrl);
 
   const handleGetImages = async () => {
-    console.log("handelGetImages called");
     const images = await getImages();
     setImages(images);
   };
 
-  const handleOnPress = () => {
+  const handlePressOpenButton = () => {
     handleGetImages();
     onOpen();
   };
 
   return (
     <>
-      <Button variant={"bordered"} size={"lg"} onPress={handleOnPress}>
-        Choose an image
-      </Button>
+      <div className={"w-full flex flex-col"}>
+        <Button
+          variant={"bordered"}
+          size={"lg"}
+          onPress={handlePressOpenButton}
+        >
+          Choose an image
+        </Button>
+        {errors.imageUrl?.message && (
+          <div className="p-1 flex relative flex-col gap-1.5">
+            <div className="text-tiny text-danger">
+              {errors.imageUrl.message}
+            </div>
+          </div>
+        )}
+      </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} size={"full"}>
         <ModalContent>
           {(onClose) => (
