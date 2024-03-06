@@ -43,10 +43,12 @@ export default function Header() {
     <Navbar onMenuOpenChange={setIsMenuOpen} isBordered maxWidth="xl">
       <NavbarContent>
         <NavbarBrand>
-          <p className="sm:hidden font-bold text-inherit">ACY</p>
-          <p className="hidden sm:flex font-bold text-inherit">
-            Aaron Curtis Yoga
-          </p>
+          <Link href={"/"}>
+            <p className="sm:hidden font-bold text-inherit">ACY</p>
+            <p className="hidden sm:flex font-bold text-inherit">
+              Aaron Curtis Yoga
+            </p>
+          </Link>
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
