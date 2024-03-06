@@ -14,6 +14,7 @@
     "@hookform/resolvers": "^3.3.4",
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@nextui-org/react": "^2.2.9",
+    "@plaiceholder/next": "^3.0.0",
     "@stripe/stripe-js": "^2.4.0",
     "@vercel/analytics": "^1.1.1",
     "@vercel/blob": "^0.22.1",
