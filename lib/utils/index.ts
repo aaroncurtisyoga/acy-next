@@ -4,6 +4,7 @@ import { twMerge } from "tailwind-merge";
 import { auth } from "@clerk/nextjs";
 import { Roles } from "@/types/globals";
 import { RemoveUrlQueryParams, UrlQueryParams } from "@/types";
+
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
