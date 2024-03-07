@@ -25,7 +25,7 @@ export const EventFormSchema = z
     imageUrl: z.string().min(3, "Image URL required"),
     startDateTime: z.date(),
     endDateTime: z.date(),
-    categoryId: z.string().min(3, "Category is required"),
+    categoryId: z.string().min(3, "ManageEventCategories is required"),
     price: z.string(),
     isFree: z.boolean(),
   })
@@ -37,3 +37,5 @@ export const EventFormSchema = z
 export const SearchUsersFormSchema = z.object({
   search: z.string(),
 });
+
+export const categoryFormSchema = z.object({ category: z.string() });
