@@ -1,7 +1,6 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs";
-import { Accordion, AccordionItem } from "@nextui-org/react";
 import { checkRole } from "@/lib/utils";
 import SearchUsers from "@/components/admin/SearchUsers";
 import { setRole } from "@/app/(admin)/actions";
@@ -22,65 +21,50 @@ export default async function AdminDashboard(params: {
   return (
     <div className={"wrapper"}>
       <h1 className={"text-large"}>Admin Dashboard</h1>
-      <Accordion>
-        <AccordionItem
-          key="1"
-          aria-label="Manage Authorization"
-          title="Manage Authorization"
-        >
-          <>
-            <SearchUsers />
-            <div>
-              {users.map((user) => {
-                return (
-                  <div key={user.id}>
-                    <div>
-                      {user.firstName} {user.lastName}
-                    </div>
-                    <div>
-                      {
-                        user.emailAddresses.find(
-                          (email) => email.id === user.primaryEmailAddressId,
-                        )?.emailAddress
-                      }
-                    </div>
-                    <div>{user.publicMetadata.role as string}</div>
-                    <div>
-                      <form action={setRole}>
-                        <input type="hidden" value={user.id} name="id" />
-                        <input type="hidden" value="admin" name="role" />
-                        <button type="submit">Make Admin</button>
-                      </form>
-                    </div>
-                    <div>
-                      <form action={setRole}>
-                        <input type="hidden" value={user.id} name="id" />
-                        <input type="hidden" value="moderator" name="role" />
-                        <button type="submit">Make Moderator</button>
-                      </form>
-                    </div>
-                    <div>
-                      <form action={setRole}>
-                        <input type="hidden" value={user.id} name="id" />
-                        <input type="hidden" value="end-user" name="role" />
-                        <button type="submit">Make End-User</button>
-                      </form>
-                    </div>
-                    <hr />
-                  </div>
-                );
-              })}
+      <SearchUsers />
+      <div>
+        {users.map((user) => {
+          return (
+            <div key={user.id}>
+              <div>
+                {user.firstName} {user.lastName}
+              </div>
+              <div>
+                {
+                  user.emailAddresses.find(
+                    (email) => email.id === user.primaryEmailAddressId,
+                  )?.emailAddress
+                }
+              </div>
+              <div>{user.publicMetadata.role as string}</div>
+              <div>
+                <form action={setRole}>
+                  <input type="hidden" value={user.id} name="id" />
+                  <input type="hidden" value="admin" name="role" />
+                  <button type="submit">Make Admin</button>
+                </form>
+              </div>
+              <div>
+                <form action={setRole}>
+                  <input type="hidden" value={user.id} name="id" />
+                  <input type="hidden" value="moderator" name="role" />
+                  <button type="submit">Make Moderator</button>
+                </form>
+              </div>
+              <div>
+                <form action={setRole}>
+                  <input type="hidden" value={user.id} name="id" />
+                  <input type="hidden" value="end-user" name="role" />
+                  <button type="submit">Make End-User</button>
+                </form>
+              </div>
+              <hr />
             </div>
-          </>
-        </AccordionItem>
-        <AccordionItem
-          key="2"
-          aria-label="Manage Event Categories"
-          title="Manage Event Categories"
-        >
-          <ManageEventCategories />
-        </AccordionItem>
-      </Accordion>
+          );
+        })}
+      </div>
+      <hr className={"my-unit-6"} />
+      <ManageEventCategories />
     </div>
   );
 }
