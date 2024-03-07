@@ -12,6 +12,7 @@ const ManageEventCategories = () => {
   const {
     control,
     handleSubmit,
+    reset,
     setError,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Inputs>({
@@ -26,6 +27,7 @@ const ManageEventCategories = () => {
       await createCategory({
         categoryName: data.category.trim(),
       });
+      reset();
     } catch (e) {
       setError("category", {
         type: "server",
