@@ -1,10 +1,10 @@
 import React from "react";
-import { Textarea } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
+import RichTextEditor from "@/components/shared/RichTextEditor";
 
 const Description = ({ control, isSubmitting, errors }) => {
   return (
-    <Controller
+    /*<Controller
       control={control}
       name="description"
       render={({ field }) => (
@@ -22,7 +22,13 @@ const Description = ({ control, isSubmitting, errors }) => {
           {...field}
         />
       )}
-    />
+    />*/
+    /*<Controller
+      control={control}
+      name="description"
+      render={({ field }) => <RichTextEditor />}
+    />*/
+    <p>hey</p>
   );
 };
 

@@ -5,6 +5,7 @@ import CreateEventButton from "@/components/shared/CreateEventButton";
 // import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { checkRole } from "@/lib/utils";
+import RichTextEditor from "@/components/shared/RichTextEditor";
 // import Search from "@/components/shared/Search";
 // import CategoryFilter from "@/components/events/CategoryFilter";
 
@@ -23,6 +24,10 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
 
   return (
     <section className={"wrapper flex flex-col"}>
+      <p>
+        <b>homepage content</b>
+      </p>
+      <RichTextEditor />
       {/*<Image
             alt="Yoga posture hand to big toe"
             // className="object-cover"
@@ -33,14 +38,14 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
             loading="eager"
             src={handstandPicture}
           />*/}
-      homepage
+
       {/*
       <div>
         <Search />
         <CategoryFilter />
       </div>
       */}
-      {isAdmin && <CreateEventButton />}
+      {/* {isAdmin && <CreateEventButton />}
       <Collection
         collectionType={"All_Events"}
         data={events?.data}
@@ -49,7 +54,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
         limit={8}
         page={page}
         totalPages={events?.totalPages}
-      />
+      />*/}
     </section>
   );
 };
