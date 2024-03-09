@@ -16,6 +16,7 @@
     "@nextui-org/react": "^2.2.9",
     "@plaiceholder/next": "^3.0.0",
     "@stripe/stripe-js": "^2.4.0",
+    "@tiptap/extension-link": "^2.2.4",
     "@tiptap/extension-text-align": "^2.2.4",
     "@tiptap/pm": "^2.2.4",
     "@tiptap/react": "^2.2.4",
