@@ -3,6 +3,8 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
 import Toolbar from "@/components/shared/Tiptap/Toolbar";
+import { List } from "lucide-react";
+import { Button } from "@nextui-org/react";
 
 type TiptapProps = {
   description: string;
@@ -11,7 +13,13 @@ type TiptapProps = {
 
 const Tiptap = ({ onChange }: TiptapProps) => {
   const editor = useEditor({
-    extensions: [StarterKit.configure(), Link.configure()],
+    extensions: [
+      StarterKit.configure({
+        bulletList: { HTMLAttributes: { class: "list-disc pl-4" } },
+        orderedList: { HTMLAttributes: { class: "list-decimal pl-4" } },
+      }),
+      Link.configure(),
+    ],
     content: "",
     editorProps: {
       attributes: {

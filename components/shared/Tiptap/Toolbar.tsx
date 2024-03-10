@@ -1,14 +1,15 @@
 import { type Editor } from "@tiptap/react";
 import {
   Bold,
-  Strikethrough,
   Italic,
   Link as LinkIcon,
   List,
   ListOrdered,
-  Heading2,
+  Minus,
+  Strikethrough,
 } from "lucide-react";
 import { Button } from "@nextui-org/react";
+import { HardBreak } from "@tiptap/extension-hard-break";
 
 type ToolbarProps = {
   editor: Editor;
@@ -74,6 +75,15 @@ const Toolbar = ({ editor }: ToolbarProps) => {
         variant="light"
       >
         <LinkIcon />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().setHorizontalRule().run()}
+        className={editor.isActive("hardBreak") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <Minus />
       </Button>
     </div>
   );
