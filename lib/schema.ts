@@ -12,7 +12,8 @@ export const EventFormSchema = z
     description: z
       .string()
       .min(3, "Must be at least 3 letters ")
-      .max(2000, "Should not be more than 2000 characters"),
+      .max(2000, "Should not be more than 2000 characters")
+      .trim(),
     location: z.object({
       formattedAddress: z.string().min(3, "Address is required"),
       geometry: z.object({

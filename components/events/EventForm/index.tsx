@@ -2,16 +2,16 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { SubmitHandler, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
 import * as z from "zod";
 import Category from "@/components/events/EventForm/Category";
-import Description from "@/components/events/EventForm/Description";
 import EndDate from "@/components/events/EventForm/EndDate";
 import Location from "@/components/events/EventForm/Location";
 import Price from "@/components/events/EventForm/Price";
 import StartDate from "@/components/events/EventForm/StartDate";
+import Tiptap from "@/components/shared/Tiptap";
 import Title from "@/components/events/EventForm/Title";
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
@@ -87,7 +87,8 @@ const EventForm = ({ event, type }: EventFormProps) => {
   }
 
   const onSubmit = async (values: z.infer<typeof EventFormSchema>) => {
-    if (type === "Create") {
+    console.log("values", values);
+    /*if (type === "Create") {
       await createNewEvent(values);
     }
 
@@ -97,7 +98,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
       } else {
         router.back();
       }
-    }
+    }*/
   };
 
   return (
@@ -123,11 +124,20 @@ const EventForm = ({ event, type }: EventFormProps) => {
         <Price control={control} isSubmitting={isSubmitting} errors={errors} />
         <ImagePicker errors={errors} setValue={setValue} />
       </div>
-      <Description
+      {/*<Description
         control={control}
         isSubmitting={isSubmitting}
         errors={errors}
+      />*/}
+
+      <Controller
+        name={"description"}
+        control={control}
+        render={({ field }) => {
+          return <Tiptap description={field.name} onChange={field.onChange} />;
+        }}
       />
+
       <Button color={"primary"} type="submit" className={"w-full"}>
         {type} Event
       </Button>

@@ -5,7 +5,7 @@ import CreateEventButton from "@/components/shared/CreateEventButton";
 // import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { checkRole } from "@/lib/utils";
-import RichTextEditor from "@/components/shared/RichTextEditor";
+import RichTextEditor from "@/components/shared/Index";
 // import Search from "@/components/shared/Search";
 // import CategoryFilter from "@/components/events/CategoryFilter";
 

@@ -1,6 +1,6 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import RichTextEditor from "@/components/shared/RichTextEditor";
+import Tiptap from "@/components/shared/Tiptap";
 
 const Description = ({ control, isSubmitting, errors }) => {
   return (
@@ -26,7 +26,7 @@ const Description = ({ control, isSubmitting, errors }) => {
     /*<Controller
       control={control}
       name="description"
-      render={({ field }) => <RichTextEditor />}
+      render={({ field }) => <Index />}
     />*/
     <p>hey</p>
   );
