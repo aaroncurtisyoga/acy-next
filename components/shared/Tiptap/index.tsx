@@ -2,27 +2,21 @@
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
-import { Heading } from "@tiptap/extension-heading";
 import Toolbar from "@/components/shared/Tiptap/Toolbar";
-type RichTextEditorProps = {
+
+type TiptapProps = {
   description: string;
   onChange: (richText: string) => void;
 };
 
-const RichTextEditor = ({ description, onChange }: RichTextEditorProps) => {
+const Tiptap = ({ onChange }: TiptapProps) => {
   const editor = useEditor({
-    extensions: [
-      StarterKit.configure(),
-      Heading.configure({
-        HTMLAttributes: { class: "text-xl font-bold" },
-      }),
-      Link.configure(),
-    ],
-    content: description,
+    extensions: [StarterKit.configure(), Link.configure()],
+    content: "",
     editorProps: {
       attributes: {
         class:
-          "rounded-md border min-h-[200px] border-gray-300 p-4 ProseMirror",
+          "rounded-md border min-h-[200px] border-gray-300 p-4 ProseMirror focus:outline-none focus:ring-2 focus:border-transparent",
       },
     },
     onUpdate({ editor }) {
@@ -42,4 +36,4 @@ const RichTextEditor = ({ description, onChange }: RichTextEditorProps) => {
   );
 };
 
-export default RichTextEditor;
+export default Tiptap;

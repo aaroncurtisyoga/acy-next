@@ -19,6 +19,7 @@ import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
 import ImagePicker from "@/components/events/EventForm/ImagePicker";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
+import Description from "@/components/events/EventForm/Description";
 
 type EventFormProps = {
   event?: IEvent;
@@ -124,20 +125,11 @@ const EventForm = ({ event, type }: EventFormProps) => {
         <Price control={control} isSubmitting={isSubmitting} errors={errors} />
         <ImagePicker errors={errors} setValue={setValue} />
       </div>
-      {/*<Description
+      <Description
         control={control}
         isSubmitting={isSubmitting}
         errors={errors}
-      />*/}
-
-      <Controller
-        name={"description"}
-        control={control}
-        render={({ field }) => {
-          return <Tiptap description={field.name} onChange={field.onChange} />;
-        }}
       />
-
       <Button color={"primary"} type="submit" className={"w-full"}>
         {type} Event
       </Button>

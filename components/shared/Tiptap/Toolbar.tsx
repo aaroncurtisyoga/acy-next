@@ -8,66 +8,73 @@ import {
   ListOrdered,
   Heading2,
 } from "lucide-react";
+import { Button } from "@nextui-org/react";
 
 type ToolbarProps = {
   editor: Editor;
 };
 const Toolbar = ({ editor }: ToolbarProps) => {
   return (
-    <div className="font-inter text-gray-600">
-      <div className="flex gap-4 p-4 border-b border-gray-300 menu">
-        <button
-          onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
+    <div className="flex gap-4 p-4 border-gray-300 border rounded-small">
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleBold().run()}
+        className={editor.isActive("bold") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <Bold />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleItalic().run()}
+        className={editor.isActive("italic") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <Italic />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleStrike().run()}
+        className={editor.isActive("strike") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <Strikethrough />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleBulletList().run()}
+        className={editor.isActive("bulletList") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <List />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleOrderedList().run()}
+        className={editor.isActive("orderedList") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <ListOrdered />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => {
+          const url = window.prompt("URL");
+          if (url) {
+            editor.chain().focus().setLink({ href: url }).run();
           }
-          className={
-            editor.isActive("heading", { level: 1 }) ? "is-active" : ""
-          }
-        >
-          <Heading2 />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBold().run()}
-          className={editor.isActive("bold") ? "is-active" : ""}
-        >
-          <Bold />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleItalic().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
-        >
-          <Italic />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleStrike().run()}
-          className={editor.isActive("italic") ? "is-active" : ""}
-        >
-          <Strikethrough />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleBulletList().run()}
-          className={editor.isActive("bulletList") ? "is-active" : ""}
-        >
-          <List />
-        </button>
-        <button
-          onClick={() => editor.chain().focus().toggleOrderedList().run()}
-          className={editor.isActive("orderedList") ? "is-active" : ""}
-        >
-          <ListOrdered />
-        </button>
-        <button
-          onClick={() => {
-            const url = window.prompt("URL");
-            if (url) {
-              editor.chain().focus().setLink({ href: url }).run();
-            }
-          }}
-          className={editor.isActive("link") ? "is-active" : ""}
-        >
-          <LinkIcon />
-        </button>
-      </div>
+        }}
+        className={editor.isActive("link") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <LinkIcon />
+      </Button>
     </div>
   );
 };
