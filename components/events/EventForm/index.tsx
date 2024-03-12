@@ -88,8 +88,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
   }
 
   const onSubmit = async (values: z.infer<typeof EventFormSchema>) => {
-    console.log("values", values);
-    /*if (type === "Create") {
+    if (type === "Create") {
       await createNewEvent(values);
     }
 
@@ -99,7 +98,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
       } else {
         router.back();
       }
-    }*/
+    }
   };
 
   return (
