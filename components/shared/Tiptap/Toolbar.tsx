@@ -5,7 +5,9 @@ import {
   Link as LinkIcon,
   List,
   ListOrdered,
+  MessageSquareQuote,
   Minus,
+  Quote,
   Strikethrough,
   Underline,
 } from "lucide-react";
@@ -70,6 +72,15 @@ const Toolbar = ({ editor }: ToolbarProps) => {
         variant="light"
       >
         <ListOrdered />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleBlockquote().run()}
+        className={editor.isActive("blockquote") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <MessageSquareQuote />
       </Button>
       <Button
         isIconOnly
