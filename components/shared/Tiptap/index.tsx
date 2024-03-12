@@ -1,10 +1,10 @@
 "use client";
+
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
+import Underline from "@tiptap/extension-underline";
 import Toolbar from "@/components/shared/Tiptap/Toolbar";
-import { List } from "lucide-react";
-import { Button } from "@nextui-org/react";
 
 type TiptapProps = {
   description: string;
@@ -18,7 +18,8 @@ const Tiptap = ({ onChange }: TiptapProps) => {
         bulletList: { HTMLAttributes: { class: "list-disc pl-4" } },
         orderedList: { HTMLAttributes: { class: "list-decimal pl-4" } },
       }),
-      Link.configure(),
+      Link,
+      Underline,
     ],
     content: "",
     editorProps: {

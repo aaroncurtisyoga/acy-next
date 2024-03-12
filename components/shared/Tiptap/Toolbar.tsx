@@ -7,9 +7,9 @@ import {
   ListOrdered,
   Minus,
   Strikethrough,
+  Underline,
 } from "lucide-react";
 import { Button } from "@nextui-org/react";
-import { HardBreak } from "@tiptap/extension-hard-break";
 
 type ToolbarProps = {
   editor: Editor;
@@ -34,6 +34,15 @@ const Toolbar = ({ editor }: ToolbarProps) => {
         variant="light"
       >
         <Italic />
+      </Button>
+      <Button
+        isIconOnly
+        type={"button"}
+        onClick={() => editor.chain().focus().toggleUnderline().run()}
+        className={editor.isActive("underline") ? "bg-default-300" : ""}
+        variant="light"
+      >
+        <Underline />
       </Button>
       <Button
         isIconOnly
