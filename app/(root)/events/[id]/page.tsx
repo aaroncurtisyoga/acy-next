@@ -4,13 +4,15 @@ import DateAndTime from "@/components/events/EventPage/DateAndTime";
 import Hero from "@/components/events/EventPage/Hero";
 import Location from "@/components/events/EventPage/Location";
 import Subheading from "@/components/events/EventPage/Subheadline";
+import Headline from "@/components/events/EventPage/Headline";
+import RefundPolicy from "@/components/events/EventPage/RefundPolicy";
 import category from "@/components/events/EventForm/Category";
 import {
   getEventById,
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import Headline from "@/components/events/EventPage/Headline";
+import Description from "@/components/events/EventPage/Description";
 
 const EventPage = async ({
   params: { id },
@@ -40,18 +42,8 @@ const EventPage = async ({
               endDateTime={endDateTime}
             />
             <Location location={event.location} />
-            {!event.isFree && (
-              <div className={"mb-6 md:mb-8"}>
-                <h2 className={"text-2xl font-bold mb-3"}>Refund Policy</h2>
-                <p>
-                  Refunds are easy. Just send me an email at
-                  AaronCurtisYoga@gmail.com, and I&lsquo;ll provide a 100%
-                  refund. No questions asked.
-                </p>
-              </div>
-            )}
-            <h2 className={"text-2xl font-bold mb-3"}>About this event</h2>
-            <p className={"mb-14"}>{event.description}</p>
+            {!event.isFree && <RefundPolicy />}
+            <Description description={event.description} />
           </div>
           <div
             id={"event-checkout"}

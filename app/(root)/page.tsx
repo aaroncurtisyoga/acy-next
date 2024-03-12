@@ -44,7 +44,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
       </div>
       */}
       {isAdmin && <CreateEventButton />}
-      {/* <Collection
+      <Collection
         collectionType={"All_Events"}
         data={events?.data}
         emptyStateSubtext={"Please visit back soon to check in for events."}
@@ -52,7 +52,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
         limit={8}
         page={page}
         totalPages={events?.totalPages}
-      />*/}
+      />
     </section>
   );
 };
