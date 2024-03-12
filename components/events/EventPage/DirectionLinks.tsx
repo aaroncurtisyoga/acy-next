@@ -1,3 +1,5 @@
+import { Bike, Car, Footprints, TramFront } from "lucide-react";
+
 interface DirectionLinksProps {
   location: { geometry: { lat: any; lng: any } };
 }
@@ -15,16 +17,16 @@ const DirectionLinks = ({ location }: DirectionLinksProps) => {
     <div>
       <p>How to get there</p>
       <a target="_blank" href={generateDirectionsUrl(location, "driving")}>
-        By car
+        <Car />
       </a>
       <a target="_blank" href={generateDirectionsUrl(location, "walking")}>
-        walking
+        <Footprints />
       </a>
       <a target="_blank" href={generateDirectionsUrl(location, "transit")}>
-        public transport
+        <TramFront />
       </a>
       <a target="_blank" href={generateDirectionsUrl(location, "bicycling")}>
-        bike
+        <Bike />
       </a>
     </div>
   );

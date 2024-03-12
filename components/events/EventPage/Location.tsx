@@ -27,7 +27,8 @@ const Location = ({ location }) => {
                 title: "text-sm font-semibold cursor-pointer text-primary-600",
               }}
             >
-              hello
+              <Map geometry={location.geometry} />
+              <DirectionLinks location={location} />
             </AccordionItem>
           </Accordion>
         </div>
@@ -40,5 +41,5 @@ export default Location;
 
 /*
 <Map geometry={location.geometry} />
-<DirectionLinks location={location} />
+
 */
