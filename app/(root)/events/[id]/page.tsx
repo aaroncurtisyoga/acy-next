@@ -57,7 +57,7 @@ const EventPage = async ({
             <p className={"text-center text-lg mb-3"}>
               {event.isFree ? "Free" : `$${event.price}`}
             </p>
-            {/*<CheckoutButton event={event} className={"justify-center"} />*/}
+            <CheckoutButton event={event} className={"justify-center"} />
           </div>
         </div>
       </section>

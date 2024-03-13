@@ -11,7 +11,7 @@ const DirectionLinks = ({ location }: DirectionLinksProps) => {
       <p className={"text-center font-semibold text-default-700 mb-unit-6"}>
         How to get there
       </p>
-      <div className=" text-primary-600">
+      <div className="text-primary">
         <ul className={"flex justify-center"}>
           {travelOptions.map((option) => (
             <li key={option.travelMode} className={"border-r last:border-r-0"}>
