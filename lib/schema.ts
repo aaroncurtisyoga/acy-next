@@ -27,7 +27,7 @@ export const EventFormSchema = z
     startDateTime: z.date(),
     endDateTime: z.date(),
     categoryId: z.string().min(3, "ManageEventCategories is required"),
-    price: z.string(),
+    price: z.string().min(1, "Price is required"),
     isFree: z.boolean(),
   })
   .refine((data) => data.startDateTime < data.endDateTime, {
