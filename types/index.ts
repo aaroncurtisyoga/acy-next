@@ -98,3 +98,10 @@ export type SearchParamProps = {
   params: { id: string };
   searchParams: { [key: string]: string | string[] | undefined };
 };
+
+export type TravelMode = "driving" | "walking" | "transit" | "bicycling";
+
+export interface TravelOption {
+  travelMode: TravelMode;
+  icon: React.ElementType;
+}

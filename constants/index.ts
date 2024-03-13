@@ -1,13 +1,5 @@
-export const aboutLinks = [
-  {
-    name: "Schedule",
-    href: "/about/schedule",
-  },
-  {
-    name: "Newsletter",
-    href: "/about/newsletter",
-  },
-];
+import { Bike, Car, Footprints, TramFront } from "lucide-react";
+import { TravelMode, TravelOption } from "@/types";
 
 export const userLinks = [];
 
@@ -43,3 +35,22 @@ export const eventDefaultValues = {
   price: "",
   startDateTime: new Date(),
 };
+
+export const travelOptions: TravelOption[] = [
+  {
+    travelMode: "driving",
+    icon: Car,
+  },
+  {
+    travelMode: "walking",
+    icon: Footprints,
+  },
+  {
+    travelMode: "transit",
+    icon: TramFront,
+  },
+  {
+    travelMode: "bicycling",
+    icon: Bike,
+  },
+];
