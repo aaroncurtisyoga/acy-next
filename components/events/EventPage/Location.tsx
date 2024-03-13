@@ -1,9 +1,9 @@
 "use client";
 
 import { Accordion, AccordionItem } from "@nextui-org/react";
-import { MapPin } from "lucide-react";
-import Map from "@/components/shared/Map";
+import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import DirectionLinks from "@/components/events/EventPage/DirectionLinks";
+import Map from "@/components/shared/Map";
 
 const Location = ({ location }) => {
   return (
@@ -16,16 +16,22 @@ const Location = ({ location }) => {
             <b>{location.name}</b>
           </p>
           <p className={"mb-unit-2"}>{location.formattedAddress}</p>
-          <Accordion className={"p-0"}>
+          <Accordion className={"p-0 stroke-2"}>
             <AccordionItem
               key="1"
               aria-label="Show Map Accordion"
               title={<p>Show Map</p>}
+              className={"stroke-2"}
               classNames={{
-                indicator: "text-primary-600 stroke-4",
-                trigger: "py-0 w-auto",
-                title: "text-sm font-semibold cursor-pointer text-primary-600",
+                indicator: "text-primary-600 stroke-2",
+                trigger: "w-auto py-0 stroke-2",
+                title:
+                  "text-sm font-semibold cursor-pointer text-primary-600 stroke-2",
               }}
+              indicator={({ isOpen }) =>
+                isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />
+              }
+              disableIndicatorAnimation={true}
             >
               <Map geometry={location.geometry} />
               <DirectionLinks location={location} />

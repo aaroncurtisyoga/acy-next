@@ -14,20 +14,48 @@ const DirectionLinks = ({ location }: DirectionLinksProps) => {
   };
 
   return (
-    <div>
-      <p>How to get there</p>
-      <a target="_blank" href={generateDirectionsUrl(location, "driving")}>
-        <Car />
-      </a>
-      <a target="_blank" href={generateDirectionsUrl(location, "walking")}>
-        <Footprints />
-      </a>
-      <a target="_blank" href={generateDirectionsUrl(location, "transit")}>
-        <TramFront />
-      </a>
-      <a target="_blank" href={generateDirectionsUrl(location, "bicycling")}>
-        <Bike />
-      </a>
+    <div className={"w-full"}>
+      <p className={"text-center"}>How to get there</p>
+      <div className=" text-primary-600">
+        <ul className={"flex justify-center"}>
+          <li>
+            <a
+              className={"px-unit-8 inline-block"}
+              target="_blank"
+              href={generateDirectionsUrl(location, "driving")}
+            >
+              <Car />
+            </a>
+          </li>
+          <li>
+            <a
+              className={"px-unit-8 inline-block"}
+              target="_blank"
+              href={generateDirectionsUrl(location, "walking")}
+            >
+              <Footprints />
+            </a>
+          </li>
+          <li>
+            <a
+              className={"px-unit-8 inline-block"}
+              target="_blank"
+              href={generateDirectionsUrl(location, "transit")}
+            >
+              <TramFront />
+            </a>
+          </li>
+          <li>
+            <a
+              className={"px-unit-8 inline-block"}
+              target="_blank"
+              href={generateDirectionsUrl(location, "bicycling")}
+            >
+              <Bike />
+            </a>
+          </li>
+        </ul>
+      </div>
     </div>
   );
 };
