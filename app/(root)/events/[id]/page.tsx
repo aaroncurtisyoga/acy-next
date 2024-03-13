@@ -29,29 +29,30 @@ const EventPage = async ({
     <>
       <section className="flex flex-col w-full md:items-center">
         <Hero imageUrl={imageUrl} />
-        <div className={"wrapper flex flex-col"}>
-          <Subheading
-            category={category}
-            id={_id}
-            startDateTime={startDateTime}
-          />
-          <div className={"px-5 md:px-0"}>
-            <Headline title={title} />
-            <DateAndTime
-              startDateTime={startDateTime}
-              endDateTime={endDateTime}
-            />
-            <Location location={event.location} />
-            {!event.isFree && <RefundPolicy />}
-            <Description description={event.description} />
+        <Subheading
+          category={category}
+          id={_id}
+          startDateTime={startDateTime}
+        />
+        <div className={"wrapper flex flex-col md:flex-row"}>
+          <div className={"flex-1"}>
+            <div className={"px-5 md:px-0"}>
+              <Headline title={title} />
+              <DateAndTime
+                startDateTime={startDateTime}
+                endDateTime={endDateTime}
+              />
+              <Location location={event.location} />
+              {!event.isFree && <RefundPolicy />}
+              <Description description={event.description} />
+            </div>
           </div>
           <div
             id={"event-checkout"}
             className={
-              "fixed bottom-0 z-10 bg-white " +
-              " border-t-2  md:border-[1px] md:rounded-2xl md:relative" +
-              " w-full flex-1 md:max-w-[360px] h-[140px] p-[24px]" +
-              " md:sticky md:top-5 md:mt-[20px]"
+              "flex-1 w-full border-t-2 h-[140px] p-[24px] fixed bottom-0 z-10 bg-white" +
+              " md:border-[1px] md:rounded-2xl md:relative" +
+              " md:max-w-[360px]"
             }
           >
             <p className={"text-center text-lg mb-3"}>
