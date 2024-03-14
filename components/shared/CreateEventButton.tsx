@@ -5,7 +5,7 @@ import { PlusCircle } from "lucide-react";
 const CreateEventButton = () => {
   return (
     <Link href={"/events/create"}>
-      <Button color="primary" startContent={<PlusCircle />}>
+      <Button color="default" startContent={<PlusCircle />}>
         New Event
       </Button>
     </Link>

@@ -27,14 +27,14 @@ const EventPage = async ({
   });
   return (
     <>
-      <section className="flex flex-col w-full md:items-center">
+      <section className="flex flex-col w-full md:items-center pb-unit-10 gap-3">
         <Hero imageUrl={imageUrl} />
         <Subheading
           category={category}
           id={_id}
           startDateTime={startDateTime}
         />
-        <div className={"wrapper flex flex-col md:flex-row"}>
+        <div className={"wrapper-width flex flex-col md:flex-row"}>
           <div className={"flex-1"}>
             <div className={"px-5 md:px-0"}>
               <Headline title={title} />
@@ -43,8 +43,8 @@ const EventPage = async ({
                 endDateTime={endDateTime}
               />
               <Location location={event.location} />
-              {!event.isFree && <RefundPolicy />}
               <Description description={event.description} />
+              {!event.isFree && <RefundPolicy />}
             </div>
           </div>
           <div

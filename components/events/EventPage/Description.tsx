@@ -14,10 +14,10 @@ const Description = ({ description }: DescriptionProps) => {
   });
 
   return (
-    <>
+    <div className={"mb-6 md:mb-8"}>
       <h2 className={"text-2xl font-bold mb-3"}>About this event</h2>
       <EditorContent editor={editor} />
-    </>
+    </div>
   );
 };
 
