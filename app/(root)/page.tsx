@@ -1,5 +1,4 @@
-import Image from "next/image";
-import handstandProfile from "@/public/assets/images/ScissorHandstand_LowRes-min.jpg";
+import HomepageHero from "@/components/shared/HomepageHero";
 import UpcomingEvents from "@/components/events/UpcomingEvents";
 import { SearchParamProps } from "@/types";
 
@@ -12,16 +11,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
       }
     >
       <div className={"relative"}>
-        <Image
-          alt="Yoga posture hand to big toe"
-          className="object-cover"
-          fill={true}
-          sizes="(min-width: 1640px) 768px, calc(45vw + 39px)"
-          priority={true}
-          placeholder={"blur"}
-          loading="eager"
-          src={handstandProfile}
-        />
+        <HomepageHero />
       </div>
       <UpcomingEvents searchParams={searchParams} />
     </section>
