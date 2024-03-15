@@ -29,14 +29,17 @@ export default function ImageResponsiveHandstand() {
 
   return (
     <picture>
-      <source media="(max-width: 767px)" srcSet={mobile} />
-      <source media="(min-width: 768px)" srcSet={desktop} />
-      <img
-        alt="Aaron Curtis in Handstand"
-        className="object-cover"
-        style={{ width: "100%", height: "auto" }}
-        {...rest}
+      <source
+        media="(max-width: 767px)"
+        className={"block aspect-[2/1]"}
+        srcSet={mobile}
       />
+      <source
+        media="(min-width: 768px)"
+        className={"object-cover w-full h-auto"}
+        srcSet={desktop}
+      />
+      <img alt="Aaron Curtis in Handstand" {...rest} />
     </picture>
   );
 }

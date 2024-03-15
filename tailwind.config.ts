@@ -10,6 +10,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      aspectRatio: {
+        "2/1": "2/1",
+      },
       backgroundImage: {},
     },
   },
