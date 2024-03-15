@@ -34,12 +34,12 @@ export default function ImageResponsiveHandstand() {
         className={"block aspect-[2/1]"}
         srcSet={mobile}
       />
-      <source
-        media="(min-width: 768px)"
-        className={"object-cover w-full h-auto"}
-        srcSet={desktop}
+      <source media="(min-width: 768px)" srcSet={desktop} />
+      <img
+        alt="Aaron Curtis in Handstand"
+        className={"md:object-cover"}
+        {...rest}
       />
-      <img alt="Aaron Curtis in Handstand" {...rest} />
     </picture>
   );
 }
