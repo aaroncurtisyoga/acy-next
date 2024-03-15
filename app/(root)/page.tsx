@@ -1,4 +1,4 @@
-import HomepageHero from "@/components/shared/HomepageHero";
+import ImageResponsiveHandstand from "@/components/shared/ImageResponsiveHandstand";
 import UpcomingEvents from "@/components/events/UpcomingEvents";
 import { SearchParamProps } from "@/types";
 
@@ -6,12 +6,12 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
   return (
     <section
       className={
-        "grid md:grid-cols-[1fr,1fr] 11rem)] grow w-full" +
-        " max-w-screen-2xl lg:mx-auto min-h-[calc(100dvh-64px)] "
+        "grid grow w-full" +
+        " max-w-screen-2xl lg:mx-auto min-h-[calc(100dvh-64px)] md:grid-cols-[1fr,1fr] 11rem)]  "
       }
     >
       <div className={"relative"}>
-        <HomepageHero />
+        <ImageResponsiveHandstand />
       </div>
       <UpcomingEvents searchParams={searchParams} />
     </section>
@@ -19,5 +19,3 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
 };
 
 export default EventsPage;
-
-//  h-[calc(100vh - 64px)]
