@@ -44,8 +44,7 @@ export default function Header() {
       <NavbarContent>
         <NavbarBrand>
           <Link href={"/"}>
-            <p className="sm:hidden font-bold text-inherit">ACY</p>
-            <p className="hidden sm:flex font-bold text-inherit">
+            <p className="sm:flex font-semibold text-inherit">
               Aaron Curtis Yoga
             </p>
           </Link>
