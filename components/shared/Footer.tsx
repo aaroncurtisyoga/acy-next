@@ -13,7 +13,7 @@ const Footer = () => {
           " md:justify-between md:items-start *:flex-1 gap-unit-8 md:gap-0"
         }
       >
-        <div>
+        <div className={"flex justify-center"}>
           <NewsletterForm />
         </div>
         <div className={"flex justify-center"}>
