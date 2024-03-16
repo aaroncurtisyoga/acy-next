@@ -17,11 +17,15 @@ const UpcomingEvents = async ({ searchParams }) => {
   });
 
   return (
-    <div>
-      <p className={"text-semibold"}>
-        Join me for upcoming workshops & classes
-      </p>
+    <div className={"px-unit-5 py-unit-15 md:px-unit-16 md:py-unit-10"}>
       {isAdmin && <CreateEventButton />}
+      <h1 className={"text-3xl mb-6 md:text-7xl md:mb-8"}>
+        Practice. Explore. Connect.
+      </h1>
+      <p className={"font-semibold mb-4"}>
+        Join me for upcoming classes and workshops
+      </p>
+
       <Collection
         collectionType={"All_Events"}
         data={events?.data}
@@ -30,6 +34,7 @@ const UpcomingEvents = async ({ searchParams }) => {
         limit={8}
         page={page}
         totalPages={events?.totalPages}
+        view={"text"}
       />
     </div>
   );

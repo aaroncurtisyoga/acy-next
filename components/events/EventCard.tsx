@@ -8,10 +8,10 @@ import EventCardAdminButtons from "@/components/events/EventCardAdminButtons";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 
-type CardProps = {
+interface CardProps {
   isAdmin: boolean;
   event: IEvent;
-};
+}
 
 const EventCard = ({ isAdmin, event }: CardProps) => {
   const pathname = usePathname();

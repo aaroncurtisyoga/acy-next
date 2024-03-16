@@ -1,26 +1,29 @@
-import EventCard from "@/components/events/EventCard";
-import Pagination from "@/components/events/Pagination";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { checkRole } from "@/lib/utils";
+import EventCard from "@/components/events/EventCard";
+import EventText from "@/components/events/EventText";
+import Pagination from "@/components/events/Pagination";
 
 interface CollectionProps {
+  collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
   data: IEvent[];
-  emptyTitle: string;
   emptyStateSubtext: string;
+  emptyTitle: string;
   limit: number;
   page: number | string;
   totalPages?: number;
   urlParamName?: string;
-  collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
+  view?: "text" | "card";
 }
 
 const Collection = ({
   data,
-  emptyTitle,
   emptyStateSubtext,
+  emptyTitle,
   page,
   totalPages = 0,
   urlParamName,
+  view = "card",
 }: CollectionProps) => {
   const isAdmin = checkRole("admin");
 
@@ -32,7 +35,11 @@ const Collection = ({
             {data.map((event) => {
               return (
                 <li key={event._id}>
-                  <EventCard event={event} isAdmin={isAdmin} />
+                  {view === "text" ? (
+                    <EventText event={event} isAdmin={isAdmin} />
+                  ) : (
+                    <EventCard event={event} isAdmin={isAdmin} />
+                  )}
                 </li>
               );
             })}
