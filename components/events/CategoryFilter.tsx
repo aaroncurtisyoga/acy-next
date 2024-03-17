@@ -43,15 +43,18 @@ const CategoryFilter = () => {
   };
 
   return (
-    <div>
-      <Select label="Select a category" onChange={handleSelectionChange}>
-        {categories.map((category) => (
-          <SelectItem key={category._id} value={category.name}>
-            {category.name}
-          </SelectItem>
-        ))}
-      </Select>
-    </div>
+    <Select
+      label="Select a category"
+      labelPlacement={"outside"}
+      onChange={handleSelectionChange}
+      placeholder="Select a category"
+    >
+      {categories.map((category) => (
+        <SelectItem key={category._id} value={category.name}>
+          {category.name}
+        </SelectItem>
+      ))}
+    </Select>
   );
 };
 
