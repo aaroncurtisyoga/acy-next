@@ -15,7 +15,7 @@ const CategoryFilter = () => {
   useEffect(() => {
     const getCategories = async () => {
       const categoryList = await getAllCategories();
-
+      console.log("categoryList", categoryList);
       categoryList && setCategories(categoryList as ICategory[]);
     };
 
@@ -50,7 +50,7 @@ const CategoryFilter = () => {
       placeholder="Select a category"
     >
       {categories.map((category) => (
-        <SelectItem key={category._id} value={category.name}>
+        <SelectItem key={category.name} value={category.name}>
           {category.name}
         </SelectItem>
       ))}

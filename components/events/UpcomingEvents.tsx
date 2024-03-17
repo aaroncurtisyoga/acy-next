@@ -10,6 +10,8 @@ const UpcomingEvents = async ({ searchParams }) => {
   const category = (searchParams?.category as string) || "";
   const isAdmin = checkRole("admin");
 
+  console.log("searchParams", searchParams);
+
   const events = await getAllEvents({
     category,
     limit: 8,
