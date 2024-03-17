@@ -1,5 +1,6 @@
 import CreateEventButton from "@/components/shared/CreateEventButton";
 import Collection from "@/components/events/Collection";
+import FilterModal from "@/components/events/FilterModal";
 import { checkRole } from "@/lib/utils";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
@@ -22,9 +23,12 @@ const UpcomingEvents = async ({ searchParams }) => {
       <h1 className={"text-3xl mb-6 md:text-7xl md:mb-8"}>
         Practice. Explore. Connect.
       </h1>
-      <p className={"font-semibold mb-4"}>
-        Join me for upcoming classes and workshops
-      </p>
+      <div className={"flex justify-between"}>
+        <p className={"font-semibold mb-4"}>
+          Join me for upcoming classes and workshops
+        </p>
+        <FilterModal />
+      </div>
 
       <Collection
         collectionType={"All_Events"}
