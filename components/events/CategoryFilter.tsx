@@ -1,9 +1,8 @@
-/* Todo: Maybe have one category component that can be used everywhere? */
-
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
+import { Select, SelectItem } from "@nextui-org/react";
 import { getAllCategories } from "@/lib/actions/category.actions";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
@@ -23,7 +22,8 @@ const CategoryFilter = () => {
     getCategories();
   }, []);
 
-  const onSelectCategory = (category: string) => {
+  const handleSelectionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const category = e.target.value;
     let newUrl = "";
 
     if (category && category !== "All") {
@@ -44,21 +44,13 @@ const CategoryFilter = () => {
 
   return (
     <div>
-      select dropdownOld
-      {/*    <Select onValueChange={(value: string) => onSelectCategory(value)}>
-      <SelectTrigger>
-        <SelectValue placeholder="Category" />
-      </SelectTrigger>
-      <SelectContent>
-        <SelectItem value="All">All</SelectItem>
-
+      <Select label="Select a category" onChange={handleSelectionChange}>
         {categories.map((category) => (
-          <SelectItem value={category.name} key={category._id}>
+          <SelectItem key={category._id} value={category.name}>
             {category.name}
           </SelectItem>
         ))}
-      </SelectContent>
-    </Select>*/}
+      </Select>
     </div>
   );
 };
