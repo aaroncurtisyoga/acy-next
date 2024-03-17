@@ -23,8 +23,8 @@ const UpcomingEvents = async ({ searchParams }) => {
       <h1 className={"text-3xl mb-6 md:text-7xl md:mb-8"}>
         Practice. Explore. Connect.
       </h1>
-      <div className={"flex justify-between"}>
-        <p className={"font-semibold mb-4"}>
+      <div className={"flex justify-between items-center mb-4"}>
+        <p className={"font-semibold"}>
           Join me for upcoming classes and workshops
         </p>
         <FilterModal />
