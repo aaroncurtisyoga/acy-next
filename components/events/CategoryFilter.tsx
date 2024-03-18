@@ -51,6 +51,8 @@ const CategoryFilter = () => {
     handleFormUrlQuery(category);
   }, [handleFormUrlQuery, category]);
 
+  if (!categories.length) return null;
+
   return (
     <Select
       label="Select a category"
