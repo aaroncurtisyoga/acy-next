@@ -60,6 +60,7 @@ const CategoryFilter = () => {
       onChange={(e) => setCategory(e.target.value)}
       placeholder="Select a category"
       selectedKeys={[category]}
+      variant={"bordered"}
     >
       {categories.map((category) => (
         <SelectItem key={category.name} value={category.name}>

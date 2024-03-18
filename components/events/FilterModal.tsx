@@ -34,7 +34,7 @@ const FilterModal = () => {
               <ModalHeader className="flex flex-col gap-1 text-xl">
                 Search Filters
               </ModalHeader>
-              <ModalBody>
+              <ModalBody className={" gap-8 mb-unit-10"}>
                 <Search />
                 <CategoryFilter />
               </ModalBody>
