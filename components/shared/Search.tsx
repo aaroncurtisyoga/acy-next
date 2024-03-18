@@ -1,8 +1,8 @@
-/* Todo: Update UI to have NextUI */
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Input } from "@nextui-org/react";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 
 const Search = () => {
@@ -34,14 +34,15 @@ const Search = () => {
   }, [query, searchParams, router]);
 
   return (
-    <div className="w-full">
-      <label htmlFor="search">Search for Events</label>
-      <input
-        id="search"
-        type="text"
-        onChange={(e) => setQuery(e.target.value)}
-      />
-    </div>
+    <Input
+      className="w-full placeholder:italic"
+      placeholder={"e.g. 'Power Vinyasa'"}
+      key={"SearchInput"}
+      label="Search for Events"
+      labelPlacement={"outside"}
+      onChange={(e) => setQuery(e.target.value)}
+      type="text"
+    />
   );
 };
 

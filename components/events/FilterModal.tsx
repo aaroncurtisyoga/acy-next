@@ -10,6 +10,7 @@ import {
 } from "@nextui-org/react";
 import { SlidersHorizontal } from "lucide-react";
 import CategoryFilter from "@/components/events/CategoryFilter";
+import Search from "@/components/shared/Search";
 
 const FilterModal = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -34,6 +35,7 @@ const FilterModal = () => {
                 Search Filters
               </ModalHeader>
               <ModalBody>
+                <Search />
                 <CategoryFilter />
               </ModalBody>
             </>
