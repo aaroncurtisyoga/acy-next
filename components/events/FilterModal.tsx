@@ -8,7 +8,6 @@ import {
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-
 import { SlidersHorizontal } from "lucide-react";
 import CategoryFilter from "@/components/events/CategoryFilter";
 
