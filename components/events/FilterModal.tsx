@@ -9,7 +9,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { SlidersHorizontal } from "lucide-react";
-import CategoryFilter from "@/components/events/CategoryFilter";
+import CategoryButtons from "@/components/events/CategoryButtons";
 import Search from "@/components/shared/Search";
 
 const FilterModal = () => {
@@ -34,9 +34,9 @@ const FilterModal = () => {
               <ModalHeader className="flex flex-col gap-1 text-xl">
                 Search Filters
               </ModalHeader>
-              <ModalBody className={" gap-8 mb-unit-10"}>
-                <Search />
-                <CategoryFilter />
+              <ModalBody className={"mb-unit-10"}>
+                <Search className={"mb-4"} />
+                <CategoryButtons />
               </ModalBody>
             </>
           )}
