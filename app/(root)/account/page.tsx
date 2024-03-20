@@ -26,10 +26,11 @@ const ProfilePage = async ({ searchParams }: SearchParamProps) => {
         </div>
       </section>
       <section>
+        {/* Display in table instead... */}
         <Collection
           data={orderedEvents}
           emptyTitle="No event tickets purchased yet"
-          emptyStateSubtext="No worries - plenty of exciting events to explore!"
+          emptyStateSubtext="Take a look at upcoming events to explore!"
           collectionType="My_Tickets"
           limit={3}
           page={ordersPage}
