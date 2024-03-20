@@ -35,8 +35,11 @@ export default function Header({ isSimpleNav = false }) {
     if (!isLoaded) return;
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
-      setMenuItems((prevState) => [...prevState, ...authenticatedLinks]);
-      isAdmin && setMenuItems((prevState) => [...prevState, ...adminLinks]);
+      setMenuItems(() => [
+        ...userLinks,
+        ...authenticatedLinks,
+        ...(isAdmin ? adminLinks : []),
+      ]);
     } else {
       setMenuItems([...userLinks]);
     }
