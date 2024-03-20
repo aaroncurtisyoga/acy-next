@@ -1,13 +1,13 @@
 import { ReactNode } from "react";
-import Footer from "@/components/shared/Footer";
 import Header from "@/components/shared/Header";
 
 const Layout = ({ children }: { children: ReactNode }) => {
   return (
-    <div className="flex flex-col justify-center items-center min-h-screen w-full">
+    <div className="flex flex-col min-h-dvh">
       <Header isSimpleNav={true} />
-      {children}
-      <Footer />
+      <main className={"grow flex justify-center items-center"}>
+        {children}
+      </main>
     </div>
   );
 };
