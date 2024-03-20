@@ -8,7 +8,6 @@ import {
 const client = new Client({});
 
 export const autocompleteSuggestions = async (search) => {
-  console.log("autocompleteSuggestions called", search);
   return await client
     .placeAutocomplete({
       params: {
