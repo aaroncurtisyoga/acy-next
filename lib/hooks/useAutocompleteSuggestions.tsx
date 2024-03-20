@@ -25,7 +25,7 @@ const useAutocompleteSuggestions = () => {
     return () => {
       debouncedAutocomplete.cancel();
     };
-  }, []);
+  }, [debouncedAutocomplete]);
 
   useEffect(() => {
     debouncedAutocomplete(searchValue);
