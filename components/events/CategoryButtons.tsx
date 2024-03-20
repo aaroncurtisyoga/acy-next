@@ -8,7 +8,7 @@ import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
 
 const CategoryButtons = () => {
-  const [selectedCategory, setSelectedCategory] = useState("All");
+  const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState<ICategory[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -41,7 +41,7 @@ const CategoryButtons = () => {
 
   useEffect(() => {
     const category = searchParams.get("category");
-    setSelectedCategory(category || "");
+    setSelectedCategory(category || "All");
   }, [searchParams]);
 
   if (!categories.length) return null;
