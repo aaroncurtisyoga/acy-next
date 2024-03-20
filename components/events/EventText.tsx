@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { Link as NextUiLink } from "@nextui-org/react";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
@@ -19,6 +20,7 @@ const EventText = ({ isAdmin, event }: EventTextProps) => {
       {formattedDate} - {formattedTime} - {title} at {event.location.name} -{" "}
       <NextUiLink
         className={"italic cursor-pointer text-default-900"}
+        href={`/events/${_id}`}
         underline="always"
       >
         Sign Up
