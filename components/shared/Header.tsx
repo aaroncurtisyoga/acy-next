@@ -21,7 +21,10 @@ import {
 } from "@nextui-org/react";
 import { adminLinks, authenticatedLinks, userLinks } from "@/constants";
 
-export default function Header() {
+interface HeaderProps {
+  isSimpleNav?: boolean;
+}
+export default function Header({ isSimpleNav = false }) {
   const router = useRouter();
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, user } = useUser();
@@ -58,14 +61,16 @@ export default function Header() {
             </Link>
           </NavbarItem>
         ))}
-        <NavbarItem className={"min-w-[32px]"}>
-          <SignedIn>
-            <UserButton afterSignOutUrl={"/"} />
-          </SignedIn>
-          <SignedOut>
-            <Link href={"/sign-in"}>Login</Link>
-          </SignedOut>
-        </NavbarItem>
+        {!isSimpleNav && (
+          <NavbarItem className={"min-w-[32px]"}>
+            <SignedIn>
+              <UserButton afterSignOutUrl={"/"} />
+            </SignedIn>
+            <SignedOut>
+              <Link href={"/sign-in"}>Login</Link>
+            </SignedOut>
+          </NavbarItem>
+        )}
       </NavbarContent>
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
@@ -79,19 +84,21 @@ export default function Header() {
             <Link href={link.href}>{link.name}</Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
-          <SignedIn>
-            <button
-              type="button"
-              onClick={() => signOut(() => router.push("/"))}
-            >
-              Logout
-            </button>
-          </SignedIn>
-          <SignedOut>
-            <Link href={"/sign-in"}>Login</Link>
-          </SignedOut>
-        </NavbarMenuItem>
+        {!isSimpleNav && (
+          <NavbarMenuItem>
+            <SignedIn>
+              <button
+                type="button"
+                onClick={() => signOut(() => router.push("/"))}
+              >
+                Logout
+              </button>
+            </SignedIn>
+            <SignedOut>
+              <Link href={"/sign-in"}>Login</Link>
+            </SignedOut>
+          </NavbarMenuItem>
+        )}
       </NavbarMenu>
     </Navbar>
   );
