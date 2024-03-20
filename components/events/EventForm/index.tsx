@@ -2,16 +2,15 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
 import * as z from "zod";
 import Category from "@/components/events/EventForm/Category";
 import EndDate from "@/components/events/EventForm/EndDate";
-import Location from "@/components/events/EventForm/Location";
+// import Location from "@/components/events/EventForm/Location";
 import Price from "@/components/events/EventForm/Price";
 import StartDate from "@/components/events/EventForm/StartDate";
-import Tiptap from "@/components/shared/Tiptap";
 import Title from "@/components/events/EventForm/Title";
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
@@ -110,7 +109,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
           errors={errors}
           isSubmitting={isSubmitting}
         />
-        <Location control={control} setValue={setValue} errors={errors} />
+        {/*<Location control={control} setValue={setValue} errors={errors} />*/}
         <StartDate
           control={control}
           errors={errors}

@@ -2,12 +2,12 @@ import React, { useState } from "react";
 import { Controller } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
-import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
+// import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
 const Location = ({ control, setValue, errors }) => {
-  const { setSearchValue, suggestions } = useAutocompleteSuggestions();
+  // const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
-  const handleSelectLocation = async (placeId: string) => {
+  /*  const handleSelectLocation = async (placeId: string) => {
     await placeDetails(placeId).then((place) =>
       setLocationValueInReactHookForm(place),
     );
@@ -24,10 +24,11 @@ const Location = ({ control, setValue, errors }) => {
 
   const onInputChange = (value: string) => {
     setSearchValue(value);
-  };
+  };*/
 
   return (
-    <Controller
+    <p>hi</p>
+    /*<Controller
       control={control}
       name={"location"}
       render={({ field }) => (
@@ -52,7 +53,7 @@ const Location = ({ control, setValue, errors }) => {
           ))}
         </Autocomplete>
       )}
-    />
+    />*/
   );
 };
 
