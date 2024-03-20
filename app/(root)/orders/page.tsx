@@ -1,9 +1,16 @@
-import Search from "@/components/shared/Search";
+import { Metadata } from "next";
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableColumn,
+  TableRow,
+  TableCell,
+} from "@nextui-org/react";
 import { getOrdersByEvent } from "@/lib/actions/order.actions";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
 import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Orders",
@@ -15,41 +22,43 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
   const orders = await getOrdersByEvent({ eventId, searchString: searchText });
   return (
     <>
-      <section>
-        <h3>Orders</h3>
+      <section
+        className={
+          "bg-primary-50 bg-dotted-pattern bg-cover bg-center py-5 md:py-10"
+        }
+      >
+        <h3 className={"wrapper text-center sm:text-left"}>Orders</h3>
       </section>
-      <section>
-        <table>
-          <thead>
-            <tr>
-              <th>Order ID</th>
-              <th>Event Title</th>
-              <th>Buyer</th>
-              <th>Created</th>
-              <th>Amount</th>
-            </tr>
-          </thead>
-          <tbody>
+      <section className="wrapper mt-8">
+        <Table>
+          <TableHeader>
+            <TableColumn>Order ID</TableColumn>
+            <TableColumn>Event Title</TableColumn>
+            <TableColumn>Buyer</TableColumn>
+            <TableColumn>Created</TableColumn>
+            <TableColumn>Amount</TableColumn>
+          </TableHeader>
+          <TableBody>
             {orders && orders.length === 0 ? (
-              <tr>
-                <td colSpan={5}>No orders found.</td>
-              </tr>
+              <TableBody emptyContent={"No rows to display."}>{[]}</TableBody>
             ) : (
               <>
                 {orders &&
                   orders.map((row: IOrderItem) => (
-                    <tr key={row._id} style={{ boxSizing: "border-box" }}>
-                      <td>{row._id}</td>
-                      <td>{row.eventTitle}</td>
-                      <td>{row.buyer}</td>
-                      <td>{formatDateTime(row.createdAt).dateTime}</td>
-                      <td>{formatPrice(row.totalAmount)}</td>
-                    </tr>
+                    <TableRow key={row._id}>
+                      <TableCell>{row._id}</TableCell>
+                      <TableCell>{row.eventTitle}</TableCell>
+                      <TableCell>{row.buyer}</TableCell>
+                      <TableCell>
+                        {formatDateTime(row.createdAt).dateTime}
+                      </TableCell>
+                      <TableCell>{formatPrice(row.totalAmount)}</TableCell>
+                    </TableRow>
                   ))}
               </>
             )}
-          </tbody>
-        </table>
+          </TableBody>
+        </Table>
       </section>
     </>
   );

@@ -5,7 +5,7 @@ export const userLinks = [];
 
 export const adminLinks = [{ name: "Admin", href: "/dashboard" }];
 
-export const authenticatedLinks = [{ name: "My Account", href: "/profile" }];
+export const authenticatedLinks = [{ name: "Account", href: "/account" }];
 
 export const signUpLinks = {
   crossFitDc: "https://crossfitdc.com/",
