@@ -1,4 +1,4 @@
-// import ImageResponsiveHandstand from "@/components/shared/ImageResponsiveHandstand";
+import ImageResponsiveHandstand from "@/components/shared/ImageResponsiveHandstand";
 import UpcomingEvents from "@/components/events/UpcomingEvents";
 import { SearchParamProps } from "@/types";
 
@@ -12,7 +12,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
     >
       <div className={"relative"}>
         <p>hey</p>
-        {/*<ImageResponsiveHandstand />*/}
+        <ImageResponsiveHandstand />
       </div>
       <UpcomingEvents searchParams={searchParams} />
     </section>

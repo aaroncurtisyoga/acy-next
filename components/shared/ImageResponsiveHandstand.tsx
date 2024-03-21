@@ -3,27 +3,33 @@ import imgHandstandMobile from "@/public/assets/images/handstand_mobile.jpg";
 import imgHandstandDesktop from "@/public/assets/images/handstand_desktop.jpg";
 
 export default function ImageResponsiveHandstand() {
-  const common = { alt: "Aaron doing handstand posture", sizes: "100vw" };
+  const common = {
+    alt: "Aaron doing handstand posture",
+    className: "object-cover",
+    fill: true,
+  };
+
   const {
-    props: { srcSet: mobile, ...rest },
+    props: { srcSet: mobile },
   } = getImageProps({
     ...common,
-    fill: true,
-    loading: "eager",
-    placeholder: "blur",
-    priority: true,
-    quality: 70,
+    // loading: "eager",
+    // placeholder: "blur",
+    // priority: true,
+    // quality: 70,
+    // sizes: "100vw",
     src: imgHandstandMobile,
   });
+
   const {
-    props: { srcSet: desktop },
+    props: { srcSet: desktop, ...rest },
   } = getImageProps({
     ...common,
-    fill: true,
-    loading: "eager",
-    placeholder: "blur",
-    priority: true,
-    quality: 80,
+    // loading: "eager",
+    // placeholder: "blur",
+    // priority: true,
+    // quality: 80,
+    // sizes: "50vw",
     src: imgHandstandDesktop,
   });
 
@@ -35,11 +41,7 @@ export default function ImageResponsiveHandstand() {
         srcSet={mobile}
       />
       <source media="(min-width: 768px)" srcSet={desktop} />
-      <img
-        alt="Aaron Curtis in Handstand"
-        className={"md:object-cover"}
-        {...rest}
-      />
+      <img {...rest} />
     </picture>
   );
 }
