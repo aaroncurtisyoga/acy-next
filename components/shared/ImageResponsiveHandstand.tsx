@@ -1,6 +1,4 @@
 import { getImageProps } from "next/image";
-import imgHandstandMobile from "@/public/assets/images/handstand_mobile.jpg";
-import imgHandstandDesktop from "@/public/assets/images/handstand_desktop.jpg";
 
 export default function ImageResponsiveHandstand() {
   const common = {
@@ -18,7 +16,7 @@ export default function ImageResponsiveHandstand() {
     // priority: true,
     // quality: 70,
     // sizes: "100vw",
-    src: imgHandstandMobile,
+    src: "/assets/images/handstand_mobile.jpg",
   });
 
   const {
@@ -30,7 +28,7 @@ export default function ImageResponsiveHandstand() {
     // priority: true,
     // quality: 80,
     // sizes: "50vw",
-    src: imgHandstandDesktop,
+    src: "/assets/images/handstand_desktop.jpg",
   });
 
   return (
