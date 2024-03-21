@@ -7,6 +7,8 @@ let cached = (global as any).mongoose || {
   promise: null,
 };
 
+const isProduction = process.env.NODE_ENV === "production";
+
 export const connectToDatabase = async () => {
   if (cached.conn) {
     return cached.conn;
@@ -20,7 +22,7 @@ export const connectToDatabase = async () => {
   cached.promise =
     cached.promise ||
     mongoose.connect(MONGODB_URI, {
-      dbName: "acy",
+      dbName: isProduction ? "prod" : "dev",
       bufferCommands: false,
     });
 

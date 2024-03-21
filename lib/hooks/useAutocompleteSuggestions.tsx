@@ -1,4 +1,3 @@
-/*
 "use client";
 
 import { useEffect, useRef, useState } from "react";
@@ -36,4 +35,3 @@ const useAutocompleteSuggestions = () => {
 };
 
 export default useAutocompleteSuggestions;
-*/

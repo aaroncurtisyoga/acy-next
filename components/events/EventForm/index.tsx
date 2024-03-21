@@ -8,7 +8,7 @@ import { Button } from "@nextui-org/react";
 import * as z from "zod";
 import Category from "@/components/events/EventForm/Category";
 import EndDate from "@/components/events/EventForm/EndDate";
-// import Location from "@/components/events/EventForm/Location";
+import Location from "@/components/events/EventForm/Location";
 import Price from "@/components/events/EventForm/Price";
 import StartDate from "@/components/events/EventForm/StartDate";
 import Title from "@/components/events/EventForm/Title";
@@ -109,7 +109,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
           errors={errors}
           isSubmitting={isSubmitting}
         />
-        {/*<Location control={control} setValue={setValue} errors={errors} />*/}
+        <Location control={control} setValue={setValue} errors={errors} />
         <StartDate
           control={control}
           errors={errors}
