@@ -11,11 +11,11 @@ export default function ImageResponsiveHandstand() {
     props: { srcSet: mobile },
   } = getImageProps({
     ...common,
-    // loading: "eager",
-    // placeholder: "blur",
-    // priority: true,
-    // quality: 70,
-    // sizes: "100vw",
+    loading: "eager",
+    placeholder: "blur",
+    priority: true,
+    quality: 70,
+    sizes: "100vw",
     src: "/assets/images/handstand_mobile.jpg",
   });
 
@@ -23,11 +23,11 @@ export default function ImageResponsiveHandstand() {
     props: { srcSet: desktop, ...rest },
   } = getImageProps({
     ...common,
-    // loading: "eager",
-    // placeholder: "blur",
-    // priority: true,
-    // quality: 80,
-    // sizes: "50vw",
+    loading: "eager",
+    placeholder: "blur",
+    priority: true,
+    quality: 80,
+    sizes: "50vw",
     src: "/assets/images/handstand_desktop.jpg",
   });
 
@@ -39,7 +39,7 @@ export default function ImageResponsiveHandstand() {
         srcSet={mobile}
       />
       <source media="(min-width: 768px)" srcSet={desktop} />
-      <img {...rest} />
+      <img alt={"Aaron doing handstand posture"} {...rest} />
     </picture>
   );
 }
