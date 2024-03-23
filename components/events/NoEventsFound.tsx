@@ -1,5 +1,5 @@
 import Image from "next/image";
-import desertLandscapeImage from "@/public/assets/images/ desertlandscape.png";
+import desertLandscapeImage from "@/public/assets/images/desert.png";
 
 interface NoEventsFoundProps {
   hasFilteredSearch: boolean;
