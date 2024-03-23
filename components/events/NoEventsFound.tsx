@@ -1,5 +1,5 @@
-import Image from "next/image";
-import desertLandscapeImage from "@/public/assets/images/desert.png";
+// import Image from "next/image";
+// import desertLandscapeImage from "@/public/assets/images/desert.png";
 
 interface NoEventsFoundProps {
   hasFiltersApplied: boolean;
@@ -7,7 +7,8 @@ interface NoEventsFoundProps {
 
 const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
   return (
-    <div className={"flex flex-col items-center"}>
+    <p>hi</p>
+    /*<div className={"flex flex-col items-center"}>
       <Image
         width={347}
         height={249}
@@ -26,7 +27,7 @@ const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
           soon!
         </p>
       )}
-    </div>
+    </div>*/
   );
 };
 export default NoEventsFound;
