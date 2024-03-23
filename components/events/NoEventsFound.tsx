@@ -7,15 +7,14 @@ interface NoEventsFoundProps {
 
 const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
   return (
-    <p>hi</p>
-    /*<div className={"flex flex-col items-center"}>
-      <Image
+    <div className={"flex flex-col items-center"}>
+      {/*<Image
         width={347}
         height={249}
         src={desertLandscapeImage}
         alt={"No events found"}
         className={"w-1/2 md:w-3/4"}
-      />
+      />*/}
       <p className={"text-center font-bold text-xl md:text-2xl"}>
         No Events Found
       </p>
@@ -27,7 +26,7 @@ const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
           soon!
         </p>
       )}
-    </div>*/
+    </div>
   );
 };
 export default NoEventsFound;
