@@ -1,3 +1,6 @@
+import Image from "next/image";
+import desertLandscapeImage from "@/public/assets/images/ desertlandscape.png";
+
 interface NoEventsFoundProps {
   hasFilteredSearch: boolean;
 }
@@ -5,6 +8,12 @@ interface NoEventsFoundProps {
 const NoEventsFound = ({ hasFilteredSearch }: NoEventsFoundProps) => {
   return (
     <div className={"flex flex-col items-center"}>
+      <Image
+        width={500}
+        src={desertLandscapeImage}
+        alt={"No events found"}
+        className={"w-1/2 md:w-3/4"}
+      />
       <p className={"text-center font-bold text-xl md:text-2xl"}>
         No Events Found
       </p>
