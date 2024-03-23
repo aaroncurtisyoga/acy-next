@@ -55,7 +55,7 @@ const Collection = ({
         </div>
       ) : (
         <div>
-          <h3>{emptyTitle}</h3>
+          <h3>{emptyTitle} a</h3>
           <p>{emptyStateSubtext}</p>
         </div>
       )}
