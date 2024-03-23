@@ -7,7 +7,7 @@ import Pagination from "@/components/events/Pagination";
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
   data: IEvent[];
-  hasFiltersApplied: boolean;
+  hasFiltersApplied?: boolean;
   limit: number;
   page: number | string;
   totalPages?: number;
@@ -53,7 +53,11 @@ const Collection = ({
         </div>
       ) : (
         <div>
-          <p>no results founds</p>
+          {hasFiltersApplied ? (
+            <p>has filters applied msg</p>
+          ) : (
+            <p>does not have filters applied msg </p>
+          )}
         </div>
       )}
     </>
