@@ -1,5 +1,5 @@
 import Image from "next/image";
-import noEventsImage from "/public/assets/images/desert.png";
+import noEventsImage from "../../public/assets/images/desert.png";
 
 interface NoEventsFoundProps {
   hasFiltersApplied: boolean;
