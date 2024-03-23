@@ -7,8 +7,6 @@ import Pagination from "@/components/events/Pagination";
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
   data: IEvent[];
-  emptyStateSubtext: string;
-  emptyTitle: string;
   limit: number;
   page: number | string;
   totalPages?: number;
@@ -18,8 +16,6 @@ interface CollectionProps {
 
 const Collection = ({
   data,
-  emptyStateSubtext,
-  emptyTitle,
   page,
   totalPages = 0,
   urlParamName,
@@ -55,8 +51,7 @@ const Collection = ({
         </div>
       ) : (
         <div>
-          <h3>{emptyTitle} a</h3>
-          <p>{emptyStateSubtext}</p>
+          <p>no results founds</p>
         </div>
       )}
     </>

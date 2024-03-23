@@ -34,8 +34,6 @@ const UpcomingEvents = async ({ searchParams }) => {
       <Collection
         collectionType={"All_Events"}
         data={events?.data}
-        emptyStateSubtext={"Please visit back soon to check in for events."}
-        emptyTitle={"No Events Founds"}
         limit={8}
         page={page}
         totalPages={events?.totalPages}
