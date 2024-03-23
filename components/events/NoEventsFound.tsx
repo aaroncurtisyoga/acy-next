@@ -2,14 +2,15 @@ import Image from "next/image";
 import desertLandscapeImage from "@/public/assets/images/desert.png";
 
 interface NoEventsFoundProps {
-  hasFilteredSearch: boolean;
+  hasFiltersApplied: boolean;
 }
 
-const NoEventsFound = ({ hasFilteredSearch }: NoEventsFoundProps) => {
+const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
   return (
     <div className={"flex flex-col items-center"}>
       <Image
-        width={500}
+        width={347}
+        height={249}
         src={desertLandscapeImage}
         alt={"No events found"}
         className={"w-1/2 md:w-3/4"}
@@ -17,7 +18,7 @@ const NoEventsFound = ({ hasFilteredSearch }: NoEventsFoundProps) => {
       <p className={"text-center font-bold text-xl md:text-2xl"}>
         No Events Found
       </p>
-      {hasFilteredSearch ? (
+      {hasFiltersApplied ? (
         <p>Whoops... there&apos;`s no events that match your search</p>
       ) : (
         <p className={"text-center text-default-600"}>

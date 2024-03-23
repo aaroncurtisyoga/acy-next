@@ -53,9 +53,7 @@ const Collection = ({
           )}
         </div>
       ) : (
-        <div>
-          <NoEventsFound hasFilteredSearch={hasFiltersApplied} />
-        </div>
+        <NoEventsFound hasFiltersApplied={hasFiltersApplied} />
       )}
     </>
   );
