@@ -4,6 +4,7 @@ import { checkRole } from "@/lib/utils";
 import SearchUsers from "@/components/admin/SearchUsers";
 import { setRole } from "@/app/(admin)/actions";
 import ManageEventCategories from "@/components/admin/ManageEventCategories";
+import CreateEventButton from "@/components/shared/CreateEventButton";
 
 export default async function AdminDashboard(params: {
   searchParams: { search?: string };
@@ -63,6 +64,8 @@ export default async function AdminDashboard(params: {
       </div>
       <hr className={"my-unit-6"} />
       <ManageEventCategories />
+      <hr className={"my-unit-6"} />
+      <CreateEventButton />
     </div>
   );
 }

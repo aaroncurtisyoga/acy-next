@@ -19,11 +19,11 @@ const FilterModal = () => {
     <>
       <Button
         color="default"
-        endContent={<SlidersHorizontal />}
+        startContent={<SlidersHorizontal />}
         onPress={onOpen}
         radius={"full"}
         type={"button"}
-        variant="light"
+        variant="bordered"
       >
         Filters
       </Button>

@@ -1,14 +1,11 @@
-import CreateEventButton from "@/components/shared/CreateEventButton";
 import Collection from "@/components/events/Collection";
 import FilterModal from "@/components/events/FilterModal";
-import { checkRole } from "@/lib/utils";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 const UpcomingEvents = async ({ searchParams }) => {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";
-  const isAdmin = checkRole("admin");
   const hasFiltersApplied: boolean = Boolean(searchText || category);
   console.log("searchParams", searchParams);
 
@@ -40,7 +37,6 @@ const UpcomingEvents = async ({ searchParams }) => {
         totalPages={events?.totalPages}
         view={"text"}
       />
-      {isAdmin && <CreateEventButton />}
     </div>
   );
 };
