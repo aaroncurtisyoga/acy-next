@@ -8,6 +8,7 @@ const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
   return (
     <div className={"flex flex-col items-center"}>
       <Image
+        loading={"eager"}
         width={347}
         height={249}
         src={"/assets/images/desert.png"}
