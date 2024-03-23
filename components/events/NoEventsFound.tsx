@@ -12,7 +12,7 @@ const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
         height={249}
         src={"/assets/images/desert.png"}
         alt={"No events found"}
-        // className={"w-1/2 md:w-3/4"}
+        className={"w-1/2 md:w-3/4"}
       />
       <p className={"text-center font-bold text-xl md:text-2xl"}>
         No Events Found
