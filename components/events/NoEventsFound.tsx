@@ -1,4 +1,5 @@
 import Image from "next/image";
+import noEventsImage from "/public/assets/images/desert.png";
 
 interface NoEventsFoundProps {
   hasFiltersApplied: boolean;
@@ -9,7 +10,9 @@ const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
     <div className={"flex flex-col items-center"}>
       <Image
         loading={"eager"}
-        src={"/assets/images/desert.png "}
+        width={347}
+        height={249}
+        src={noEventsImage.src}
         alt={"No events found"}
         className={"w-1/2 md:w-3/4"}
       />
