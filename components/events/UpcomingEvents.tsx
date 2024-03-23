@@ -34,6 +34,7 @@ const UpcomingEvents = async ({ searchParams }) => {
       <Collection
         collectionType={"All_Events"}
         data={events?.data}
+        hasFiltersApplied={hasFiltersApplied}
         limit={8}
         page={page}
         totalPages={events?.totalPages}
