@@ -3,6 +3,7 @@ import { checkRole } from "@/lib/utils";
 import EventCard from "@/components/events/EventCard";
 import EventText from "@/components/events/EventText";
 import Pagination from "@/components/events/Pagination";
+import NoEventsFound from "@/components/events/NoEventsFound";
 
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
@@ -53,11 +54,7 @@ const Collection = ({
         </div>
       ) : (
         <div>
-          {hasFiltersApplied ? (
-            <p>has filters applied msg</p>
-          ) : (
-            <p>does not have filters applied msg </p>
-          )}
+          <NoEventsFound hasFilteredSearch={hasFiltersApplied} />
         </div>
       )}
     </>
