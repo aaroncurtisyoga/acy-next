@@ -7,7 +7,6 @@ const UpcomingEvents = async ({ searchParams }) => {
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";
   const hasFiltersApplied: boolean = Boolean(searchText || category);
-  console.log("searchParams", searchParams);
 
   const events = await getAllEvents({
     category,
