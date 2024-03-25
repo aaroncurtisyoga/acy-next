@@ -33,8 +33,7 @@ const FilterModal = ({
         type={"button"}
         variant={hasFiltersApplied ? "solid" : "bordered"}
       >
-        Filters
-        {hasFiltersApplied && `(${numberOfFilters})`}
+        Filters {hasFiltersApplied && ` (${numberOfFilters})`}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
