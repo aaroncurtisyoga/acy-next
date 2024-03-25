@@ -1,5 +1,7 @@
 import Image from "next/image";
+import noResultsFoundImg from "../../public/assets/images/desert.png";
 
+// Then in your component
 interface NoEventsFoundProps {
   hasFiltersApplied: boolean;
 }
@@ -11,7 +13,7 @@ const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
         loading={"eager"}
         width={347}
         height={249}
-        src={"/assets/images/desert.png"}
+        src={noResultsFoundImg.src}
         alt={"No events found"}
         className={"w-1/2 md:w-3/4"}
       />
