@@ -6,14 +6,13 @@ const UpcomingEvents = async ({ searchParams }) => {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";
-  const hasFiltersApplied: boolean = Boolean(searchText || category);
-
-  const events = await getAllEvents({
-    category,
-    limit: 8,
-    page,
-    query: searchText,
-  });
+  const { data, hasFiltersApplied, numberOfFilters, totalPages } =
+    await getAllEvents({
+      category,
+      limit: 8,
+      page,
+      query: searchText,
+    });
 
   return (
     <div className={"px-unit-5 py-unit-15 md:px-unit-16 md:py-unit-10"}>
@@ -22,16 +21,18 @@ const UpcomingEvents = async ({ searchParams }) => {
         <p className={"font-semibold"}>
           Join me for upcoming classes and workshops
         </p>
-
-        <FilterModal />
+        <FilterModal
+          hasFiltersApplied={hasFiltersApplied}
+          numberOfFilters={numberOfFilters}
+        />
       </div>
       <Collection
         collectionType={"All_Events"}
-        data={events?.data}
+        data={data}
         hasFiltersApplied={hasFiltersApplied}
         limit={8}
         page={page}
-        totalPages={events?.totalPages}
+        totalPages={totalPages}
         view={"text"}
       />
     </div>

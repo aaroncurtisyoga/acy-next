@@ -12,20 +12,28 @@ import { SlidersHorizontal } from "lucide-react";
 import CategoryButtons from "@/components/events/CategoryButtons";
 import Search from "@/components/shared/Search";
 
-const FilterModal = () => {
+interface FilterModalProps {
+  hasFiltersApplied: boolean;
+  numberOfFilters: number;
+}
+const FilterModal = ({
+  hasFiltersApplied,
+  numberOfFilters,
+}: FilterModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
       <Button
-        color="default"
+        color={hasFiltersApplied ? "primary" : "default"}
         startContent={<SlidersHorizontal />}
         onPress={onOpen}
         radius={"full"}
         type={"button"}
-        variant="bordered"
+        variant={hasFiltersApplied ? "solid" : "bordered"}
       >
         Filters
+        {hasFiltersApplied && `(${numberOfFilters})`}
       </Button>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
