@@ -69,9 +69,13 @@ export async function getAllEvents({
 
     const events = await populateEvent(eventsQuery);
     const eventsCount = await Event.countDocuments(conditions);
+    const hasFiltersApplied: boolean = !!query || !!category;
+    const numberOfFilters = [query, category].filter(Boolean).length;
 
     return {
       data: JSON.parse(JSON.stringify(events)),
+      hasFiltersApplied,
+      numberOfFilters,
       totalPages: Math.ceil(eventsCount / limit),
     };
   } catch (error) {
