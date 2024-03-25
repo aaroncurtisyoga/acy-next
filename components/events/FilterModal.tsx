@@ -26,9 +26,10 @@ const FilterModal = ({
     <>
       <Button
         color={hasFiltersApplied ? "primary" : "default"}
-        startContent={<SlidersHorizontal />}
         onPress={onOpen}
         radius={"full"}
+        size={"sm"}
+        startContent={<SlidersHorizontal size={14} />}
         type={"button"}
         variant={hasFiltersApplied ? "solid" : "bordered"}
       >
