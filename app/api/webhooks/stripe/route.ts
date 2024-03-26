@@ -14,8 +14,10 @@ export async function POST(request: Request) {
   try {
     event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
     console.log("Stripe Webhook: try constructEvent");
+    console.log("Stripe Webhook: event is", event);
   } catch (err) {
     console.log("Stripe Webhook: catch constructEvent");
+    console.log("Stripe Webhook: err is", err);
     return NextResponse.json({ message: "Webhook error", error: err });
   }
 
