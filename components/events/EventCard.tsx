@@ -3,7 +3,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import EventCardAdminButtons from "@/components/events/EventCardAdminButtons";
+import EventAdminButtons from "@/components/events/EventAdminButtons";
 
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
@@ -49,7 +49,7 @@ const EventCard = ({ isAdmin, event }: CardProps) => {
         </p>
         <p className={"md:text-sm mt-1"}>{event.location.name}</p>
       </div>
-      {isAdmin && <EventCardAdminButtons id={_id} pathname={pathname} />}
+      {isAdmin && <EventAdminButtons id={_id} pathname={pathname} />}
     </div>
   );
 };

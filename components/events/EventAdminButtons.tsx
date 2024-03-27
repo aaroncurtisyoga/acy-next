@@ -8,7 +8,6 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { Edit, Trash } from "lucide-react";
 
 import { deleteEvent } from "@/lib/actions/event.actions";
 
@@ -17,28 +16,23 @@ type EventCardAdminButtonsProps = {
   pathname: string;
 };
 
-const EventCardAdminButtons = ({
-  id,
-  pathname,
-}: EventCardAdminButtonsProps) => {
+const EventAdminButtons = ({ id, pathname }: EventCardAdminButtonsProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
-      <div className="flex flex-row gap-4 p-3 justify-between">
-        <Link href={`/orders?eventId=${id}`} className="flex gap-2">
-          <p className="text-primary-500">Order Details</p>
-        </Link>
-        <div className={"flex gap-2"}>
-          <Button isIconOnly variant={"ghost"} color={"primary"}>
-            <Link href={`/events/${id}/update`}>
-              <Edit width={20} height={20} />
-            </Link>
-          </Button>
-          <Button isIconOnly onPress={onOpen} color={"danger"}>
-            <Trash width={20} height={20} />
-          </Button>
-        </div>
+      <div className="flex flex-row gap-3 mb-5">
+        <Button size={"sm"} color={"default"}>
+          <Link href={`/orders?eventId=${id}`} className="flex gap-2">
+            Order Details
+          </Link>
+        </Button>
+        <Button size={"sm"} color={"primary"}>
+          <Link href={`/events/${id}/update`}>Edit</Link>
+        </Button>
+        <Button onClick={onOpen} size={"sm"} color={"danger"}>
+          Delete
+        </Button>
       </div>
       <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
         <ModalContent>
@@ -55,7 +49,6 @@ const EventCardAdminButtons = ({
                   Close
                 </Button>
                 <Button
-                  color="danger"
                   onPress={async () => {
                     await deleteEvent({ eventId: id, path: pathname });
                   }}
@@ -71,4 +64,4 @@ const EventCardAdminButtons = ({
   );
 };
 
-export default EventCardAdminButtons;
+export default EventAdminButtons;
