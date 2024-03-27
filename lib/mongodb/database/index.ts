@@ -7,7 +7,7 @@ let cached = (global as any).mongoose || {
   promise: null,
 };
 
-const isProduction = process.env.NODE_ENV === "production";
+const isProduction = process.env.VERCEL_ENV === "production";
 
 export const connectToDatabase = async () => {
   if (cached.conn) {
