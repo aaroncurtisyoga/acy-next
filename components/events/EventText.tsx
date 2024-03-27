@@ -31,7 +31,7 @@ const EventText = ({ isAdmin, event }: EventTextProps) => {
           Sign Up
         </NextUiLink>
       </p>
-      <EventAdminButtons id={_id} pathname={pathname} />
+      {isAdmin && <EventAdminButtons id={_id} pathname={pathname} />}
     </>
   );
 };
