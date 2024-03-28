@@ -14,7 +14,7 @@ interface OrdersTableProps {
   orders: IOrderItem[];
 }
 
-const OrdersTable = ({ orders }) => {
+const OrdersTable = ({ orders }: OrdersTableProps) => {
   return (
     <Table>
       <TableHeader>
