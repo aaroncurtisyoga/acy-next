@@ -1,4 +1,5 @@
-import React from "react";
+"use client";
+
 import {
   Table,
   TableBody,
@@ -10,11 +11,7 @@ import {
 import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-interface OrdersTableProps {
-  orders: IOrderItem[];
-}
-
-const OrdersTable = ({ orders }: OrdersTableProps) => {
+const OrdersTable = ({ orders }) => {
   return (
     <Table>
       <TableHeader>
@@ -25,23 +22,24 @@ const OrdersTable = ({ orders }: OrdersTableProps) => {
         <TableColumn>Amount</TableColumn>
       </TableHeader>
       <TableBody>
-        {orders && orders.length === 0 ? (
-          <TableBody emptyContent={"No rows to display."}>{[]}</TableBody>
+        {orders.length ? (
+          orders.map((order: IOrderItem) => (
+            <TableRow key={order._id}>
+              <TableCell>{order._id}</TableCell>
+              <TableCell>{order.eventTitle}</TableCell>
+              <TableCell>{order.buyer}</TableCell>
+              <TableCell>
+                {formatDateTime(new Date(order.createdAt)).dateOnly}
+              </TableCell>
+              <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+            </TableRow>
+          ))
         ) : (
-          <>
-            {orders &&
-              orders.map((row: IOrderItem) => (
-                <TableRow key={row._id}>
-                  <TableCell>{row._id}</TableCell>
-                  <TableCell>{row.eventTitle}</TableCell>
-                  <TableCell>{row.buyer}</TableCell>
-                  <TableCell>
-                    {formatDateTime(row.createdAt).dateTime}
-                  </TableCell>
-                  <TableCell>{formatPrice(row.totalAmount)}</TableCell>
-                </TableRow>
-              ))}
-          </>
+          <TableRow>
+            <TableCell colSpan={5}>
+              No orders have been placed just yet.
+            </TableCell>
+          </TableRow>
         )}
       </TableBody>
     </Table>
