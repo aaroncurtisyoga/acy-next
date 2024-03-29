@@ -11,27 +11,33 @@ import {
 import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-const OrdersTable = ({ orders }) => {
+const EventHistoryTable = ({ orders }) => {
   return (
     <Table>
       <TableHeader>
-        <TableColumn>Order ID</TableColumn>
-        <TableColumn>Event Title</TableColumn>
-        <TableColumn>Buyer</TableColumn>
         <TableColumn>Date</TableColumn>
         <TableColumn>Amount</TableColumn>
+        <TableColumn>Event</TableColumn>
+        <TableColumn>Buyer</TableColumn>
+        <TableColumn>Order ID</TableColumn>
       </TableHeader>
       <TableBody>
         {orders.length ? (
-          orders.map((order: IOrderItem) => (
+          orders.map((order) => (
             <TableRow key={order._id}>
-              <TableCell>{order._id}</TableCell>
-              <TableCell>{order.eventTitle}</TableCell>
-              <TableCell>{order.buyer}</TableCell>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+              <TableCell>
+                <a
+                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event._id}`}
+                >
+                  {order.eventTitle}
+                </a>
+              </TableCell>
+              <TableCell>{order.buyer}</TableCell>
+              <TableCell>{order._id}</TableCell>
             </TableRow>
           ))
         ) : (
@@ -46,4 +52,4 @@ const OrdersTable = ({ orders }) => {
   );
 };
 
-export default OrdersTable;
+export default EventHistoryTable;

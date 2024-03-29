@@ -127,7 +127,7 @@ export async function getOrdersByEvent({
 
 export async function getOrdersByUser({
   userId,
-  limit = 3,
+  limit = 10,
   page,
 }: GetOrdersByUserParams) {
   try {
