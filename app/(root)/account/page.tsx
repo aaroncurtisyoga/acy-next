@@ -19,14 +19,9 @@ const ProfilePage = async ({ searchParams }) => {
   const orderedEvents = orders?.data.map((order: IOrder) => order.event) || [];
 
   return (
-    <section
-      className={
-        "grid grow w-full md:min-h-[calc(100dvh-64px)] max-w-screen-2xl " +
-        "md:grid-cols-[1fr,1fr] 11rem)] lg:mx-auto"
-      }
-    >
+    <section className={"wrapper py-5 md:py-10"}>
       <div>
-        <h3>Payment History</h3>
+        <h3 className={"text-xl mb-5"}>Payment History</h3>
         {/* date, payment type, amount, receipt number */}
       </div>
     </section>
