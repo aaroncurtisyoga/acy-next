@@ -13,8 +13,8 @@ const Orders = async ({ searchParams }: SearchParamProps) => {
   const orders = await getOrdersByEvent({ eventId, searchString: searchText });
 
   return (
-    <section className={"py-5 md:py-10"}>
-      <h3 className={"wrapper text-center sm:text-left"}>Orders</h3>
+    <section className={"wrapper py-5 md:py-10 "}>
+      <h3 className={"text-xl mb-5"}>Orders</h3>
       <OrdersTable orders={orders} />
     </section>
   );
