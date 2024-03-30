@@ -13,7 +13,7 @@ import { formatDateTime, formatPrice } from "@/lib/utils";
 
 const OrdersTable = ({ orders }) => {
   return (
-    <Table>
+    <Table aria-label={"Table for Orders"}>
       <TableHeader>
         <TableColumn>Order ID</TableColumn>
         <TableColumn>Event Title</TableColumn>
