@@ -21,10 +21,10 @@ const UpcomingEvents = async ({ searchParams }) => {
         " md:px-unit-16 md:py-unit-10 min-h-[50dvh] md:min-h-auto"
       }
     >
-      <h1 className={"text-3xl mb-6 md:text-7xl md:mb-8"}>Practice.</h1>
+      <h1 className={"text-3xl mb-4 md:text-7xl md:mb-8"}>Practice.</h1>
       <div className={"flex justify-between items-center mb-4"}>
         <p className={"font-semibold"}>
-          Join me for upcoming classes and workshops
+          Join me in upcoming events to practice together.
         </p>
         <FilterModal
           hasFiltersApplied={hasFiltersApplied}
