@@ -22,14 +22,15 @@ export async function POST(request: Request) {
 
   // CREATE
   if (eventType === "checkout.session.completed") {
-    const { id, amount_total, metadata } = event.data.object;
+    const { id, amount_total, metadata, status } = event.data.object;
 
     const order = {
-      stripeId: id,
-      eventId: metadata?.eventId || "",
       buyerId: metadata?.buyerId || "",
-      totalAmount: amount_total ? (amount_total / 100).toString() : "0",
       createdAt: new Date(),
+      eventId: metadata?.eventId || "",
+      status: status || "",
+      stripeId: id,
+      totalAmount: amount_total ? (amount_total / 100).toString() : "0",
     };
     const newOrder = await createOrder(order);
     return NextResponse.json({ message: "OK", order: newOrder });

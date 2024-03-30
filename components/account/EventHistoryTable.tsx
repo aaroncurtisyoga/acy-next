@@ -12,14 +12,13 @@ import {
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
 const EventHistoryTable = ({ orders }) => {
-  console.log("orders", orders);
   return (
     <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>
         <TableColumn>Date</TableColumn>
         <TableColumn>Amount</TableColumn>
         <TableColumn>Event</TableColumn>
-        <TableColumn>Buyer</TableColumn>
+        <TableColumn>Status</TableColumn>
         <TableColumn>Order ID</TableColumn>
       </TableHeader>
       <TableBody>
@@ -39,7 +38,7 @@ const EventHistoryTable = ({ orders }) => {
                   {order.event.title}
                 </NextUiLink>
               </TableCell>
-              <TableCell>{order.buyer}</TableCell>
+              <TableCell>{order.status}</TableCell>
               <TableCell>{order._id}</TableCell>
             </TableRow>
           ))

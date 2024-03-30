@@ -1,6 +1,5 @@
 import { Metadata } from "next";
 import { auth } from "@clerk/nextjs";
-import { IOrder } from "@/lib/mongodb/database/models/order.model";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import EventHistoryTable from "@/components/account/EventHistoryTable";
 
