@@ -7,13 +7,14 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Link as NextUiLink,
 } from "@nextui-org/react";
-import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
 const EventHistoryTable = ({ orders }) => {
+  console.log("orders", orders);
   return (
-    <Table>
+    <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>
         <TableColumn>Date</TableColumn>
         <TableColumn>Amount</TableColumn>
@@ -22,19 +23,21 @@ const EventHistoryTable = ({ orders }) => {
         <TableColumn>Order ID</TableColumn>
       </TableHeader>
       <TableBody>
-        {orders.length ? (
-          orders.map((order) => (
+        {orders.data.length ? (
+          orders.data.map((order) => (
             <TableRow key={order._id}>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
               <TableCell>
-                <a
+                <NextUiLink
                   href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event._id}`}
+                  className={"text-sm"}
+                  underline={"always"}
                 >
-                  {order.eventTitle}
-                </a>
+                  {order.event.title}
+                </NextUiLink>
               </TableCell>
               <TableCell>{order.buyer}</TableCell>
               <TableCell>{order._id}</TableCell>
