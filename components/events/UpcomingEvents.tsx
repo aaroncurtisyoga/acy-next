@@ -1,5 +1,5 @@
 import Collection from "@/components/events/Collection";
-import FilterModal from "@/components/events/FilterModal";
+import FilterModal from "@/components/events/Filter/FilterModal";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 const UpcomingEvents = async ({ searchParams }) => {
