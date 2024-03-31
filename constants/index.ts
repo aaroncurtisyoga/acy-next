@@ -24,6 +24,7 @@ export const eventDefaultValues = {
   endDateTime: new Date(),
   imageUrl: "",
   isFree: false,
+  isHostedExternally: false,
   location: {
     description: "",
     placeId: "",

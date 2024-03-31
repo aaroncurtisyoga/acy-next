@@ -8,8 +8,8 @@ const IsHostedExternally = ({ control, isSubmitting, errors }) => {
       control={control}
       name={"isHostedExternally"}
       render={({ field }) => (
-        <Checkbox disabled={isSubmitting} {...field}>
-          Event registration managed by an external platform?
+        <Checkbox disabled={isSubmitting} {...field} size={"lg"}>
+          External Registration
         </Checkbox>
       )}
     />

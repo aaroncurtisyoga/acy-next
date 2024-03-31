@@ -6,19 +6,22 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
 import * as z from "zod";
+
 import Category from "@/components/events/EventForm/Category";
+import Description from "@/components/events/EventForm/Description";
 import EndDateTime from "@/components/events/EventForm/EndDate";
+import ImagePicker from "@/components/events/EventForm/ImagePicker";
+import IsHostedExternally from "@/components/events/EventForm/IsHostedExternally";
 import Location from "@/components/events/EventForm/Location";
 import Price from "@/components/events/EventForm/Price";
 import StartDateTime from "@/components/events/EventForm/StartDateTime";
 import Title from "@/components/events/EventForm/Title";
+
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
-import ImagePicker from "@/components/events/EventForm/ImagePicker";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
-import Description from "@/components/events/EventForm/Description";
 
 type EventFormProps = {
   event?: IEvent;
@@ -102,8 +105,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
-      <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
+      <div className="grid grid-cols-2 gap-5">
         <Title control={control} isSubmitting={isSubmitting} errors={errors} />
+        <Location control={control} setValue={setValue} errors={errors} />
         <StartDateTime
           control={control}
           errors={errors}
@@ -114,16 +118,20 @@ const EventForm = ({ event, type }: EventFormProps) => {
           errors={errors}
           isSubmitting={isSubmitting}
         />
-        <Location control={control} setValue={setValue} errors={errors} />
+        <IsHostedExternally
+          control={control}
+          isSubmitting={isSubmitting}
+          errors={errors}
+        />
+      </div>
 
-        <Category
+      {/* <Category
           control={control}
           errors={errors}
           isSubmitting={isSubmitting}
         />
         <Price control={control} isSubmitting={isSubmitting} errors={errors} />
         <ImagePicker errors={errors} setValue={setValue} />
-      </div>
       <Description
         control={control}
         isSubmitting={isSubmitting}
@@ -131,7 +139,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
       />
       <Button color={"primary"} type="submit" className={"w-full"}>
         {type} Event
-      </Button>
+      </Button>*/}
     </form>
   );
 };

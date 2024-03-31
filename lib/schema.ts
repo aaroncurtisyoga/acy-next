@@ -8,12 +8,16 @@ export const newsletterFormSchema = z.object({
 
 export const EventFormSchema = z
   .object({
-    title: z.string().min(3, "Must be at least 3 characters"),
+    categoryId: z.string().min(3, "ManageEventCategories is required"),
     description: z
       .string()
       .min(3, "Must be at least 3 letters ")
       .max(2000, "Should not be more than 2000 characters")
       .trim(),
+    endDateTime: z.date(),
+    imageUrl: z.string().min(3, "Image URL required"),
+    isFree: z.boolean(),
+    isHostedExternally: z.boolean(),
     location: z.object({
       formattedAddress: z.string().min(3, "Address is required"),
       geometry: z.object({
@@ -23,12 +27,9 @@ export const EventFormSchema = z
       name: z.string(),
       placeId: z.string(),
     }),
-    imageUrl: z.string().min(3, "Image URL required"),
-    startDateTime: z.date(),
-    endDateTime: z.date(),
-    categoryId: z.string().min(3, "ManageEventCategories is required"),
     price: z.string().min(1, "Price is required"),
-    isFree: z.boolean(),
+    startDateTime: z.date(),
+    title: z.string().min(3, "Must be at least 3 characters"),
   })
   .refine((data) => data.startDateTime < data.endDateTime, {
     message: "End date must be after start date",
