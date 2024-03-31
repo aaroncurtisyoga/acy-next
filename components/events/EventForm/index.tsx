@@ -7,10 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
 import * as z from "zod";
 import Category from "@/components/events/EventForm/Category";
-import EndDate from "@/components/events/EventForm/EndDate";
+import EndDateTime from "@/components/events/EventForm/EndDate";
 import Location from "@/components/events/EventForm/Location";
 import Price from "@/components/events/EventForm/Price";
-import StartDate from "@/components/events/EventForm/StartDate";
+import StartDateTime from "@/components/events/EventForm/StartDateTime";
 import Title from "@/components/events/EventForm/Title";
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
@@ -104,18 +104,19 @@ const EventForm = ({ event, type }: EventFormProps) => {
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
       <div className="grid grid-cols-2 md:grid-cols-3 gap-5">
         <Title control={control} isSubmitting={isSubmitting} errors={errors} />
-        <Category
+        <StartDateTime
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+        <EndDateTime
           control={control}
           errors={errors}
           isSubmitting={isSubmitting}
         />
         <Location control={control} setValue={setValue} errors={errors} />
-        <StartDate
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
-        <EndDate
+
+        <Category
           control={control}
           errors={errors}
           isSubmitting={isSubmitting}
