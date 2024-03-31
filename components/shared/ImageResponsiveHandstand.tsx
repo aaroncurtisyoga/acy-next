@@ -23,7 +23,7 @@ export default async function ImageResponsiveHandstand() {
     loading: "eager",
     placeholder: "blur",
     priority: true,
-    quality: 70,
+    quality: 50,
     sizes: "100vw",
     src: "https://hyhtjblnarllhg0d.public.blob.vercel-storage.com/handstand_mobile-culATacmiJLfv88adfOLtp3q1uYeYH.jpeg",
   });
