@@ -16,8 +16,9 @@ import { eventDefaultValues, eventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import "react-datepicker/dist/react-datepicker.css";
-import eventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
 
+type Inputs = z.infer<typeof EventFormSchema>;
+type FieldName = keyof Inputs;
 type EventFormProps = {
   event?: IEvent;
   type: "Create" | "Update";
@@ -40,15 +41,24 @@ const EventForm = ({ event, type }: EventFormProps) => {
     handleSubmit,
     reset,
     setValue,
+    trigger,
     watch,
     formState: { errors, isSubmitting },
-  } = useForm<z.infer<typeof EventFormSchema>>({
+  } = useForm<Inputs>({
     resolver: zodResolver(EventFormSchema),
     defaultValues: eventInitialValues,
   });
   const watchStartDateTime = watch("startDateTime");
 
-  const next = () => {
+  const next = async () => {
+    const fields = eventFormSteps[activeStep].fields;
+    const formStepValid = await trigger(fields as FieldName[], {
+      shouldFocus: true,
+    });
+    if (formStepValid === false) {
+      return;
+    }
+
     if (activeStep < eventFormSteps.length - 1) {
       setActiveStep(activeStep + 1);
     }
@@ -56,7 +66,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   const prev = () => {
     if (activeStep > 0) {
-      setActiveStep((step) => step + 1);
+      setActiveStep((step) => step - 1);
     }
   };
 
@@ -117,7 +127,12 @@ const EventForm = ({ event, type }: EventFormProps) => {
         {eventFormSteps[activeStep].id} - {eventFormSteps[activeStep].name}
       </p>
 
-      <Pagination total={3} color="primary" page={activeStep + 1} />
+      <Pagination
+        total={3}
+        color="primary"
+        isDisabled={true}
+        page={activeStep + 1}
+      />
 
       {activeStep === 0 && (
         <EventFormStepOne
