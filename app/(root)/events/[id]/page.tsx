@@ -12,7 +12,7 @@ import {
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionRichTextEditor";
+import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionDisplay";
 
 const EventPage = async ({
   params: { id },

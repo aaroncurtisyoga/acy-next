@@ -1,7 +1,7 @@
 import { Controller } from "react-hook-form";
 import Tiptap from "@/components/shared/Tiptap";
 
-const Description = ({ control, isSubmitting, errors }) => {
+const DescriptionRichTextEditor = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
@@ -13,4 +13,4 @@ const Description = ({ control, isSubmitting, errors }) => {
   );
 };
 
-export default Description;
+export default DescriptionRichTextEditor;

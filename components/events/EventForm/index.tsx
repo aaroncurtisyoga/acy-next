@@ -7,35 +7,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import { EventFormSchema } from "@/lib/schema";
-import { eventDefaultValues } from "@/constants";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
-import "react-datepicker/dist/react-datepicker.css";
-import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
 import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
 import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
-import description from "@/components/events/EventForm/Fields/Description";
+
+import { EventFormSchema } from "@/lib/schema";
+import { eventDefaultValues, eventFormSteps } from "@/constants";
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { createEvent, updateEvent } from "@/lib/actions/event.actions";
+import "react-datepicker/dist/react-datepicker.css";
 
 type EventFormProps = {
   event?: IEvent;
   type: "Create" | "Update";
 };
-
-const steps = [
-  {
-    id: "Step 1",
-    name: "Event Overview",
-  },
-  {
-    id: "Step 2",
-    name: "Event Details",
-  },
-  {
-    id: "Step 3",
-    name: "Form Complete",
-  },
-];
 
 const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
@@ -63,7 +48,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const watchStartDateTime = watch("startDateTime");
 
   const next = () => {
-    if (activeStep < steps.length - 1) {
+    if (activeStep < eventFormSteps.length - 1) {
       setActiveStep(activeStep + 1);
     }
   };
@@ -141,7 +126,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
       {activeStep === 1 && (
         <EventFormStepTwo
           control={control}
-          description={description}
           isHostedExternally={getValues("isHostedExternally")}
           errors={errors}
           isSubmitting={isSubmitting}
@@ -149,6 +133,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
           type={type}
         />
       )}
+
       {activeStep === 2 && <EventFormStepThree />}
       <div className="flex justify-between mt-8">
         <Button size="sm" variant="flat" color="primary" onPress={() => prev()}>

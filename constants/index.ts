@@ -55,3 +55,18 @@ export const travelOptions: TravelOption[] = [
     icon: Bike,
   },
 ];
+
+export const eventFormSteps = [
+  {
+    id: "Step 1",
+    name: "Event Overview",
+  },
+  {
+    id: "Step 2",
+    name: "Event Details",
+  },
+  {
+    id: "Step 3",
+    name: "Form Complete",
+  },
+];

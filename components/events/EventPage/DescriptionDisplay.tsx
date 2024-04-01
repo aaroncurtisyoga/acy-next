@@ -6,7 +6,7 @@ import StarterKit from "@tiptap/starter-kit";
 interface DescriptionProps {
   description: string;
 }
-const DescriptionRichTextEditor = ({ description }: DescriptionProps) => {
+const DescriptionDisplay = ({ description }: DescriptionProps) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: description,
@@ -21,4 +21,4 @@ const DescriptionRichTextEditor = ({ description }: DescriptionProps) => {
   );
 };
 
-export default DescriptionRichTextEditor;
+export default DescriptionDisplay;
