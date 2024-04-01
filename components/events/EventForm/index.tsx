@@ -16,6 +16,7 @@ import { eventDefaultValues, eventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import "react-datepicker/dist/react-datepicker.css";
+import eventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
 
 type EventFormProps = {
   event?: IEvent;
@@ -112,6 +113,10 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
+      <p className={"text-xl font-semibold leading-7 text-gray-900"}>
+        {eventFormSteps[activeStep].id} - {eventFormSteps[activeStep].name}
+      </p>
+
       <Pagination total={3} color="primary" page={activeStep + 1} />
 
       {activeStep === 0 && (

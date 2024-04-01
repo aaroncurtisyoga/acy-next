@@ -1,7 +1,7 @@
 const EventFormStepThree = () => {
   return (
     <div>
-      <h2 className={"text-base font-semibold leading-7 text-gray-900"}>
+      <h2 className={"text-xl font-semibold leading-7 text-gray-900"}>
         Complete
       </h2>
       <p className={"mt-1 leading-6 text-gray-600"}>

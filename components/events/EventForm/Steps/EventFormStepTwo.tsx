@@ -22,27 +22,31 @@ const EventFormStepTwo = ({
           isSubmitting={isSubmitting}
         />
       ) : (
-        <div className={"grid grid-cols-2 gap-5"}>
-          <Category
-            control={control}
-            errors={errors}
-            isSubmitting={isSubmitting}
-          />
-          <PriceInput
-            control={control}
-            isSubmitting={isSubmitting}
-            errors={errors}
-          />
-          <ImagePicker errors={errors} setValue={setValue} />
-          <DescriptionRichTextEditor
-            control={control}
-            errors={errors}
-            isSubmitting={isSubmitting}
-          />
-          <Button color={"primary"} type="submit" className={"w-full"}>
-            {type} Event
-          </Button>
-        </div>
+        <>
+          <div className={"grid grid-cols-2 gap-5"}>
+            <Category
+              control={control}
+              errors={errors}
+              isSubmitting={isSubmitting}
+            />
+            <PriceInput
+              control={control}
+              isSubmitting={isSubmitting}
+              errors={errors}
+            />
+          </div>
+          <div className={"grid grid-cols-1 gap-5 my-5"}>
+            <DescriptionRichTextEditor
+              control={control}
+              errors={errors}
+              isSubmitting={isSubmitting}
+            />
+            <ImagePicker errors={errors} setValue={setValue} />
+            <Button color={"primary"} type="submit" className={"w-full"}>
+              <p className={"uppercase"}>{type}</p>
+            </Button>
+          </div>
+        </>
       )}
     </div>
   );
