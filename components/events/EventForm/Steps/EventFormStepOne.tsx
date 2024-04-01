@@ -6,7 +6,7 @@ import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
 
 const EventFormStepOne = ({ control, errors, isSubmitting, setValue }) => {
   return (
-    <>
+    <div className={"grid grid-cols-2 gap-5"}>
       <TitleInput
         control={control}
         isSubmitting={isSubmitting}
@@ -27,7 +27,7 @@ const EventFormStepOne = ({ control, errors, isSubmitting, setValue }) => {
         control={control}
         isSubmitting={isSubmitting}
       />
-    </>
+    </div>
   );
 };
 

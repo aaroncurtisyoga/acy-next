@@ -13,6 +13,9 @@ import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
+import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
+import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
+import description from "@/components/events/EventForm/Fields/Description";
 
 type EventFormProps = {
   event?: IEvent;
@@ -33,6 +36,7 @@ const steps = [
     name: "Form Complete",
   },
 ];
+
 const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
   const [activeStep, setActiveStep] = useState(0);
@@ -124,14 +128,28 @@ const EventForm = ({ event, type }: EventFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
       <Pagination total={3} color="primary" page={activeStep + 1} />
-      <div className="grid grid-cols-2 gap-5">
+
+      {activeStep === 0 && (
         <EventFormStepOne
           control={control}
           isSubmitting={isSubmitting}
           errors={errors}
           setValue={setValue}
         />
-      </div>
+      )}
+
+      {activeStep === 1 && (
+        <EventFormStepTwo
+          control={control}
+          description={description}
+          isHostedExternally={getValues("isHostedExternally")}
+          errors={errors}
+          isSubmitting={isSubmitting}
+          setValue={setValue}
+          type={type}
+        />
+      )}
+      {activeStep === 2 && <EventFormStepThree />}
       <div className="flex justify-between mt-8">
         <Button size="sm" variant="flat" color="primary" onPress={() => prev()}>
           Previous
@@ -140,21 +158,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
           Next
         </Button>
       </div>
-      {/* <Category
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
-        <Price control={control} isSubmitting={isSubmitting} errors={errors} />
-        <ImagePicker errors={errors} setValue={setValue} />
-      <Description
-        control={control}
-        isSubmitting={isSubmitting}
-        errors={errors}
-      />
-      <Button color={"primary"} type="submit" className={"w-full"}>
-        {type} Event
-      </Button>*/}
     </form>
   );
 };

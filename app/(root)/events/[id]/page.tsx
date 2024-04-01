@@ -12,7 +12,7 @@ import {
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import Description from "@/components/events/EventPage/Description";
+import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionRichTextEditor";
 
 const EventPage = async ({
   params: { id },
@@ -43,7 +43,7 @@ const EventPage = async ({
                 endDateTime={endDateTime}
               />
               <Location location={event.location} />
-              <Description description={event.description} />
+              <DescriptionRichTextEditor description={event.description} />
               {!event.isFree && <RefundPolicy />}
             </div>
           </div>
