@@ -15,6 +15,7 @@ export const EventFormSchema = z
       .max(2000, "Should not be more than 2000 characters")
       .trim(),
     endDateTime: z.date(),
+    externalRegistrationUrl: z.string().optional(),
     imageUrl: z.string().min(3, "Image URL required"),
     isFree: z.boolean(),
     isHostedExternally: z.boolean(),

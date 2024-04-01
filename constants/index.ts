@@ -59,10 +59,24 @@ export const travelOptions: TravelOption[] = [
 export const eventFormSteps = [
   {
     id: "Step 1",
+    fields: [
+      "endDateTime",
+      "isHostedExternally",
+      "location",
+      "startDateTime",
+      "title",
+    ],
     name: "Event Overview",
   },
   {
     id: "Step 2",
+    fields: [
+      "category",
+      "description",
+      "externalRegistrationUrl",
+      "imageUrl",
+      "price",
+    ],
     name: "Event Details",
   },
   {
