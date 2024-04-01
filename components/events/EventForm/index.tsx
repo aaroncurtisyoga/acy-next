@@ -2,9 +2,9 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Pagination, Button } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@nextui-org/react";
 import * as z from "zod";
 
 import { EventFormSchema } from "@/lib/schema";
@@ -123,13 +123,22 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
+      <Pagination total={3} color="primary" page={activeStep + 1} />
       <div className="grid grid-cols-2 gap-5">
         <EventFormStepOne
           control={control}
           isSubmitting={isSubmitting}
           errors={errors}
-          setValue={setValue()}
+          setValue={setValue}
         />
+      </div>
+      <div className="flex justify-between mt-8">
+        <Button size="sm" variant="flat" color="primary" onPress={() => prev()}>
+          Previous
+        </Button>
+        <Button size="sm" variant="flat" color="primary" onPress={() => next()}>
+          Next
+        </Button>
       </div>
       {/* <Category
           control={control}
