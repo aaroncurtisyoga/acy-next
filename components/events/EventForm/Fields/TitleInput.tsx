@@ -2,7 +2,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 
-const Title = ({ control, isSubmitting, errors }) => {
+const TitleInput = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
@@ -22,4 +22,4 @@ const Title = ({ control, isSubmitting, errors }) => {
   );
 };
 
-export default Title;
+export default TitleInput;

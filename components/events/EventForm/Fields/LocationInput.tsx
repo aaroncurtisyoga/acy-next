@@ -4,7 +4,7 @@ import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
-const Location = ({ control, setValue, errors }) => {
+const LocationInput = ({ control, setValue, errors }) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: string) => {
@@ -56,4 +56,4 @@ const Location = ({ control, setValue, errors }) => {
   );
 };
 
-export default Location;
+export default LocationInput;

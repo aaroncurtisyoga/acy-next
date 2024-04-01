@@ -2,7 +2,7 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { Checkbox } from "@nextui-org/react";
 
-const IsHostedExternally = ({ control, isSubmitting, errors }) => {
+const IsHostedExternallyCheckbox = ({ control, isSubmitting }) => {
   return (
     <Controller
       control={control}
@@ -16,4 +16,4 @@ const IsHostedExternally = ({ control, isSubmitting, errors }) => {
   );
 };
 
-export default IsHostedExternally;
+export default IsHostedExternallyCheckbox;

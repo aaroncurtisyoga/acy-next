@@ -1,35 +1,41 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
 import * as z from "zod";
-
-import Category from "@/components/events/EventForm/Category";
-import Description from "@/components/events/EventForm/Description";
-import EndDateTime from "@/components/events/EventForm/EndDate";
-import ImagePicker from "@/components/events/EventForm/ImagePicker";
-import IsHostedExternally from "@/components/events/EventForm/IsHostedExternally";
-import Location from "@/components/events/EventForm/Location";
-import Price from "@/components/events/EventForm/Price";
-import StartDateTime from "@/components/events/EventForm/StartDateTime";
-import Title from "@/components/events/EventForm/Title";
 
 import { EventFormSchema } from "@/lib/schema";
 import { eventDefaultValues } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
+import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
 
 type EventFormProps = {
   event?: IEvent;
   type: "Create" | "Update";
 };
 
+const steps = [
+  {
+    id: "Step 1",
+    name: "Event Overview",
+  },
+  {
+    id: "Step 2",
+    name: "Event Details",
+  },
+  {
+    id: "Step 3",
+    name: "Form Complete",
+  },
+];
 const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
+  const [activeStep, setActiveStep] = useState(0);
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -51,6 +57,18 @@ const EventForm = ({ event, type }: EventFormProps) => {
     defaultValues: eventInitialValues,
   });
   const watchStartDateTime = watch("startDateTime");
+
+  const next = () => {
+    if (activeStep < steps.length - 1) {
+      setActiveStep(activeStep + 1);
+    }
+  };
+
+  const prev = () => {
+    if (activeStep > 0) {
+      setActiveStep((step) => step + 1);
+    }
+  };
 
   useEffect(() => {
     if (watchStartDateTime > getValues("endDateTime")) {
@@ -106,25 +124,13 @@ const EventForm = ({ event, type }: EventFormProps) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
       <div className="grid grid-cols-2 gap-5">
-        <Title control={control} isSubmitting={isSubmitting} errors={errors} />
-        <Location control={control} setValue={setValue} errors={errors} />
-        <StartDateTime
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
-        <EndDateTime
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
-        <IsHostedExternally
+        <EventFormStepOne
           control={control}
           isSubmitting={isSubmitting}
           errors={errors}
+          setValue={setValue()}
         />
       </div>
-
       {/* <Category
           control={control}
           errors={errors}

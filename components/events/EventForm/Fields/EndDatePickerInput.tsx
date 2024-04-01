@@ -3,7 +3,7 @@ import DatePicker from "react-datepicker";
 
 import React from "react";
 
-const EndDate = ({ control, errors, isSubmitting }) => {
+const EndDatePickerInput = ({ control, errors, isSubmitting }) => {
   return (
     <Controller
       control={control}
@@ -34,4 +34,4 @@ const EndDate = ({ control, errors, isSubmitting }) => {
   );
 };
 
-export default EndDate;
+export default EndDatePickerInput;

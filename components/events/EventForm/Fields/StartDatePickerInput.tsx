@@ -2,7 +2,7 @@ import React from "react";
 import DatePicker from "react-datepicker";
 import { Controller } from "react-hook-form";
 
-const StartDateTime = ({ control, errors, isSubmitting }) => {
+const StartDatePickerInput = ({ control, errors, isSubmitting }) => {
   return (
     <Controller
       control={control}
@@ -33,4 +33,4 @@ const StartDateTime = ({ control, errors, isSubmitting }) => {
   );
 };
 
-export default StartDateTime;
+export default StartDatePickerInput;
