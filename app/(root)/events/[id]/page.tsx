@@ -1,4 +1,3 @@
-import Collection from "@/components/events/Collection";
 import CheckoutButton from "@/components/events/EventPage/CheckoutButton";
 import DateAndTime from "@/components/events/EventPage/DateAndTime";
 import Hero from "@/components/events/EventPage/Hero";
@@ -6,7 +5,6 @@ import Location from "@/components/events/EventPage/Location";
 import Subheading from "@/components/events/EventPage/Subheadline";
 import Headline from "@/components/events/EventPage/Headline";
 import RefundPolicy from "@/components/events/EventPage/RefundPolicy";
-import category from "@/components/events/EventForm/Category";
 import {
   getEventById,
   getEventsWithSameCategory,
