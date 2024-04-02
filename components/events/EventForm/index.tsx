@@ -11,14 +11,23 @@ import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepO
 import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
 import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
 
-import { EventFormSchema } from "@/lib/schema";
+import {
+  EventFormSchemaForExternalRegistration,
+  EventFormSchemaForInternalRegistration,
+} from "@/lib/schema";
 import { eventDefaultValues, eventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import "react-datepicker/dist/react-datepicker.css";
 
+const EventFormSchema = z.discriminatedUnion("isHostedExternally", [
+  EventFormSchemaForExternalRegistration,
+  EventFormSchemaForInternalRegistration,
+]);
+
 type Inputs = z.infer<typeof EventFormSchema>;
 type FieldName = keyof Inputs;
+
 type EventFormProps = {
   event?: IEvent;
   type: "Create" | "Update";

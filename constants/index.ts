@@ -18,23 +18,25 @@ export const locations = {
 };
 
 export const eventDefaultValues = {
-  title: "",
   categoryId: "",
   description: "",
   endDateTime: new Date(),
+  externalRegistrationUrl: "",
   imageUrl: "",
   isFree: false,
   isHostedExternally: false,
   location: {
-    description: "",
-    placeId: "",
-    structuredFormatting: {
-      mainText: "",
-      secondaryText: "",
+    formattedAddress: "",
+    geometry: {
+      lat: 0,
+      lng: 0,
     },
+    name: "",
+    placeId: "",
   },
   price: "",
   startDateTime: new Date(),
+  title: "",
 };
 
 export const travelOptions: TravelOption[] = [
