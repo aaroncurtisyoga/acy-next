@@ -12,8 +12,6 @@ export const buildEventFormSchema = (isHostedExternally: boolean) => {
       categoryId: z.string().min(3, "ManageEventCategories is required"),
       endDateTime: z.date(),
       isHostedExternally: z.boolean(),
-      startDateTime: z.date(),
-      title: z.string().min(3, "Must be at least 3 characters"),
       location: z.object({
         formattedAddress: z.string().min(3, "Address is required"),
         geometry: z.object({
@@ -23,6 +21,8 @@ export const buildEventFormSchema = (isHostedExternally: boolean) => {
         name: z.string(),
         placeId: z.string(),
       }),
+      startDateTime: z.date(),
+      title: z.string().min(3, "Must be at least 3 characters"),
     })
     .refine((data) => data.startDateTime < data.endDateTime, {
       message: "End date must be after start date",
