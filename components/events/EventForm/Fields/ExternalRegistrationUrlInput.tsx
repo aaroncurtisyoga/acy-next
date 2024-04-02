@@ -9,7 +9,7 @@ const ExternalRegistrationUrlInput = ({ control, isSubmitting, errors }) => {
         <Input
           disabled={isSubmitting}
           errorMessage={errors.externalRegistrationUrl?.message}
-          label={"Title"}
+          label={"External Registration URL"}
           onChange={(e) => field.onChange(e)}
           type={"text"}
           variant="bordered"
