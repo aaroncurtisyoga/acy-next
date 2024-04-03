@@ -19,7 +19,7 @@ const EventText = ({ isAdmin, event }: EventTextProps) => {
   const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
   const formattedTime = formatDateTime(startDateTime).timeOnly;
   const signUpHref = event.isHostedExternally
-    ? event.externalSignUpUrl
+    ? event.externalRegistrationUrl
     : `/events/${_id}`;
 
   return (

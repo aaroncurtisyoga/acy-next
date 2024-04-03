@@ -102,7 +102,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
       if (newEvent) {
         reset();
-        router.push(`/events/${newEvent._id}`);
+        values.isHostedExternally
+          ? router.push(`/`)
+          : router.push(`/events/${newEvent._id}`);
       }
     } catch (error) {
       console.log(error);
