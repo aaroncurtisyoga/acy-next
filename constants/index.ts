@@ -73,7 +73,7 @@ export const eventFormSteps = [
   {
     id: "Step 2",
     fields: [
-      "category",
+      "categoryId",
       "description",
       "externalRegistrationUrl",
       "imageUrl",

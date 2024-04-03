@@ -152,7 +152,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
           errors={errors}
           isSubmitting={isSubmitting}
           setValue={setValue}
-          type={type}
         />
       )}
 

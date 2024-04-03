@@ -11,7 +11,6 @@ const EventFormStepTwo = ({
   errors,
   isSubmitting,
   setValue,
-  type,
 }) => {
   return (
     <div>
@@ -36,15 +35,8 @@ const EventFormStepTwo = ({
             />
           </div>
           <div className={"grid grid-cols-1 gap-5 my-5"}>
-            <DescriptionRichTextEditor
-              control={control}
-              errors={errors}
-              isSubmitting={isSubmitting}
-            />
+            <DescriptionRichTextEditor control={control} errors={errors} />
             <ImagePicker errors={errors} setValue={setValue} />
-            <Button color={"primary"} type="submit" className={"w-full"}>
-              <p className={"uppercase"}>{type}</p>
-            </Button>
           </div>
         </>
       )}
