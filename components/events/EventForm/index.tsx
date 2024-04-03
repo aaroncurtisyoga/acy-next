@@ -69,6 +69,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
     }
 
     if (activeStep < eventFormSteps.length - 1) {
+      if (activeStep === eventFormSteps.length - 2) {
+        await handleSubmit(onSubmit)();
+      }
       setActiveStep(activeStep + 1);
     }
   };
