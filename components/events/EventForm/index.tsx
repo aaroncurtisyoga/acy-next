@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -18,7 +19,8 @@ import { eventDefaultValues, eventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import "react-datepicker/dist/react-datepicker.css";
-import EventFormStepButtons from "@/components/events/EventForm/Steps/EventFormStepButtons";
+import EventFormStepButtons from "@/components/events/EventForm/Steps/Shared/EventFormStepButtons";
+import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
 
 const EventFormSchema = z.discriminatedUnion("isHostedExternally", [
   EventFormSchemaForExternalRegistration,
@@ -35,7 +37,9 @@ type EventFormProps = {
 
 const EventForm = ({ event, type }: EventFormProps) => {
   const router = useRouter();
-  const [activeStep, setActiveStep] = useState(0);
+  const [previousStep, setPreviousStep] = useState(0);
+  const [currentStep, setCurrentStep] = useState(0);
+  const delta = currentStep - previousStep;
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -60,7 +64,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const watchStartDateTime = watch("startDateTime");
 
   const next = async () => {
-    const fields = eventFormSteps[activeStep].fields;
+    const fields = eventFormSteps[currentStep].fields;
     const formStepValid = await trigger(fields as FieldName[], {
       shouldFocus: true,
     });
@@ -68,17 +72,17 @@ const EventForm = ({ event, type }: EventFormProps) => {
       return;
     }
 
-    if (activeStep < eventFormSteps.length - 1) {
-      if (activeStep === eventFormSteps.length - 2) {
+    if (currentStep < eventFormSteps.length - 1) {
+      if (currentStep === eventFormSteps.length - 2) {
         await handleSubmit(onSubmit)();
       }
-      setActiveStep(activeStep + 1);
+      setCurrentStep(currentStep + 1);
     }
   };
 
   const prev = () => {
-    if (activeStep > 0) {
-      setActiveStep((step) => step - 1);
+    if (currentStep > 0) {
+      setCurrentStep((step) => step - 1);
     }
   };
 
@@ -135,20 +139,23 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
-      <p className={"text-xl font-semibold leading-7 text-gray-900"}>
-        {eventFormSteps[activeStep].id} - {eventFormSteps[activeStep].name}
-      </p>
-
-      {activeStep === 0 && (
-        <EventFormStepOne
-          control={control}
-          isSubmitting={isSubmitting}
-          errors={errors}
-          setValue={setValue}
-        />
+      {currentStep === 0 && (
+        <motion.div
+          initial={{ x: delta >= 0 ? "50%" : "-50%", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <HeaderForEachStep currentStep={currentStep} />
+          <EventFormStepOne
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+            setValue={setValue}
+          />
+        </motion.div>
       )}
 
-      {activeStep === 1 && (
+      {currentStep === 1 && (
         <EventFormStepTwo
           control={control}
           isHostedExternally={getValues("isHostedExternally")}
@@ -158,7 +165,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         />
       )}
 
-      {activeStep === 2 && <EventFormStepThree />}
+      {currentStep === 2 && <EventFormStepThree />}
 
       <EventFormStepButtons next={next} prev={prev} />
     </form>
