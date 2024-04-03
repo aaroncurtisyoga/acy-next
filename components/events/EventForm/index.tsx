@@ -76,12 +76,14 @@ const EventForm = ({ event, type }: EventFormProps) => {
       if (currentStep === eventFormSteps.length - 2) {
         await handleSubmit(onSubmit)();
       }
+      setPreviousStep(currentStep);
       setCurrentStep(currentStep + 1);
     }
   };
 
   const prev = () => {
     if (currentStep > 0) {
+      setPreviousStep(currentStep);
       setCurrentStep((step) => step - 1);
     }
   };
@@ -156,13 +158,20 @@ const EventForm = ({ event, type }: EventFormProps) => {
       )}
 
       {currentStep === 1 && (
-        <EventFormStepTwo
-          control={control}
-          isHostedExternally={getValues("isHostedExternally")}
-          errors={errors}
-          isSubmitting={isSubmitting}
-          setValue={setValue}
-        />
+        <motion.div
+          initial={{ x: delta >= 0 ? "50%" : "-50%", opacity: 0 }}
+          animate={{ x: 0, opacity: 1 }}
+          transition={{ duration: 0.3, ease: "easeInOut" }}
+        >
+          <HeaderForEachStep currentStep={currentStep} />
+          <EventFormStepTwo
+            control={control}
+            isHostedExternally={getValues("isHostedExternally")}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            setValue={setValue}
+          />
+        </motion.div>
       )}
 
       {currentStep === 2 && <EventFormStepThree />}
