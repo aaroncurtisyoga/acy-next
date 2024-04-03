@@ -34,20 +34,19 @@ export type GetRelatedEventsByCategoryParams = {
 
 export type Event = {
   _id: string;
+  title: string;
+  description: string;
+  price: string;
+  isFree: boolean;
+  imageUrl: string;
+  location: string;
+  startDateTime: Date;
+  endDateTime: Date;
+  url: string;
   category: {
     _id: string;
     name: string;
   };
-  description: string;
-  endDateTime: Date;
-  externalRegistrationUrl: string;
-  imageUrl: string;
-  isFree: boolean;
-  location: string;
-  price: string;
-  startDateTime: Date;
-  title: string;
-  url: string;
 };
 
 // ====== CATEGORY PARAMS

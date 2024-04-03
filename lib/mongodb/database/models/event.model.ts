@@ -9,10 +9,10 @@ export interface IEvent extends Document {
   createdAt: Date;
   description?: string;
   endDateTime: Date;
-  externalRegistrationUrl?: string;
+  externalSignUpUrl?: string;
   imageUrl: string; // 940 x 470
   isFree: boolean;
-  isHostedExternally: boolean;
+  isHostedExternally?: boolean;
   location: {
     formattedAddress: string;
     geometry: {
@@ -32,7 +32,7 @@ const EventSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   description: { type: String, required: false },
   endDateTime: { type: Date, default: Date.now },
-  externalRegistrationUrl: { type: String, required: false },
+  externalSignUpUrl: { type: String, required: false },
   imageUrl: String,
   isFree: { type: Boolean, default: false },
   isHostedExternally: { type: Boolean, required: false },
