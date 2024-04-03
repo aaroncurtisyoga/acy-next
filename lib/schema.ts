@@ -9,7 +9,6 @@ export const newsletterFormSchema = z.object({
 const commonFields = () => ({
   categoryId: z.string().min(3, "ManageEventCategories is required"),
   endDateTime: z.date(),
-  isHostedExternally: z.boolean(),
   location: z.object({
     formattedAddress: z.string().min(3, "Address is required"),
     geometry: z.object({
@@ -26,6 +25,7 @@ const commonFields = () => ({
 export const EventFormSchemaForExternalRegistration = z.object({
   ...commonFields(),
   externalRegistrationUrl: z.string().url(),
+  isHostedExternally: z.literal(true),
 });
 
 export const EventFormSchemaForInternalRegistration = z.object({
@@ -36,6 +36,7 @@ export const EventFormSchemaForInternalRegistration = z.object({
     .max(2000, "Should not be more than 2000 characters")
     .trim(),
   isFree: z.boolean(),
+  isHostedExternally: z.literal(false),
   imageUrl: z.string().min(3, "ImageUrl is required"),
   price: z.string().min(1, "Price is required"),
 });
