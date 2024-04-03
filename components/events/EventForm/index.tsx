@@ -2,7 +2,6 @@
 
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { Pagination, Button } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -19,6 +18,7 @@ import { eventDefaultValues, eventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import "react-datepicker/dist/react-datepicker.css";
+import EventFormStepButtons from "@/components/events/EventForm/Steps/EventFormStepButtons";
 
 const EventFormSchema = z.discriminatedUnion("isHostedExternally", [
   EventFormSchemaForExternalRegistration,
@@ -136,13 +136,6 @@ const EventForm = ({ event, type }: EventFormProps) => {
         {eventFormSteps[activeStep].id} - {eventFormSteps[activeStep].name}
       </p>
 
-      <Pagination
-        total={3}
-        color="primary"
-        isDisabled={true}
-        page={activeStep + 1}
-      />
-
       {activeStep === 0 && (
         <EventFormStepOne
           control={control}
@@ -164,14 +157,8 @@ const EventForm = ({ event, type }: EventFormProps) => {
       )}
 
       {activeStep === 2 && <EventFormStepThree />}
-      <div className="flex justify-between mt-8">
-        <Button size="sm" variant="flat" color="primary" onPress={() => prev()}>
-          Previous
-        </Button>
-        <Button size="sm" variant="flat" color="primary" onPress={() => next()}>
-          Next
-        </Button>
-      </div>
+
+      <EventFormStepButtons next={next} prev={prev} />
     </form>
   );
 };
