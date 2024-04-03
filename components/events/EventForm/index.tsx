@@ -7,20 +7,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
+import EventFormStepButtons from "@/components/events/EventForm/Steps/Shared/EventFormStepButtons";
 import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
-import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
 import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
+import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
+import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
 
 import {
   EventFormSchemaForExternalRegistration,
   EventFormSchemaForInternalRegistration,
 } from "@/lib/schema";
-import { eventDefaultValues, eventFormSteps } from "@/constants";
+import { eventDefaultValues, getEventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import "react-datepicker/dist/react-datepicker.css";
-import EventFormStepButtons from "@/components/events/EventForm/Steps/Shared/EventFormStepButtons";
-import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
 
 const EventFormSchema = z.discriminatedUnion("isHostedExternally", [
   EventFormSchemaForExternalRegistration,
@@ -64,7 +64,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
   const watchStartDateTime = watch("startDateTime");
 
   const next = async () => {
+    const eventFormSteps = getEventFormSteps(getValues("isHostedExternally"));
     const fields = eventFormSteps[currentStep].fields;
+
     const formStepValid = await trigger(fields as FieldName[], {
       shouldFocus: true,
     });
@@ -102,7 +104,9 @@ const EventForm = ({ event, type }: EventFormProps) => {
 
       if (newEvent) {
         reset();
-        router.push(`/events/${newEvent._id}`);
+        values.isHostedExternally
+          ? router.push(`/`)
+          : router.push(`/events/${newEvent._id}`);
       }
     } catch (error) {
       console.log(error);

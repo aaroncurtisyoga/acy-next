@@ -15,11 +15,18 @@ const EventFormStepTwo = ({
   return (
     <div>
       {isHostedExternally ? (
-        <ExternalRegistrationUrlInput
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
+        <div className={"grid grid-cols-2 gap-5"}>
+          <ExternalRegistrationUrlInput
+            control={control}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
+          <Category
+            control={control}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
+        </div>
       ) : (
         <>
           <div className={"grid grid-cols-2 gap-5"}>
