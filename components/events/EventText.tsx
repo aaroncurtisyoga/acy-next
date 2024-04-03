@@ -18,6 +18,9 @@ const EventText = ({ isAdmin, event }: EventTextProps) => {
 
   const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
   const formattedTime = formatDateTime(startDateTime).timeOnly;
+  const signUpHref = event.isHostedExternally
+    ? event.externalSignUpUrl
+    : `/events/${_id}`;
 
   return (
     <>
@@ -25,7 +28,7 @@ const EventText = ({ isAdmin, event }: EventTextProps) => {
         {formattedDate} - {formattedTime} - {title} at {event.location.name} -{" "}
         <NextUiLink
           className={"italic cursor-pointer text-default-900"}
-          href={`/events/${_id}`}
+          href={signUpHref}
           underline="always"
         >
           Sign Up
