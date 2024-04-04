@@ -5,17 +5,10 @@ import { SlidersHorizontal } from "lucide-react";
 
 interface FilterButtonProps {
   hasFiltersApplied: boolean;
-  isMobile: boolean;
-  numberOfFilters: number;
   onOpen: () => void;
 }
 
-const FilterButton = ({
-  hasFiltersApplied,
-  isMobile,
-  numberOfFilters,
-  onOpen,
-}: FilterButtonProps) => {
+const FilterButton = ({ hasFiltersApplied, onOpen }: FilterButtonProps) => {
   return (
     <Button
       color={hasFiltersApplied ? "primary" : "default"}
@@ -24,13 +17,9 @@ const FilterButton = ({
       size={"sm"}
       startContent={<SlidersHorizontal size={14} />}
       type={"button"}
-      variant={hasFiltersApplied ? "solid" : "bordered"}
-      {...(isMobile ? { isIconOnly: true } : {})}
-    >
-      {isMobile ? null : (
-        <p>Filters {hasFiltersApplied && ` (${numberOfFilters})`}</p>
-      )}
-    </Button>
+      variant={hasFiltersApplied ? "solid" : "flat"}
+      isIconOnly={true}
+    />
   );
 };
 
