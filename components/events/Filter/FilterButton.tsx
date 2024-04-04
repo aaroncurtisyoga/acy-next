@@ -17,7 +17,7 @@ const FilterButton = ({ hasFiltersApplied, onOpen }: FilterButtonProps) => {
       size={"sm"}
       startContent={<SlidersHorizontal size={14} />}
       type={"button"}
-      variant={hasFiltersApplied ? "solid" : "bordered"}
+      variant={hasFiltersApplied ? "solid" : "flat"}
       isIconOnly={true}
     />
   );
