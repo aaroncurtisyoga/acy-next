@@ -22,16 +22,10 @@ const FilterModal = ({
   numberOfFilters,
 }: FilterModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <>
-      <FilterButton
-        hasFiltersApplied={hasFiltersApplied}
-        isMobile={isMobile}
-        numberOfFilters={numberOfFilters}
-        onOpen={onOpen}
-      />
+      <FilterButton hasFiltersApplied={hasFiltersApplied} onOpen={onOpen} />
       <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"center"}>
         <ModalContent>
           {() => (
