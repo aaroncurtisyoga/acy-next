@@ -2,17 +2,17 @@ import { Document, model, models, Schema } from "mongoose";
 
 export interface IEvent extends Document {
   _id: string;
-  category?: {
+  category: {
     _id: string;
     name: string;
   };
   createdAt: Date;
   description?: string;
   endDateTime: Date;
-  externalSignUpUrl?: string;
-  imageUrl: string; // 940 x 470
-  isFree: boolean;
-  isHostedExternally?: boolean;
+  externalRegistrationUrl?: string;
+  imageUrl?: string; // 940 x 470
+  isFree?: boolean;
+  isHostedExternally: boolean;
   location: {
     formattedAddress: string;
     geometry: {
@@ -22,7 +22,7 @@ export interface IEvent extends Document {
     name: string;
     placeId: string;
   };
-  price: string;
+  price?: string;
   startDateTime: Date;
   title: string;
 }
@@ -32,10 +32,10 @@ const EventSchema = new Schema({
   createdAt: { type: Date, default: Date.now },
   description: { type: String, required: false },
   endDateTime: { type: Date, default: Date.now },
-  externalSignUpUrl: { type: String, required: false },
-  imageUrl: String,
-  isFree: { type: Boolean, default: false },
-  isHostedExternally: { type: Boolean, required: false },
+  externalRegistrationUrl: { type: String, required: false },
+  imageUrl: { type: String, required: false },
+  isFree: { type: Boolean, default: false, required: false },
+  isHostedExternally: { type: Boolean, required: true },
   location: {
     formattedAddress: String,
     geometry: {
@@ -45,7 +45,7 @@ const EventSchema = new Schema({
     name: String,
     placeId: String,
   },
-  price: { type: String },
+  price: { type: String, required: false },
   startDateTime: { type: Date, default: Date.now },
   title: { type: String, required: true },
 });

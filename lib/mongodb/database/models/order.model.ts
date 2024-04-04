@@ -17,11 +17,11 @@ export interface IOrder extends Document {
 
 export type IOrderItem = {
   _id: string;
-  totalAmount: string;
-  createdAt: Date;
-  eventTitle: string;
-  eventId: string;
   buyer: string;
+  createdAt: Date;
+  eventId: string;
+  eventTitle: string;
+  totalAmount: string;
 };
 
 const OrderSchema = new Schema({

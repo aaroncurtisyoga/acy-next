@@ -1,5 +1,5 @@
 import { Bike, Car, Footprints, TramFront } from "lucide-react";
-import { TravelMode, TravelOption } from "@/types";
+import { TravelOption } from "@/types";
 
 export const userLinks = [];
 
@@ -18,22 +18,25 @@ export const locations = {
 };
 
 export const eventDefaultValues = {
-  title: "",
   categoryId: "",
   description: "",
   endDateTime: new Date(),
+  externalRegistrationUrl: "",
   imageUrl: "",
   isFree: false,
+  isHostedExternally: false,
   location: {
-    description: "",
-    placeId: "",
-    structuredFormatting: {
-      mainText: "",
-      secondaryText: "",
+    formattedAddress: "",
+    geometry: {
+      lat: 0,
+      lng: 0,
     },
+    name: "",
+    placeId: "",
   },
   price: "",
   startDateTime: new Date(),
+  title: "",
 };
 
 export const travelOptions: TravelOption[] = [
@@ -54,3 +57,30 @@ export const travelOptions: TravelOption[] = [
     icon: Bike,
   },
 ];
+
+export const getEventFormSteps = (isHostedExternally = false) => {
+  return [
+    {
+      id: "Step 1",
+      fields: [
+        "endDateTime",
+        "isHostedExternally",
+        "location",
+        "startDateTime",
+        "title",
+      ],
+      name: "Event Overview",
+    },
+    {
+      id: "Step 2",
+      fields: isHostedExternally
+        ? ["externalRegistrationUrl"]
+        : ["categoryId", "description", "imageUrl", "price"],
+      name: "Event Details",
+    },
+    {
+      id: "Step 3",
+      name: "Form Complete",
+    },
+  ];
+};

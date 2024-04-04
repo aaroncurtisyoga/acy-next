@@ -1,41 +1,38 @@
 "use client";
 
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalHeader,
   useDisclosure,
 } from "@nextui-org/react";
-import { SlidersHorizontal } from "lucide-react";
 import CategoryButtons from "@/components/events/CategoryButtons";
 import Search from "@/components/shared/Search";
+import FilterButton from "@/components/events/Filter/FilterButton";
+import { useMediaQuery } from "usehooks-ts";
 
 interface FilterModalProps {
   hasFiltersApplied: boolean;
   numberOfFilters: number;
 }
+
 const FilterModal = ({
   hasFiltersApplied,
   numberOfFilters,
 }: FilterModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const isMobile = useMediaQuery("(max-width: 768px)");
 
   return (
     <>
-      <Button
-        color={hasFiltersApplied ? "primary" : "default"}
-        onPress={onOpen}
-        radius={"full"}
-        size={"sm"}
-        startContent={<SlidersHorizontal size={14} />}
-        type={"button"}
-        variant={hasFiltersApplied ? "solid" : "bordered"}
-      >
-        Filters {hasFiltersApplied && ` (${numberOfFilters})`}
-      </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <FilterButton
+        hasFiltersApplied={hasFiltersApplied}
+        isMobile={isMobile}
+        numberOfFilters={numberOfFilters}
+        onOpen={onOpen}
+      />
+      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"center"}>
         <ModalContent>
           {() => (
             <>

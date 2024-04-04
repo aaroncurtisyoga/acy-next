@@ -16,7 +16,7 @@ export async function createEvent({ event, path }) {
     await connectToDatabase();
     const newEvent = await Event.create({
       ...event,
-      isFree: parseInt(event.price) === 0,
+      ...(event.price ? { isFree: parseInt(event.price) === 0 } : {}),
       category: event.categoryId,
     });
     revalidatePath(path);

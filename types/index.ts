@@ -64,11 +64,12 @@ export type CheckoutOrderParams = {
 };
 
 export type CreateOrderParams = {
-  stripeId: string;
-  eventId: string;
   buyerId: string;
-  totalAmount: string;
   createdAt: Date;
+  eventId: string;
+  status: string;
+  stripeId: string;
+  totalAmount: string;
 };
 
 export type GetOrdersByEventParams = {

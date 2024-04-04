@@ -2,7 +2,7 @@ import React from "react";
 import { Input } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-const Price = ({ control, isSubmitting, errors }) => {
+const PriceInput = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
@@ -28,4 +28,4 @@ const Price = ({ control, isSubmitting, errors }) => {
   );
 };
 
-export default Price;
+export default PriceInput;

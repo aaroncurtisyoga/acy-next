@@ -1,5 +1,5 @@
 import Collection from "@/components/events/Collection";
-import FilterModal from "@/components/events/FilterModal";
+import FilterModal from "@/components/events/Filter/FilterModal";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 const UpcomingEvents = async ({ searchParams }) => {
@@ -15,11 +15,16 @@ const UpcomingEvents = async ({ searchParams }) => {
     });
 
   return (
-    <div className={"px-unit-5 py-unit-15 md:px-unit-16 md:py-unit-10"}>
-      <h1 className={"text-3xl mb-6 md:text-7xl md:mb-8"}>Practice.</h1>
+    <div
+      className={
+        "px-unit-5 py-unit-5 md:py-unit-15" +
+        " md:px-unit-16 md:py-unit-10 min-h-[50dvh] md:min-h-auto"
+      }
+    >
+      <h1 className={"text-3xl mb-4 md:text-7xl md:mb-8"}>Practice.</h1>
       <div className={"flex justify-between items-center mb-4"}>
         <p className={"font-semibold"}>
-          Join me for upcoming classes and workshops
+          Join me in upcoming events to practice together.
         </p>
         <FilterModal
           hasFiltersApplied={hasFiltersApplied}

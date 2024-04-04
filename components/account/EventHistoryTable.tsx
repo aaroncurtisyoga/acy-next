@@ -7,31 +7,39 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Link as NextUiLink,
 } from "@nextui-org/react";
-import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-const OrdersTable = ({ orders }) => {
+const EventHistoryTable = ({ orders }) => {
   return (
-    <Table aria-label={"Table for Orders"}>
+    <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>
-        <TableColumn>Order ID</TableColumn>
-        <TableColumn>Event Title</TableColumn>
-        <TableColumn>Buyer</TableColumn>
         <TableColumn>Date</TableColumn>
         <TableColumn>Amount</TableColumn>
+        <TableColumn>Event</TableColumn>
+        <TableColumn>Status</TableColumn>
+        <TableColumn>Order ID</TableColumn>
       </TableHeader>
       <TableBody>
-        {orders.length ? (
-          orders.map((order: IOrderItem) => (
+        {orders.data.length ? (
+          orders.data.map((order) => (
             <TableRow key={order._id}>
-              <TableCell>{order._id}</TableCell>
-              <TableCell>{order.eventTitle}</TableCell>
-              <TableCell>{order.buyer}</TableCell>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+              <TableCell>
+                <NextUiLink
+                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event._id}`}
+                  className={"text-sm"}
+                  underline={"always"}
+                >
+                  {order.event.title}
+                </NextUiLink>
+              </TableCell>
+              <TableCell>{order.status}</TableCell>
+              <TableCell>{order._id}</TableCell>
             </TableRow>
           ))
         ) : (
@@ -46,4 +54,4 @@ const OrdersTable = ({ orders }) => {
   );
 };
 
-export default OrdersTable;
+export default EventHistoryTable;

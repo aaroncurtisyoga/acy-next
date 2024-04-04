@@ -8,10 +8,11 @@ import Toolbar from "@/components/shared/Tiptap/Toolbar";
 
 type TiptapProps = {
   description: string;
+  errorMessage?: string;
   onChange: (richText: string) => void;
 };
 
-const Tiptap = ({ onChange }: TiptapProps) => {
+const Tiptap = ({ onChange, errorMessage }: TiptapProps) => {
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -41,6 +42,9 @@ const Tiptap = ({ onChange }: TiptapProps) => {
     <div>
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
+      {errorMessage && (
+        <p className={"text-tiny text-danger p-1"}>{errorMessage}</p>
+      )}
     </div>
   );
 };

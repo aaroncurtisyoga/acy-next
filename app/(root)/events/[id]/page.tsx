@@ -1,4 +1,3 @@
-import Collection from "@/components/events/Collection";
 import CheckoutButton from "@/components/events/EventPage/CheckoutButton";
 import DateAndTime from "@/components/events/EventPage/DateAndTime";
 import Hero from "@/components/events/EventPage/Hero";
@@ -6,13 +5,12 @@ import Location from "@/components/events/EventPage/Location";
 import Subheading from "@/components/events/EventPage/Subheadline";
 import Headline from "@/components/events/EventPage/Headline";
 import RefundPolicy from "@/components/events/EventPage/RefundPolicy";
-import category from "@/components/events/EventForm/Category";
 import {
   getEventById,
   getEventsWithSameCategory,
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
-import Description from "@/components/events/EventPage/Description";
+import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionDisplay";
 
 const EventPage = async ({
   params: { id },
@@ -43,7 +41,7 @@ const EventPage = async ({
                 endDateTime={endDateTime}
               />
               <Location location={event.location} />
-              <Description description={event.description} />
+              <DescriptionRichTextEditor description={event.description} />
               {!event.isFree && <RefundPolicy />}
             </div>
           </div>

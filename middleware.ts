@@ -4,21 +4,21 @@ export default authMiddleware({
   // Let users access these routes even if not logged in
   publicRoutes: [
     "/",
-    /^\/about/,
+    "/account",
+    "/api/get-blobs",
+    "/api/upload-blob",
+    "/api/webhooks/clerk",
+    "/api/webhooks/stripe",
     "/dashboard",
-    "/faq",
     "/events",
     "/events/:id",
-    "/api/webhooks/clerk",
-    "/api/webhooks/stripe",
-    "/api/get-blobs",
-    "/api/upload-blob",
+    "/orders",
   ],
   ignoredRoutes: [
-    "/api/webhooks/clerk",
-    "/api/webhooks/stripe",
     "/api/get-blobs",
     "/api/upload-blob",
+    "/api/webhooks/clerk",
+    "/api/webhooks/stripe",
   ],
 });
 
