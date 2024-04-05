@@ -11,6 +11,7 @@ import {
 } from "@/lib/actions/event.actions";
 import { SearchParamProps } from "@/types";
 import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionDisplay";
+import Attendees from "@/components/events/EventPage/Attendees";
 
 const EventPage = async ({
   params: { id },
@@ -42,6 +43,7 @@ const EventPage = async ({
               />
               <Location location={event.location} />
               <DescriptionRichTextEditor description={event.description} />
+              <Attendees isHostedExternally={event.isHostedExternally} />
               {!event.isFree && <RefundPolicy />}
             </div>
           </div>
