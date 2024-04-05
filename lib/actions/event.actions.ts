@@ -1,10 +1,15 @@
 "use server";
 
+import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "@/lib/mongodb/database";
 import { handleError } from "@/lib/utils";
-import Event from "@/lib/mongodb/database/models/event.model";
+
 import Category from "@/lib/mongodb/database/models/category.model";
+import Event from "@/lib/mongodb/database/models/event.model";
+import Order from "@/lib/mongodb/database/models/order.model";
+import User from "@/lib/mongodb/database/models/user.model";
+
 import {
   DeleteEventParams,
   GetAllEventsParams,
@@ -53,6 +58,7 @@ export async function getAllEvents({
       ? await getCategoryByName(category)
       : null;
     const dateCondition = { endDateTime: { $gt: new Date() } };
+
     const conditions = {
       $and: [
         titleCondition,
@@ -154,6 +160,18 @@ export async function updateEvent({ event, path }) {
     revalidatePath(path);
 
     return JSON.parse(JSON.stringify(updatedEvent));
+  } catch (error) {
+    handleError(error);
+  }
+}
+
+export async function getEventAttendees(eventId: string) {
+  try {
+    await connectToDatabase();
+    const ordersOfEvent = await Order.find({ event: eventId }).lean();
+    const userIds = ordersOfEvent.map((order) => order.buyer);
+    const attendees = await User.find({ _id: { $in: userIds } }).lean();
+    return attendees;
   } catch (error) {
     handleError(error);
   }
