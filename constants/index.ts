@@ -34,6 +34,7 @@ export const eventDefaultValues = {
     name: "",
     placeId: "",
   },
+  maxAttendees: 0,
   price: "",
   startDateTime: new Date(),
   title: "",

@@ -22,6 +22,7 @@ export interface IEvent extends Document {
     name: string;
     placeId: string;
   };
+  maxAttendees?: number;
   price?: string;
   startDateTime: Date;
   title: string;
@@ -45,6 +46,7 @@ const EventSchema = new Schema({
     name: String,
     placeId: String,
   },
+  maxAttendees: { type: Number, required: false },
   price: { type: String, required: false },
   startDateTime: { type: Date, default: Date.now },
   title: { type: String, required: true },
