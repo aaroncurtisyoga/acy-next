@@ -1,7 +1,9 @@
 import { Document, model, models, Schema } from "mongoose";
+import { IAttendee } from "@/types";
 
 export interface IEvent extends Document {
   _id: string;
+  attendees: IAttendee[];
   category: {
     _id: string;
     name: string;
@@ -29,6 +31,7 @@ export interface IEvent extends Document {
 }
 
 const EventSchema = new Schema({
+  attendees: [{ type: Schema.Types.ObjectId, ref: "User" }],
   category: { type: Schema.Types.ObjectId, ref: "Category" },
   createdAt: { type: Date, default: Date.now },
   description: { type: String, required: false },

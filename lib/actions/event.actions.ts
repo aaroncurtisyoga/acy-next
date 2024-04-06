@@ -1,14 +1,12 @@
 "use server";
 
-import mongoose from "mongoose";
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "@/lib/mongodb/database";
 import { handleError } from "@/lib/utils";
 
 import Category from "@/lib/mongodb/database/models/category.model";
-import Event from "@/lib/mongodb/database/models/event.model";
-import Order from "@/lib/mongodb/database/models/order.model";
-import User from "@/lib/mongodb/database/models/user.model";
+import Event, { IEvent } from "@/lib/mongodb/database/models/event.model";
+import Order, { IOrder } from "@/lib/mongodb/database/models/order.model";
 
 import {
   DeleteEventParams,
@@ -127,13 +125,23 @@ export async function getEventsWithSameCategory({
 export async function getEventById(eventId: string) {
   try {
     await connectToDatabase();
-    const event = await populateEvent(Event.findById(eventId));
+
+    const event: IEvent | null = await Event.findById(eventId).exec();
+    if (!event) {
+      throw new Error(`Event with id ${eventId} is not found.`);
+    }
+
+    const eventOrders = (await Order.find({ event: eventId })
+      .populate("buyer")
+      .exec()) as unknown as IOrder[];
+
+    event.attendees = eventOrders.map((order) => order.buyer);
+
     return JSON.parse(JSON.stringify(event));
   } catch (error) {
     handleError(error);
   }
 }
-
 const populateEvent = (query: any) => {
   return query.populate({
     path: "category",
@@ -160,18 +168,6 @@ export async function updateEvent({ event, path }) {
     revalidatePath(path);
 
     return JSON.parse(JSON.stringify(updatedEvent));
-  } catch (error) {
-    handleError(error);
-  }
-}
-
-export async function getEventAttendees(eventId: string) {
-  try {
-    await connectToDatabase();
-    const ordersOfEvent = await Order.find({ event: eventId }).lean();
-    const userIds = ordersOfEvent.map((order) => order.buyer);
-    const attendees = await User.find({ _id: { $in: userIds } }).lean();
-    return attendees;
   } catch (error) {
     handleError(error);
   }

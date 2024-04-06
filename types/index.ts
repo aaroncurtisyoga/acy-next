@@ -1,4 +1,3 @@
-// ====== USER PARAMS
 export type CreateUserParams = {
   clerkId: string;
   firstName: string;
@@ -106,4 +105,10 @@ export type TravelMode = "driving" | "walking" | "transit" | "bicycling";
 export interface TravelOption {
   travelMode: TravelMode;
   icon: React.ElementType;
+}
+
+export interface IAttendee {
+  _id: string;
+  firstName: string;
+  lastName: string;
 }
