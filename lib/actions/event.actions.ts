@@ -40,6 +40,12 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
   }
 }
 
+async function getEventAttendees(eventId: any) {
+  return await Order.find({ event: eventId })
+    .populate({ path: "buyer", select: ["firstName", "lastName", "photo"] })
+    .exec();
+}
+
 export async function getAllEvents({
   query,
   limit = 8,
@@ -70,14 +76,23 @@ export async function getAllEvents({
       .sort({ startDateTime: "asc" })
       .skip(skipAmount)
       .limit(limit);
-
     const events = await populateEvent(eventsQuery);
+    let eventsWithAttendees = [];
+    for (let event of events) {
+      try {
+        let attendees = await getEventAttendees(event._id);
+        event = { ...event._doc, attendees };
+        eventsWithAttendees.push(event);
+      } catch (error) {
+        handleError(error);
+      }
+    }
     const eventsCount = await Event.countDocuments(conditions);
     const hasFiltersApplied: boolean = !!query || !!category;
     const numberOfFilters = [query, category].filter(Boolean).length;
 
     return {
-      data: JSON.parse(JSON.stringify(events)),
+      data: JSON.parse(JSON.stringify(eventsWithAttendees)),
       hasFiltersApplied,
       numberOfFilters,
       totalPages: Math.ceil(eventsCount / limit),
