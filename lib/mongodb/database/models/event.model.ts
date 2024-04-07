@@ -1,9 +1,9 @@
 import { Document, model, models, Schema } from "mongoose";
-import { IAttendee } from "@/types";
+import { IUser } from "@/lib/mongodb/database/models/user.model";
 
 export interface IEvent extends Document {
   _id: string;
-  attendees: IAttendee[];
+  attendees: IUser[];
   category: {
     _id: string;
     name: string;

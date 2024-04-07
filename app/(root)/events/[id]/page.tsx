@@ -12,6 +12,7 @@ import {
 import { SearchParamProps } from "@/types";
 import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionDisplay";
 import Attendees from "@/components/events/EventPage/Attendees";
+import attendees from "@/components/events/EventPage/Attendees";
 
 const EventPage = async ({
   params: { id },
@@ -43,7 +44,7 @@ const EventPage = async ({
               />
               <Location location={event.location} />
               <DescriptionRichTextEditor description={event.description} />
-              <Attendees attendees={[]} />
+              <Attendees attendees={event.attendees} />
               {!event.isFree && <RefundPolicy />}
             </div>
           </div>

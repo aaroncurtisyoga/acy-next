@@ -106,9 +106,3 @@ export interface TravelOption {
   travelMode: TravelMode;
   icon: React.ElementType;
 }
-
-export interface IAttendee {
-  _id: string;
-  firstName: string;
-  lastName: string;
-}
