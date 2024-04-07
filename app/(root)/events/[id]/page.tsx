@@ -43,10 +43,7 @@ const EventPage = async ({
               />
               <Location location={event.location} />
               <DescriptionRichTextEditor description={event.description} />
-              <Attendees
-                isHostedExternally={event.isHostedExternally}
-                eventId={event._id}
-              />
+              <Attendees attendees={[]} />
               {!event.isFree && <RefundPolicy />}
             </div>
           </div>

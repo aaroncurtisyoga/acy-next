@@ -1,23 +1,20 @@
 import { Avatar, AvatarGroup } from "@nextui-org/react";
-import { getEventAttendees } from "@/lib/actions/event.actions";
+import { IAttendee } from "@/types";
 
 interface AttendeesProps {
-  isHostedExternally: boolean;
-  eventId: string;
+  attendees: IAttendee[];
 }
 
-function Attendees({ isHostedExternally, eventId }: AttendeesProps) {
+function Attendees({ attendees }: AttendeesProps) {
   const maxAvatarsShown = 5;
   // Call getEventAttendees here and get the actual attendees
   // Server Components allow us to access back-end resources directly
 
   // use your server side method to obtain attendees
   // remember to modify it to your actual method. This is just an example
-  let attendees = getEventAttendees(eventId);
 
   // const totalAvatarsHidden = attendees.length - maxAvatarsShown;
-
-  if (isHostedExternally) return null;
+  if (!attendees) return null;
 
   return (
     <div>
