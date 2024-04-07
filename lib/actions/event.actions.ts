@@ -89,7 +89,6 @@ export async function getAllEvents({
         handleError(error);
       }
     }
-    console.log("eventsWithAttendees", eventsWithAttendees);
     const eventsCount = await Event.countDocuments(conditions);
     const hasFiltersApplied: boolean = !!query || !!category;
 
@@ -152,7 +151,6 @@ export async function getEventById(eventId: string) {
       .exec()) as unknown as IOrder[];
 
     event.attendees = eventOrders.map((order) => order.buyer);
-
     return JSON.parse(JSON.stringify(event));
   } catch (error) {
     handleError(error);
