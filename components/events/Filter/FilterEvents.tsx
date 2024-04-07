@@ -17,7 +17,7 @@ interface FilterModalProps {
   numberOfFilters: number;
 }
 
-const FilterModal = ({
+const FilterEvents = ({
   hasFiltersApplied,
   numberOfFilters,
 }: FilterModalProps) => {
@@ -45,4 +45,4 @@ const FilterModal = ({
   );
 };
 
-export default FilterModal;
+export default FilterEvents;

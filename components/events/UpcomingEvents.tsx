@@ -1,5 +1,5 @@
 import Collection from "@/components/events/Collection";
-import FilterModal from "@/components/events/Filter/FilterModal";
+import FilterEvents from "@/components/events/Filter/FilterEvents";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 const UpcomingEvents = async ({ searchParams }) => {
@@ -26,7 +26,7 @@ const UpcomingEvents = async ({ searchParams }) => {
         <p className={"font-semibold"}>
           Join me in upcoming events to practice together.
         </p>
-        <FilterModal
+        <FilterEvents
           hasFiltersApplied={hasFiltersApplied}
           numberOfFilters={numberOfFilters}
         />
