@@ -41,6 +41,7 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
 }
 
 async function getEventAttendees(eventId: any) {
+  debugger;
   return await Order.find({ event: eventId })
     .populate({ path: "buyer", select: ["firstName", "lastName", "photo"] })
     .exec();
@@ -52,6 +53,7 @@ export async function getAllEvents({
   page,
   category,
 }: GetAllEventsParams) {
+  debugger;
   try {
     await connectToDatabase();
 
@@ -87,14 +89,13 @@ export async function getAllEvents({
         handleError(error);
       }
     }
+    console.log("eventsWithAttendees", eventsWithAttendees);
     const eventsCount = await Event.countDocuments(conditions);
     const hasFiltersApplied: boolean = !!query || !!category;
-    const numberOfFilters = [query, category].filter(Boolean).length;
 
     return {
       data: JSON.parse(JSON.stringify(eventsWithAttendees)),
       hasFiltersApplied,
-      numberOfFilters,
       totalPages: Math.ceil(eventsCount / limit),
     };
   } catch (error) {

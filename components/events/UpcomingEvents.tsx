@@ -6,14 +6,12 @@ const UpcomingEvents = async ({ searchParams }) => {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";
-  const { data, hasFiltersApplied, numberOfFilters, totalPages } =
-    await getAllEvents({
-      category,
-      limit: 8,
-      page,
-      query: searchText,
-    });
-
+  const { data, hasFiltersApplied, totalPages } = await getAllEvents({
+    category,
+    limit: 8,
+    page,
+    query: searchText,
+  });
   return (
     <div
       className={
@@ -26,10 +24,7 @@ const UpcomingEvents = async ({ searchParams }) => {
         <p className={"font-semibold"}>
           Join me in upcoming events to practice together.
         </p>
-        <FilterEvents
-          hasFiltersApplied={hasFiltersApplied}
-          numberOfFilters={numberOfFilters}
-        />
+        <FilterEvents hasFiltersApplied={hasFiltersApplied} />
       </div>
       <Collection
         collectionType={"All_Events"}
