@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
-import { Controller } from "react-hook-form";
 import { Select, SelectItem } from "@nextui-org/react";
-
+import { Controller } from "react-hook-form";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
 import { getAllCategories } from "@/lib/actions/category.actions";
 
