@@ -46,9 +46,8 @@ const Footer = () => {
           }
         >
           <p>© {new Date().getFullYear()} All Rights Reserved</p>
-          <p>Made by Aaron Curtis</p>
           <p>
-            Reach out{" "}
+            Reach out by{" "}
             <NextUiLink
               isExternal
               size="sm"
@@ -57,7 +56,20 @@ const Footer = () => {
               href="mailto:aaroncurtisyoga@gmail.com"
             >
               {" "}
-              by Email
+              Email
+            </NextUiLink>
+          </p>
+          <p>
+            Made by{" "}
+            <NextUiLink
+              className={"text-tiny"}
+              href="https://github.com/aaroncurtisyoga/acy-next"
+              isExternal
+              size="sm"
+              target="_blank"
+              underline={"hover"}
+            >
+              Aaron
             </NextUiLink>
           </p>
         </div>
