@@ -13,6 +13,7 @@ import {
   GetAllEventsParams,
   GetRelatedEventsByCategoryParams,
 } from "@/types";
+import { IUser } from "@/lib/mongodb/database/models/user.model";
 
 export async function createEvent({ event, path }) {
   try {
@@ -150,7 +151,7 @@ export async function getEventById(eventId: string) {
       .populate("buyer")
       .exec()) as unknown as IOrder[];
 
-    event.attendees = eventOrders.map((order) => order.buyer);
+    event.attendees = eventOrders.map((order) => order.buyer as IUser);
     return JSON.parse(JSON.stringify(event));
   } catch (error) {
     handleError(error);
