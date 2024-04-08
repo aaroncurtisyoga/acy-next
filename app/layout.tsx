@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
+import { Analytics } from "@vercel/analytics/react";
+import { Providers } from "@/app/providers";
 import { ReactNode } from "react";
 import { SpeedInsights } from "@vercel/speed-insights/next";
-import { Analytics } from "@vercel/analytics/react";
-require("@/lib/mongodb/database/models/user.model");
-
-import { Providers } from "@/app/providers";
 import "./globals.css";
+
+require("@/lib/mongodb/database/models/user.model");
 
 export const metadata: Metadata = {
   title: { template: "%s | Aaron Curtis Yoga", default: "Aaron Curtis Yoga" },

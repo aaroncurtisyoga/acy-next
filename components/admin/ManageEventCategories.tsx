@@ -1,13 +1,15 @@
 "use client";
 
-import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
+import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
-import { createCategory } from "@/lib/actions/category.actions";
+import { zodResolver } from "@hookform/resolvers/zod";
+
 import { categoryFormSchema } from "@/lib/schema";
+import { createCategory } from "@/lib/actions/category.actions";
 
 type Inputs = z.infer<typeof categoryFormSchema>;
+
 const ManageEventCategories = () => {
   const {
     control,
