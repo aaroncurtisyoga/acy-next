@@ -1,4 +1,5 @@
 import { Schema, model, models, Document } from "mongoose";
+import { IUser } from "@/lib/mongodb/database/models/user.model";
 
 export interface IOrder extends Document {
   createdAt: Date;
@@ -8,11 +9,7 @@ export interface IOrder extends Document {
     _id: string;
     title: string;
   };
-  buyer: {
-    _id: string;
-    firstName: string;
-    lastName: string;
-  };
+  buyer: IUser;
 }
 
 export type IOrderItem = {

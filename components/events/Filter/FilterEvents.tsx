@@ -14,13 +14,9 @@ import { useMediaQuery } from "usehooks-ts";
 
 interface FilterModalProps {
   hasFiltersApplied: boolean;
-  numberOfFilters: number;
 }
 
-const FilterModal = ({
-  hasFiltersApplied,
-  numberOfFilters,
-}: FilterModalProps) => {
+const FilterEvents = ({ hasFiltersApplied }: FilterModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -45,4 +41,4 @@ const FilterModal = ({
   );
 };
 
-export default FilterModal;
+export default FilterEvents;

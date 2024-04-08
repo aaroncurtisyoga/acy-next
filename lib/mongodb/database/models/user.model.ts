@@ -1,5 +1,13 @@
 import { model, models, Schema } from "mongoose";
 
+export interface IUser {
+  clerkId: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  photo: string;
+}
+
 const UserSchema = new Schema({
   clerkId: {
     type: String,

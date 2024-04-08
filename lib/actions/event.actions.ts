@@ -3,13 +3,17 @@
 import { revalidatePath } from "next/cache";
 import { connectToDatabase } from "@/lib/mongodb/database";
 import { handleError } from "@/lib/utils";
-import Event from "@/lib/mongodb/database/models/event.model";
+
 import Category from "@/lib/mongodb/database/models/category.model";
+import Event, { IEvent } from "@/lib/mongodb/database/models/event.model";
+import Order, { IOrder } from "@/lib/mongodb/database/models/order.model";
+
 import {
   DeleteEventParams,
   GetAllEventsParams,
   GetRelatedEventsByCategoryParams,
 } from "@/types";
+import { IUser } from "@/lib/mongodb/database/models/user.model";
 
 export async function createEvent({ event, path }) {
   try {
@@ -37,12 +41,20 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
   }
 }
 
+async function getEventAttendees(eventId: any) {
+  debugger;
+  return await Order.find({ event: eventId })
+    .populate({ path: "buyer", select: ["firstName", "lastName", "photo"] })
+    .exec();
+}
+
 export async function getAllEvents({
   query,
   limit = 8,
   page,
   category,
 }: GetAllEventsParams) {
+  debugger;
   try {
     await connectToDatabase();
 
@@ -53,6 +65,7 @@ export async function getAllEvents({
       ? await getCategoryByName(category)
       : null;
     const dateCondition = { endDateTime: { $gt: new Date() } };
+
     const conditions = {
       $and: [
         titleCondition,
@@ -66,16 +79,23 @@ export async function getAllEvents({
       .sort({ startDateTime: "asc" })
       .skip(skipAmount)
       .limit(limit);
-
     const events = await populateEvent(eventsQuery);
+    let eventsWithAttendees = [];
+    for (let event of events) {
+      try {
+        let attendees = await getEventAttendees(event._id);
+        event = { ...event._doc, attendees };
+        eventsWithAttendees.push(event);
+      } catch (error) {
+        handleError(error);
+      }
+    }
     const eventsCount = await Event.countDocuments(conditions);
     const hasFiltersApplied: boolean = !!query || !!category;
-    const numberOfFilters = [query, category].filter(Boolean).length;
 
     return {
-      data: JSON.parse(JSON.stringify(events)),
+      data: JSON.parse(JSON.stringify(eventsWithAttendees)),
       hasFiltersApplied,
-      numberOfFilters,
       totalPages: Math.ceil(eventsCount / limit),
     };
   } catch (error) {
@@ -121,13 +141,22 @@ export async function getEventsWithSameCategory({
 export async function getEventById(eventId: string) {
   try {
     await connectToDatabase();
-    const event = await populateEvent(Event.findById(eventId));
+
+    const event: IEvent | null = await Event.findById(eventId).exec();
+    if (!event) {
+      throw new Error(`Event with id ${eventId} is not found.`);
+    }
+
+    const eventOrders = (await Order.find({ event: eventId })
+      .populate("buyer")
+      .exec()) as unknown as IOrder[];
+
+    event.attendees = eventOrders.map((order) => order.buyer as IUser);
     return JSON.parse(JSON.stringify(event));
   } catch (error) {
     handleError(error);
   }
 }
-
 const populateEvent = (query: any) => {
   return query.populate({
     path: "category",
