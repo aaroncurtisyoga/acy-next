@@ -1,10 +1,10 @@
-import CreateEventButton from "@/components/shared/CreateEventButton";
-import ManageEventCategories from "@/components/admin/ManageEventCategories";
-import SearchUsers from "@/components/admin/SearchUsers";
-import { checkRole } from "@/lib/utils";
-import { clerkClient } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
+import { clerkClient } from "@clerk/nextjs";
+import { checkRole } from "@/lib/utils";
+import SearchUsers from "@/components/admin/SearchUsers";
 import { setRole } from "@/app/(admin)/actions";
+import ManageEventCategories from "@/components/admin/ManageEventCategories";
+import CreateEventButton from "@/components/shared/CreateEventButton";
 
 export default async function AdminDashboard(params: {
   searchParams: { search?: string };
