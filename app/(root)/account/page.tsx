@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FC } from "react";
 import { auth } from "@clerk/nextjs";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import EventHistoryTable from "@/components/account/EventHistoryTable";
@@ -7,7 +8,13 @@ export const metadata: Metadata = {
   title: "Account",
 };
 
-const AccountPage = async ({ searchParams }) => {
+interface AccountPageProps {
+  searchParams: {
+    ordersPage: string;
+  };
+}
+
+const AccountPage: FC<AccountPageProps> = async ({ searchParams }) => {
   const { sessionClaims } = auth();
   const userId = sessionClaims?.metadata?.userId as string;
   const ordersPage = Number(searchParams?.ordersPage) || 1;
