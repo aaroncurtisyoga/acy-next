@@ -3,6 +3,7 @@ import { Link as NextUiLink } from "@nextui-org/react";
 
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 import NewsletterForm from "@/components/newsletter/NewsletterForm";
+import { instructorEmailAddress } from "@/constants";
 
 const Footer = () => {
   return (
@@ -53,7 +54,7 @@ const Footer = () => {
               size="sm"
               underline={"hover"}
               className={"text-tiny"}
-              href="mailto:aaroncurtisyoga@gmail.com"
+              href={`mailto:${instructorEmailAddress}`}
             >
               {" "}
               Email

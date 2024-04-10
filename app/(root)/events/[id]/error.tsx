@@ -1,6 +1,8 @@
 "use client";
 
 import { CircleAlert } from "lucide-react";
+import { instructorEmailAddress } from "@/constants";
+import { Link as NextUiLink } from "@nextui-org/link";
 
 export default function ErrorBoundary() {
   return (
@@ -10,7 +12,16 @@ export default function ErrorBoundary() {
         Whoops, the page or event you are looking for was not found.
       </h1>
       <h2 className={"text-2xl text-gray-500"}>
-        If you feel this message is in error, please let us know.
+        If you feel this message is in error, please{" "}
+        <NextUiLink
+          isExternal
+          size="sm"
+          underline={"hover"}
+          className={"text-2xl"}
+          href={`mailto:${instructorEmailAddress}`}
+        >
+          let us know.
+        </NextUiLink>
       </h2>
     </div>
   );
