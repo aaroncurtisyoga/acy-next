@@ -1,9 +1,11 @@
+import type { Metadata } from "next";
+import { FC } from "react";
 import { SignUp } from "@clerk/nextjs";
-import { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Sign Up",
 };
-export default function Page() {
-  return <SignUp />;
-}
+
+const Page: FC = () => <SignUp />;
+
+export default Page;

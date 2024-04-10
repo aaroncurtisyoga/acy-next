@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { PropsWithChildren } from "react";
 import Header from "@/components/shared/Header";
 
-const Layout = ({ children }: { children: ReactNode }) => {
+const Layout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <div className="flex flex-col min-h-dvh">
       <Header isSimpleNav={true} />

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { locations, signUpLinks } from "@/constants";
 import Offering from "@/components/schedule/Offering";
 

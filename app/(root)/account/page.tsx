@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { auth } from "@clerk/nextjs";
 import { getOrdersByUser } from "@/lib/actions/order.actions";
 import EventHistoryTable from "@/components/account/EventHistoryTable";
