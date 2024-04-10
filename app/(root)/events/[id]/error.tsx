@@ -10,7 +10,7 @@ export default function ErrorBoundary() {
       <h1 className={"error-headline"}>
         Whoops, the page or event you are looking for was not found.
       </h1>
-      <h2 className={"error-subHeadline"}>
+      <p className={"error-subHeadline"}>
         If you feel this message is in error, please{" "}
         <NextUiLink
           isExternal
@@ -20,7 +20,7 @@ export default function ErrorBoundary() {
         >
           let us know.
         </NextUiLink>
-      </h2>
+      </p>
     </Error>
   );
 }
