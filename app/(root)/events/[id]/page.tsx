@@ -1,3 +1,4 @@
+import { FC } from "react";
 import Attendees from "@/components/events/EventPage/Attendees";
 import CheckoutButton from "@/components/events/EventPage/CheckoutButton";
 import DateAndTime from "@/components/events/EventPage/DateAndTime";
@@ -8,10 +9,22 @@ import Location from "@/components/events/EventPage/Location";
 import RefundPolicy from "@/components/events/EventPage/RefundPolicy";
 import Subheading from "@/components/events/EventPage/Subheadline";
 import { getEventById } from "@/lib/actions/event.actions";
+import { handleError } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
-const EventPage = async ({ params: { id } }: SearchParamProps) => {
-  const event = await getEventById(id);
+const EventPage: FC<SearchParamProps> = async ({ params: { id } }) => {
+  let event: IEvent | null = null;
+
+  try {
+    event = await getEventById(id);
+  } catch (error) {
+    handleError(error);
+  }
+
+  if (!event) {
+    handleError("Event Page: No event found");
+  }
 
   return (
     <section className="flex flex-col w-full md:items-center pb-unit-10 gap-3">
