@@ -1,16 +1,16 @@
 "use server";
 
-import { checkRole } from "@/lib/utils";
-import { clerkClient } from "@clerk/nextjs/server";
+import { checkRole, handleError } from "@/lib/utils";
+import { clerkClient, User } from "@clerk/nextjs/server";
 
 export async function setRole(formData: FormData) {
   // Check that the user trying to set the role is an admin
   if (!checkRole("admin")) {
-    return { message: "Not Authorized" };
+    handleError("Not Authorized");
   }
 
   try {
-    const res = await clerkClient.users.updateUser(
+    const res: User = await clerkClient.users.updateUser(
       formData.get("id") as string,
       {
         publicMetadata: { role: formData.get("role") },
@@ -18,6 +18,6 @@ export async function setRole(formData: FormData) {
     );
     return { message: res.publicMetadata };
   } catch (err) {
-    return { message: err };
+    return { message: err || "Unknown error" };
   }
 }
