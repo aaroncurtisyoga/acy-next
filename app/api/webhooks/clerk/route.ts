@@ -71,25 +71,25 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
-    const newUser = await createUser(user);
+    try {
+      const newUser = await createUser(user);
 
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser._id,
-        },
-      });
-    }
+      if (newUser) {
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            userId: newUser._id,
+          },
+        });
 
-    if (newUser.error) {
-      handleError("Error creating user", newUser.error);
+        return NextResponse.json({ message: "OK", user: newUser });
+      }
+    } catch (error) {
+      handleError("creating", error);
       return NextResponse.json({
         message: "Error creating user",
-        error: newUser.error,
+        error: error.message,
       });
     }
-
-    return NextResponse.json({ message: "OK", user: newUser });
   }
 
   // Update user in database when a Clerk user is updated
@@ -102,33 +102,31 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
-    const updatedUser = await updateUser(id, user);
-
-    if (updatedUser.error) {
-      handleError("updating", updatedUser.error);
+    try {
+      const updatedUser = await updateUser(id, user);
+      return NextResponse.json({ message: "OK", user: updatedUser });
+    } catch (error) {
+      handleError("updating", error);
       return NextResponse.json({
         message: "Error updating user",
-        error: updatedUser.error,
+        error: error.message,
       });
     }
-
-    return NextResponse.json({ message: "OK", user: updatedUser });
   }
 
   // Delete a user in database when a Clerk user is deleted
   if (eventType === "user.deleted") {
     const { id } = evt.data;
 
-    const deletedUser = await deleteUser(id!);
-
-    if (deletedUser.error) {
-      handleError("deleting", deletedUser.error);
+    try {
+      const deletedUser = await deleteUser(id!);
+      return NextResponse.json({ message: "OK", user: deletedUser });
+    } catch (error) {
+      handleError("deleting", error);
       return NextResponse.json({
         message: "Error deleting user",
-        error: deletedUser.error,
+        error: error.message,
       });
     }
-
-    return NextResponse.json({ message: "OK", user: deletedUser });
   }
 }
