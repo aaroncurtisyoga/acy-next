@@ -46,6 +46,6 @@ export const SearchUsersFormSchema = z.object({
   search: z.string(),
 });
 
-export const categoryFormSchema = z.object({
+export const CategoryFormSchema = z.object({
   category: z.string().min(2, "Category required"),
 });
