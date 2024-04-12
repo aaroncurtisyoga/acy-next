@@ -9,16 +9,22 @@ import {
   TableRow,
   Link as NextUiLink,
 } from "@nextui-org/react";
+import { IOrder } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-const EventHistoryTable = ({ orders }) => {
+interface EventHistoryTableProps {
+  orders: {
+    data: IOrder[];
+  };
+}
+
+const EventHistoryTable = ({ orders }: EventHistoryTableProps) => {
   return (
     <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>
         <TableColumn>Date</TableColumn>
         <TableColumn>Amount</TableColumn>
         <TableColumn>Event</TableColumn>
-        <TableColumn>Status</TableColumn>
         <TableColumn>Order ID</TableColumn>
       </TableHeader>
       <TableBody>
@@ -38,7 +44,6 @@ const EventHistoryTable = ({ orders }) => {
                   {order.event.title}
                 </NextUiLink>
               </TableCell>
-              <TableCell>{order.status}</TableCell>
               <TableCell>{order._id}</TableCell>
             </TableRow>
           ))
