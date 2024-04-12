@@ -5,9 +5,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import { z } from "zod";
 import { createCategory } from "@/lib/actions/category.actions";
-import { categoryFormSchema } from "@/lib/schema";
+import { CategoryFormSchema } from "@/lib/schema";
+import { handleError } from "@/lib/utils";
 
-type Inputs = z.infer<typeof categoryFormSchema>;
+type Inputs = z.infer<typeof CategoryFormSchema>;
 const ManageEventCategories = () => {
   const {
     control,
@@ -16,7 +17,7 @@ const ManageEventCategories = () => {
     setError,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Inputs>({
-    resolver: zodResolver(categoryFormSchema),
+    resolver: zodResolver(CategoryFormSchema),
     defaultValues: {
       category: "",
     },
@@ -29,6 +30,8 @@ const ManageEventCategories = () => {
       });
       reset();
     } catch (e) {
+      handleError("Error creating category", e);
+      // Displays error in UI
       setError("category", {
         type: "server",
         message: "There was an issue creating the category.",
