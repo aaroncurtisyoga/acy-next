@@ -3,6 +3,7 @@ import { Link as NextUiLink } from "@nextui-org/react";
 
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 import NewsletterForm from "@/components/newsletter/NewsletterForm";
+import { instructorEmailAddress } from "@/constants";
 
 const Footer = () => {
   return (
@@ -46,18 +47,30 @@ const Footer = () => {
           }
         >
           <p>© {new Date().getFullYear()} All Rights Reserved</p>
-          <p>Made by Aaron Curtis</p>
           <p>
-            Reach out{" "}
+            Reach out by{" "}
             <NextUiLink
               isExternal
               size="sm"
               underline={"hover"}
               className={"text-tiny"}
-              href="mailto:aaroncurtisyoga@gmail.com"
+              href={`mailto:${instructorEmailAddress}`}
             >
               {" "}
-              by Email
+              Email
+            </NextUiLink>
+          </p>
+          <p>
+            Made by{" "}
+            <NextUiLink
+              className={"text-tiny"}
+              href="https://github.com/aaroncurtisyoga/acy-next"
+              isExternal
+              size="sm"
+              target="_blank"
+              underline={"hover"}
+            >
+              Aaron
             </NextUiLink>
           </p>
         </div>

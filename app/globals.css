@@ -37,7 +37,16 @@
   .wrapper-width {
     @apply w-full max-w-7xl lg:mx-auto px-6 ;
   }
+
+  .error-headline {
+    @apply text-3xl md:text-5xl font-extrabold
+  }
+
+  .error-subHeadline {
+    @apply text-xl md:text-2xl text-gray-500
+  }
 }
+
 /* REACT-DATEPICKER STYLES */
 .datePicker {
   @apply w-full

@@ -1,4 +1,4 @@
-import { Metadata } from "next";
+import type { Metadata } from "next";
 import { getOrdersByEvent } from "@/lib/actions/order.actions";
 import { SearchParamProps } from "@/types";
 import OrdersTable from "@/components/orders/OrdersTable";

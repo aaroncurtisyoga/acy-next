@@ -8,14 +8,14 @@ import {
 } from "@/lib/mongodb/database/actions/user.actions";
 import { clerkClient } from "@clerk/nextjs";
 import { NextResponse } from "next/server";
+import { handleError } from "@/lib/utils";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhooks
   const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
-    console.log("No WEBHOOK_SECRET found in .env or .env.local");
-    throw new Error(
+    handleError(
       "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local",
     );
   }
@@ -71,17 +71,25 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
-    const newUser = await createUser(user);
+    try {
+      const newUser = await createUser(user);
 
-    if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
-        publicMetadata: {
-          userId: newUser._id,
-        },
+      if (newUser) {
+        await clerkClient.users.updateUserMetadata(id, {
+          publicMetadata: {
+            userId: newUser._id,
+          },
+        });
+
+        return NextResponse.json({ message: "OK", user: newUser });
+      }
+    } catch (error) {
+      handleError("creating", error);
+      return NextResponse.json({
+        message: "Error creating user",
+        error: error.message,
       });
     }
-
-    return NextResponse.json({ message: "OK", user: newUser });
   }
 
   // Update user in database when a Clerk user is updated
@@ -94,17 +102,31 @@ export async function POST(req: Request) {
       photo: image_url,
     };
 
-    const updatedUser = await updateUser(id, user);
-
-    return NextResponse.json({ message: "OK", user: updatedUser });
+    try {
+      const updatedUser = await updateUser(id, user);
+      return NextResponse.json({ message: "OK", user: updatedUser });
+    } catch (error) {
+      handleError("updating", error);
+      return NextResponse.json({
+        message: "Error updating user",
+        error: error.message,
+      });
+    }
   }
 
   // Delete a user in database when a Clerk user is deleted
   if (eventType === "user.deleted") {
     const { id } = evt.data;
 
-    const deletedUser = await deleteUser(id!);
-
-    return NextResponse.json({ message: "OK", user: deletedUser });
+    try {
+      const deletedUser = await deleteUser(id!);
+      return NextResponse.json({ message: "OK", user: deletedUser });
+    } catch (error) {
+      handleError("deleting", error);
+      return NextResponse.json({
+        message: "Error deleting user",
+        error: error.message,
+      });
+    }
   }
 }

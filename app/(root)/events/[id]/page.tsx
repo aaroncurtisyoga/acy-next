@@ -1,3 +1,4 @@
+import { FC } from "react";
 import Attendees from "@/components/events/EventPage/Attendees";
 import CheckoutButton from "@/components/events/EventPage/CheckoutButton";
 import DateAndTime from "@/components/events/EventPage/DateAndTime";
@@ -8,40 +9,43 @@ import Location from "@/components/events/EventPage/Location";
 import RefundPolicy from "@/components/events/EventPage/RefundPolicy";
 import Subheading from "@/components/events/EventPage/Subheadline";
 import { getEventById } from "@/lib/actions/event.actions";
+import { handleError } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
-const EventPage = async ({ params: { id } }: SearchParamProps) => {
-  const event = await getEventById(id);
-  const {
-    _id,
-    attendees,
-    category,
-    description,
-    endDateTime,
-    imageUrl,
-    isFree,
-    location,
-    price,
-    startDateTime,
-    title,
-  } = event;
+const EventPage: FC<SearchParamProps> = async ({ params: { id } }) => {
+  let event: IEvent | null = null;
+
+  try {
+    event = await getEventById(id);
+  } catch (error) {
+    handleError(error);
+  }
+
+  if (!event) {
+    handleError("Event Page: No event found");
+  }
 
   return (
     <section className="flex flex-col w-full md:items-center pb-unit-10 gap-3">
-      <Hero imageUrl={imageUrl} />
-      <Subheading category={category} id={_id} startDateTime={startDateTime} />
+      <Hero imageUrl={event.imageUrl} />
+      <Subheading
+        category={event.category}
+        id={event._id}
+        startDateTime={event.startDateTime}
+      />
       <div className={"wrapper-width flex flex-col md:flex-row"}>
         <div className={"flex-1"}>
           <div className={"px-5 md:px-0"}>
-            <Headline title={title} />
+            <Headline title={event.title} />
             <DateAndTime
-              startDateTime={startDateTime}
-              endDateTime={endDateTime}
+              startDateTime={event.startDateTime}
+              endDateTime={event.endDateTime}
             />
-            <Location location={location} />
-            <DescriptionRichTextEditor description={description} />
-            <Attendees attendees={attendees} />
-            {!isFree && <RefundPolicy />}
+            <Location location={event.location} />
+            <DescriptionRichTextEditor description={event.description} />
+            <Attendees attendees={event.attendees} />
+            {!event.isFree && <RefundPolicy />}
           </div>
         </div>
         <div
@@ -53,7 +57,7 @@ const EventPage = async ({ params: { id } }: SearchParamProps) => {
           }
         >
           <p className={"text-center text-lg mb-3"}>
-            {isFree ? "Free" : `$${price}`}
+            {event.isFree ? "Free" : `$${event.price}`}
           </p>
           <CheckoutButton event={event} className={"justify-center"} />
         </div>

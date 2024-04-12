@@ -31,7 +31,7 @@ export default async function ImageResponsiveHandstand() {
     placeholder: "blur",
     priority: true,
     quality: 80,
-    sizes: "50vw",
+    sizes: "(min-width: 1640px) 768px, (min-width: 780px) calc(45vw + 39px)",
     src: "https://hyhtjblnarllhg0d.public.blob.vercel-storage.com/handstand_desktop-o4lcMigM1mvB2fLffSaWmOS4BN2hqZ.jpeg",
   });
 

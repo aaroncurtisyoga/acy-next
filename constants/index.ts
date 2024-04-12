@@ -85,3 +85,5 @@ export const getEventFormSteps = (isHostedExternally = false) => {
     },
   ];
 };
+
+export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";

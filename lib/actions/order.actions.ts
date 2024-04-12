@@ -10,7 +10,6 @@ import {
 } from "@/types";
 import { handleError } from "../utils";
 import { ObjectId } from "mongodb";
-import User from "@/lib/mongodb/database/models/user.model";
 import Order from "@/lib/mongodb/database/models/order.model";
 import Event from "@/lib/mongodb/database/models/event.model";
 import { connectToDatabase } from "@/lib/mongodb/database";
@@ -71,10 +70,7 @@ export async function getOrdersByEvent({
 }: GetOrdersByEventParams) {
   try {
     await connectToDatabase();
-
-    if (!eventId) throw new Error("Event ID is required");
     const eventObjectId = new ObjectId(eventId);
-
     const orders = await Order.aggregate([
       {
         $lookup: {
@@ -132,7 +128,6 @@ export async function getOrdersByUser({
 }: GetOrdersByUserParams) {
   try {
     await connectToDatabase();
-
     const skipAmount = (Number(page) - 1) * limit;
     const conditions = { buyer: userId };
 
