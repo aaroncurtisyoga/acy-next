@@ -99,18 +99,23 @@ export async function getOrdersByEvent({
           _id: 1,
           totalAmount: 1,
           createdAt: 1,
-          eventTitle: "$event.title",
-          eventId: "$event._id",
+          stripeId: 1, // include the stripeId field
+          event: {
+            _id: "$event._id",
+            title: "$event.title",
+          },
           buyer: {
-            $concat: ["$buyer.firstName", " ", "$buyer.lastName"],
+            _id: "$buyer._id", // Assuming buyer also has _id field
+            firstName: "$buyer.firstName",
+            lastName: "$buyer.lastName",
           },
         },
       },
       {
         $match: {
           $and: [
-            { eventId: eventObjectId },
-            { buyer: { $regex: RegExp(searchString, "i") } },
+            { "event._id": eventObjectId }, // use event._id instead of eventId
+            { "buyer.firstName": { $regex: RegExp(searchString, "i") } }, // adjust this based on what you require in searchString
           ],
         },
       },
