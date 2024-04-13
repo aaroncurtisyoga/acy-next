@@ -8,10 +8,14 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
+import { IOrder } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-const OrdersTable = ({ orders }) => {
+interface OrdersTableProps {
+  orders: IOrder[];
+}
+
+const OrdersTable = ({ orders }: OrdersTableProps) => {
   return (
     <Table aria-label={"Table for Orders"}>
       <TableHeader>
@@ -23,11 +27,11 @@ const OrdersTable = ({ orders }) => {
       </TableHeader>
       <TableBody>
         {orders.length ? (
-          orders.map((order: IOrderItem) => (
+          orders.map((order: IOrder) => (
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
-              <TableCell>{order.eventTitle}</TableCell>
-              <TableCell>{order.buyer}</TableCell>
+              <TableCell>{order.event.title}</TableCell>
+              <TableCell>{`${order.buyer.firstName} ${order.buyer.lastName}`}</TableCell>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>
