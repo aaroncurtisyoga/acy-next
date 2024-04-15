@@ -6,6 +6,7 @@ import { getAllEvents } from "@/lib/actions/event.actions";
 interface UpcomingEventsProps {
   searchParams: any;
 }
+
 const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
