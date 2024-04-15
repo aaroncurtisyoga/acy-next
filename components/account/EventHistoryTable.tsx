@@ -1,5 +1,6 @@
 "use client";
 
+import { FC } from "react";
 import {
   Table,
   TableBody,
@@ -18,7 +19,7 @@ interface EventHistoryTableProps {
   };
 }
 
-const EventHistoryTable = ({ orders }: EventHistoryTableProps) => {
+const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
   return (
     <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>

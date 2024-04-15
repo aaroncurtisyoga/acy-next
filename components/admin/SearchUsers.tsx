@@ -1,15 +1,15 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
+import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
 
 import { SearchUsersFormSchema } from "@/lib/schema";
-import React from "react";
 
-const SearchUsers = () => {
+const SearchUsers: FC = () => {
   const router = useRouter();
   const pathname = usePathname();
   const {
