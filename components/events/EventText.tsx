@@ -1,17 +1,18 @@
 "use client";
 
 import { Link as NextUiLink } from "@nextui-org/react";
+import { FC } from "react";
+import EventAdminButtons from "@/components/events/EventAdminButtons";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-import EventAdminButtons from "@/components/events/EventAdminButtons";
 
 interface EventTextProps {
   isAdmin: boolean;
   event: IEvent;
 }
 
-const EventText = ({ isAdmin, event }: EventTextProps) => {
+const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
   const pathname = usePathname();
   const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;

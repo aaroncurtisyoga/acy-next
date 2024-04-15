@@ -1,13 +1,13 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
 import { getAllCategories } from "@/lib/actions/category.actions";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
 
-const CategoryButtons = () => {
+const CategoryButtons: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState<ICategory[]>([]);
   const router = useRouter();

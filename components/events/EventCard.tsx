@@ -3,8 +3,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FC } from "react";
 import EventAdminButtons from "@/components/events/EventAdminButtons";
-
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 
@@ -13,7 +13,7 @@ interface CardProps {
   event: IEvent;
 }
 
-const EventCard = ({ isAdmin, event }: CardProps) => {
+const EventCard: FC<CardProps> = ({ isAdmin, event }) => {
   const pathname = usePathname();
   const { _id, category, imageUrl, isFree, price, startDateTime, title } =
     event;

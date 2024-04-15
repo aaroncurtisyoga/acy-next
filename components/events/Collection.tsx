@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { checkRole } from "@/lib/utils";
 import EventCard from "@/components/events/EventCard";
@@ -16,14 +17,14 @@ interface CollectionProps {
   view?: "text" | "card";
 }
 
-const Collection = ({
+const Collection: FC<CollectionProps> = ({
   data,
   hasFiltersApplied = false,
   page,
   totalPages = 0,
   urlParamName,
   view = "card",
-}: CollectionProps) => {
+}) => {
   const isAdmin = checkRole("admin");
 
   return (

@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { FC } from "react";
 import {
   Modal,
   ModalContent,
@@ -8,7 +9,6 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-
 import { deleteEvent } from "@/lib/actions/event.actions";
 
 type EventCardAdminButtonsProps = {
@@ -16,7 +16,10 @@ type EventCardAdminButtonsProps = {
   pathname: string;
 };
 
-const EventAdminButtons = ({ id, pathname }: EventCardAdminButtonsProps) => {
+const EventAdminButtons: FC<EventCardAdminButtonsProps> = ({
+  id,
+  pathname,
+}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (

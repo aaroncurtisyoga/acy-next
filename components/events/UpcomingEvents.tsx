@@ -1,8 +1,12 @@
+import { FC } from "react";
 import Collection from "@/components/events/Collection";
 import FilterEvents from "@/components/events/Filter/FilterEvents";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
-const UpcomingEvents = async ({ searchParams }) => {
+interface UpcomingEventsProps {
+  searchParams: any;
+}
+const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const page = Number(searchParams?.page) || 1;
   const searchText = (searchParams?.query as string) || "";
   const category = (searchParams?.category as string) || "";

@@ -1,8 +1,10 @@
+import { FC } from "react";
+
 interface NoEventsFoundProps {
   hasFiltersApplied: boolean;
 }
 
-const NoEventsFound = ({ hasFiltersApplied }: NoEventsFoundProps) => {
+const NoEventsFound: FC<NoEventsFoundProps> = ({ hasFiltersApplied }) => {
   return (
     <div className={"flex flex-col"}>
       {hasFiltersApplied ? (
