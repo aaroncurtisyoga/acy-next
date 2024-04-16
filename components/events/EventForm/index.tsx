@@ -20,6 +20,7 @@ import {
 import { eventDefaultValues, getEventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
+import { handleError } from "@/lib/utils";
 import "react-datepicker/dist/react-datepicker.css";
 
 const EventFormSchema = z.discriminatedUnion("isHostedExternally", [
@@ -109,7 +110,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
           : router.push(`/events/${newEvent._id}`);
       }
     } catch (error) {
-      console.log(error);
+      handleError(error);
     }
   }
 
