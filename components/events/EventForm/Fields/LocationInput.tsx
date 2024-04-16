@@ -6,7 +6,11 @@ import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
 interface LocationInputProps {
   control: Control;
-  setValue: any;
+  setValue: (
+    name: string,
+    value: any,
+    options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>,
+  ) => void;
   errors: {
     location?: {
       formattedAddress?: {
