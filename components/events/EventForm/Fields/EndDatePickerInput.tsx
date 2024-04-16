@@ -1,9 +1,18 @@
+import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
 
-import React from "react";
+interface EndDatePickerInputProps {
+  control: any;
+  errors: any;
+  isSubmitting: boolean;
+}
 
-const EndDatePickerInput = ({ control, errors, isSubmitting }) => {
+const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
+  control,
+  errors,
+  isSubmitting,
+}) => {
   return (
     <Controller
       control={control}

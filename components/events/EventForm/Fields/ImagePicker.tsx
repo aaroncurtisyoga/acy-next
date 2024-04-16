@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -14,7 +14,12 @@ import {
 import { getImages } from "@/lib/actions/blob.actions";
 import { cn } from "@/lib/utils";
 
-const ImagePicker = ({ errors, setValue }) => {
+interface ImagePickerProps {
+  errors: any;
+  setValue: any;
+}
+
+const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue }) => {
   const [images, setImages] = useState([]);
   const [selectedImgUrl, setSelectedImgUrl] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

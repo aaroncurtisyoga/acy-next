@@ -1,8 +1,14 @@
-import React from "react";
-import { Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Input } from "@nextui-org/react";
 
-const TitleInput = ({ control, isSubmitting, errors }) => {
+// Todo: see if FieldErrors is the correct thing b/c its complaining below
+interface TitleInputProps {
+  control: Control;
+  isSubmitting: boolean;
+  errors: FieldErrors;
+}
+const TitleInput: FC<TitleInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}

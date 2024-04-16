@@ -1,10 +1,20 @@
-import React, { useState } from "react";
+import React, { FC } from "react";
 import { Controller } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
-const LocationInput = ({ control, setValue, errors }) => {
+interface LocationInputProps {
+  control: any;
+  setValue: any;
+  errors: any;
+}
+
+const LocationInput: FC<LocationInputProps> = ({
+  control,
+  setValue,
+  errors,
+}) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: string) => {

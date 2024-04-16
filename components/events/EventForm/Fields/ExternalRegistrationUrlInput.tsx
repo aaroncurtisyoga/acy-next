@@ -1,6 +1,18 @@
+import { FC } from "react";
 import { Controller } from "react-hook-form";
 import { Input } from "@nextui-org/react";
-const ExternalRegistrationUrlInput = ({ control, isSubmitting, errors }) => {
+
+interface ExternalRegistrationUrlInputProps {
+  control: any;
+  isSubmitting: boolean;
+  errors: any;
+}
+
+const ExternalRegistrationUrlInput: FC<ExternalRegistrationUrlInputProps> = ({
+  control,
+  isSubmitting,
+  errors,
+}) => {
   return (
     <Controller
       control={control}

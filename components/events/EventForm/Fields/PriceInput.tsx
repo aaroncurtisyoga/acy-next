@@ -1,8 +1,14 @@
-import React from "react";
+import React, { FC } from "react";
 import { Input } from "@nextui-org/react";
 import { Controller } from "react-hook-form";
 
-const PriceInput = ({ control, isSubmitting, errors }) => {
+interface PriceInputProps {
+  control: any;
+  isSubmitting: boolean;
+  errors: any;
+}
+
+const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}

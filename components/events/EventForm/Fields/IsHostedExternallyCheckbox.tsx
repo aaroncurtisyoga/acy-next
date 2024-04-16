@@ -2,6 +2,11 @@ import React from "react";
 import { Controller } from "react-hook-form";
 import { Checkbox } from "@nextui-org/react";
 
+interface IsHostedExternallyCheckboxProps {
+  control: any;
+  isSubmitting: boolean;
+}
+
 const IsHostedExternallyCheckbox = ({ control, isSubmitting }) => {
   return (
     <Controller
