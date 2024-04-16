@@ -1,11 +1,13 @@
 import React, { FC } from "react";
 import { Input } from "@nextui-org/react";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 
 interface PriceInputProps {
-  control: any;
+  control: Control;
   isSubmitting: boolean;
-  errors: any;
+  errors: {
+    price?: { message: string };
+  };
 }
 
 const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
@@ -18,7 +20,7 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
           disabled={isSubmitting}
           errorMessage={errors.price?.message}
           label={"Price"}
-          onChange={(e) => field.onChange(e)}
+          onChange={field.onChange}
           placeholder={"0.00"}
           startContent={
             <div className="pointer-events-none flex items-center">

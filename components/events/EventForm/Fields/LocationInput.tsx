@@ -1,13 +1,19 @@
 import React, { FC } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
 
 interface LocationInputProps {
-  control: any;
+  control: Control;
   setValue: any;
-  errors: any;
+  errors: {
+    location?: {
+      formattedAddress?: {
+        message: string;
+      };
+    };
+  };
 }
 
 const LocationInput: FC<LocationInputProps> = ({

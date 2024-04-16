@@ -1,9 +1,9 @@
 import { Input } from "@nextui-org/react";
-import { Controller } from "react-hook-form";
 import { FC } from "react";
+import { Control, Controller } from "react-hook-form";
 
 interface PriceInputProps {
-  control: any;
+  control: Control;
   isSubmitting: boolean;
   errors: any;
 }
