@@ -1,8 +1,12 @@
-import React from "react";
-import { formatDateTime } from "@/lib/utils";
+import React, { FC } from "react";
 import ShareEvent from "@/components/events/EventPage/ShareEvent";
+import { formatDateTime } from "@/lib/utils";
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
-const Subheading = ({ category, id, startDateTime }) => {
+type IEventSubset = Pick<IEvent, "category" | "id" | "startDateTime">;
+
+interface SubheadingProps extends IEventSubset {}
+const Subheading: FC<SubheadingProps> = ({ category, id, startDateTime }) => {
   return (
     <div className="wrapper-width flex justify-between items-center w-full py-3">
       <p className={"text-base lg:text-lg font-semibold text-gray-600"}>
