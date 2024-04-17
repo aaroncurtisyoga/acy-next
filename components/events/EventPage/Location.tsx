@@ -1,11 +1,14 @@
 "use client";
 
+import { FC } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import DirectionLinks from "@/components/events/EventPage/DirectionLinks";
 import Map from "@/components/shared/Map";
-
-const Location = ({ location }) => {
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
+type LocationType = Pick<IEvent, "location">;
+interface LocationProps extends LocationType {}
+const Location: FC<LocationProps> = ({ location }) => {
   return (
     <div className={"mb-6 md:mb-8"}>
       <h2 className={"text-2xl font-bold mb-3"}>Location</h2>

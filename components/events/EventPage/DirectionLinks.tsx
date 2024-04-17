@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { travelOptions } from "@/constants";
 import { generateDirectionsUrl } from "@/lib/utils/travelLinks";
 
@@ -5,7 +6,7 @@ interface DirectionLinksProps {
   location: { geometry: { lat: any; lng: any } };
 }
 
-const DirectionLinks = ({ location }: DirectionLinksProps) => {
+const DirectionLinks: FC<DirectionLinksProps> = ({ location }) => {
   return (
     <div className={"w-full py-unit-4 border-b"}>
       <p className={"text-center font-semibold text-default-700 mb-unit-6"}>

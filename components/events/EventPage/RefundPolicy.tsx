@@ -1,6 +1,7 @@
+import { FC } from "react";
 import { Link as NextUiLink } from "@nextui-org/react";
 import { instructorEmailAddress } from "@/constants";
-const RefundPolicy = () => {
+const RefundPolicy: FC = () => {
   return (
     <div className={"mb-6 md:mb-8"}>
       <h2 className={"text-2xl font-bold mb-3"}>Refund Policy</h2>
