@@ -11,10 +11,10 @@ import {
 } from "@nextui-org/react";
 import { deleteEvent } from "@/lib/actions/event.actions";
 
-type EventCardAdminButtonsProps = {
+interface EventCardAdminButtonsProps {
   id: string;
   pathname: string;
-};
+}
 
 const EventAdminButtons: FC<EventCardAdminButtonsProps> = ({
   id,

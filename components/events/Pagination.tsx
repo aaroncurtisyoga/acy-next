@@ -4,11 +4,11 @@ import { useRouter, useSearchParams } from "next/navigation";
 import React, { FC } from "react";
 import { formUrlQuery } from "@/lib/utils";
 
-type PaginationProps = {
+interface PaginationProps {
   page: number | string;
   totalPages: number;
   urlParamName?: string;
-};
+}
 
 const Pagination: FC<PaginationProps> = ({
   page,

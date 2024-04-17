@@ -1,5 +1,6 @@
 "use client";
 
+import { FC } from "react";
 import {
   Table,
   TableBody,
@@ -11,7 +12,10 @@ import {
 import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-const OrdersTable = ({ orders }) => {
+interface OrdersTableProps {
+  orders: IOrderItem[];
+}
+const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
   return (
     <Table aria-label={"Table for Orders"}>
       <TableHeader>

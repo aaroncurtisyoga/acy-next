@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { FC } from "react";
 import { locations, signUpLinks } from "@/constants";
 import Offering from "@/components/schedule/Offering";
 
@@ -6,7 +7,7 @@ export const metadata: Metadata = {
   title: "Schedule",
 };
 
-const Schedule = () => {
+const Schedule: FC = () => {
   return (
     <section>
       <h1>Weekly Schedule</h1>
