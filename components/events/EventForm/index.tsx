@@ -1,46 +1,24 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
-import { motion } from "framer-motion";
+import { eventDefaultValues } from "@/constants";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
-import EventFormStepButtons from "@/components/events/EventForm/Steps/Shared/EventFormStepButtons";
-import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
-import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
-import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
-import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
+import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
+import LocationInput from "@/components/events/EventForm/Fields/LocationInput";
+import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDatePickerInput";
+import EndDatePickerInput from "@/components/events/EventForm/Fields/EndDatePickerInput";
+import IsHostedExternallyCheckbox from "@/components/events/EventForm/Fields/IsHostedExternallyCheckbox";
+import { EventFormStepOneSchema } from "@/lib/schema";
 
-import {
-  EventFormSchemaForExternalRegistration,
-  EventFormSchemaForInternalRegistration,
-} from "@/lib/schema";
-import { eventDefaultValues, getEventFormSteps } from "@/constants";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
-import { createEvent, updateEvent } from "@/lib/actions/event.actions";
-import { handleError } from "@/lib/utils";
-import "react-datepicker/dist/react-datepicker.css";
-
-const EventFormSchema = z.discriminatedUnion("isHostedExternally", [
-  EventFormSchemaForExternalRegistration,
-  EventFormSchemaForInternalRegistration,
-]);
-
-type Inputs = z.infer<typeof EventFormSchema>;
+export type Inputs = z.infer<typeof EventFormStepOneSchema>;
 type FieldName = keyof Inputs;
-
-type EventFormProps = {
-  event?: IEvent;
+interface EventFormProps extends Inputs {
   type: "Create" | "Update";
-};
+}
 
 const EventForm = ({ event, type }: EventFormProps) => {
-  const router = useRouter();
-  const [previousStep, setPreviousStep] = useState(0);
-  const [currentStep, setCurrentStep] = useState(0);
-  const delta = currentStep - previousStep;
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -51,137 +29,40 @@ const EventForm = ({ event, type }: EventFormProps) => {
     : eventDefaultValues;
   const {
     control,
-    getValues,
     handleSubmit,
-    reset,
     setValue,
-    trigger,
-    watch,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
-    resolver: zodResolver(EventFormSchema),
+    resolver: zodResolver(EventFormStepOneSchema),
     defaultValues: eventInitialValues,
   });
-  const watchStartDateTime = watch("startDateTime");
 
-  const next = async () => {
-    const eventFormSteps = getEventFormSteps(getValues("isHostedExternally"));
-    const fields = eventFormSteps[currentStep].fields;
-
-    const formStepValid = await trigger(fields as FieldName[], {
-      shouldFocus: true,
-    });
-    if (formStepValid === false) {
-      return;
-    }
-
-    if (currentStep < eventFormSteps.length - 1) {
-      if (currentStep === eventFormSteps.length - 2) {
-        await handleSubmit(onSubmit)();
-      }
-      setPreviousStep(currentStep);
-      setCurrentStep(currentStep + 1);
-    }
-  };
-
-  const prev = () => {
-    if (currentStep > 0) {
-      setPreviousStep(currentStep);
-      setCurrentStep((step) => step - 1);
-    }
-  };
-
-  useEffect(() => {
-    if (watchStartDateTime > getValues("endDateTime")) {
-      const startTimeStamp = watchStartDateTime.getTime();
-      const oneHourInMilliseconds = 3600000;
-      setValue("endDateTime", new Date(startTimeStamp + oneHourInMilliseconds));
-    }
-  }, [getValues, setValue, watchStartDateTime]);
-
-  async function createNewEvent(values: z.infer<typeof EventFormSchema>) {
-    try {
-      const newEvent = await createEvent({ event: values, path: "/events" });
-
-      if (newEvent) {
-        reset();
-        values.isHostedExternally
-          ? router.push(`/`)
-          : router.push(`/events/${newEvent._id}`);
-      }
-    } catch (error) {
-      handleError(error);
-    }
-  }
-
-  async function updateExistingEvent(values: z.infer<typeof EventFormSchema>) {
-    try {
-      const updatedEvent = await updateEvent({
-        event: { ...values, _id: event._id },
-        path: `/events/${event._id}`,
-      });
-
-      if (updatedEvent) {
-        reset();
-        router.push(`/events/${updatedEvent._id}`);
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-
-  const onSubmit = async (values: z.infer<typeof EventFormSchema>) => {
-    if (type === "Create") {
-      await createNewEvent(values);
-    }
-
-    if (type === "Update") {
-      if (event._id) {
-        await updateExistingEvent(values);
-      } else {
-        router.back();
-      }
-    }
-  };
+  const onSubmit = async () => {};
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className={"flex flex-col gap-5"}>
-      {currentStep === 0 && (
-        <motion.div
-          initial={{ x: delta >= 0 ? "50%" : "-50%", opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-        >
-          <HeaderForEachStep currentStep={currentStep} />
-          <EventFormStepOne
-            control={control}
-            isSubmitting={isSubmitting}
-            errors={errors}
-            setValue={setValue}
-          />
-        </motion.div>
-      )}
-
-      {currentStep === 1 && (
-        <motion.div
-          initial={{ x: delta >= 0 ? "50%" : "-50%", opacity: 0 }}
-          animate={{ x: 0, opacity: 1 }}
-          transition={{ duration: 0.3, ease: "easeInOut" }}
-        >
-          <HeaderForEachStep currentStep={currentStep} />
-          <EventFormStepTwo
-            control={control}
-            isHostedExternally={getValues("isHostedExternally")}
-            errors={errors}
-            isSubmitting={isSubmitting}
-            setValue={setValue}
-          />
-        </motion.div>
-      )}
-
-      {currentStep === 2 && <EventFormStepThree />}
-
-      <EventFormStepButtons next={next} prev={prev} />
+      <div className={"grid grid-cols-2 gap-5"}>
+        <TitleInput
+          control={control}
+          isSubmitting={isSubmitting}
+          errors={errors}
+        />
+        <LocationInput control={control} setValue={setValue} errors={errors} />
+        <StartDatePickerInput
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+        <EndDatePickerInput
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+        <IsHostedExternallyCheckbox
+          control={control}
+          isSubmitting={isSubmitting}
+        />
+      </div>
     </form>
   );
 };

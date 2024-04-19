@@ -1,14 +1,14 @@
 import React, { FC } from "react";
+import { Controller } from "react-hook-form";
 import DatePicker from "react-datepicker";
-import { Control, Controller } from "react-hook-form";
 
-interface StartDatePickerInputProps {
-  control: Control;
+interface EndDatePickerInputProps {
+  control: any;
   errors: any;
   isSubmitting: boolean;
 }
 
-const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
+const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
   control,
   errors,
   isSubmitting,
@@ -16,24 +16,24 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
   return (
     <Controller
       control={control}
-      name={"startDateTime"}
+      name={"endDateTime"}
       render={({ field }) => (
         <div className={"w-full flex flex-col"}>
           <DatePicker
             disabled={isSubmitting}
             dateFormat="MM/dd/yyyy h:mm aa"
             enableTabLoop={false}
-            onChange={field.onChange}
-            placeholderText={"Start Date/Time"}
+            onChange={(date: Date) => field.onChange(date)}
+            placeholderText={"End Date/Time"}
             selected={field.value}
             showTimeSelect
-            timeInputLabel={"Start Date/Time:"}
+            timeInputLabel={"End Date/Time:"}
             wrapperClassName="datePicker"
           />
-          {errors.startDateTime?.message && (
+          {errors.endDateTime?.message && (
             <div className="p-1 flex relative flex-col gap-1.5">
               <div className="text-tiny text-danger">
-                {errors.startDateTime.message}
+                {errors.endDateTime.message}
               </div>
             </div>
           )}
@@ -43,4 +43,4 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
   );
 };
 
-export default StartDatePickerInput;
+export default EndDatePickerInput;

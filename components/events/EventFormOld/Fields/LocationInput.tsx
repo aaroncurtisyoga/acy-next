@@ -11,7 +11,13 @@ interface LocationInputProps {
     value: any,
     options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>,
   ) => void;
-  errors: any;
+  errors: {
+    location?: {
+      formattedAddress?: {
+        message: string;
+      };
+    };
+  };
 }
 
 const LocationInput: FC<LocationInputProps> = ({

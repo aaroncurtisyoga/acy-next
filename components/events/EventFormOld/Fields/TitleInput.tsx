@@ -1,12 +1,15 @@
 import React, { FC } from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Control, Controller } from "react-hook-form";
 import { Input } from "@nextui-org/react";
-import { Inputs } from "@/components/events/EventForm";
 
 interface TitleInputProps {
   control: Control;
   isSubmitting: boolean;
-  errors: FieldErrors<Inputs>;
+  errors: {
+    title?: {
+      message: string;
+    };
+  };
 }
 
 const TitleInput: FC<TitleInputProps> = ({ control, isSubmitting, errors }) => {

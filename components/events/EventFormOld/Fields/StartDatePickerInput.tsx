@@ -4,7 +4,11 @@ import { Control, Controller } from "react-hook-form";
 
 interface StartDatePickerInputProps {
   control: Control;
-  errors: any;
+  errors: {
+    startDateTime: {
+      message?: string;
+    };
+  };
   isSubmitting: boolean;
 }
 

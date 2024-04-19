@@ -22,6 +22,23 @@ const commonFields = () => ({
   title: z.string().min(3, "Must be at least 3 characters"),
 });
 
+export const EventFormStepOneSchema = z.object({
+  endDateTime: z.date(),
+  externalRegistrationUrl: z.string().url(),
+  isHostedExternally: z.literal(true),
+  location: z.object({
+    formattedAddress: z.string().min(3, "Address is required"),
+    geometry: z.object({
+      lat: z.number(),
+      lng: z.number(),
+    }),
+    name: z.string(),
+    placeId: z.string(),
+  }),
+  startDateTime: z.date(),
+  title: z.string().min(3, "Must be at least 3 characters"),
+});
+
 export const EventFormSchemaForExternalRegistration = z.object({
   ...commonFields(),
   externalRegistrationUrl: z.string().url(),
