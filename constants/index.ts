@@ -17,6 +17,30 @@ export const locations = {
   CROSSFIT_DC: "CrossFit DC",
 };
 
+export const eventFormStepOneDefaultValues = {
+  endDateTime: new Date(),
+  isHostedExternally: false,
+  location: {
+    formattedAddress: "",
+    geometry: {
+      lat: 0,
+      lng: 0,
+    },
+    name: "",
+    placeId: "",
+  },
+  startDateTime: new Date(),
+  title: "",
+};
+
+export const eventFormStepTwoDefaultValues = {
+  categoryId: "",
+  description: "",
+  imageUrl: "",
+  price: "",
+  externalRegistrationUrl: "",
+};
+
 export const eventDefaultValues = {
   categoryId: "",
   description: "",
