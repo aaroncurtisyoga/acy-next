@@ -10,10 +10,12 @@ import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDate
 import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
 import { EventFormStepOneSchema } from "@/lib/schema";
 import { eventFormStepOneDefaultValues } from "@/constants";
-
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { setFormData } from "@/lib/redux/eventForm/eventFormSlice";
 export type Inputs = z.infer<typeof EventFormStepOneSchema>;
 
 const EventFormStepOne = ({ event, type }) => {
+  const dispatch = useAppDispatch();
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -31,7 +33,12 @@ const EventFormStepOne = ({ event, type }) => {
     resolver: zodResolver(EventFormStepOneSchema),
     defaultValues: eventInitialValues,
   });
-  const onSubmit = async () => {};
+  const onSubmit = async (data) => {
+    console.log(data);
+    dispatch(setFormData(data));
+    //   todo: push to the next step
+    //   router.push("/events/create/details");
+  };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
@@ -56,6 +63,7 @@ const EventFormStepOne = ({ event, type }) => {
           control={control}
           isSubmitting={isSubmitting}
         />
+        <button type={"submit"}>submit</button>
       </div>
     </form>
   );

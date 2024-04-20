@@ -86,26 +86,16 @@ export const travelOptions: TravelOption[] = [
 export const getEventFormSteps = (isHostedExternally = false) => {
   return [
     {
-      id: "Step 1",
-      fields: [
-        "endDateTime",
-        "isHostedExternally",
-        "location",
-        "startDateTime",
-        "title",
-      ],
+      number: 1,
       name: "Event Overview",
     },
     {
-      id: "Step 2",
-      fields: isHostedExternally
-        ? ["externalRegistrationUrl"]
-        : ["categoryId", "description", "imageUrl", "price"],
+      number: 2,
       name: "Event Details",
     },
     {
-      id: "Step 3",
-      name: "Form Complete",
+      number: 3,
+      name: "Submit Form",
     },
   ];
 };

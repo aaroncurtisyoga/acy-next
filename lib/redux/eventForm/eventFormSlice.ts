@@ -6,8 +6,14 @@ export interface EventFormSliceState {}
 
 const initialState: EventFormSliceState = {};
 
-export const eventFormStepOneSlice = createAppSlice({
+export const createEventFormSlice = createAppSlice({
   name: "EventFormSliceState",
   initialState,
-  reducers: {},
+  reducers: {
+    setFormData: (state, action) => {
+      return action.payload;
+    },
+  },
 });
+
+export const { setFormData } = createEventFormSlice.actions;
