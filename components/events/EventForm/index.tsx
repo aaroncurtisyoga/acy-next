@@ -1,6 +1,6 @@
 "use client";
 
-import { eventDefaultValues } from "@/constants";
+import { eventFormDefaultValues } from "@/constants";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
@@ -26,7 +26,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : eventDefaultValues;
+    : eventFormDefaultValues;
   const {
     control,
     handleSubmit,

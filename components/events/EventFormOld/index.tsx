@@ -14,7 +14,7 @@ import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepT
 import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
 
 import {} from "@/lib/schema";
-import { eventDefaultValues, getEventFormSteps } from "@/constants";
+import { eventFormDefaultValues, getEventFormSteps } from "@/constants";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { handleError } from "@/lib/utils";
@@ -40,7 +40,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : eventDefaultValues;
+    : eventFormDefaultValues;
   const {
     control,
     getValues,

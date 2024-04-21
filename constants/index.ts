@@ -41,27 +41,9 @@ export const eventFormStepTwoDefaultValues = {
   externalRegistrationUrl: "",
 };
 
-export const eventDefaultValues = {
-  categoryId: "",
-  description: "",
-  endDateTime: new Date(),
-  externalRegistrationUrl: "",
-  imageUrl: "",
-  isFree: false,
-  isHostedExternally: false,
-  location: {
-    formattedAddress: "",
-    geometry: {
-      lat: 0,
-      lng: 0,
-    },
-    name: "",
-    placeId: "",
-  },
-  maxAttendees: 0,
-  price: "",
-  startDateTime: new Date(),
-  title: "",
+export const eventFormDefaultValues = {
+  ...eventFormStepOneDefaultValues,
+  ...eventFormStepTwoDefaultValues,
 };
 
 export const travelOptions: TravelOption[] = [
