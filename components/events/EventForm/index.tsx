@@ -10,9 +10,9 @@ import LocationInput from "@/components/events/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDatePickerInput";
 import EndDatePickerInput from "@/components/events/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/components/events/EventForm/Fields/IsHostedExternallyCheckbox";
-import { EventFormStepOneSchema } from "@/lib/schema";
+import { EventFormBasicInfoSchema } from "@/lib/schema";
 
-export type Inputs = z.infer<typeof EventFormStepOneSchema>;
+export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 type FieldName = keyof Inputs;
 interface EventFormProps extends Inputs {
   type: "Create" | "Update";
@@ -33,7 +33,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
-    resolver: zodResolver(EventFormStepOneSchema),
+    resolver: zodResolver(EventFormBasicInfoSchema),
     defaultValues: eventInitialValues,
   });
 

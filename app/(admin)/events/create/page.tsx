@@ -2,7 +2,7 @@ import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
 import EventForm from "@/components/events/EventForm";
-import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
+import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 
 const CreateEvent = () => {
   // If the user does not have the admin role, redirect them to the home page
@@ -14,7 +14,7 @@ const CreateEvent = () => {
     <section className={"wrapper"}>
       <h1>Create Event</h1>
       <div className={"my-8"}>
-        <EventFormStepOne type={"Create"} />
+        <BasicInfo type={"Create"} />
       </div>
     </section>
   );

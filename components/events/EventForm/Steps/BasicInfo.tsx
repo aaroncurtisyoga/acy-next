@@ -1,6 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { FC } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -9,13 +10,18 @@ import IsHostedExternallyCheckbox from "@/components/events/EventForm/Fields/IsH
 import LocationInput from "@/components/events/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
-import { EventFormStepOneSchema } from "@/lib/schema";
+import { EventFormBasicInfoSchema } from "@/lib/schema";
 import { eventFormStepOneDefaultValues } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { setFormData } from "@/lib/redux/eventForm/eventFormSlice";
-export type Inputs = z.infer<typeof EventFormStepOneSchema>;
+import { IEvent } from "@/lib/mongodb/database/models/event.model";
+export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
-const EventFormStepOne = ({ event, type }) => {
+interface EventFormStepOneProps {
+  event?: IEvent;
+  type: "Create" | "Update";
+}
+const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isUpdateAndEventExists = type === "Update" && event;
@@ -32,7 +38,7 @@ const EventFormStepOne = ({ event, type }) => {
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
-    resolver: zodResolver(EventFormStepOneSchema),
+    resolver: zodResolver(EventFormBasicInfoSchema),
     defaultValues: eventInitialValues,
   });
   const onSubmit = async (data) => {
@@ -76,4 +82,4 @@ const EventFormStepOne = ({ event, type }) => {
   );
 };
 
-export default EventFormStepOne;
+export default BasicInfo;

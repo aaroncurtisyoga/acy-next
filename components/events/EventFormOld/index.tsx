@@ -8,9 +8,9 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 
 import EventFormStepButtons from "@/components/events/EventForm/Steps/Shared/EventFormStepButtons";
-import EventFormStepOne from "@/components/events/EventForm/Steps/EventFormStepOne";
+import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
-import EventFormStepTwo from "@/components/events/EventForm/Steps/EventFormStepTwo";
+import EventFormStepTwo from "@/components/events/EventForm/Steps/Details";
 import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
 
 import {} from "@/lib/schema";
@@ -145,7 +145,7 @@ const EventForm = ({ event, type }: EventFormProps) => {
           transition={{ duration: 0.3, ease: "easeInOut" }}
         >
           <HeaderForEachStep currentStep={currentStep} />
-          <EventFormStepOne
+          <BasicInfo
             control={control}
             isSubmitting={isSubmitting}
             errors={errors}
