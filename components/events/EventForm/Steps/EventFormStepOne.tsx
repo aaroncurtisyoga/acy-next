@@ -1,5 +1,6 @@
 "use client";
 
+import { useRouter } from "next/navigation";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -15,6 +16,7 @@ import { setFormData } from "@/lib/redux/eventForm/eventFormSlice";
 export type Inputs = z.infer<typeof EventFormStepOneSchema>;
 
 const EventFormStepOne = ({ event, type }) => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
@@ -34,10 +36,15 @@ const EventFormStepOne = ({ event, type }) => {
     defaultValues: eventInitialValues,
   });
   const onSubmit = async (data) => {
-    console.log(data);
-    dispatch(setFormData(data));
-    //   todo: push to the next step
-    //   router.push("/events/create/details");
+    // Convert Date objects to ISO strings
+    const payload = {
+      ...data,
+      startDateTime: data.startDateTime.toISOString(),
+      endDateTime: data.endDateTime.toISOString(),
+    };
+
+    dispatch(setFormData(payload));
+    router.push("/events/create/details");
   };
 
   return (

@@ -10,7 +10,6 @@ const initialState: EventFormSliceState = {
   formValues: eventFormDefaultValues,
 };
 
-// todo: idk if this is right way to put form data in here... double check
 export const createEventFormSlice = createAppSlice({
   name: "EventFormSliceState",
   initialState,
