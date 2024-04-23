@@ -1,6 +1,5 @@
 import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs";
 import Details from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 const CreateEvent = () => {
@@ -8,11 +7,11 @@ const CreateEvent = () => {
   if (!checkRole("admin")) {
     redirect("/");
   }
-  const { sessionClaims } = auth();
   return (
     <section className={"wrapper"}>
       <h1>Create Event</h1>
       <div className={"my-8"}>
+        {/* Every event has basic info */}
         <Details type={"Create"} />
       </div>
     </section>
