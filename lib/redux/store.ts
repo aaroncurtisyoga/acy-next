@@ -1,6 +1,6 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { createEventFormSlice } from "@/lib/redux/eventForm/eventFormSlice";
+import { createEventFormSlice } from "@/lib/redux/features/eventFormSlice";
 
 const rootReducer = combineSlices(createEventFormSlice);
 export type RootState = ReturnType<typeof rootReducer>;
