@@ -7,6 +7,7 @@ export const newsletterFormSchema = z.object({
 });
 
 export const EventFormBasicInfoSchema = z.object({
+  categoryId: z.string().min(3, "ManageEventCategories is required"),
   endDateTime: z.date(),
   isHostedExternally: z.boolean(),
   location: z.object({
@@ -23,12 +24,7 @@ export const EventFormBasicInfoSchema = z.object({
 });
 
 export const EventFormDetailsSchema = z.object({
-  // todo: add registration url for external stuff... and honestly could
-  //  probably do that conditional that i had before where it's either
-  //  internal or external... yet a bit more simple b/c basic info is
-  //  absctracted out to its own thing now
   categoryId: z.string().min(3, "ManageEventCategories is required"),
-  maxAttendees: z.number().min(1, "Max attendees is required"),
   price: z.string().min(1, "Price is required"),
   imageUrl: z.string().min(3, "ImageUrl is required"),
   description: z
@@ -37,6 +33,17 @@ export const EventFormDetailsSchema = z.object({
     .max(2000, "Should not be more than 2000 characters")
     .trim(),
   isFree: z.boolean(),
+});
+
+export const EventFormDetailsForExternallyHostedEventSchema = z.object({
+  externalRegistrationUrl: z.string().url(),
+});
+
+export const EventFormDetailsForInternallyHostedEventSchema = z.object({
+  description: z.string().min(3, "Description is required"),
+  imageUrl: z.string().min(3, "ImageUrl is required"),
+  price: z.string().min(1, "Price is required"),
+  maxAttendees: z.number().min(1, "Max attendees is required"),
 });
 
 export const SearchUsersFormSchema = z.object({

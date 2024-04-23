@@ -17,7 +17,8 @@ export const locations = {
   CROSSFIT_DC: "CrossFit DC",
 };
 
-export const eventFormStepOneDefaultValues = {
+export const eventFormBasicInfoDefaultValues = {
+  categoryId: "",
   endDateTime: new Date(),
   isHostedExternally: false,
   location: {
@@ -33,17 +34,20 @@ export const eventFormStepOneDefaultValues = {
   title: "",
 };
 
-export const eventFormStepTwoDefaultValues = {
-  categoryId: "",
+export const eventFormDetailsForInternallyHostedEventDefaultValues = {
   description: "",
   imageUrl: "",
   price: "",
+  maxAttendees: 0,
+};
+export const eventFormDetailsForExternallyHostedEventDefaultValues = {
   externalRegistrationUrl: "",
 };
 
 export const eventFormDefaultValues = {
-  ...eventFormStepOneDefaultValues,
-  ...eventFormStepTwoDefaultValues,
+  ...eventFormBasicInfoDefaultValues,
+  ...eventFormDetailsForInternallyHostedEventDefaultValues,
+  ...eventFormDetailsForExternallyHostedEventDefaultValues,
 };
 
 export const travelOptions: TravelOption[] = [

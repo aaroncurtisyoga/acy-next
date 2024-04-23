@@ -1,10 +1,17 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { ICategory } from "@/lib/mongodb/database/models/category.model";
 import { getAllCategories } from "@/lib/actions/category.actions";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-const Category = ({ control, errors, isSubmitting }) => {
+interface CategoryProps {
+  control: Control;
+  isSubmitting: boolean;
+  errors: FieldErrors<Inputs>;
+}
+
+const Category: FC<CategoryProps> = ({ control, errors, isSubmitting }) => {
   const [categories, setCategories] = useState<ICategory[]>([]);
   const getCategories = async () => {
     const categoryList = await getAllCategories();

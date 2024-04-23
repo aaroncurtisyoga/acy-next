@@ -5,16 +5,18 @@ import { FC } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import Category from "@/components/events/EventForm/Fields/Category";
 import EndDatePickerInput from "@/components/events/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/components/events/EventForm/Fields/IsHostedExternallyCheckbox";
 import LocationInput from "@/components/events/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
 import { EventFormBasicInfoSchema } from "@/lib/schema";
-import { eventFormStepOneDefaultValues } from "@/constants";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { eventFormBasicInfoDefaultValues } from "@/constants";
+import { useAppDispatch } from "@/lib/redux/hooks";
 import { setFormData } from "@/lib/redux/eventForm/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
+
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
 interface EventFormStepOneProps {
@@ -31,7 +33,7 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : eventFormStepOneDefaultValues;
+    : eventFormBasicInfoDefaultValues;
   const {
     control,
     handleSubmit,
@@ -68,6 +70,11 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
           isSubmitting={isSubmitting}
         />
         <EndDatePickerInput
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+        <Category
           control={control}
           errors={errors}
           isSubmitting={isSubmitting}

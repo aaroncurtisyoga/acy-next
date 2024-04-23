@@ -10,7 +10,7 @@ import * as z from "zod";
 import EventFormStepButtons from "@/components/events/EventForm/Steps/Shared/EventFormStepButtons";
 import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 import EventFormStepThree from "@/components/events/EventForm/Steps/EventFormStepThree";
-import EventFormStepTwo from "@/components/events/EventForm/Steps/Details";
+import EventFormStepTwo from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 import HeaderForEachStep from "@/components/events/EventForm/Steps/Shared/HeaderForEachStep";
 
 import {} from "@/lib/schema";
