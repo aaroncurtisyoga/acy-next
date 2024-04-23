@@ -23,7 +23,10 @@ interface BasicInfoProps {
   event?: IEvent;
   type: "Create" | "Update";
 }
-const BasicInfo: FC<BasicInfoProps> = ({ event, type }) => {
+const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({
+  event,
+  type,
+}) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const isUpdateAndEventExists = type === "Update" && event;
@@ -72,4 +75,4 @@ const BasicInfo: FC<BasicInfoProps> = ({ event, type }) => {
   );
 };
 
-export default BasicInfo;
+export default DetailsForInternallyHostedEvent;
