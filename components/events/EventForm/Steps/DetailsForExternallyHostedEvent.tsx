@@ -45,7 +45,7 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
   });
   const onSubmit = async (data) => {
     dispatch(setFormData(data));
-    router.push("/events/create/details");
+    router.push("/events/create/submit");
   };
 
   return (
