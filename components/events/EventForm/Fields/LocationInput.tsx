@@ -1,8 +1,9 @@
 import React, { FC } from "react";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
 interface LocationInputProps {
   control: Control;
@@ -11,7 +12,7 @@ interface LocationInputProps {
     value: any,
     options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>,
   ) => void;
-  errors: any;
+  errors: FieldErrors<Inputs>;
 }
 
 const LocationInput: FC<LocationInputProps> = ({

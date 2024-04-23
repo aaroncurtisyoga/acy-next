@@ -1,13 +1,16 @@
-import React from "react";
-import { Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Checkbox } from "@nextui-org/react";
 
 interface IsHostedExternallyCheckboxProps {
-  control: any;
+  control: Control;
   isSubmitting: boolean;
 }
 
-const IsHostedExternallyCheckbox = ({ control, isSubmitting }) => {
+const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
+  control,
+  isSubmitting,
+}) => {
   return (
     <Controller
       control={control}

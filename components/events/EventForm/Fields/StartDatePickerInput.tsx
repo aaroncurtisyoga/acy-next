@@ -1,10 +1,11 @@
 import React, { FC } from "react";
 import DatePicker from "react-datepicker";
-import { Control, Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
 interface StartDatePickerInputProps {
   control: Control;
-  errors: any;
+  errors: FieldErrors<Inputs>;
   isSubmitting: boolean;
 }
 

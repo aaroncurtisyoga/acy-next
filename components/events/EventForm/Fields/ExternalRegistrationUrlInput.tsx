@@ -1,11 +1,12 @@
 import { FC } from "react";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Input } from "@nextui-org/react";
+import { Inputs } from "@/components/events/EventForm/Steps/DetailsForExternallyHostedEvent";
 
 interface ExternalRegistrationUrlInputProps {
-  control: any;
+  control: Control;
   isSubmitting: boolean;
-  errors: any;
+  errors: FieldErrors<Inputs>;
 }
 
 const ExternalRegistrationUrlInput: FC<ExternalRegistrationUrlInputProps> = ({

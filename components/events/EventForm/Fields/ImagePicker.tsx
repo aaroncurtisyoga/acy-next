@@ -13,9 +13,11 @@ import {
 } from "@nextui-org/react";
 import { getImages } from "@/lib/actions/blob.actions";
 import { cn } from "@/lib/utils";
+import { FieldErrors } from "react-hook-form";
+import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 interface ImagePickerProps {
-  errors: any;
+  errors: FieldErrors<Inputs>;
   setValue: any;
 }
 
