@@ -23,6 +23,11 @@ export const createEventFormSlice = createAppSlice({
       },
     ),
   }),
+  selectors: {
+    selectIsHostedExternally: (state) => state.formValues.isHostedExternally,
+  },
 });
 
 export const { setFormData } = createEventFormSlice.actions;
+
+export const { selectIsHostedExternally } = createEventFormSlice.selectors;

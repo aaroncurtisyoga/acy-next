@@ -8,7 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EventFormDetailsForExternallyHostedEventSchema } from "@/lib/schema";
 import { eventFormDetailsForExternallyHostedEventDefaultValues } from "@/constants";
 import { useAppDispatch } from "@/lib/redux/hooks";
-import { setFormData } from "@/lib/redux/eventForm/eventFormSlice";
+import { setFormData } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import ExternalRegistrationUrlInput from "@/components/events/EventForm/Fields/ExternalRegistrationUrlInput";
 
