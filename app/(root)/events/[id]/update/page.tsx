@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { redirect } from "next/navigation";
-import EventForm from "@/components/events/EventForm";
 import { checkRole } from "@/lib/utils";
+import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 import { getEventById } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
@@ -18,12 +18,13 @@ const UpdateEvent: FC<UpdateEventProps> = async ({ params: { id } }) => {
   }
 
   const event: IEvent = await getEventById(id);
+  // todo: store event in state
 
   return (
     <section className={"wrapper"}>
       <h1>Update Event</h1>
       <div>
-        <EventForm type={"Update"} event={event} />
+        <BasicInfo type={"Update"} event={event} />
       </div>
     </section>
   );

@@ -1,7 +1,6 @@
 import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
 import { auth } from "@clerk/nextjs";
-import EventForm from "@/components/events/EventForm";
 import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 
 const CreateEvent = () => {
