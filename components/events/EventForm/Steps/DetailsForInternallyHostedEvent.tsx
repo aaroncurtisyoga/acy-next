@@ -14,7 +14,6 @@ import ImagePicker from "@/components/events/EventForm/Fields/ImagePicker";
 import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/DescriptionRichTextEditor";
 
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
-import { eventFormDetailsForInternallyHostedEventDefaultValues } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   selectFormValues,
