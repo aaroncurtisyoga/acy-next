@@ -14,8 +14,11 @@ import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDate
 import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
 import { EventFormBasicInfoSchema } from "@/lib/schema";
 import { eventFormBasicInfoDefaultValues } from "@/constants";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { setFormData } from "@/lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  selectFormValues,
+  setFormData,
+} from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
@@ -27,6 +30,7 @@ interface EventFormStepOneProps {
 const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const formValuesFromRedux = useAppSelector(selectFormValues);
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -34,7 +38,7 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : eventFormBasicInfoDefaultValues;
+    : formValuesFromRedux;
   const {
     control,
     handleSubmit,
