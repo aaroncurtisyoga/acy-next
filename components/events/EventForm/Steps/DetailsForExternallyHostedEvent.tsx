@@ -6,9 +6,11 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { EventFormDetailsForExternallyHostedEventSchema } from "@/lib/schema";
-import { eventFormDetailsForExternallyHostedEventDefaultValues } from "@/constants";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { setFormData } from "@/lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  selectFormValues,
+  setFormData,
+} from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import ExternalRegistrationUrlInput from "@/components/events/EventForm/Fields/ExternalRegistrationUrlInput";
 import { Button, Link as NextUiLink } from "@nextui-org/react";
@@ -27,6 +29,7 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
 }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const formValuesFromRedux = useAppSelector(selectFormValues);
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -34,7 +37,7 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : eventFormDetailsForExternallyHostedEventDefaultValues;
+    : formValuesFromRedux;
   const {
     control,
     handleSubmit,

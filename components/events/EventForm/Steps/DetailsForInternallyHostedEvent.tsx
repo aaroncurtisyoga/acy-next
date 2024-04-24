@@ -15,8 +15,11 @@ import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/Desc
 
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
 import { eventFormDetailsForInternallyHostedEventDefaultValues } from "@/constants";
-import { useAppDispatch } from "@/lib/redux/hooks";
-import { setFormData } from "@/lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  selectFormValues,
+  setFormData,
+} from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
 export type Inputs = z.infer<
@@ -33,6 +36,7 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({
 }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const formValuesFromRedux = useAppSelector(selectFormValues);
   const isUpdateAndEventExists = type === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
@@ -40,7 +44,7 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : eventFormDetailsForInternallyHostedEventDefaultValues;
+    : formValuesFromRedux;
   const {
     control,
     handleSubmit,
