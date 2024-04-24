@@ -1,10 +1,12 @@
 import { redirect } from "next/navigation";
 import { FC } from "react";
 import * as z from "zod";
+import { Link as NextUiLink } from "@nextui-org/link";
+import { Button } from "@nextui-org/react";
+
 import { checkRole, handleError } from "@/lib/utils";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
-import { Button } from "@nextui-org/react";
 
 type Inputs = z.infer<typeof EventFormSchema>;
 type FieldName = keyof Inputs;
@@ -68,9 +70,19 @@ const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
     <section className={"wrapper"}>
       <h1>Review Event</h1>
       <form onSubmit={() => onSubmit}>
-        <Button type={"submit"}>
-          {type === "Create" ? "Create" : "Update"}
-        </Button>
+        <div className="flex justify-between mt-5">
+          <Button type={"button"}>
+            <NextUiLink
+              href={"/events/details"}
+              className={"text-default-foreground"}
+            >
+              Previous
+            </NextUiLink>
+          </Button>
+          <Button type={"submit"}>
+            {type === "Create" ? "Create" : "Update"}
+          </Button>
+        </div>
       </form>
     </section>
   );

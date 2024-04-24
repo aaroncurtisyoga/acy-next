@@ -51,7 +51,6 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
       startDateTime: data.startDateTime.toISOString(),
       endDateTime: data.endDateTime.toISOString(),
     };
-
     dispatch(setFormData(payload));
     router.push("/events/create/details");
   };

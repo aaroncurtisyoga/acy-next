@@ -11,7 +11,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setFormData } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import ExternalRegistrationUrlInput from "@/components/events/EventForm/Fields/ExternalRegistrationUrlInput";
-import { Button } from "@nextui-org/react";
+import { Button, Link as NextUiLink } from "@nextui-org/react";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForExternallyHostedEventSchema
@@ -58,9 +58,17 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
           isSubmitting={isSubmitting}
         />
       </div>
-      <Button type={"submit"} className={"mt-5"}>
-        Next
-      </Button>
+      <div className="flex justify-between mt-5">
+        <Button type={"button"}>
+          <NextUiLink
+            href={"/events/create"}
+            className={"text-default-foreground"}
+          >
+            Previous
+          </NextUiLink>
+        </Button>
+        <Button type={"submit"}>Next</Button>
+      </div>
     </form>
   );
 };

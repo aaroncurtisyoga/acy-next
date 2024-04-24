@@ -6,15 +6,18 @@ import { Button } from "@nextui-org/react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Link as NextUiLink } from "@nextui-org/link";
+
+import PriceInput from "@/components/events/EventForm/Fields/PriceInput";
+import MaxAttendees from "@/components/events/EventForm/Fields/MaxAttendees";
+import ImagePicker from "@/components/events/EventForm/Fields/ImagePicker";
+import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/DescriptionRichTextEditor";
+
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
 import { eventFormDetailsForInternallyHostedEventDefaultValues } from "@/constants";
 import { useAppDispatch } from "@/lib/redux/hooks";
 import { setFormData } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
-import PriceInput from "@/components/events/EventForm/Fields/PriceInput";
-import MaxAttendees from "@/components/events/EventForm/Fields/MaxAttendees";
-import ImagePicker from "@/components/events/EventForm/Fields/ImagePicker";
-import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/DescriptionRichTextEditor";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForInternallyHostedEventSchema
@@ -71,9 +74,17 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({
       <div className={"grid grid-cols-1 gap-5 mt-5"}>
         <DescriptionRichTextEditor control={control} errors={errors} />
       </div>
-      <Button type={"submit"} className={"mt-5"}>
-        Next
-      </Button>
+      <div className="flex justify-between mt-5">
+        <Button type={"button"}>
+          <NextUiLink
+            href={"/events/create"}
+            className={"text-default-foreground"}
+          >
+            Previous
+          </NextUiLink>
+        </Button>
+        <Button type={"submit"}>Next</Button>
+      </div>
     </form>
   );
 };
