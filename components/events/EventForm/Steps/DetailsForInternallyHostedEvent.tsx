@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { FC } from "react";
+import { Button } from "@nextui-org/react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -67,10 +68,12 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({
         />
         <ImagePicker errors={errors} setValue={setValue} />
       </div>
-      <div className={"grid grid-cols-1 gap-5 my-5"}>
+      <div className={"grid grid-cols-1 gap-5 mt-5"}>
         <DescriptionRichTextEditor control={control} errors={errors} />
       </div>
-      <button type={"submit"}>submit</button>
+      <Button type={"submit"} className={"mt-5"}>
+        Next
+      </Button>
     </form>
   );
 };

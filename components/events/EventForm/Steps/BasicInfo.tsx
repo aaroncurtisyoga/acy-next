@@ -5,6 +5,7 @@ import { FC } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button } from "@nextui-org/react";
 import Category from "@/components/events/EventForm/Fields/Category";
 import EndDatePickerInput from "@/components/events/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/components/events/EventForm/Fields/IsHostedExternallyCheckbox";
@@ -83,8 +84,10 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
           control={control}
           isSubmitting={isSubmitting}
         />
-        <button type={"submit"}>submit</button>
       </div>
+      <Button type={"submit"} className={"mt-5"}>
+        Next
+      </Button>
     </form>
   );
 };

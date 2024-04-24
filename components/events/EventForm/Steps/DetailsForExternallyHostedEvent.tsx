@@ -11,6 +11,7 @@ import { useAppDispatch } from "@/lib/redux/hooks";
 import { setFormData } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import ExternalRegistrationUrlInput from "@/components/events/EventForm/Fields/ExternalRegistrationUrlInput";
+import { Button } from "@nextui-org/react";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForExternallyHostedEventSchema
@@ -57,7 +58,9 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
           isSubmitting={isSubmitting}
         />
       </div>
-      <button type={"submit"}>submit</button>
+      <Button type={"submit"} className={"mt-5"}>
+        Next
+      </Button>
     </form>
   );
 };
