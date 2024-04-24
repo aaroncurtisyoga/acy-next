@@ -26,10 +26,9 @@ const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
       const newEvent = await createEvent({ event: values, path: "/events" });
 
       if (newEvent) {
-        reset();
-        values.isHostedExternally
-          ? router.push(`/`)
-          : router.push(`/events/${newEvent._id}`);
+        // todo: dispatch ac to  reset redux form state to default
+        // reset();
+        redirect(`/`);
       }
     } catch (error) {
       handleError(error);
@@ -44,11 +43,12 @@ const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
       });
 
       if (updatedEvent) {
-        reset();
-        router.push(`/events/${updatedEvent._id}`);
+        // todo: dispatch ac to  reset redux form state to default
+        // reset();
+        redirect(`/events/${updatedEvent._id}`);
       }
     } catch (error) {
-      console.log(error);
+      handleError(error);
     }
   }
 
@@ -61,7 +61,7 @@ const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
       if (event._id) {
         await updateExistingEvent(values);
       } else {
-        router.back();
+        redirect("/");
       }
     }
   };
