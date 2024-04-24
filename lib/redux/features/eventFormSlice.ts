@@ -22,6 +22,9 @@ export const createEventFormSlice = createAppSlice({
         state.formValues = { ...state.formValues, ...action.payload };
       },
     ),
+    resetFormData: create.reducer((state) => {
+      state.formValues = eventFormDefaultValues;
+    }),
   }),
   selectors: {
     selectIsHostedExternally: (state) => state.formValues.isHostedExternally,
@@ -29,7 +32,7 @@ export const createEventFormSlice = createAppSlice({
   },
 });
 
-export const { setFormData } = createEventFormSlice.actions;
+export const { setFormData, resetFormData } = createEventFormSlice.actions;
 
 export const { selectIsHostedExternally, selectFormValues } =
   createEventFormSlice.selectors;
