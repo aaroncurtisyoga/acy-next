@@ -1,14 +1,13 @@
-import { checkRole } from "@/lib/utils";
 import { redirect } from "next/navigation";
-import { auth } from "@clerk/nextjs";
+import { FC } from "react";
 import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
+import { checkRole } from "@/lib/utils";
 
-const CreateEvent = () => {
-  // If the user does not have the admin role, redirect them to the home page
+const CreateEvent: FC = () => {
   if (!checkRole("admin")) {
     redirect("/");
   }
-  const { sessionClaims } = auth();
+
   return (
     <section className={"wrapper"}>
       <h1>Create Event</h1>
