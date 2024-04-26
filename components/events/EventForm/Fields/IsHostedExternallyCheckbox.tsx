@@ -16,7 +16,13 @@ const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
       control={control}
       name={"isHostedExternally"}
       render={({ field }) => (
-        <Checkbox disabled={isSubmitting} {...field} size={"lg"}>
+        <Checkbox
+          disabled={isSubmitting}
+          size={"lg"}
+          onChange={field.onChange}
+          isSelected={field.value}
+          {...field}
+        >
           External Registration
         </Checkbox>
       )}
