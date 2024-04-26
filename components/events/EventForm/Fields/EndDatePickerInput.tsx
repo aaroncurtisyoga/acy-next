@@ -26,7 +26,7 @@ const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
             enableTabLoop={false}
             onChange={(date: Date) => field.onChange(date)}
             placeholderText={"End Date/Time"}
-            selected={field.value}
+            selected={new Date(field.value)}
             showTimeSelect
             timeInputLabel={"End Date/Time:"}
             wrapperClassName="datePicker"

@@ -26,7 +26,7 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
             enableTabLoop={false}
             onChange={field.onChange}
             placeholderText={"Start Date/Time"}
-            selected={field.value}
+            selected={new Date(field.value)}
             showTimeSelect
             timeInputLabel={"Start Date/Time:"}
             wrapperClassName="datePicker"
