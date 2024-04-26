@@ -106,3 +106,13 @@ export interface TravelOption {
   travelMode: TravelMode;
   icon: React.ElementType;
 }
+
+export type PlaceDetails = {
+  formattedAddress: string;
+  geometry: {
+    lat: number;
+    lng: number;
+  };
+  name: string;
+  placeId: string;
+};

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +20,7 @@ import {
 } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
+import { PlaceDetails } from "@/types";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
@@ -52,6 +53,23 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
     resolver: zodResolver(EventFormBasicInfoSchema),
     defaultValues: eventInitialValues,
   });
+
+  const setLocationValueInReactHookForm = (placeDetails: PlaceDetails) => {
+    console.log("setLocationValueInReactHookForm", placeDetails);
+    setValue("location", {
+      formattedAddress: placeDetails.formattedAddress,
+      geometry: placeDetails.geometry,
+      name: placeDetails.name,
+      placeId: placeDetails.placeId,
+    });
+  };
+
+  useEffect(() => {
+    console.log("use effect called");
+    formValuesFromRedux.location?.formattedAddress &&
+      setLocationValueInReactHookForm(formValuesFromRedux.location);
+  }, [formValuesFromRedux.location, setLocationValueInReactHookForm, setValue]);
+
   const onSubmit = async (data) => {
     // Convert Date objects to ISO strings
     const payload = {
@@ -60,8 +78,6 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
       endDateTime: data.endDateTime.toISOString(),
     };
 
-    console.log("payload");
-    console.log(payload);
     dispatch(setFormData(payload));
     router.push("/events/create/details");
   };
@@ -74,7 +90,11 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
           isSubmitting={isSubmitting}
           errors={errors}
         />
-        <LocationInput control={control} setValue={setValue} errors={errors} />
+        <LocationInput
+          control={control}
+          setLocationValueInReactHookForm={setLocationValueInReactHookForm}
+          errors={errors}
+        />
         <StartDatePickerInput
           control={control}
           errors={errors}

@@ -7,35 +7,26 @@ import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
 interface LocationInputProps {
   control: Control;
-  setValue: (
-    name: string,
-    value: any,
-    options?: Partial<{ shouldDirty: boolean; shouldValidate: boolean }>,
-  ) => void;
+  // todo: fix this type
+  setLocationValueInReactHookForm: any;
   errors: FieldErrors<Inputs>;
 }
 
 const LocationInput: FC<LocationInputProps> = ({
   control,
-  setValue,
+  setLocationValueInReactHookForm,
   errors,
 }) => {
-  const [selectedKey, setSelectedKey] = React.useState(""); // Add this line
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: string) => {
     await placeDetails(placeId).then((place) => {
-      setLocationValueInReactHookForm(place);
-      setSelectedKey(place.formatted_address); // Update the selectedKey state here
-    });
-  };
-
-  const setLocationValueInReactHookForm = async (placeDetails) => {
-    setValue("location", {
-      formattedAddress: placeDetails.formatted_address,
-      geometry: placeDetails.geometry.location,
-      name: placeDetails.name,
-      placeId: placeDetails.place_id,
+      setLocationValueInReactHookForm({
+        formattedAddress: place.formatted_address,
+        geometry: place.geometry.location,
+        name: place.name,
+        placeId: place.place_id,
+      });
     });
   };
 
@@ -49,7 +40,6 @@ const LocationInput: FC<LocationInputProps> = ({
       name={"location"}
       render={({ field }) => (
         <Autocomplete
-          selectedKey={field.value.formattedAddress}
           errorMessage={errors.location?.formattedAddress?.message}
           label="Location"
           placeholder="Search for a location"
