@@ -13,13 +13,13 @@ import LocationInput from "@/components/events/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/components/events/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/components/events/EventForm/Fields/TitleInput";
 import { EventFormBasicInfoSchema } from "@/lib/schema";
-import { eventFormBasicInfoDefaultValues } from "@/constants";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   selectFormValues,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import "react-datepicker/dist/react-datepicker.css";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
