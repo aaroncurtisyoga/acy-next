@@ -38,7 +38,11 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
         startDateTime: new Date(event.startDateTime),
         endDateTime: new Date(event.endDateTime),
       }
-    : formValuesFromRedux;
+    : {
+        ...formValuesFromRedux,
+        startDateTime: new Date(formValuesFromRedux.startDateTime),
+        endDateTime: new Date(formValuesFromRedux.endDateTime),
+      };
   const {
     control,
     handleSubmit,
@@ -55,6 +59,9 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
       startDateTime: data.startDateTime.toISOString(),
       endDateTime: data.endDateTime.toISOString(),
     };
+
+    console.log("payload");
+    console.log(payload);
     dispatch(setFormData(payload));
     router.push("/events/create/details");
   };
