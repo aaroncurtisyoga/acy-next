@@ -88,9 +88,11 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
           isSubmitting={isSubmitting}
         />
       </div>
-      <Button type={"submit"} className={"mt-5"}>
-        Next
-      </Button>
+      <div className="flex justify-end">
+        <Button type={"submit"} className={"mt-5"}>
+          Next
+        </Button>
+      </div>
     </form>
   );
 };
