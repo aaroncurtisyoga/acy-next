@@ -27,6 +27,7 @@ export const createEventFormSlice = createAppSlice({
     ),
     resetFormData: create.reducer((state) => {
       state.formValues = eventFormDefaultValues;
+      state.placeSuggestions = [];
     }),
     setPlaceSuggestions: create.reducer(
       (state, action: PayloadAction<PlaceDetails[]>) => {
