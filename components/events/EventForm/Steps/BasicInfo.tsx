@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -54,18 +54,19 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
     defaultValues: eventInitialValues,
   });
 
-  const setLocationValueInReactHookForm = (placeDetails: PlaceDetails) => {
-    console.log("setLocationValueInReactHookForm", placeDetails);
-    setValue("location", {
-      formattedAddress: placeDetails.formattedAddress,
-      geometry: placeDetails.geometry,
-      name: placeDetails.name,
-      placeId: placeDetails.placeId,
-    });
-  };
+  const setLocationValueInReactHookForm = useCallback(
+    (placeDetails: PlaceDetails) => {
+      setValue("location", {
+        formattedAddress: placeDetails.formattedAddress,
+        geometry: placeDetails.geometry,
+        name: placeDetails.name,
+        placeId: placeDetails.placeId,
+      });
+    },
+    [setValue],
+  );
 
   useEffect(() => {
-    console.log("use effect called");
     formValuesFromRedux.location?.formattedAddress &&
       setLocationValueInReactHookForm(formValuesFromRedux.location);
   }, [formValuesFromRedux.location, setLocationValueInReactHookForm, setValue]);

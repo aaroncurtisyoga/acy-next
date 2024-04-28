@@ -5,12 +5,10 @@ import { PlaceDetails } from "@/types";
 
 export interface EventFormSliceState {
   formValues: typeof eventFormDefaultValues;
-  placeSuggestions: PlaceDetails[];
 }
 
 const initialState: EventFormSliceState = {
   formValues: eventFormDefaultValues,
-  placeSuggestions: [],
 };
 
 export const createEventFormSlice = createAppSlice({
@@ -27,26 +25,15 @@ export const createEventFormSlice = createAppSlice({
     ),
     resetFormData: create.reducer((state) => {
       state.formValues = eventFormDefaultValues;
-      state.placeSuggestions = [];
     }),
-    setPlaceSuggestions: create.reducer(
-      (state, action: PayloadAction<PlaceDetails[]>) => {
-        state.placeSuggestions = action.payload;
-      },
-    ),
   }),
   selectors: {
     selectIsHostedExternally: (state) => state.formValues.isHostedExternally,
     selectFormValues: (state) => state.formValues,
-    selectPlaceSuggestions: (state) => state.placeSuggestions,
   },
 });
 
-export const { setFormData, resetFormData, setPlaceSuggestions } =
-  createEventFormSlice.actions;
+export const { setFormData, resetFormData } = createEventFormSlice.actions;
 
-export const {
-  selectIsHostedExternally,
-  selectFormValues,
-  selectPlaceSuggestions,
-} = createEventFormSlice.selectors;
+export const { selectIsHostedExternally, selectFormValues } =
+  createEventFormSlice.selectors;

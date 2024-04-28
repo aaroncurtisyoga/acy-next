@@ -3,26 +3,20 @@
 import { useEffect, useRef, useState } from "react";
 import _ from "lodash";
 import { autocompleteSuggestions } from "@/lib/actions/google.actions";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
-import {
-  setPlaceSuggestions,
-  selectPlaceSuggestions,
-} from "@/lib/redux/features/eventFormSlice";
 
 const useAutocompleteSuggestions = () => {
-  const dispatch = useAppDispatch();
-  const placeSuggestions = useAppSelector(selectPlaceSuggestions);
   const [searchValue, setSearchValue] = useState("");
+  const [suggestions, setSuggestions] = useState([]);
 
   const debouncedAutocomplete = useRef(
     _.debounce((value) => {
       if (!value.trim()) {
-        dispatch(setPlaceSuggestions([]));
+        setSuggestions([]);
         return;
       }
 
       autocompleteSuggestions(value).then((r) => {
-        dispatch(setPlaceSuggestions([]));
+        setSuggestions(r);
       });
     }, 2000),
   ).current;
@@ -37,7 +31,7 @@ const useAutocompleteSuggestions = () => {
     debouncedAutocomplete(searchValue);
   }, [searchValue, debouncedAutocomplete]);
 
-  return { setSearchValue, placeSuggestions };
+  return { setSearchValue, suggestions };
 };
 
 export default useAutocompleteSuggestions;
