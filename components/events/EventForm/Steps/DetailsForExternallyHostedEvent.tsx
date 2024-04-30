@@ -64,7 +64,7 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
       <div className="flex justify-between mt-5">
         <Button type={"button"}>
           <NextUiLink
-            href={"/events/create"}
+            href={"/events/create/submit"}
             className={"text-default-foreground"}
           >
             Previous

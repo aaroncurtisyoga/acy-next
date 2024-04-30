@@ -1,3 +1,5 @@
+"use client";
+
 import { redirect } from "next/navigation";
 import { FC } from "react";
 import * as z from "zod";
@@ -6,28 +8,29 @@ import { Button } from "@nextui-org/react";
 
 import { checkRole, handleError } from "@/lib/utils";
 import { createEvent, updateEvent } from "@/lib/actions/event.actions";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import {
+  selectFormValues,
+  resetFormData,
+} from "@/lib/redux/features/eventFormSlice";
 
-type Inputs = z.infer<typeof EventFormSchema>;
-type FieldName = keyof Inputs;
-
-interface CreateEventProps {
-  event?: IEvent;
+interface SubmitEventProps {
   type: "Create" | "Update";
 }
 
-const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
-  if (!checkRole("admin")) {
-    redirect("/");
-  }
+const SubmitEvent: FC<SubmitEventProps> = ({ type }) => {
+  const dispatch = useAppDispatch();
+  const valuesFromRedux = useAppSelector(selectFormValues);
 
-  async function createNewEvent(values: z.infer<typeof EventFormSchema>) {
+  async function createNewEvent() {
     try {
-      const newEvent = await createEvent({ event: values, path: "/events" });
+      const newEvent = await createEvent({
+        event: valuesFromRedux,
+        path: "/events",
+      });
 
       if (newEvent) {
-        // todo: dispatch ac to  reset redux form state to default
-        // reset();
+        dispatch(resetFormData());
         redirect(`/`);
       }
     } catch (error) {
@@ -35,35 +38,35 @@ const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
     }
   }
 
-  async function updateExistingEvent(values: z.infer<typeof EventFormSchema>) {
+  /*  async function updateExistingEvent() {
     try {
       const updatedEvent = await updateEvent({
-        event: { ...values, _id: event._id },
-        path: `/events/${event._id}`,
+        // todo: check and see if ID is being saved the right way
+        event: { ...valuesFromRedux, _id: valuesFromRedux.id },
+        path: `/events/${valuesFromRedux.id}`,
       });
 
       if (updatedEvent) {
-        // todo: dispatch ac to  reset redux form state to default
-        // reset();
+        dispatch(resetFormData());
         redirect(`/events/${updatedEvent._id}`);
       }
     } catch (error) {
       handleError(error);
     }
-  }
+  }*/
 
-  const onSubmit = async (values: z.infer<typeof EventFormSchema>) => {
+  const onSubmit = async () => {
     if (type === "Create") {
-      await createNewEvent(values);
+      await createNewEvent();
     }
 
-    if (type === "Update") {
+    /*    if (type === "Update") {
       if (event._id) {
         await updateExistingEvent(values);
       } else {
         redirect("/");
       }
-    }
+    }*/
   };
 
   return (
@@ -88,4 +91,4 @@ const CreateEvent: FC<CreateEventProps> = ({ event, type }) => {
   );
 };
 
-export default CreateEvent;
+export default SubmitEvent;
