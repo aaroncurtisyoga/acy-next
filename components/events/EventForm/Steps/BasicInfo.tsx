@@ -16,6 +16,7 @@ import { EventFormBasicInfoSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   selectFormValues,
+  selectEventType,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
@@ -26,13 +27,14 @@ export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
 interface EventFormStepOneProps {
   event?: IEvent;
-  type: "Create" | "Update";
 }
-const BasicInfo: FC<EventFormStepOneProps> = ({ event, type }) => {
+
+const BasicInfo: FC<EventFormStepOneProps> = ({ event }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const eventType = useAppSelector(selectEventType);
   const formValuesFromRedux = useAppSelector(selectFormValues);
-  const isUpdateAndEventExists = type === "Update" && event;
+  const isUpdateAndEventExists = eventType === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
         ...event,
