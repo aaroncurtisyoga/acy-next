@@ -2,24 +2,21 @@
 
 import { redirect } from "next/navigation";
 import { FC } from "react";
-import * as z from "zod";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
 
-import { checkRole, handleError } from "@/lib/utils";
-import { createEvent, updateEvent } from "@/lib/actions/event.actions";
+import { handleError } from "@/lib/utils";
+import { createEvent } from "@/lib/actions/event.actions";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
   selectFormValues,
   resetFormData,
+  selectEventType,
 } from "@/lib/redux/features/eventFormSlice";
 
-interface SubmitEventProps {
-  type: "Create" | "Update";
-}
-
-const SubmitEvent: FC<SubmitEventProps> = ({ type }) => {
+const SubmitEvent: FC = () => {
   const dispatch = useAppDispatch();
+  const eventType = useAppSelector(selectEventType);
   const valuesFromRedux = useAppSelector(selectFormValues);
 
   async function createNewEvent() {
@@ -55,12 +52,12 @@ const SubmitEvent: FC<SubmitEventProps> = ({ type }) => {
     }
   }*/
 
-  const onSubmit = async () => {
-    if (type === "Create") {
+  const onSubmit = async (eventType) => {
+    if (eventType === "Create") {
       await createNewEvent();
     }
 
-    /*    if (type === "Update") {
+    /*    if (eventType === "Update") {
       if (event._id) {
         await updateExistingEvent(values);
       } else {
@@ -72,7 +69,7 @@ const SubmitEvent: FC<SubmitEventProps> = ({ type }) => {
   return (
     <section className={"wrapper"}>
       <h1>Review Event</h1>
-      <form onSubmit={() => onSubmit}>
+      <form onSubmit={() => onSubmit(eventType)}>
         <div className="flex justify-between mt-5">
           <Button type={"button"}>
             <NextUiLink
@@ -83,7 +80,7 @@ const SubmitEvent: FC<SubmitEventProps> = ({ type }) => {
             </NextUiLink>
           </Button>
           <Button type={"submit"}>
-            {type === "Create" ? "Create" : "Update"}
+            {eventType === "Create" ? "Create" : "Update"}
           </Button>
         </div>
       </form>
