@@ -42,5 +42,5 @@ export const createEventFormSlice = createAppSlice({
 
 export const { setFormData, resetFormData } = createEventFormSlice.actions;
 
-export const { selectIsHostedExternally, selectFormValues } =
+export const { selectIsHostedExternally, selectFormValues, selectEventType } =
   createEventFormSlice.selectors;
