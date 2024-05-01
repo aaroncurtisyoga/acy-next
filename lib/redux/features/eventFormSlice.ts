@@ -26,6 +26,7 @@ export const createEventFormSlice = createAppSlice({
     ),
     resetFormData: create.reducer((state) => {
       state.formValues = eventFormDefaultValues;
+      state.eventType = "Create";
     }),
     setEventType: create.reducer(
       (state, action: PayloadAction<"Create" | "Update">) => {
