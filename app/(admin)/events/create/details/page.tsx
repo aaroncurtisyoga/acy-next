@@ -30,9 +30,9 @@ const CreateEvent = () => {
       <h1>Create Event</h1>
       <div className={"my-8"}>
         {isHostedExternally ? (
-          <DetailsForExternallyHostedEvent type={"Create"} />
+          <DetailsForExternallyHostedEvent />
         ) : (
-          <DetailsForInternallyHostedEvent type={"Create"} />
+          <DetailsForInternallyHostedEvent />
         )}
       </div>
     </section>

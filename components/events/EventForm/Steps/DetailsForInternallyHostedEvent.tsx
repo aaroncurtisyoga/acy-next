@@ -16,6 +16,7 @@ import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/Desc
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
+  selectEventType,
   selectFormValues,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
@@ -27,16 +28,13 @@ export type Inputs = z.infer<
 
 interface BasicInfoProps {
   event?: IEvent;
-  type: "Create" | "Update";
 }
-const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({
-  event,
-  type,
-}) => {
+const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const eventType = useAppSelector(selectEventType);
   const formValuesFromRedux = useAppSelector(selectFormValues);
-  const isUpdateAndEventExists = type === "Update" && event;
+  const isUpdateAndEventExists = eventType === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
         ...event,

@@ -8,6 +8,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { EventFormDetailsForExternallyHostedEventSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
+  selectEventType,
   selectFormValues,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
@@ -21,16 +22,13 @@ export type Inputs = z.infer<
 
 interface BasicInfoProps {
   event?: IEvent;
-  type: "Create" | "Update";
 }
-const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({
-  event,
-  type,
-}) => {
+const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  const eventType = useAppSelector(selectEventType);
   const formValuesFromRedux = useAppSelector(selectFormValues);
-  const isUpdateAndEventExists = type === "Update" && event;
+  const isUpdateAndEventExists = eventType === "Update" && event;
   const eventInitialValues = isUpdateAndEventExists
     ? {
         ...event,

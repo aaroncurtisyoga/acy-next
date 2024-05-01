@@ -12,7 +12,7 @@ const CreateEvent: FC = () => {
     <section className={"wrapper"}>
       <h1>Create Event</h1>
       <div className={"my-8"}>
-        <BasicInfo type={"Create"} />
+        <BasicInfo />
       </div>
     </section>
   );
