@@ -1,14 +1,15 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/lib/redux/createAppSlice";
 import { eventFormDefaultValues } from "@/constants";
-import { PlaceDetails } from "@/types";
 
 export interface EventFormSliceState {
   formValues: typeof eventFormDefaultValues;
+  eventType: "Create" | "Update";
 }
 
 const initialState: EventFormSliceState = {
   formValues: eventFormDefaultValues,
+  eventType: "Create",
 };
 
 export const createEventFormSlice = createAppSlice({
@@ -26,10 +27,16 @@ export const createEventFormSlice = createAppSlice({
     resetFormData: create.reducer((state) => {
       state.formValues = eventFormDefaultValues;
     }),
+    setEventType: create.reducer(
+      (state, action: PayloadAction<"Create" | "Update">) => {
+        state.eventType = action.payload;
+      },
+    ),
   }),
   selectors: {
     selectIsHostedExternally: (state) => state.formValues.isHostedExternally,
     selectFormValues: (state) => state.formValues,
+    selectEventType: (state) => state.eventType,
   },
 });
 
