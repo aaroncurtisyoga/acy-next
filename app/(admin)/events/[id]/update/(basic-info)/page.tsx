@@ -30,7 +30,7 @@ const UpdateEvent: FC = () => {
     } else {
       fetchEvent();
     }
-  }, [id, router]);
+  }, [dispatch, id, router]);
 
   return (
     <section className={"wrapper"}>
