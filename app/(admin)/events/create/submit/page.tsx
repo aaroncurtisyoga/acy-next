@@ -1,6 +1,6 @@
 "use client";
 
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 import { FC } from "react";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
@@ -15,6 +15,7 @@ import {
 } from "@/lib/redux/features/eventFormSlice";
 
 const SubmitEvent: FC = () => {
+  const router = useRouter();
   const dispatch = useAppDispatch();
   const eventType = useAppSelector(selectEventType);
   const valuesFromRedux = useAppSelector(selectFormValues);
@@ -28,7 +29,7 @@ const SubmitEvent: FC = () => {
 
       if (newEvent) {
         dispatch(resetFormData());
-        redirect(`/`);
+        router.push(`/`);
       }
     } catch (error) {
       handleError(error);
