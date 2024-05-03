@@ -23,7 +23,7 @@ const CreateEvent = () => {
     } else {
       router.push("/sign-in");
     }
-  }, [isLoaded, isSignedIn, router]);
+  }, [isLoaded, isSignedIn, router, user?.publicMetadata.role]);
 
   return (
     <section className={"wrapper"}>

@@ -9,6 +9,7 @@ import { useAppSelector } from "@/lib/redux/hooks";
 import { selectIsHostedExternally } from "@/lib/redux/features/eventFormSlice";
 
 const CreateEvent = () => {
+  // todo: let's dry this up a bit?
   const router = useRouter();
   const { isSignedIn, isLoaded, user } = useUser();
   const isHostedExternally = useAppSelector(selectIsHostedExternally);
