@@ -1,24 +1,33 @@
-import React, { FC } from "react";
-import { redirect } from "next/navigation";
-import { checkRole } from "@/lib/utils";
+"use client";
+
+import { useRouter, useParams } from "next/navigation";
+import React, { FC, useEffect } from "react";
+import { checkRole, handleError } from "@/lib/utils";
 import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 import { getEventById } from "@/lib/actions/event.actions";
 import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
-type UpdateEventProps = {
-  params: {
-    id: string;
-  };
-};
+const UpdateEvent: FC = () => {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
 
-const UpdateEvent: FC<UpdateEventProps> = async ({ params: { id } }) => {
-  // If the user does not have the admin role, redirect them to the home page
-  if (!checkRole("admin")) {
-    redirect("/");
-  }
+  useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const event: IEvent = await getEventById(id);
+        // todo: store event in state
+      } catch (err) {
+        handleError(err);
+        router.push("/");
+      }
+    };
 
-  const event: IEvent = await getEventById(id);
-  // todo: store event in state
+    if (!checkRole("admin")) {
+      router.push("/");
+    } else {
+      fetchEvent();
+    }
+  }, [id, router]);
 
   return (
     <section className={"wrapper"}>
