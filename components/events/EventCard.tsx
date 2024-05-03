@@ -26,8 +26,6 @@ const EventCard: FC<CardProps> = ({ isAdmin, event }) => {
       }
     >
       <Link href={`/events/${_id}`} className={"flex-col hover:underline"}>
-        {/* todo: does there need to be a border radius added here to
-           soften those edges */}
         <Image
           src={imageUrl}
           alt={`People doing ${category.name}`}
