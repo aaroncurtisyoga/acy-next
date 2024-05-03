@@ -24,7 +24,7 @@ const UpdateEvent: FC<UpdateEventProps> = async ({ params: { id } }) => {
     <section className={"wrapper"}>
       <h1>Update Event</h1>
       <div>
-        <BasicInfo type={"Update"} event={event} />
+        <BasicInfo />
       </div>
     </section>
   );
