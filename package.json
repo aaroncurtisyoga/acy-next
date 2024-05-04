@@ -25,7 +25,6 @@
     "@vercel/analytics": "^1.1.1",
     "@vercel/blob": "^0.22.1",
     "@vercel/postgres": "^0.8.0",
-    "@vercel/speed-insights": "^1.0.3",
     "@vis.gl/react-google-maps": "^0.8.2",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
