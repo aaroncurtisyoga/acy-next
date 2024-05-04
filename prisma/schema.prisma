@@ -7,3 +7,61 @@ datasource db {
   url = env("POSTGRES_PRISMA_URL") // uses connection pooling
   directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
 }
+
+model Order {
+  id          String  @id @default(uuid())
+  createdAt   DateTime @default(now())
+  stripeId    String  @unique
+  totalAmount String?
+  eventId     String
+  event       Event   @relation(fields: [eventId], references: [id])
+  buyerId     String
+  buyer       User    @relation(fields: [buyerId], references: [id])
+}
+
+model Event {
+  id                     String    @id @default(uuid())
+  createdAt              DateTime  @default(now())
+  description            String?
+  endDateTime            DateTime  @default(now())
+  externalRegistrationUrl String?
+  imageUrl               String?
+  isFree                 Boolean   @default(false)
+  isHostedExternally     Boolean
+  maxAttendees           Int?
+  price                  String?
+  startDateTime          DateTime  @default(now())
+  title                  String
+  categoryId             String
+  category               Category  @relation(fields: [categoryId], references: [id])
+  locationId             String
+  location               Location  @relation(fields: [locationId], references: [id])
+  order                  Order[]
+}
+
+model User {
+  id        String @id @default(uuid())
+  clerkId   String @unique
+  email     String @unique
+  firstName String
+  lastName  String
+  photo     String
+  orders    Order[]
+}
+
+model Location {
+  id               String    @id @default(uuid())
+  formattedAddress String?
+  lat              Float?
+  lng              Float?
+  name             String?
+  placeId          String?
+  events           Event[]
+}
+
+model Category {
+  id   String @id @default(uuid())
+  name String @unique
+  events Event[]
+}
+
