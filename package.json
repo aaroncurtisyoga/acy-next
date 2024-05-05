@@ -15,6 +15,7 @@
     "@mailchimp/mailchimp_marketing": "^3.0.80",
     "@nextui-org/react": "^2.2.10",
     "@plaiceholder/next": "^3.0.0",
+    "@prisma/client": "^5.13.0",
     "@reduxjs/toolkit": "^2.2.3",
     "@stripe/stripe-js": "3.1.0",
     "@tiptap/extension-link": "^2.2.4",
