@@ -37,6 +37,7 @@ model Event {
   locationId             String
   location               Location  @relation(fields: [locationId], references: [id])
   order                  Order[]
+  attendees              EventUser[]
 }
 
 model User {
@@ -47,6 +48,17 @@ model User {
   lastName  String
   photo     String
   orders    Order[]
+  events    EventUser[]
+}
+
+model EventUser {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String // relation scalar field to User
+
+  event  Event  @relation(fields: [eventId], references: [id])
+  eventId String // relation scalar field to Event
+
+  @@id([userId, eventId])
 }
 
 model Location {
