@@ -61,11 +61,9 @@ export async function getAllEvents({
   category,
 }: GetAllEventsParams) {
   try {
-    const titleCondition = query
-      ? { title: { contains: query, mode: "insensitive" } }
-      : {};
+    const titleCondition = query ? { title: { contains: query } } : {};
     const categoryCondition = category
-      ? { category: { equals: category } }
+      ? { category: { name: { equals: category } } }
       : {};
     const dateCondition = { endDateTime: { gt: new Date() } };
 
@@ -76,15 +74,15 @@ export async function getAllEvents({
       orderBy: { startDateTime: "asc" },
       take: limit,
       skip: skipAmount,
-      include: { category: true }, // assuming 'category' relation exists in 'event'
+      include: {
+        category: true, // includes 'category' relation
+        attendees: {
+          include: {
+            user: true, // include User in each EventUser
+          },
+        },
+      },
     });
-
-    let eventsWithAttendees = [];
-    for (let event of events) {
-      let attendees = await getEventAttendees(event.id);
-      event.attendees = attendees;
-      eventsWithAttendees.push(event);
-    }
 
     const eventsCount = await prisma.event.count({
       where: { AND: [titleCondition, categoryCondition, dateCondition] },
@@ -93,7 +91,7 @@ export async function getAllEvents({
     const hasFiltersApplied: boolean = !!query || !!category;
 
     return {
-      data: eventsWithAttendees,
+      data: events,
       hasFiltersApplied,
       totalPages: Math.ceil(eventsCount / limit),
     };
