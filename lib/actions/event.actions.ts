@@ -1,27 +1,25 @@
 "use server";
 
+import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { connectToDatabase } from "@/lib/mongodb/database";
 import { handleError } from "@/lib/utils";
-
-import Category from "@/lib/mongodb/database/models/category.model";
-import Event, { IEvent } from "@/lib/mongodb/database/models/event.model";
-import Order, { IOrder } from "@/lib/mongodb/database/models/order.model";
 
 import {
   DeleteEventParams,
   GetAllEventsParams,
   GetRelatedEventsByCategoryParams,
 } from "@/types";
-import { IUser } from "@/lib/mongodb/database/models/user.model";
+
+const prisma = new PrismaClient();
 
 export async function createEvent({ event, path }) {
   try {
-    await connectToDatabase();
-    const newEvent = await Event.create({
-      ...event,
-      ...(event.price ? { isFree: parseInt(event.price) === 0 } : {}),
-      category: event.categoryId,
+    const newEvent = await prisma.event.create({
+      data: {
+        ...event,
+        ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
+        category: event.categoryId,
+      },
     });
     revalidatePath(path);
     return JSON.parse(JSON.stringify(newEvent));
@@ -32,9 +30,9 @@ export async function createEvent({ event, path }) {
 
 export async function deleteEvent({ eventId, path }: DeleteEventParams) {
   try {
-    await connectToDatabase();
-
-    const deletedEvent = await Event.findByIdAndDelete(eventId);
+    const deletedEvent = await prisma.event.delete({
+      where: { id: eventId },
+    });
     if (deletedEvent) revalidatePath(path);
   } catch (error) {
     handleError(error);
@@ -42,10 +40,18 @@ export async function deleteEvent({ eventId, path }: DeleteEventParams) {
 }
 
 async function getEventAttendees(eventId: any) {
-  debugger;
-  return await Order.find({ event: eventId })
-    .populate({ path: "buyer", select: ["firstName", "lastName", "photo"] })
-    .exec();
+  return prisma.order.findMany({
+    where: { event: eventId },
+    include: {
+      buyer: {
+        select: {
+          firstName: true,
+          lastName: true,
+          photo: true,
+        },
+      },
+    },
+  });
 }
 
 export async function getAllEvents({
@@ -54,47 +60,40 @@ export async function getAllEvents({
   page,
   category,
 }: GetAllEventsParams) {
-  debugger;
   try {
-    await connectToDatabase();
-
     const titleCondition = query
-      ? { title: { $regex: query, $options: "i" } }
+      ? { title: { contains: query, mode: "insensitive" } }
       : {};
     const categoryCondition = category
-      ? await getCategoryByName(category)
-      : null;
-    const dateCondition = { endDateTime: { $gt: new Date() } };
-
-    const conditions = {
-      $and: [
-        titleCondition,
-        categoryCondition ? { category: categoryCondition._id } : {},
-        dateCondition,
-      ],
-    };
+      ? { category: { equals: category } }
+      : {};
+    const dateCondition = { endDateTime: { gt: new Date() } };
 
     const skipAmount = (Number(page) - 1) * limit;
-    const eventsQuery = Event.find(conditions)
-      .sort({ startDateTime: "asc" })
-      .skip(skipAmount)
-      .limit(limit);
-    const events = await populateEvent(eventsQuery);
+
+    const events = await prisma.event.findMany({
+      where: { AND: [titleCondition, categoryCondition, dateCondition] },
+      orderBy: { startDateTime: "asc" },
+      take: limit,
+      skip: skipAmount,
+      include: { category: true }, // assuming 'category' relation exists in 'event'
+    });
+
     let eventsWithAttendees = [];
     for (let event of events) {
-      try {
-        let attendees = await getEventAttendees(event._id);
-        event = { ...event._doc, attendees };
-        eventsWithAttendees.push(event);
-      } catch (error) {
-        handleError(error);
-      }
+      let attendees = await getEventAttendees(event.id);
+      event.attendees = attendees;
+      eventsWithAttendees.push(event);
     }
-    const eventsCount = await Event.countDocuments(conditions);
+
+    const eventsCount = await prisma.event.count({
+      where: { AND: [titleCondition, categoryCondition, dateCondition] },
+    });
+
     const hasFiltersApplied: boolean = !!query || !!category;
 
     return {
-      data: JSON.parse(JSON.stringify(eventsWithAttendees)),
+      data: eventsWithAttendees,
       hasFiltersApplied,
       totalPages: Math.ceil(eventsCount / limit),
     };
@@ -104,7 +103,9 @@ export async function getAllEvents({
 }
 
 const getCategoryByName = async (name: string) => {
-  return Category.findOne({ name: { $regex: name, $options: "i" } });
+  return prisma.category.findUnique({
+    where: { name: { equals: name, mode: "insensitive" } },
+  });
 };
 
 export async function getEventsWithSameCategory({
@@ -114,23 +115,25 @@ export async function getEventsWithSameCategory({
   page = 1,
 }: GetRelatedEventsByCategoryParams) {
   try {
-    await connectToDatabase();
-
     const skipAmount = (Number(page) - 1) * limit;
-    const conditions = {
-      $and: [{ category: categoryId }, { _id: { $ne: eventId } }],
-    };
 
-    const eventsQuery = Event.find(conditions)
-      .sort({ createdAt: "desc" })
-      .skip(skipAmount)
-      .limit(limit);
+    const events = await prisma.event.findMany({
+      where: {
+        AND: [{ category: categoryId }, { id: { not: eventId } }],
+      },
+      orderBy: { createdAt: "desc" },
+      take: limit,
+      skip: skipAmount,
+    });
 
-    const events = await populateEvent(eventsQuery);
-    const eventsCount = await Event.countDocuments(conditions);
+    const eventsCount = await prisma.event.count({
+      where: {
+        AND: [{ category: categoryId }, { id: { not: eventId } }],
+      },
+    });
 
     return {
-      data: JSON.parse(JSON.stringify(events)),
+      data: events,
       totalPages: Math.ceil(eventsCount / limit),
     };
   } catch (error) {
@@ -140,49 +143,51 @@ export async function getEventsWithSameCategory({
 
 export async function getEventById(eventId: string) {
   try {
-    await connectToDatabase();
+    const event = await prisma.event.findUnique({
+      where: { id: eventId },
+    });
 
-    const event: IEvent | null = await Event.findById(eventId).exec();
     if (!event) {
       throw new Error(`Event with id ${eventId} is not found.`);
     }
 
-    const eventOrders = (await Order.find({ event: eventId })
-      .populate("buyer")
-      .exec()) as unknown as IOrder[];
+    const eventOrders = await prisma.order.findMany({
+      where: { event: eventId },
+      include: { buyer: true },
+    });
 
-    event.attendees = eventOrders.map((order) => order.buyer as IUser);
-    return JSON.parse(JSON.stringify(event));
+    event.attendees = eventOrders.map((order) => order.buyer);
+
+    return event;
   } catch (error) {
     handleError(error);
   }
 }
 const populateEvent = (query: any) => {
-  return query.populate({
-    path: "category",
-    model: Category,
-    select: "_id name",
+  return query.select({
+    category: {
+      select: {
+        id: true,
+        name: true,
+      },
+    },
   });
 };
 
 export async function updateEvent({ event, path }) {
   try {
-    await connectToDatabase();
-
-    const eventToUpdate = await Event.findById(event._id);
-
-    const updatedEvent = await Event.findByIdAndUpdate(
-      event._id,
-      {
+    const updatedEvent = await prisma.event.update({
+      where: { id: event._id },
+      data: {
         ...event,
-        isFree: parseInt(event.price) === 0,
+        isFree: parseInt(event.price, 10) === 0,
         category: event.categoryId,
       },
-      { new: true },
-    );
+    });
+
     revalidatePath(path);
 
-    return JSON.parse(JSON.stringify(updatedEvent));
+    return updatedEvent;
   } catch (error) {
     handleError(error);
   }
