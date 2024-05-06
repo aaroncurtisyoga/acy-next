@@ -102,7 +102,7 @@ export async function getAllEvents({
 
 const getCategoryByName = async (name: string) => {
   return prisma.category.findUnique({
-    where: { name: { equals: name, mode: "insensitive" } },
+    where: { name: name },
   });
 };
 
