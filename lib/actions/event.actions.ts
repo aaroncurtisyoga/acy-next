@@ -117,7 +117,7 @@ export async function getEventsWithSameCategory({
 
     const events = await prisma.event.findMany({
       where: {
-        AND: [{ category: categoryId }, { id: { not: eventId } }],
+        AND: [{ category: { id: categoryId } }, { id: { not: eventId } }],
       },
       orderBy: { createdAt: "desc" },
       take: limit,
@@ -126,7 +126,7 @@ export async function getEventsWithSameCategory({
 
     const eventsCount = await prisma.event.count({
       where: {
-        AND: [{ category: categoryId }, { id: { not: eventId } }],
+        AND: [{ category: { id: categoryId } }, { id: { not: eventId } }],
       },
     });
 
@@ -143,18 +143,25 @@ export async function getEventById(eventId: string) {
   try {
     const event = await prisma.event.findUnique({
       where: { id: eventId },
+      include: {
+        attendees: {
+          include: {
+            user: true,
+          },
+        },
+      },
     });
 
-    if (!event) {
-      throw new Error(`Event with id ${eventId} is not found.`);
-    }
-
     const eventOrders = await prisma.order.findMany({
-      where: { event: eventId },
+      where: { event: { id: eventId } },
       include: { buyer: true },
     });
 
-    event.attendees = eventOrders.map((order) => order.buyer);
+    event.attendees = eventOrders.map((order) => ({
+      user: order.buyer,
+      userId: order.buyer.id,
+      eventId: eventId,
+    }));
 
     return event;
   } catch (error) {
