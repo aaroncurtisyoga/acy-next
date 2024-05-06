@@ -48,14 +48,13 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
 export const createOrder = async (order: CreateOrderParams) => {
   try {
-    const newOrder = await prisma.order.create({
+    return await prisma.order.create({
       data: {
         ...order,
-        event: order.eventId,
-        userId: order.buyerId,
+        eventId: order.eventId,
+        buyerId: order.buyerId,
       },
     });
-    return newOrder;
   } catch (error) {
     handleError(error);
   }
@@ -66,34 +65,31 @@ export async function getOrdersByEvent({
   eventId,
 }: GetOrdersByEventParams) {
   try {
-    const orders = await prisma.order.findMany({
+    return await prisma.order.findMany({
       where: {
         AND: [
-          { event: eventId },
+          { event: { id: eventId } },
           {
             OR: [
               {
-                "buyer.firstName": {
-                  contains: searchString,
-                  mode: "insensitive",
+                buyer: {
+                  firstName: { contains: searchString, mode: "insensitive" },
                 },
               },
               {
-                "buyer.lastName": {
-                  contains: searchString,
-                  mode: "insensitive",
+                buyer: {
+                  lastName: { contains: searchString, mode: "insensitive" },
                 },
               },
             ],
           },
         ],
-        include: {
-          event: true,
-          buyer: true,
-        },
+      },
+      include: {
+        event: true,
+        buyer: true,
       },
     });
-    return orders;
   } catch (error) {
     handleError(error);
   }
@@ -107,7 +103,7 @@ export async function getOrdersByUser({
   try {
     const skipAmount = (Number(page) - 1) * limit;
     const orders = await prisma.order.findMany({
-      where: { userId: userId },
+      where: { buyer: { id: userId } },
       orderBy: { createdAt: "asc" },
       skip: skipAmount,
       take: limit,
@@ -115,7 +111,7 @@ export async function getOrdersByUser({
     });
 
     const totalOrders = await prisma.order.count({
-      where: { userId: userId },
+      where: { buyer: { id: userId } },
     });
 
     return {
