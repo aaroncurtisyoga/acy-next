@@ -4,6 +4,7 @@ import {
   Client,
   PlaceAutocompleteResponse,
 } from "@googlemaps/google-maps-services-js";
+import { handleError } from "@/lib/utils";
 
 const client = new Client({});
 
@@ -19,7 +20,7 @@ export const autocompleteSuggestions = async (search) => {
       return r.data.predictions;
     })
     .catch((e) => {
-      console.log(e.response.data.error_message);
+      handleError(e.response.data.error_message);
       return e.response.data.error_message;
     });
 };
@@ -37,7 +38,7 @@ export const placeDetails = async (placeId) => {
       return r.data.result;
     })
     .catch((e) => {
-      console.log(e.response.data.error_message);
+      handleError(e.response.data.error_message);
       return e.response.data.error_message;
     });
 };
