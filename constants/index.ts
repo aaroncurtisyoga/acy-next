@@ -69,21 +69,4 @@ export const travelOptions: TravelOption[] = [
   },
 ];
 
-export const getEventFormSteps = (isHostedExternally = false) => {
-  return [
-    {
-      number: 1,
-      name: "Event Overview",
-    },
-    {
-      number: 2,
-      name: "Event Details",
-    },
-    {
-      number: 3,
-      name: "Submit Form",
-    },
-  ];
-};
-
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
