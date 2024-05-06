@@ -2,6 +2,7 @@
 
 import Stripe from "stripe";
 import { redirect } from "next/navigation";
+import { PrismaClient } from "@prisma/client";
 import {
   CheckoutOrderParams,
   CreateOrderParams,
@@ -9,12 +10,8 @@ import {
   GetOrdersByUserParams,
 } from "@/types";
 import { handleError } from "../utils";
-import { ObjectId } from "mongodb";
-import Order from "@/lib/mongodb/database/models/order.model";
-import Event from "@/lib/mongodb/database/models/event.model";
-import { connectToDatabase } from "@/lib/mongodb/database";
-import Category from "@/lib/mongodb/database/models/category.model";
 
+const prisma = new PrismaClient();
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const price = order.isFree ? 0 : Number(order.price) * 100;
@@ -44,22 +41,22 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
     redirect(session.url!);
   } catch (error) {
+    handleError(error);
     throw error;
   }
 };
 
 export const createOrder = async (order: CreateOrderParams) => {
   try {
-    await connectToDatabase();
-    const newOrder = await Order.create({
-      ...order,
-      event: order.eventId,
-      buyer: order.buyerId,
+    const newOrder = await prisma.order.create({
+      data: {
+        ...order,
+        event: order.eventId,
+        userId: order.buyerId,
+      },
     });
-
-    return JSON.parse(JSON.stringify(newOrder));
+    return newOrder;
   } catch (error) {
-    console.log("createOrder: error", error);
     handleError(error);
   }
 };
@@ -69,53 +66,34 @@ export async function getOrdersByEvent({
   eventId,
 }: GetOrdersByEventParams) {
   try {
-    await connectToDatabase();
-    const eventObjectId = new ObjectId(eventId);
-    const orders = await Order.aggregate([
-      {
-        $lookup: {
-          from: "users",
-          localField: "buyer",
-          foreignField: "_id",
-          as: "buyer",
-        },
-      },
-      {
-        $unwind: "$buyer",
-      },
-      {
-        $lookup: {
-          from: "events",
-          localField: "event",
-          foreignField: "_id",
-          as: "event",
-        },
-      },
-      {
-        $unwind: "$event",
-      },
-      {
-        $project: {
-          _id: 1,
-          totalAmount: 1,
-          createdAt: 1,
-          eventTitle: "$event.title",
-          eventId: "$event._id",
-          buyer: {
-            $concat: ["$buyer.firstName", " ", "$buyer.lastName"],
+    const orders = await prisma.order.findMany({
+      where: {
+        AND: [
+          { event: eventId },
+          {
+            OR: [
+              {
+                "buyer.firstName": {
+                  contains: searchString,
+                  mode: "insensitive",
+                },
+              },
+              {
+                "buyer.lastName": {
+                  contains: searchString,
+                  mode: "insensitive",
+                },
+              },
+            ],
           },
+        ],
+        include: {
+          event: true,
+          buyer: true,
         },
       },
-      {
-        $match: {
-          $and: [
-            { eventId: eventObjectId },
-            { buyer: { $regex: RegExp(searchString, "i") } },
-          ],
-        },
-      },
-    ]);
-    return JSON.parse(JSON.stringify(orders));
+    });
+    return orders;
   } catch (error) {
     handleError(error);
   }
@@ -127,30 +105,22 @@ export async function getOrdersByUser({
   page,
 }: GetOrdersByUserParams) {
   try {
-    await connectToDatabase();
     const skipAmount = (Number(page) - 1) * limit;
-    const conditions = { buyer: userId };
+    const orders = await prisma.order.findMany({
+      where: { userId: userId },
+      orderBy: { createdAt: "asc" },
+      skip: skipAmount,
+      take: limit,
+      include: { event: { include: { category: true } } },
+    });
 
-    const orders = await Order.distinct("event._id")
-      .find(conditions)
-      .sort({ createdAt: "asc" })
-      .skip(skipAmount)
-      .limit(limit)
-      .populate({
-        path: "event",
-        model: Event,
-        populate: {
-          path: "category",
-          model: Category,
-        },
-      });
-
-    const ordersCount =
-      await Order.distinct("event._id").countDocuments(conditions);
+    const totalOrders = await prisma.order.count({
+      where: { userId: userId },
+    });
 
     return {
-      data: JSON.parse(JSON.stringify(orders)),
-      totalPages: Math.ceil(ordersCount / limit),
+      data: orders,
+      totalPages: Math.ceil(totalOrders / limit),
     };
   } catch (error) {
     handleError(error);
