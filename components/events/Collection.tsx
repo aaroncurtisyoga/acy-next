@@ -34,7 +34,7 @@ const Collection: FC<CollectionProps> = ({
           <ul>
             {data.map((event) => {
               return (
-                <li key={event._id}>
+                <li key={event.id}>
                   {view === "text" ? (
                     <EventText event={event} isAdmin={isAdmin} />
                   ) : (
