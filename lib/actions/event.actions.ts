@@ -141,7 +141,7 @@ export async function getEventsWithSameCategory({
 
 export async function getEventById(eventId: string) {
   try {
-    const event = await prisma.event.findUnique({
+    return await prisma.event.findUnique({
       where: { id: eventId },
       include: {
         attendees: {
@@ -151,19 +151,6 @@ export async function getEventById(eventId: string) {
         },
       },
     });
-
-    const eventOrders = await prisma.order.findMany({
-      where: { event: { id: eventId } },
-      include: { buyer: true },
-    });
-
-    event.attendees = eventOrders.map((order) => ({
-      user: order.buyer,
-      userId: order.buyer.id,
-      eventId: eventId,
-    }));
-
-    return event;
   } catch (error) {
     handleError(error);
   }
