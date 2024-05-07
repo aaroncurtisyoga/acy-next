@@ -2,26 +2,27 @@
 
 import { Link as NextUiLink } from "@nextui-org/react";
 import { FC } from "react";
-import { Event } from "@prisma/client";
+import { Event, Location } from "@prisma/client";
 import EventAdminButtons from "@/components/events/EventAdminButtons";
 import { formatDateTime } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
+type EventWithLocation = Event & { location: Location };
+
 interface EventTextProps {
   isAdmin: boolean;
-  event: Event;
+  event: EventWithLocation;
 }
 
 const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
   const pathname = usePathname();
-  const { _id, category, imageUrl, isFree, price, startDateTime, title } =
-    event;
+  const { id, startDateTime, title } = event;
 
   const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
   const formattedTime = formatDateTime(startDateTime).timeOnly;
   const signUpHref = event.isHostedExternally
     ? event.externalRegistrationUrl
-    : `/events/${_id}`;
+    : `/events/${id}`;
 
   return (
     <>
@@ -35,7 +36,7 @@ const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
           Sign Up
         </NextUiLink>
       </p>
-      {isAdmin && <EventAdminButtons id={_id} pathname={pathname} />}
+      {isAdmin && <EventAdminButtons id={id} pathname={pathname} />}
     </>
   );
 };
