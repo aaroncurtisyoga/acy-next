@@ -75,12 +75,8 @@ export async function getAllEvents({
       take: limit,
       skip: skipAmount,
       include: {
-        category: true, // includes 'category' relation
-        attendees: {
-          include: {
-            user: true, // include User in each EventUser
-          },
-        },
+        category: true,
+        location: true,
       },
     });
 
