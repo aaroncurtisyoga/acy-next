@@ -1,9 +1,8 @@
 import { FC } from "react";
 import { Avatar, AvatarGroup } from "@nextui-org/react";
-import { IUser } from "@/lib/mongodb/database/models/user.model";
-
+import { User } from "@prisma/client";
 interface AttendeesProps {
-  attendees: IUser[];
+  attendees: User[];
 }
 
 const Attendees: FC<AttendeesProps> = ({ attendees }) => {
