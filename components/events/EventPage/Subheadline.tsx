@@ -3,9 +3,11 @@ import { Event } from "@prisma/client";
 import ShareEvent from "@/components/events/EventPage/ShareEvent";
 import { formatDateTime } from "@/lib/utils";
 
-type IEventSubset = Pick<Event, "category" | "id" | "startDateTime">;
-
-interface SubheadingProps extends IEventSubset {}
+interface SubheadingProps {
+  category: { name: string };
+  id: string;
+  startDateTime: Date;
+}
 const Subheading: FC<SubheadingProps> = ({ category, id, startDateTime }) => {
   return (
     <div className="wrapper-width flex justify-between items-center w-full py-3">
