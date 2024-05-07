@@ -6,6 +6,7 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
+import { Event } from "@prisma/client";
 import Category from "@/components/events/EventForm/Fields/Category";
 import EndDatePickerInput from "@/components/events/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/components/events/EventForm/Fields/IsHostedExternallyCheckbox";
@@ -19,14 +20,13 @@ import {
   selectEventType,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import "react-datepicker/dist/react-datepicker.css";
 import { PlaceDetails } from "@/types";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
 interface EventFormStepOneProps {
-  event?: IEvent;
+  event?: Event;
 }
 
 const BasicInfo: FC<EventFormStepOneProps> = ({ event }) => {
