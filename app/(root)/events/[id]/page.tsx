@@ -1,4 +1,5 @@
 import { FC } from "react";
+import { Event } from "@prisma/client";
 import Attendees from "@/components/events/EventPage/Attendees";
 import CheckoutButton from "@/components/events/EventPage/CheckoutButton";
 import DateAndTime from "@/components/events/EventPage/DateAndTime";
@@ -11,10 +12,9 @@ import Subheading from "@/components/events/EventPage/Subheadline";
 import { getEventById } from "@/lib/actions/event.actions";
 import { handleError } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
 const EventPage: FC<SearchParamProps> = async ({ params: { id } }) => {
-  let event: IEvent | null = null;
+  let event: Event | null = null;
 
   try {
     event = await getEventById(id);
