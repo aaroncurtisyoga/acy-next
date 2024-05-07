@@ -2,14 +2,14 @@
 
 import { Link as NextUiLink } from "@nextui-org/react";
 import { FC } from "react";
+import { Event } from "@prisma/client";
 import EventAdminButtons from "@/components/events/EventAdminButtons";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
 import { usePathname } from "next/navigation";
 
 interface EventTextProps {
   isAdmin: boolean;
-  event: IEvent;
+  event: Event;
 }
 
 const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {

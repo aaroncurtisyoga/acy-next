@@ -5,6 +5,7 @@ import { FC } from "react";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Event } from "@prisma/client";
 import { EventFormDetailsForExternallyHostedEventSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
@@ -12,7 +13,6 @@ import {
   selectFormValues,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import ExternalRegistrationUrlInput from "@/components/events/EventForm/Fields/ExternalRegistrationUrlInput";
 import { Button, Link as NextUiLink } from "@nextui-org/react";
 
@@ -21,7 +21,7 @@ export type Inputs = z.infer<
 >;
 
 interface BasicInfoProps {
-  event?: IEvent;
+  event?: Event;
 }
 const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
   const router = useRouter();

@@ -9,11 +9,11 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { IOrderItem } from "@/lib/mongodb/database/models/order.model";
+import { Order } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
 interface OrdersTableProps {
-  orders: IOrderItem[];
+  orders: Order[];
 }
 const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
   return (
@@ -27,7 +27,7 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
       </TableHeader>
       <TableBody>
         {orders.length ? (
-          orders.map((order: IOrderItem) => (
+          orders.map((order: Order) => (
             <TableRow key={order._id}>
               <TableCell>{order._id}</TableCell>
               <TableCell>{order.eventTitle}</TableCell>

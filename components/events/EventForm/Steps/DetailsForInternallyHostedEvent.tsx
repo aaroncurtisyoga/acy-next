@@ -7,12 +7,11 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link as NextUiLink } from "@nextui-org/link";
-
+import { Event } from "@prisma/client";
 import PriceInput from "@/components/events/EventForm/Fields/PriceInput";
 import MaxAttendees from "@/components/events/EventForm/Fields/MaxAttendees";
 import ImagePicker from "@/components/events/EventForm/Fields/ImagePicker";
 import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/DescriptionRichTextEditor";
-
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {
@@ -20,14 +19,13 @@ import {
   selectFormValues,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForInternallyHostedEventSchema
 >;
 
 interface BasicInfoProps {
-  event?: IEvent;
+  event?: Event;
 }
 const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
   const router = useRouter();

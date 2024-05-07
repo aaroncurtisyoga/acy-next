@@ -1,12 +1,12 @@
 import React, { FC, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { Event } from "@prisma/client";
 import { checkoutOrder } from "@/lib/actions/order.actions";
 import { Button } from "@nextui-org/react";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-type CheckoutProps = { event: IEvent; userId: string };
+type CheckoutProps = { event: Event; userId: string };
 
 const Checkout: FC<CheckoutProps> = ({ event, userId }) => {
   useEffect(() => {

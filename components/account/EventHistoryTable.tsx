@@ -10,12 +10,12 @@ import {
   TableRow,
   Link as NextUiLink,
 } from "@nextui-org/react";
-import { IOrder } from "@/lib/mongodb/database/models/order.model";
+import { Order } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
 interface EventHistoryTableProps {
   orders: {
-    data: IOrder[];
+    data: Order;
   };
 }
 

@@ -3,13 +3,13 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
 import { Button } from "@nextui-org/react";
+import { Category } from "@prisma/client";
 import { getAllCategories } from "@/lib/actions/category.actions";
 import { formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
-import { ICategory } from "@/lib/mongodb/database/models/category.model";
 
 const CategoryButtons: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
-  const [categories, setCategories] = useState<ICategory[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
 
@@ -33,7 +33,7 @@ const CategoryButtons: FC = () => {
   useEffect(() => {
     const getCategories = async () => {
       const categoryList = await getAllCategories();
-      categoryList && setCategories(categoryList as ICategory[]);
+      categoryList && setCategories(categoryList as Category[]);
     };
 
     getCategories();

@@ -3,10 +3,10 @@
 import { FC } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
+import { Event } from "@prisma/client";
 import DirectionLinks from "@/components/events/EventPage/DirectionLinks";
 import Map from "@/components/shared/Map";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
-type LocationType = Pick<IEvent, "location">;
+type LocationType = Pick<Event, "location">;
 interface LocationProps extends LocationType {}
 const Location: FC<LocationProps> = ({ location }) => {
   return (

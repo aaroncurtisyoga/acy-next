@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { Event } from "@prisma/client";
 import { checkRole } from "@/lib/utils";
 import EventCard from "@/components/events/EventCard";
 import EventText from "@/components/events/EventText";
@@ -8,7 +8,7 @@ import NoEventsFound from "@/components/events/NoEventsFound";
 
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
-  data: IEvent[];
+  data: Event[];
   hasFiltersApplied?: boolean;
   limit: number;
   page: number | string;
