@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
-require("@/lib/mongodb/database/models/user.model");
-
 import { Providers } from "@/app/providers";
 import "./globals.css";
 
