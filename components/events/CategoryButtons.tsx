@@ -62,7 +62,7 @@ const CategoryButtons: FC = () => {
           const isActive = selectedCategory === category.name;
           return (
             <Button
-              key={category._id}
+              key={category.id}
               className={"font-semibold"}
               color={isActive ? "primary" : "default"}
               onClick={() => handleFormUrlQuery(category.name)}

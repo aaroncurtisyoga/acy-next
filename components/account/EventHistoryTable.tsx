@@ -15,7 +15,7 @@ import { formatDateTime, formatPrice } from "@/lib/utils";
 
 interface EventHistoryTableProps {
   orders: {
-    data: Order;
+    data: Order[];
   };
 }
 
@@ -31,14 +31,14 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
       <TableBody>
         {orders.data.length ? (
           orders.data.map((order) => (
-            <TableRow key={order._id}>
+            <TableRow key={order.id}>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
               <TableCell>
                 <NextUiLink
-                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event._id}`}
+                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
                   className={"text-sm"}
                   underline={"always"}
                 >

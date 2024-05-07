@@ -26,7 +26,7 @@ const Checkout: FC<CheckoutProps> = ({ event, userId }) => {
   const onCheckout = async () => {
     const order = {
       eventTitle: event.title,
-      eventId: event._id,
+      eventId: event.id,
       price: event.price,
       isFree: event.isFree,
       buyerId: userId,

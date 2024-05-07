@@ -5,13 +5,17 @@ import { Category } from "@prisma/client";
 import { getAllCategories } from "@/lib/actions/category.actions";
 import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-interface CategoryProps {
+interface CategoryDropdownProps {
   control: Control;
   isSubmitting: boolean;
   errors: FieldErrors<Inputs>;
 }
 
-const Category: FC<CategoryProps> = ({ control, errors, isSubmitting }) => {
+const CategoryDropdown: FC<CategoryDropdownProps> = ({
+  control,
+  errors,
+  isSubmitting,
+}) => {
   const [categories, setCategories] = useState<Category[]>([]);
   const getCategories = async () => {
     const categoryList = await getAllCategories();
@@ -37,7 +41,7 @@ const Category: FC<CategoryProps> = ({ control, errors, isSubmitting }) => {
         >
           {categories.length > 0 &&
             categories.map((category) => (
-              <SelectItem key={category._id} value={category._id}>
+              <SelectItem key={category.id} value={category.id}>
                 {category.name}
               </SelectItem>
             ))}
@@ -47,4 +51,4 @@ const Category: FC<CategoryProps> = ({ control, errors, isSubmitting }) => {
   );
 };
 
-export default Category;
+export default CategoryDropdown;
