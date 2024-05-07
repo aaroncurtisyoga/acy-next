@@ -149,6 +149,8 @@ export async function getEventById(eventId: string) {
             user: true,
           },
         },
+        category: true,
+        location: true,
       },
     });
   } catch (error) {
