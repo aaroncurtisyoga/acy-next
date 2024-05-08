@@ -1,17 +1,15 @@
 "use client";
 
-import { Link as NextUiLink } from "@nextui-org/react";
-import { FC } from "react";
-import { Event, Location } from "@prisma/client";
-import EventAdminButtons from "@/components/events/EventAdminButtons";
-import { formatDateTime } from "@/lib/utils";
 import { usePathname } from "next/navigation";
-
-type EventWithLocation = Event & { location: Location };
+import { FC } from "react";
+import { Link as NextUiLink } from "@nextui-org/react";
+import EventAdminButtons from "@/components/events/EventAdminButtons";
+import { EventWithLocationAndCategory } from "@/components/events/Collection";
+import { formatDateTime } from "@/lib/utils";
 
 interface EventTextProps {
   isAdmin: boolean;
-  event: EventWithLocation;
+  event: EventWithLocationAndCategory;
 }
 
 const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
