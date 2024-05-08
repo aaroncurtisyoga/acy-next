@@ -86,8 +86,12 @@ export async function getOrdersByEvent({
         ],
       },
       include: {
-        event: true,
-        buyer: true,
+        event: {
+          select: { title: true },
+        },
+        buyer: {
+          select: { firstName: true, lastName: true },
+        },
       },
     });
   } catch (error) {
