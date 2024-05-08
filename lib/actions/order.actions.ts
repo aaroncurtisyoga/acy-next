@@ -111,7 +111,7 @@ export async function getOrdersByUser({
       orderBy: { createdAt: "asc" },
       skip: skipAmount,
       take: limit,
-      include: { event: { include: { category: true } } },
+      select: { event: { select: { title: true, id: true } } },
     });
 
     const totalOrders = await prisma.order.count({
