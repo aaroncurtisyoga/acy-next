@@ -9,21 +9,16 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { Order as PrismaOrder } from "@prisma/client";
+import { Order, User, Event } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-interface Order extends PrismaOrder {
-  event: {
-    title: string;
-  };
-  buyer: {
-    firstName: string;
-    lastName: string;
-  };
-}
+type OrderWithEventFieldsAndUserFields = Order & {
+  event: Pick<Event, "title">;
+  buyer: Pick<User, "firstName" | "lastName">;
+};
 
 interface OrdersTableProps {
-  orders: Order[];
+  orders: OrderWithEventFieldsAndUserFields[];
 }
 const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
   return (
@@ -37,7 +32,7 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
       </TableHeader>
       <TableBody>
         {orders.length ? (
-          orders.map((order: Order) => (
+          orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>{order.id}</TableCell>
               <TableCell>{order.event.title}</TableCell>
