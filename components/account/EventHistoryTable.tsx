@@ -10,13 +10,15 @@ import {
   TableRow,
   Link as NextUiLink,
 } from "@nextui-org/react";
-import { Order } from "@prisma/client";
+import { Event, Order } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
+type OrderWithEventFields = Order & {
+  event: Pick<Event, "title" | "id">;
+};
+
 interface EventHistoryTableProps {
-  orders: {
-    data: Order[];
-  };
+  orders: OrderWithEventFields[];
 }
 
 const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
@@ -29,8 +31,8 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
         <TableColumn>Order ID</TableColumn>
       </TableHeader>
       <TableBody>
-        {orders.data.length ? (
-          orders.data.map((order) => (
+        {orders.length ? (
+          orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
@@ -45,7 +47,7 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
                   {order.event.title}
                 </NextUiLink>
               </TableCell>
-              <TableCell>{order._id}</TableCell>
+              <TableCell>{order.id}</TableCell>
             </TableRow>
           ))
         ) : (
