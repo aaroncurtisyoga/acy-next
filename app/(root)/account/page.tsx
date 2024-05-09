@@ -9,12 +9,6 @@ export const metadata: Metadata = {
   title: "Account",
 };
 
-interface AccountPageProps {
-  searchParams: {
-    ordersPage: string;
-  };
-}
-
 type OrderWithEventFields = Order & {
   event: Pick<Event, "title" | "id">;
 };
@@ -23,6 +17,11 @@ export type OrderResponse = {
   data: OrderWithEventFields[];
   totalPages: number;
 };
+interface AccountPageProps {
+  searchParams: {
+    ordersPage: string;
+  };
+}
 
 const AccountPage: FC<AccountPageProps> = async ({ searchParams }) => {
   const { sessionClaims } = auth();
