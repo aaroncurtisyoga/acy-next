@@ -23,7 +23,8 @@ const LocationInput: FC<LocationInputProps> = ({
     await placeDetails(placeId).then((place) => {
       setLocationValueInReactHookForm({
         formattedAddress: place.formatted_address,
-        geometry: place.geometry.location,
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng,
         name: place.name,
         placeId: place.place_id,
       });
