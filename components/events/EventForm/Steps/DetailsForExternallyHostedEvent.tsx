@@ -39,7 +39,6 @@ const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
   const {
     control,
     handleSubmit,
-    setValue,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(EventFormDetailsForExternallyHostedEventSchema),
