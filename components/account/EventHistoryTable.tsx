@@ -17,6 +17,7 @@ interface EventHistoryTableProps {
   orders: OrderResponse;
 }
 const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
+  const hasOrders = orders.data.length > 0;
   return (
     <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>
@@ -25,9 +26,9 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
         <TableColumn>Event</TableColumn>
         <TableColumn>Order ID</TableColumn>
       </TableHeader>
-      <TableBody>
-        {orders.data.length ? (
-          orders.data.map((order) => (
+      {hasOrders ? (
+        <TableBody>
+          {orders.data.map((order) => (
             <TableRow key={order.id}>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
@@ -44,15 +45,13 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
               </TableCell>
               <TableCell>{order.id}</TableCell>
             </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={5}>
-              No orders have been placed just yet.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
+          ))}
+        </TableBody>
+      ) : (
+        <TableBody emptyContent={"No orders have been placed just yet."}>
+          {[]}
+        </TableBody>
+      )}
     </Table>
   );
 };
