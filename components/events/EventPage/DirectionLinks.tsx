@@ -1,12 +1,11 @@
 import { FC } from "react";
+import { Location } from "@prisma/client";
 import { travelOptions } from "@/constants";
 import { generateDirectionsUrl } from "@/lib/utils/travelLinks";
 
-interface DirectionLinksProps {
-  location: { geometry: { lat: any; lng: any } };
-}
+interface DirectionLinksProps extends Pick<Location, "lat" | "lng"> {}
 
-const DirectionLinks: FC<DirectionLinksProps> = ({ location }) => {
+const DirectionLinks: FC<DirectionLinksProps> = ({ lat, lng }) => {
   return (
     <div className={"w-full py-unit-4 border-b"}>
       <p className={"text-center font-semibold text-default-700 mb-unit-6"}>
@@ -19,7 +18,7 @@ const DirectionLinks: FC<DirectionLinksProps> = ({ location }) => {
               <a
                 className={"px-unit-8 inline-block"}
                 target="_blank"
-                href={generateDirectionsUrl(location, option.travelMode)}
+                href={generateDirectionsUrl(lat, lng, option.travelMode)}
               >
                 <option.icon />
               </a>

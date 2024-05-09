@@ -1,12 +1,10 @@
 "use client";
 
 import { FC } from "react";
+import { Location } from "@prisma/client";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
-interface EventMapProps {
-  lat: number;
-  lng: number;
-}
+interface EventMapProps extends Pick<Location, "lat" | "lng"> {}
 const EventMap: FC<EventMapProps> = ({ lat, lng }) => {
   const position = { lat, lng };
 
