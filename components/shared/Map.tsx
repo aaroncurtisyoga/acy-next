@@ -1,9 +1,14 @@
 "use client";
 
+import { FC } from "react";
 import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 
-const EventMap = ({ geometry }) => {
-  const position = { lat: geometry.lat, lng: geometry.lng };
+interface EventMapProps {
+  lat: number;
+  lng: number;
+}
+const EventMap: FC<EventMapProps> = ({ lat, lng }) => {
+  const position = { lat, lng };
 
   return (
     <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
