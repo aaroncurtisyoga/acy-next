@@ -12,10 +12,8 @@ export const EventFormBasicInfoSchema = z.object({
   isHostedExternally: z.boolean(),
   location: z.object({
     formattedAddress: z.string().min(3, "Address is required"),
-    geometry: z.object({
-      lat: z.number(),
-      lng: z.number(),
-    }),
+    lat: z.number(),
+    lng: z.number(),
     name: z.string(),
     placeId: z.string(),
   }),
