@@ -1,16 +1,20 @@
 "use client";
 
 import { useRouter, useSearchParams } from "next/navigation";
-import React from "react";
+import React, { FC } from "react";
 import { formUrlQuery } from "@/lib/utils";
 
-type PaginationProps = {
+interface PaginationProps {
   page: number | string;
   totalPages: number;
   urlParamName?: string;
-};
+}
 
-const Pagination = ({ page, totalPages, urlParamName }: PaginationProps) => {
+const Pagination: FC<PaginationProps> = ({
+  page,
+  totalPages,
+  urlParamName,
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
 

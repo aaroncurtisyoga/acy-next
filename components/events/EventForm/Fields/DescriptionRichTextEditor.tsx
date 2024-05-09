@@ -1,7 +1,17 @@
-import { Controller } from "react-hook-form";
+import { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import Tiptap from "@/components/shared/Tiptap";
+import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-const DescriptionRichTextEditor = ({ control, errors }) => {
+interface DescriptionRichTextEditorProps {
+  control: Control;
+  errors: FieldErrors<Inputs>;
+}
+
+const DescriptionRichTextEditor: FC<DescriptionRichTextEditorProps> = ({
+  control,
+  errors,
+}) => {
   return (
     <Controller
       control={control}

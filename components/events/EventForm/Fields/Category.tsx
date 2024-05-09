@@ -1,14 +1,25 @@
-import React, { useEffect, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
-import { Controller } from "react-hook-form";
-import { ICategory } from "@/lib/mongodb/database/models/category.model";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Category } from "@prisma/client";
 import { getAllCategories } from "@/lib/actions/category.actions";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-const Category = ({ control, errors, isSubmitting }) => {
-  const [categories, setCategories] = useState<ICategory[]>([]);
+interface CategoryDropdownProps {
+  control: Control;
+  isSubmitting: boolean;
+  errors: FieldErrors<Inputs>;
+}
+
+const CategoryDropdown: FC<CategoryDropdownProps> = ({
+  control,
+  errors,
+  isSubmitting,
+}) => {
+  const [categories, setCategories] = useState<Category[]>([]);
   const getCategories = async () => {
     const categoryList = await getAllCategories();
-    categoryList && setCategories(categoryList as ICategory[]);
+    categoryList && setCategories(categoryList as Category[]);
   };
 
   useEffect(() => {
@@ -30,7 +41,7 @@ const Category = ({ control, errors, isSubmitting }) => {
         >
           {categories.length > 0 &&
             categories.map((category) => (
-              <SelectItem key={category._id} value={category._id}>
+              <SelectItem key={category.id} value={category.id}>
                 {category.name}
               </SelectItem>
             ))}
@@ -40,4 +51,4 @@ const Category = ({ control, errors, isSubmitting }) => {
   );
 };
 
-export default Category;
+export default CategoryDropdown;

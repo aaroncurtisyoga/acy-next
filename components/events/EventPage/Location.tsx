@@ -1,11 +1,16 @@
 "use client";
 
+import { FC } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
+import { Location as LocationPrisma } from "@prisma/client";
 import DirectionLinks from "@/components/events/EventPage/DirectionLinks";
 import Map from "@/components/shared/Map";
 
-const Location = ({ location }) => {
+interface LocationProps {
+  location: LocationPrisma;
+}
+const Location: FC<LocationProps> = ({ location }) => {
   return (
     <div className={"mb-6 md:mb-8"}>
       <h2 className={"text-2xl font-bold mb-3"}>Location</h2>
@@ -31,8 +36,8 @@ const Location = ({ location }) => {
               }
               disableIndicatorAnimation={true}
             >
-              <Map geometry={location.geometry} />
-              <DirectionLinks location={location} />
+              <Map lat={location.lat} lng={location.lng} />
+              <DirectionLinks lat={location.lat} lng={location.lng} />
             </AccordionItem>
           </Accordion>
         </div>

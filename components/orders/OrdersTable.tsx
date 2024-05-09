@@ -1,5 +1,6 @@
 "use client";
 
+import { FC } from "react";
 import {
   Table,
   TableBody,
@@ -8,14 +9,18 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { IOrder } from "@/lib/mongodb/database/models/order.model";
+import { Order, User, Event } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 
-interface OrdersTableProps {
-  orders: IOrder[];
-}
+type OrderWithEventFieldsAndUserFields = Order & {
+  event: Pick<Event, "title">;
+  buyer: Pick<User, "firstName" | "lastName">;
+};
 
-const OrdersTable = ({ orders }: OrdersTableProps) => {
+interface OrdersTableProps {
+  orders: OrderWithEventFieldsAndUserFields[];
+}
+const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
   return (
     <Table aria-label={"Table for Orders"}>
       <TableHeader>
@@ -27,11 +32,13 @@ const OrdersTable = ({ orders }: OrdersTableProps) => {
       </TableHeader>
       <TableBody>
         {orders.length ? (
-          orders.map((order: IOrder) => (
-            <TableRow key={order._id}>
-              <TableCell>{order._id}</TableCell>
+          orders.map((order) => (
+            <TableRow key={order.id}>
+              <TableCell>{order.id}</TableCell>
               <TableCell>{order.event.title}</TableCell>
-              <TableCell>{`${order.buyer.firstName} ${order.buyer.lastName}`}</TableCell>
+              <TableCell>
+                {order.buyer.firstName} {order.buyer.lastName}
+              </TableCell>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>

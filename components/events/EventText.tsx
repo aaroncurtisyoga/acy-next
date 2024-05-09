@@ -1,26 +1,26 @@
 "use client";
 
-import { Link as NextUiLink } from "@nextui-org/react";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
-import { formatDateTime } from "@/lib/utils";
 import { usePathname } from "next/navigation";
+import { FC } from "react";
+import { Link as NextUiLink } from "@nextui-org/react";
 import EventAdminButtons from "@/components/events/EventAdminButtons";
+import { EventWithLocationAndCategory } from "@/components/events/Collection";
+import { formatDateTime } from "@/lib/utils";
 
 interface EventTextProps {
   isAdmin: boolean;
-  event: IEvent;
+  event: EventWithLocationAndCategory;
 }
 
-const EventText = ({ isAdmin, event }: EventTextProps) => {
+const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
   const pathname = usePathname();
-  const { _id, category, imageUrl, isFree, price, startDateTime, title } =
-    event;
+  const { id, startDateTime, title } = event;
 
   const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
   const formattedTime = formatDateTime(startDateTime).timeOnly;
   const signUpHref = event.isHostedExternally
     ? event.externalRegistrationUrl
-    : `/events/${_id}`;
+    : `/events/${id}`;
 
   return (
     <>
@@ -34,7 +34,7 @@ const EventText = ({ isAdmin, event }: EventTextProps) => {
           Sign Up
         </NextUiLink>
       </p>
-      {isAdmin && <EventAdminButtons id={_id} pathname={pathname} />}
+      {isAdmin && <EventAdminButtons id={id} pathname={pathname} />}
     </>
   );
 };

@@ -1,13 +1,18 @@
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
+import { FC } from "react";
+import { Category, Event, Location } from "@prisma/client";
 import { checkRole } from "@/lib/utils";
 import EventCard from "@/components/events/EventCard";
 import EventText from "@/components/events/EventText";
 import Pagination from "@/components/events/Pagination";
 import NoEventsFound from "@/components/events/NoEventsFound";
 
+export type EventWithLocationAndCategory = Event & {
+  location: Location;
+  category: Category;
+};
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
-  data: IEvent[];
+  data: EventWithLocationAndCategory[];
   hasFiltersApplied?: boolean;
   limit: number;
   page: number | string;
@@ -16,14 +21,14 @@ interface CollectionProps {
   view?: "text" | "card";
 }
 
-const Collection = ({
+const Collection: FC<CollectionProps> = ({
   data,
   hasFiltersApplied = false,
   page,
   totalPages = 0,
   urlParamName,
   view = "card",
-}: CollectionProps) => {
+}) => {
   const isAdmin = checkRole("admin");
 
   return (
@@ -33,7 +38,7 @@ const Collection = ({
           <ul>
             {data.map((event) => {
               return (
-                <li key={event._id}>
+                <li key={event.id}>
                   {view === "text" ? (
                     <EventText event={event} isAdmin={isAdmin} />
                   ) : (

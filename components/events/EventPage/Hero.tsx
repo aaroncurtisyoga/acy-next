@@ -1,7 +1,11 @@
 import Image from "next/image";
+import { FC } from "react";
 import { getBase64 } from "@/lib/utils/base64";
 
-const Hero = async ({ imageUrl }) => {
+interface HeroProps {
+  imageUrl: string;
+}
+const Hero: FC<HeroProps> = async ({ imageUrl }) => {
   const blurDataURL = await getBase64(imageUrl);
   return (
     <div className="event-hero-wrapper w-full relative">

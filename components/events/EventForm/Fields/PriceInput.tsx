@@ -1,8 +1,15 @@
-import React from "react";
+import React, { FC } from "react";
 import { Input } from "@nextui-org/react";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-const PriceInput = ({ control, isSubmitting, errors }) => {
+interface PriceInputProps {
+  control: Control;
+  isSubmitting: boolean;
+  errors: FieldErrors<Inputs>;
+}
+
+const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
@@ -12,7 +19,7 @@ const PriceInput = ({ control, isSubmitting, errors }) => {
           disabled={isSubmitting}
           errorMessage={errors.price?.message}
           label={"Price"}
-          onChange={(e) => field.onChange(e)}
+          onChange={field.onChange}
           placeholder={"0.00"}
           startContent={
             <div className="pointer-events-none flex items-center">

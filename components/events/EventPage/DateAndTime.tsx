@@ -1,7 +1,13 @@
+import { FC } from "react";
 import { CalendarCheck2 } from "lucide-react";
 import { formatDateTime } from "@/lib/utils";
 
-const DateAndTime = ({ endDateTime, startDateTime }) => {
+interface DateAndTimeProps {
+  endDateTime: Date;
+  startDateTime: Date;
+}
+
+const DateAndTime: FC<DateAndTimeProps> = ({ endDateTime, startDateTime }) => {
   return (
     <div className={"mb-6 md:mb-8"}>
       <h2 className={"text-2xl font-bold mb-3"}>Date and time</h2>

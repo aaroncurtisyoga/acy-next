@@ -1,17 +1,3 @@
-export type CreateUserParams = {
-  clerkId: string;
-  firstName: string;
-  lastName: string;
-  email: string;
-  photo: string;
-};
-
-export type UpdateUserParams = {
-  firstName: string;
-  lastName: string;
-  photo: string;
-};
-
 export type DeleteEventParams = {
   eventId: string;
   path: string;
@@ -29,24 +15,6 @@ export type GetRelatedEventsByCategoryParams = {
   eventId: string;
   limit?: number;
   page: number | string;
-};
-
-export type Event = {
-  _id: string;
-  category: {
-    _id: string;
-    name: string;
-  };
-  description: string;
-  endDateTime: Date;
-  imageUrl: string;
-  isFree: boolean;
-  location: string;
-  maxAttendees: number;
-  price: string;
-  title: string;
-  startDateTime: Date;
-  url: string;
 };
 
 // ====== CATEGORY PARAMS
@@ -106,3 +74,13 @@ export interface TravelOption {
   travelMode: TravelMode;
   icon: React.ElementType;
 }
+
+export type PlaceDetails = {
+  formattedAddress: string;
+  geometry: {
+    lat: number;
+    lng: number;
+  };
+  name: string;
+  placeId: string;
+};

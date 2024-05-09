@@ -1,12 +1,12 @@
 "use client";
 
+import { FC } from "react";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-
 interface DescriptionProps {
   description: string;
 }
-const DescriptionDisplay = ({ description }: DescriptionProps) => {
+const DescriptionDisplay: FC<DescriptionProps> = ({ description }) => {
   const editor = useEditor({
     extensions: [StarterKit],
     content: description,

@@ -1,24 +1,33 @@
-import React, { useState } from "react";
-import { Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
 import { placeDetails } from "@/lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/lib/hooks/useAutocompleteSuggestions";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-const LocationInput = ({ control, setValue, errors }) => {
+interface LocationInputProps {
+  control: Control;
+  // todo: fix this type
+  setLocationValueInReactHookForm: any;
+  errors: FieldErrors<Inputs>;
+}
+
+const LocationInput: FC<LocationInputProps> = ({
+  control,
+  setLocationValueInReactHookForm,
+  errors,
+}) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: string) => {
-    await placeDetails(placeId).then((place) =>
-      setLocationValueInReactHookForm(place),
-    );
-  };
-
-  const setLocationValueInReactHookForm = async (placeDetails) => {
-    setValue("location", {
-      formattedAddress: placeDetails.formatted_address,
-      geometry: placeDetails.geometry.location,
-      name: placeDetails.name,
-      placeId: placeDetails.place_id,
+    await placeDetails(placeId).then((place) => {
+      setLocationValueInReactHookForm({
+        formattedAddress: place.formatted_address,
+        lat: place.geometry.location.lat,
+        lng: place.geometry.location.lng,
+        name: place.name,
+        placeId: place.place_id,
+      });
     });
   };
 

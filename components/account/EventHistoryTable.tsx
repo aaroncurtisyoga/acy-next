@@ -1,5 +1,6 @@
 "use client";
 
+import { FC } from "react";
 import {
   Table,
   TableBody,
@@ -9,16 +10,14 @@ import {
   TableRow,
   Link as NextUiLink,
 } from "@nextui-org/react";
-import { IOrder } from "@/lib/mongodb/database/models/order.model";
 import { formatDateTime, formatPrice } from "@/lib/utils";
+import { OrderResponse } from "@/app/(root)/account/page";
 
 interface EventHistoryTableProps {
-  orders: {
-    data: IOrder[];
-  };
+  orders: OrderResponse;
 }
-
-const EventHistoryTable = ({ orders }: EventHistoryTableProps) => {
+const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
+  const hasOrders = orders.data.length > 0;
   return (
     <Table aria-label={"Table for Event Purchase History"}>
       <TableHeader>
@@ -27,34 +26,32 @@ const EventHistoryTable = ({ orders }: EventHistoryTableProps) => {
         <TableColumn>Event</TableColumn>
         <TableColumn>Order ID</TableColumn>
       </TableHeader>
-      <TableBody>
-        {orders.data.length ? (
-          orders.data.map((order) => (
-            <TableRow key={order._id}>
+      {hasOrders ? (
+        <TableBody>
+          {orders.data.map((order) => (
+            <TableRow key={order.id}>
               <TableCell>
                 {formatDateTime(new Date(order.createdAt)).dateOnly}
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
               <TableCell>
                 <NextUiLink
-                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event._id}`}
+                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
                   className={"text-sm"}
                   underline={"always"}
                 >
                   {order.event.title}
                 </NextUiLink>
               </TableCell>
-              <TableCell>{order._id}</TableCell>
+              <TableCell>{order.id}</TableCell>
             </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={5}>
-              No orders have been placed just yet.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
+          ))}
+        </TableBody>
+      ) : (
+        <TableBody emptyContent={"No orders have been placed just yet."}>
+          {[]}
+        </TableBody>
+      )}
     </Table>
   );
 };

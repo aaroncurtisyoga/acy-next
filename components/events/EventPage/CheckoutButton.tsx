@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import React from "react";
+import React, { FC } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
+import { Event } from "@prisma/client";
 import Checkout from "@/components/events/EventPage/Checkout";
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { Button } from "@nextui-org/react";
 
-const CheckoutButton = ({ event }: { event: IEvent; className?: string }) => {
+interface ICheckoutButtonProps {
+  event: Event;
+  className?: string;
+}
+
+const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
   const { user } = useUser();
   const userId = user?.publicMetadata.userId as string;
   const hasEventFinished = new Date(event.endDateTime) < new Date();

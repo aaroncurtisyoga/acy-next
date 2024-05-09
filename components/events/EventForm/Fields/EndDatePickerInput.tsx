@@ -1,9 +1,19 @@
-import { Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import DatePicker from "react-datepicker";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-import React from "react";
+interface EndDatePickerInputProps {
+  control: Control;
+  errors: FieldErrors<Inputs>;
+  isSubmitting: boolean;
+}
 
-const EndDatePickerInput = ({ control, errors, isSubmitting }) => {
+const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
+  control,
+  errors,
+  isSubmitting,
+}) => {
   return (
     <Controller
       control={control}
@@ -16,7 +26,7 @@ const EndDatePickerInput = ({ control, errors, isSubmitting }) => {
             enableTabLoop={false}
             onChange={(date: Date) => field.onChange(date)}
             placeholderText={"End Date/Time"}
-            selected={field.value}
+            selected={new Date(field.value)}
             showTimeSelect
             timeInputLabel={"End Date/Time:"}
             wrapperClassName="datePicker"

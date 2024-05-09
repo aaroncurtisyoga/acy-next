@@ -17,13 +17,9 @@ export const locations = {
   CROSSFIT_DC: "CrossFit DC",
 };
 
-export const eventDefaultValues = {
+export const eventFormBasicInfoDefaultValues = {
   categoryId: "",
-  description: "",
   endDateTime: new Date(),
-  externalRegistrationUrl: "",
-  imageUrl: "",
-  isFree: false,
   isHostedExternally: false,
   location: {
     formattedAddress: "",
@@ -34,10 +30,24 @@ export const eventDefaultValues = {
     name: "",
     placeId: "",
   },
-  maxAttendees: 0,
-  price: "",
   startDateTime: new Date(),
   title: "",
+};
+
+export const eventFormDetailsForInternallyHostedEventDefaultValues = {
+  description: "",
+  imageUrl: "",
+  price: "",
+  maxAttendees: 0,
+};
+export const eventFormDetailsForExternallyHostedEventDefaultValues = {
+  externalRegistrationUrl: "",
+};
+
+export const eventFormDefaultValues = {
+  ...eventFormBasicInfoDefaultValues,
+  ...eventFormDetailsForInternallyHostedEventDefaultValues,
+  ...eventFormDetailsForExternallyHostedEventDefaultValues,
 };
 
 export const travelOptions: TravelOption[] = [
@@ -58,32 +68,5 @@ export const travelOptions: TravelOption[] = [
     icon: Bike,
   },
 ];
-
-export const getEventFormSteps = (isHostedExternally = false) => {
-  return [
-    {
-      id: "Step 1",
-      fields: [
-        "endDateTime",
-        "isHostedExternally",
-        "location",
-        "startDateTime",
-        "title",
-      ],
-      name: "Event Overview",
-    },
-    {
-      id: "Step 2",
-      fields: isHostedExternally
-        ? ["externalRegistrationUrl"]
-        : ["categoryId", "description", "imageUrl", "price"],
-      name: "Event Details",
-    },
-    {
-      id: "Step 3",
-      name: "Form Complete",
-    },
-  ];
-};
 
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";

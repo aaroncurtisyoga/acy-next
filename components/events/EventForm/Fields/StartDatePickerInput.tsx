@@ -1,8 +1,19 @@
-import React from "react";
+import React, { FC } from "react";
 import DatePicker from "react-datepicker";
-import { Controller } from "react-hook-form";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-const StartDatePickerInput = ({ control, errors, isSubmitting }) => {
+interface StartDatePickerInputProps {
+  control: Control;
+  errors: FieldErrors<Inputs>;
+  isSubmitting: boolean;
+}
+
+const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
+  control,
+  errors,
+  isSubmitting,
+}) => {
   return (
     <Controller
       control={control}
@@ -13,9 +24,9 @@ const StartDatePickerInput = ({ control, errors, isSubmitting }) => {
             disabled={isSubmitting}
             dateFormat="MM/dd/yyyy h:mm aa"
             enableTabLoop={false}
-            onChange={(date: Date) => field.onChange(date)}
+            onChange={field.onChange}
             placeholderText={"Start Date/Time"}
-            selected={field.value}
+            selected={new Date(field.value)}
             showTimeSelect
             timeInputLabel={"Start Date/Time:"}
             wrapperClassName="datePicker"

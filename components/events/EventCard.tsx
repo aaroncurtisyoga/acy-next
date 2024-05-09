@@ -3,20 +3,19 @@
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { FC } from "react";
 import EventAdminButtons from "@/components/events/EventAdminButtons";
-
-import { IEvent } from "@/lib/mongodb/database/models/event.model";
 import { formatDateTime } from "@/lib/utils";
+import { EventWithLocationAndCategory } from "@/components/events/Collection";
 
 interface CardProps {
   isAdmin: boolean;
-  event: IEvent;
+  event: EventWithLocationAndCategory;
 }
 
-const EventCard = ({ isAdmin, event }: CardProps) => {
+const EventCard: FC<CardProps> = ({ isAdmin, event }) => {
   const pathname = usePathname();
-  const { _id, category, imageUrl, isFree, price, startDateTime, title } =
-    event;
+  const { id, category, imageUrl, isFree, price, startDateTime, title } = event;
   return (
     <div
       className={
@@ -25,9 +24,7 @@ const EventCard = ({ isAdmin, event }: CardProps) => {
         " rounded-sm bg-white shadow-md transition-all hover:shadow-lg"
       }
     >
-      <Link href={`/events/${_id}`} className={"flex-col hover:underline"}>
-        {/* todo: does there need to be a border radius added here to
-           soften those edges */}
+      <Link href={`/events/${id}`} className={"flex-col hover:underline"}>
         <Image
           src={imageUrl}
           alt={`People doing ${category.name}`}
@@ -49,7 +46,7 @@ const EventCard = ({ isAdmin, event }: CardProps) => {
         </p>
         <p className={"md:text-sm mt-1"}>{event.location.name}</p>
       </div>
-      {isAdmin && <EventAdminButtons id={_id} pathname={pathname} />}
+      {isAdmin && <EventAdminButtons id={id} pathname={pathname} />}
     </div>
   );
 };

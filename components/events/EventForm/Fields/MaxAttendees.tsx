@@ -1,7 +1,15 @@
 import { Input } from "@nextui-org/react";
-import { Controller } from "react-hook-form";
+import { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-const PriceInput = ({ control, isSubmitting, errors }) => {
+interface PriceInputProps {
+  control: Control;
+  isSubmitting: boolean;
+  errors: FieldErrors<Inputs>;
+}
+
+const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}

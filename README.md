@@ -62,12 +62,15 @@ My app is built with [Next.js](https://nextjs.org/). The common scripts are:
 ## <a name="tech-stack">Tech Stack</a>
 
 - Next.js (_TypeScript_)
-- Tailwind CSS docs ([docs](https://tailwindcss.com/docs))
+- NextUI ([docs](https://nextui.org/))
 - React Hook Form docs ([docs](https://react-hook-form.com/))
-- Zod docs ([docs](https://zod.dev/))
-- Mailchimp Marketing API ([docs](https://mailchimp.com/developer/marketing/))
-- Clerk ([docs](https://docs.clerk.dev/))
+- Vercel Postgres ([docs](https://vercel.com/docs/databases/postgres))
 - Vercel Blob Storage ([docs](https://vercel.com/docs/storage))
+
+    **_3rd Party Api's_**
+- Clerk ([docs](https://docs.clerk.dev/))
+- Stripe ([docs](https://stripe.com/docs))
+- Mailchimp Marketing API ([docs](https://mailchimp.com/developer/marketing/))
 ## <a name="features">Features</a>
 
 1. **Newsletter:** People can sign up to the Newsletter & stay up-to-date w/ upcoming events

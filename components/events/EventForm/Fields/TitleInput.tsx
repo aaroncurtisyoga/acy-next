@@ -1,8 +1,15 @@
-import React from "react";
-import { Controller } from "react-hook-form";
+import React, { FC } from "react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Input } from "@nextui-org/react";
+import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
 
-const TitleInput = ({ control, isSubmitting, errors }) => {
+interface TitleInputProps {
+  control: Control;
+  isSubmitting: boolean;
+  errors: FieldErrors<Inputs>;
+}
+
+const TitleInput: FC<TitleInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
@@ -12,7 +19,7 @@ const TitleInput = ({ control, isSubmitting, errors }) => {
           disabled={isSubmitting}
           errorMessage={errors.title?.message}
           label={"Title"}
-          onChange={(e) => field.onChange(e)}
+          onChange={field.onChange}
           type={"text"}
           variant="bordered"
           {...field}

@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import React, { useState } from "react";
+import React, { FC, useState } from "react";
 import {
   Modal,
   ModalContent,
@@ -13,8 +13,15 @@ import {
 } from "@nextui-org/react";
 import { getImages } from "@/lib/actions/blob.actions";
 import { cn } from "@/lib/utils";
+import { FieldErrors } from "react-hook-form";
+import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-const ImagePicker = ({ errors, setValue }) => {
+interface ImagePickerProps {
+  errors: FieldErrors<Inputs>;
+  setValue: any;
+}
+
+const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue }) => {
   const [images, setImages] = useState([]);
   const [selectedImgUrl, setSelectedImgUrl] = useState(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();

@@ -1,11 +1,14 @@
 "use client";
 
 import { usePathname } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import { Button, Tooltip } from "@nextui-org/react";
 import { Check, Share } from "lucide-react";
 
-function ShareEvent({ eventId }: { eventId: string }) {
+interface ShareEventProps {
+  eventId: string;
+}
+const ShareEvent: FC<ShareEventProps> = ({ eventId }) => {
   const pathname = usePathname();
   const [isRecentlyCopied, setIsRecentlyCopied] = useState<boolean>(false);
   useEffect(() => {
@@ -34,6 +37,6 @@ function ShareEvent({ eventId }: { eventId: string }) {
       </Button>
     </Tooltip>
   );
-}
+};
 
 export default ShareEvent;
