@@ -1,7 +1,7 @@
 import qs from "query-string";
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import { auth } from "@clerk/nextjs";
+import { auth } from "@clerk/nextjs/server";
 import { Roles } from "@/types/globals";
 import { RemoveUrlQueryParams, UrlQueryParams } from "@/types";
 
