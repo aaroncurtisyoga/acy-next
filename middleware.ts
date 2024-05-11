@@ -1,11 +1,6 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
-export default clerkMiddleware();
-
-// todo: is it possible to add protected routes for things nested in (admin)
-//  path? like /admin/events/create but the /admin won't appear in the URl
-//  because its using Next.js route groups
-const isProtectedRoute = createRouteMatcher([
+const isAuthenticatedRoute = createRouteMatcher([
   "/account",
   "/dashboard",
   "/profile",
@@ -14,6 +9,22 @@ const isProtectedRoute = createRouteMatcher([
   "/events/[id]/edit",
   "/events/orders",
 ]);
+
+const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
+
+export default clerkMiddleware((auth, req) => {
+  // Restrict admin routes to users with specific permissions
+  if (isAdminRoute(req)) {
+    auth().protect((has) => {
+      return (
+        has({ permission: "org:sys_memberships:manage" }) ||
+        has({ permission: "org:sys_domains_manage" })
+      );
+    });
+  }
+  // Restrict organization routes to users that are signed in
+  if (isAuthenticatedRoute(req)) auth().protect();
+});
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
