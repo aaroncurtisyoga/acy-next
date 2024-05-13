@@ -14,7 +14,7 @@ const isAuthenticatedRoute = createRouteMatcher([
 const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
 
 export default clerkMiddleware((auth, req) => {
-  // Restrict admin routes to users with specific permissions
+  // Restrict admin routes to users that are signed in and have the admin role
   if (isAdminRoute(req)) {
     if (auth().sessionClaims?.metadata.role !== "admin") {
       const url = req.nextUrl.clone();
