@@ -4,6 +4,7 @@ import EventCard from "@/components/events/EventCard";
 import EventText from "@/components/events/EventText";
 import Pagination from "@/components/events/Pagination";
 import NoEventsFound from "@/components/events/NoEventsFound";
+import { checkRole } from "@/lib/utils/roles";
 
 export type EventWithLocationAndCategory = Event & {
   location: Location;
@@ -28,7 +29,7 @@ const Collection: FC<CollectionProps> = ({
   urlParamName,
   view = "card",
 }) => {
-  // todo: check if user is admin user org
+  const isAdmin = checkRole("admin");
   return (
     <>
       {data.length > 0 ? (
@@ -38,9 +39,9 @@ const Collection: FC<CollectionProps> = ({
               return (
                 <li key={event.id}>
                   {view === "text" ? (
-                    <EventText event={event} isAdmin={true} />
+                    <EventText event={event} isAdmin={isAdmin} />
                   ) : (
-                    <EventCard event={event} isAdmin={true} />
+                    <EventCard event={event} isAdmin={isAdmin} />
                   )}
                 </li>
               );
