@@ -1,4 +1,5 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
+import { NextResponse } from "next/server";
 
 const isAuthenticatedRoute = createRouteMatcher([
   "/account",
@@ -15,12 +16,14 @@ const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
 export default clerkMiddleware((auth, req) => {
   // Restrict admin routes to users with specific permissions
   if (isAdminRoute(req)) {
-    auth().protect((has) => {
-      return has({ permission: "org:sys_memberships:manage" });
-    });
+    if (auth().sessionClaims?.metadata.role !== "admin") {
+      return NextResponse.redirect("/"); // or replace with preferred redirect location
+    }
   }
   // Restrict organization routes to users that are signed in
   if (isAuthenticatedRoute(req)) auth().protect();
+
+  return NextResponse.next();
 });
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
