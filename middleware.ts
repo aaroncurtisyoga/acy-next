@@ -13,25 +13,20 @@ const isAuthenticatedRoute = createRouteMatcher([
 
 const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
 
-export default clerkMiddleware(
-  (auth, req) => {
-    console.log("clerkMiddleware");
-    // Restrict admin routes to users with specific permissions
-    if (isAdminRoute(req)) {
-      console.log("role", auth().sessionClaims?.metadata.role);
-      if (auth().sessionClaims?.metadata.role !== "admin") {
-        const url = req.nextUrl.clone();
-        url.pathname = "/";
-        return NextResponse.rewrite(url);
-      }
+export default clerkMiddleware((auth, req) => {
+  // Restrict admin routes to users with specific permissions
+  if (isAdminRoute(req)) {
+    if (auth().sessionClaims?.metadata.role !== "admin") {
+      const url = req.nextUrl.clone();
+      url.pathname = "/";
+      return NextResponse.rewrite(url);
     }
-    // Restrict organization routes to users that are signed in
-    if (isAuthenticatedRoute(req)) auth().protect();
+  }
+  // Restrict organization routes to users that are signed in
+  if (isAuthenticatedRoute(req)) auth().protect();
 
-    return NextResponse.next();
-  },
-  { debug: true },
-);
+  return NextResponse.next();
+});
 export const config = {
   matcher: ["/((?!.*\\..*|_next).*)", "/", "/(api|trpc)(.*)"],
 };
