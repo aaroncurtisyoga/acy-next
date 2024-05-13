@@ -1,6 +1,4 @@
-import { redirect } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs/server";
-import { checkRole } from "@/lib/utils";
 import SearchUsers from "@/components/admin/SearchUsers";
 import { setRole } from "@/app/admin/actions";
 import ManageEventCategories from "@/components/admin/ManageEventCategories";
@@ -9,11 +7,6 @@ import CreateEventButton from "@/components/shared/CreateEventButton";
 export default async function AdminDashboard(params: {
   searchParams: { search?: string };
 }) {
-  // If the user does not have the admin role, redirect them to the home page
-  if (!checkRole("admin")) {
-    redirect("/");
-  }
-
   const query = params.searchParams.search;
   const users = query ? await clerkClient.users.getUserList({ query }) : [];
 
