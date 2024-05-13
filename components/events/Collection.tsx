@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Category, Event, Location } from "@prisma/client";
-import { checkRole } from "@/lib/utils";
 import EventCard from "@/components/events/EventCard";
 import EventText from "@/components/events/EventText";
 import Pagination from "@/components/events/Pagination";
@@ -29,8 +28,7 @@ const Collection: FC<CollectionProps> = ({
   urlParamName,
   view = "card",
 }) => {
-  const isAdmin = checkRole("admin");
-
+  // todo: check if user is admin user org
   return (
     <>
       {data.length > 0 ? (
@@ -40,9 +38,9 @@ const Collection: FC<CollectionProps> = ({
               return (
                 <li key={event.id}>
                   {view === "text" ? (
-                    <EventText event={event} isAdmin={isAdmin} />
+                    <EventText event={event} isAdmin={true} />
                   ) : (
-                    <EventCard event={event} isAdmin={isAdmin} />
+                    <EventCard event={event} isAdmin={true} />
                   )}
                 </li>
               );

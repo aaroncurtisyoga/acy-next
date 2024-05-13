@@ -3,7 +3,7 @@
 import { useRouter, useParams } from "next/navigation";
 import React, { FC, useEffect } from "react";
 import { Event } from "@prisma/client";
-import { checkRole, handleError } from "@/lib/utils";
+import { handleError } from "@/lib/utils";
 import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
 import { getEventById } from "@/lib/actions/event.actions";
 import { useAppDispatch } from "@/lib/redux/hooks";
@@ -25,11 +25,7 @@ const UpdateEvent: FC = () => {
       }
     };
 
-    if (!checkRole("admin")) {
-      router.push("/");
-    } else {
-      fetchEvent();
-    }
+    fetchEvent();
   }, [dispatch, id, router]);
 
   return (
