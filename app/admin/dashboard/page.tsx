@@ -2,7 +2,7 @@ import { redirect } from "next/navigation";
 import { clerkClient } from "@clerk/nextjs/server";
 import { checkRole } from "@/lib/utils";
 import SearchUsers from "@/components/admin/SearchUsers";
-import { setRole } from "@/app/(admin)/actions";
+import { setRole } from "@/app/admin/actions";
 import ManageEventCategories from "@/components/admin/ManageEventCategories";
 import CreateEventButton from "@/components/shared/CreateEventButton";
 
