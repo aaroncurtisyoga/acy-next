@@ -20,8 +20,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   return (
     <div
       className={
-        "px-unit-5 py-unit-5 md:py-unit-8" +
-        " md:px-unit-16 md:py-unit-10 min-h-[50dvh] md:min-h-auto"
+        "px-5 py-5 md:py-8" + " md:px-16 md:py-10 min-h-[50dvh] md:min-h-auto"
       }
     >
       <h1 className={"text-3xl mb-4 md:text-7xl md:mb-6"}>Practice.</h1>

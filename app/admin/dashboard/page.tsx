@@ -9,9 +9,9 @@ export default async function AdminDashboard(params: {
   return (
     <div className={"wrapper"}>
       <h1 className={"text-large"}>Admin Dashboard</h1>
-      <hr className={"my-unit-6"} />
+      <hr className={"my-6"} />
       <ManageEventCategories />
-      <hr className={"my-unit-6"} />
+      <hr className={"my-6"} />
       <CreateEventButton />
     </div>
   );

@@ -38,7 +38,7 @@ const EventPage: FC<SearchParamProps> = async ({ params: { id } }) => {
   }
 
   return (
-    <section className="flex flex-col w-full md:items-center pb-unit-10 gap-3">
+    <section className="flex flex-col w-full md:items-center pb-10 gap-3">
       <Hero imageUrl={event.imageUrl} />
       <Subheading
         category={event.category.name}

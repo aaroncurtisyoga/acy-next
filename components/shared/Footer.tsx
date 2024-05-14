@@ -7,11 +7,11 @@ import { instructorEmailAddress } from "@/constants";
 
 const Footer = () => {
   return (
-    <footer className={"border-t py-unit-6 bg-zinc-50"}>
+    <footer className={"border-t py-6 bg-zinc-50"}>
       <div
         className={
           "wrapper-width flex flex-col justify-center md:flex-row" +
-          " md:justify-between md:items-start *:flex-1 gap-unit-8 md:gap-0"
+          " md:justify-between md:items-start *:flex-1 gap-8 md:gap-0"
         }
       >
         <div className={"flex justify-center"}>
@@ -42,8 +42,7 @@ const Footer = () => {
         </div>
         <div
           className={
-            "text-center md:text-end *:mb-unit-4 *:md:mb-unit-2" +
-            " *:text-tiny"
+            "text-center md:text-end *:mb-4 *:md:mb-2" + " *:text-tiny"
           }
         >
           <p>© {new Date().getFullYear()} All Rights Reserved</p>

@@ -58,7 +58,7 @@ const ManageEventCategories: FC = () => {
           );
         }}
       />
-      <Button color={"primary"} type="submit" className={"my-unit-3"}>
+      <Button color={"primary"} type="submit" className={"my-3"}>
         Add Category
       </Button>
       {isSubmitSuccessful && <p>Category added successfully</p>}

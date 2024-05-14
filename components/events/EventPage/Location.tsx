@@ -17,10 +17,10 @@ const Location: FC<LocationProps> = ({ location }) => {
       <div className={"flex gap-4"}>
         <MapPin size={14} className={"mt-1"} />
         <div className={"text-sm"}>
-          <p className={"mb-unit-2"}>
+          <p className={"mb-2"}>
             <b>{location.name}</b>
           </p>
-          <p className={"mb-unit-2"}>{location.formattedAddress}</p>
+          <p className={"mb-2"}>{location.formattedAddress}</p>
           <Accordion className={"p-0"}>
             <AccordionItem
               key="1"

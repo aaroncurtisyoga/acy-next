@@ -29,7 +29,7 @@ const FilterEvents = ({ hasFiltersApplied }: FilterModalProps) => {
               <ModalHeader className="flex flex-col gap-1 text-xl">
                 Search Filters
               </ModalHeader>
-              <ModalBody className={"mb-unit-10"}>
+              <ModalBody className={"mb-10"}>
                 <Search className={"mb-4"} />
                 <CategoryButtons />
               </ModalBody>
