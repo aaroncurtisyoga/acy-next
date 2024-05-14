@@ -83,7 +83,7 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event }) => {
     };
 
     dispatch(setFormData(payload));
-    router.push("/events/create/details");
+    router.push("/admin/events/create/details");
   };
 
   return (

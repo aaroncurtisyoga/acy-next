@@ -52,7 +52,7 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
 
   const onSubmit = async (data) => {
     dispatch(setFormData(data));
-    router.push("/events/create/submit");
+    router.push("/admin/events/create/submit");
   };
 
   return (
