@@ -3,12 +3,9 @@ import { NextResponse } from "next/server";
 
 const isAuthenticatedRoute = createRouteMatcher([
   "/account",
-  "/dashboard",
+  "/admin/(.*)",
   "/profile",
   "/settings",
-  "/events/create",
-  "/events/[id]/edit",
-  "/events/orders",
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
