@@ -18,7 +18,11 @@ export async function createEvent({ event, path }) {
       data: {
         ...event,
         ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
-        category: event.categoryId,
+        category: {
+          connect: {
+            id: event.categoryId,
+          },
+        },
       },
     });
     revalidatePath(path);
