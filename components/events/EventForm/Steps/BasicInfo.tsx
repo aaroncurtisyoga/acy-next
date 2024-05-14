@@ -60,8 +60,8 @@ const BasicInfo: FC<EventFormStepOneProps> = ({ event }) => {
     (placeDetails: PlaceDetails) => {
       setValue("location", {
         formattedAddress: placeDetails.formattedAddress,
-        lat: placeDetails.geometry.lat,
-        lng: placeDetails.geometry.lng,
+        lat: placeDetails.lat,
+        lng: placeDetails.lng,
         name: placeDetails.name,
         placeId: placeDetails.placeId,
       });

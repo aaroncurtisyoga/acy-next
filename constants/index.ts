@@ -23,10 +23,8 @@ export const eventFormBasicInfoDefaultValues = {
   isHostedExternally: false,
   location: {
     formattedAddress: "",
-    geometry: {
-      lat: 0,
-      lng: 0,
-    },
+    lat: 0,
+    lng: 0,
     name: "",
     placeId: "",
   },

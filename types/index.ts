@@ -77,10 +77,8 @@ export interface TravelOption {
 
 export type PlaceDetails = {
   formattedAddress: string;
-  geometry: {
-    lat: number;
-    lng: number;
-  };
+  lat: number;
+  lng: number;
   name: string;
   placeId: string;
 };
