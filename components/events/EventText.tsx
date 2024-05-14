@@ -1,8 +1,8 @@
 "use client";
 
+import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { FC } from "react";
-import { Link as NextUiLink } from "@nextui-org/react";
 import EventAdminButtons from "@/components/events/EventAdminButtons";
 import { EventWithLocationAndCategory } from "@/components/events/Collection";
 import { formatDateTime } from "@/lib/utils";
@@ -18,6 +18,7 @@ const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
 
   const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
   const formattedTime = formatDateTime(startDateTime).timeOnly;
+
   const signUpHref = event.isHostedExternally
     ? event.externalRegistrationUrl
     : `/events/${id}`;
@@ -26,13 +27,15 @@ const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
     <>
       <p className={"text-base text-default-900 md:text-lg mb-4"}>
         {formattedDate} - {formattedTime} - {title} at {event.location.name} -{" "}
-        <NextUiLink
-          className={"italic cursor-pointer text-default-900"}
+        <Link
+          className={
+            "italic underline cursor-pointer" +
+            " text-primary hover:text-primary-700"
+          }
           href={signUpHref}
-          underline="always"
         >
           Sign Up
-        </NextUiLink>
+        </Link>
       </p>
       {isAdmin && <EventAdminButtons id={id} pathname={pathname} />}
     </>
