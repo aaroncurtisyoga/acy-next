@@ -20,7 +20,17 @@ export async function createEvent({ event, path }) {
         ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
         category: {
           connect: {
-            id: event.categoryId,
+            id: event.category,
+          },
+        },
+        location: {
+          connectOrCreate: {
+            create: {
+              ...event.location,
+            },
+            where: {
+              placeId: event.location.placeId,
+            },
           },
         },
       },

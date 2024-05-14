@@ -29,12 +29,12 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
   return (
     <Controller
       control={control}
-      name={"categoryId"}
+      name={"category"}
       render={({ field }) => (
         <Select
           onChange={(e) => field.onChange(e)}
           disabled={isSubmitting}
-          errorMessage={errors.categoryId?.message}
+          errorMessage={errors.category?.message}
           label={"Category"}
           variant={"bordered"}
           {...field}

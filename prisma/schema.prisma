@@ -67,7 +67,7 @@ model Location {
   lat              Float?
   lng              Float?
   name             String?
-  placeId          String?
+  placeId          String? @unique
   events           Event[]
 }
 
