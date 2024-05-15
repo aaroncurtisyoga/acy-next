@@ -12,6 +12,7 @@ import {
 } from "@nextui-org/react";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
+import Link from "next/link";
 
 interface EventHistoryTableProps {
   orders: OrderResponse;
@@ -35,13 +36,13 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
               <TableCell>
-                <NextUiLink
+                {/* Todo: Replace w/ Next UI link */}
+                <Link
                   href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
-                  className={"text-sm"}
-                  underline={"always"}
+                  className={"text-sm text-blue-600 hover:underline"}
                 >
                   {order.event.title}
-                </NextUiLink>
+                </Link>
               </TableCell>
               <TableCell>{order.id}</TableCell>
             </TableRow>
