@@ -35,7 +35,6 @@ export type CreateOrderParams = {
   buyerId: string;
   createdAt: Date;
   eventId: string;
-  status: string;
   stripeId: string;
   totalAmount: string;
 };
