@@ -12,8 +12,8 @@ import {
 import { handleError } from "../utils";
 
 const prisma = new PrismaClient();
+
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
-  console.log("inside the checkoutOrder function");
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const price = order.isFree ? 0 : Number(order.price) * 100;
 
