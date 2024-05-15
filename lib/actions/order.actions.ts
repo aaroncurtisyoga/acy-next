@@ -13,11 +13,14 @@ import { handleError } from "../utils";
 
 const prisma = new PrismaClient();
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
+  console.log("inside the checkoutOrder function");
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
   const price = order.isFree ? 0 : Number(order.price) * 100;
 
+  let checkoutSession: Stripe.Checkout.Session;
+
   try {
-    const session = await stripe.checkout.sessions.create({
+    checkoutSession = await stripe.checkout.sessions.create({
       line_items: [
         {
           price_data: {
@@ -38,12 +41,11 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
       success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/account`,
       cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
     });
-
-    redirect(session.url!);
   } catch (error) {
     handleError(error);
     throw error;
   }
+  redirect(checkoutSession.url as string);
 };
 
 export const createOrder = async (order: CreateOrderParams) => {
