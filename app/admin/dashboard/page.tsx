@@ -8,7 +8,6 @@ export default async function AdminDashboard(params: {
 
   return (
     <div className={"wrapper"}>
-      <h1 className={"text-large"}>Admin Dashboard</h1>
       <ManageEventCategories />
       <hr className={"my-6"} />
       <CreateEventButton />
