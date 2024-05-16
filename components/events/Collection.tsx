@@ -4,12 +4,12 @@ import EventCard from "@/components/events/EventCard";
 import EventText from "@/components/events/EventText";
 import Pagination from "@/components/events/Pagination";
 import NoEventsFound from "@/components/events/NoEventsFound";
-import { checkRole } from "@/lib/utils/roles";
 
 export type EventWithLocationAndCategory = Event & {
   location: Location;
   category: Category;
 };
+
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";
   data: EventWithLocationAndCategory[];
@@ -29,7 +29,6 @@ const Collection: FC<CollectionProps> = ({
   urlParamName,
   view = "card",
 }) => {
-  const isAdmin = checkRole("admin");
   return (
     <>
       {data.length > 0 ? (
@@ -39,9 +38,9 @@ const Collection: FC<CollectionProps> = ({
               return (
                 <li key={event.id}>
                   {view === "text" ? (
-                    <EventText event={event} isAdmin={isAdmin} />
+                    <EventText event={event} />
                   ) : (
-                    <EventCard event={event} isAdmin={isAdmin} />
+                    <EventCard event={event} />
                   )}
                 </li>
               );

@@ -1,21 +1,16 @@
 "use client";
 
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { FC } from "react";
-import EventAdminButtons from "@/components/events/EventAdminButtons";
 import { EventWithLocationAndCategory } from "@/components/events/Collection";
 import { formatDateTime } from "@/lib/utils";
 
 interface EventTextProps {
-  isAdmin: boolean;
   event: EventWithLocationAndCategory;
 }
 
-const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
-  const pathname = usePathname();
+const EventText: FC<EventTextProps> = ({ event }) => {
   const { id, startDateTime, title } = event;
-
   const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
   const formattedTime = formatDateTime(startDateTime).timeOnly;
 
@@ -37,7 +32,6 @@ const EventText: FC<EventTextProps> = ({ isAdmin, event }) => {
           Sign Up
         </Link>
       </p>
-      {isAdmin && <EventAdminButtons id={id} pathname={pathname} />}
     </>
   );
 };

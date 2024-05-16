@@ -2,19 +2,15 @@
 
 import Image from "next/image";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
 import { FC } from "react";
-import EventAdminButtons from "@/components/events/EventAdminButtons";
 import { formatDateTime } from "@/lib/utils";
 import { EventWithLocationAndCategory } from "@/components/events/Collection";
 
 interface CardProps {
-  isAdmin: boolean;
   event: EventWithLocationAndCategory;
 }
 
-const EventCard: FC<CardProps> = ({ isAdmin, event }) => {
-  const pathname = usePathname();
+const EventCard: FC<CardProps> = ({ event }) => {
   const { id, category, imageUrl, isFree, price, startDateTime, title } = event;
   return (
     <div
@@ -46,7 +42,6 @@ const EventCard: FC<CardProps> = ({ isAdmin, event }) => {
         </p>
         <p className={"md:text-sm mt-1"}>{event.location.name}</p>
       </div>
-      {isAdmin && <EventAdminButtons id={id} pathname={pathname} />}
     </div>
   );
 };
