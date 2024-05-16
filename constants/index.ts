@@ -3,7 +3,7 @@ import { TravelOption } from "@/types";
 
 export const userLinks = [];
 
-export const adminLinks = [{ name: "Admin", href: "/admin/(dashboard)" }];
+export const adminLinks = [{ name: "Admin", href: "/admin/dashboard" }];
 
 export const authenticatedLinks = [{ name: "Account", href: "/account" }];
 
@@ -68,3 +68,8 @@ export const travelOptions: TravelOption[] = [
 ];
 
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
+
+export const adminDashboardLinks = [
+  { name: "Events", path: "/admin/events" },
+  { name: "Categories", path: "/admin/categories" },
+];

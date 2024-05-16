@@ -10,7 +10,7 @@ import { CategoryFormSchema } from "@/lib/schema";
 import { handleError } from "@/lib/utils";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
-const ManageEventCategories: FC = () => {
+const CreateCategory: FC = () => {
   const {
     control,
     handleSubmit,
@@ -66,4 +66,4 @@ const ManageEventCategories: FC = () => {
   );
 };
 
-export default ManageEventCategories;
+export default CreateCategory;

@@ -1,10 +1,16 @@
-import React from "react";
+import { FC } from "react";
+import CreateCategory from "@/app/admin/categories/_components/CreateCategory";
 
-const AdminCategories = () => {
+const AdminCategories: FC = () => {
   return (
     <div>
-      admin categories placeholder - list of categories - create new category -
-      edit category - delete category
+      <h1>Categories</h1>
+      <ul>
+        <CreateCategory />
+        <li>list of categories</li>
+        <li>delete category</li>
+        <li>edit category</li>
+      </ul>
     </div>
   );
 };
