@@ -3,8 +3,8 @@ import CreateCategory from "@/app/admin/categories/_components/CreateCategory";
 
 const AdminCategories: FC = () => {
   return (
-    <div>
-      <h1>Categories</h1>
+    <div className={"wrapper"}>
+      <h1 className={"text-xl mb-5"}>Categories</h1>
       <ul>
         <CreateCategory />
         <li>list of categories</li>
