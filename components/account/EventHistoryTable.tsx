@@ -8,7 +8,6 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  Link as NextUiLink,
 } from "@nextui-org/react";
 import { formatDateTime, formatPrice } from "@/lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
