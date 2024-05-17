@@ -22,8 +22,7 @@ export const createCategory = async ({
 
 export const getAllCategories = async () => {
   try {
-    const categories = await prisma.category.findMany();
-    return JSON.parse(JSON.stringify(categories));
+    return await prisma.category.findMany();
   } catch (error) {
     handleError(error);
   }
