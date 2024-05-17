@@ -9,12 +9,11 @@ export const createCategory = async ({
   categoryName,
 }: CreateCategoryParams) => {
   try {
-    const newCategory = await prisma.category.create({
+    return await prisma.category.create({
       data: {
         name: categoryName,
       },
     });
-    return JSON.parse(JSON.stringify(newCategory));
   } catch (error) {
     handleError(error);
   }
