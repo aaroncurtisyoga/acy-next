@@ -3,7 +3,7 @@ import { TravelOption } from "@/types";
 
 export const userLinks = [];
 
-export const adminLinks = [{ name: "Admin", href: "/admin/dashboard" }];
+export const adminLinks = [{ name: "Admin", href: "/admin" }];
 
 export const authenticatedLinks = [{ name: "Account", href: "/account" }];
 
