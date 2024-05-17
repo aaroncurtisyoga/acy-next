@@ -62,7 +62,7 @@ const CreateCategory: FC = () => {
             {(onClose) => (
               <>
                 <ModalHeader className="flex flex-col gap-1">
-                  Modal Title
+                  Create Category
                 </ModalHeader>
                 <ModalBody>
                   <Controller
@@ -83,7 +83,7 @@ const CreateCategory: FC = () => {
                   />
                 </ModalBody>
                 <ModalFooter>
-                  <Button color="danger" variant="light" onPress={onClose}>
+                  <Button color="danger" onPress={onClose}>
                     Close
                   </Button>
                   <Button color="primary" onPress={onClose} type="submit">
