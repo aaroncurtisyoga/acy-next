@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import React, { Dispatch, FC, SetStateAction } from "react";
 import {
   Button,
   Modal,
@@ -15,20 +15,22 @@ interface ModalToDeleteCategoryProps {
   category: Category;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
-  removeCategoryFromState: (categoryId: string) => void;
+  setCategories: Dispatch<SetStateAction<Category[]>>;
 }
 
 const ModalToDeleteCategory: FC<ModalToDeleteCategoryProps> = ({
   category,
   isOpen,
   onOpenChange,
-  removeCategoryFromState,
+  setCategories,
 }) => {
   const handleDeleteCategory = async (categoryId: string) => {
     try {
       const result = await deleteCategory(categoryId);
       if (result.status) {
-        removeCategoryFromState(categoryId);
+        setCategories((prev) =>
+          prev.filter((category) => category.id !== categoryId),
+        );
         onOpenChange(false);
       }
     } catch (error) {

@@ -6,7 +6,7 @@ import CategoryManagementTable from "@/app/admin/categories/_components/Category
 import { getAllCategories } from "@/lib/actions/category.actions";
 import { Category } from "@prisma/client";
 
-const AdminCategories: FC = async () => {
+const AdminCategories: FC = () => {
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -17,19 +17,14 @@ const AdminCategories: FC = async () => {
     fetchCategories();
   }, []);
 
-  const removeCategoryFromState = (categoryId: string) => {
-    setCategories(categories.filter((category) => category.id !== categoryId));
-  };
-
-  const addCategoryToState = (category: Category) => {
-    setCategories([...categories, category]);
-  };
-
   return (
     <div className={"wrapper"}>
       <h1 className={"text-xl mb-5"}>Categories</h1>
       <CreateCategory setCategories={setCategories} />
-      {/*     <CategoryManagementTable />*/}
+      <CategoryManagementTable
+        categories={categories}
+        setCategories={setCategories}
+      />
     </div>
   );
 };

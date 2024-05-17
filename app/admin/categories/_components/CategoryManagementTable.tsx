@@ -1,5 +1,5 @@
 "use client";
-import { FC, useEffect, useState } from "react";
+import { Dispatch, FC, SetStateAction, useEffect, useState } from "react";
 import {
   Button,
   Table,
@@ -13,7 +13,15 @@ import {
 import { Category } from "@prisma/client";
 import ModalToDeleteCategory from "@/app/admin/categories/_components/ModalToDeleteCategory";
 
-const CategoryManagementTable: FC = () => {
+interface CategoryManagementTableProps {
+  categories: Category[];
+  setCategories: Dispatch<SetStateAction<Category[]>>;
+}
+
+const CategoryManagementTable: FC<CategoryManagementTableProps> = ({
+  categories,
+  setCategories,
+}) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [categoryToDelete, setCategoryToDelete] = useState<Category>();
 
@@ -50,7 +58,7 @@ const CategoryManagementTable: FC = () => {
       </Table>
       <ModalToDeleteCategory
         category={categoryToDelete}
-        removeCategoryFromState={removeCategoryFromState}
+        setCategories={setCategories}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       />
