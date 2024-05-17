@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import CreateCategory from "@/app/admin/categories/_components/CreateCategory";
-import CategoryManagementTable from "@/app/admin/categories/_components/CategoryManagementTable";
+import TableCategoryManagement from "@/app/admin/categories/_components/TableCategoryManagement";
 import { getAllCategories } from "@/lib/actions/category.actions";
 import { Category } from "@prisma/client";
 
@@ -21,7 +21,7 @@ const AdminCategories: FC = () => {
     <div className={"wrapper"}>
       <h1 className={"text-xl mb-5"}>Categories</h1>
       <CreateCategory setCategories={setCategories} />
-      <CategoryManagementTable
+      <TableCategoryManagement
         categories={categories}
         setCategories={setCategories}
       />

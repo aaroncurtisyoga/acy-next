@@ -18,7 +18,7 @@ interface CategoryManagementTableProps {
   setCategories: Dispatch<SetStateAction<Category[]>>;
 }
 
-const CategoryManagementTable: FC<CategoryManagementTableProps> = ({
+const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
   categories,
   setCategories,
 }) => {
@@ -65,4 +65,4 @@ const CategoryManagementTable: FC<CategoryManagementTableProps> = ({
     </>
   );
 };
-export default CategoryManagementTable;
+export default TableCategoryManagement;
