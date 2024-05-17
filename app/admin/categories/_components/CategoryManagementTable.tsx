@@ -1,13 +1,7 @@
 "use client";
-
 import { FC, useEffect, useState } from "react";
 import {
   Button,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
   Table,
   TableBody,
   TableCell,
@@ -18,9 +12,11 @@ import {
 } from "@nextui-org/react";
 import { Category } from "@prisma/client";
 import { getAllCategories } from "@/lib/actions/category.actions";
+import ModalToDeleteCategory from "@/app/admin/categories/_components/ModalToDeleteCategory";
 
 const CategoryManagementTable: FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [categoryToDelete, setCategoryToDelete] = useState<Category>();
   const [categories, setCategories] = useState<Category[]>([]);
 
   useEffect(() => {
@@ -28,7 +24,6 @@ const CategoryManagementTable: FC = () => {
       const data = await getAllCategories();
       setCategories(data);
     };
-
     fetchCategories();
   }, []);
 
@@ -49,7 +44,13 @@ const CategoryManagementTable: FC = () => {
               <TableCell>{category.id}</TableCell>
               <TableCell>{category.name}</TableCell>
               <TableCell>
-                <Button size={"sm"} onPress={onOpen}>
+                <Button
+                  size={"sm"}
+                  onPress={() => {
+                    onOpen();
+                    setCategoryToDelete(category);
+                  }}
+                >
                   Delete
                 </Button>
               </TableCell>
@@ -57,29 +58,12 @@ const CategoryManagementTable: FC = () => {
           ))}
         </TableBody>
       </Table>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader>Delete Category</ModalHeader>
-              <ModalBody>
-                <p>Are you sure you want to delete this Category?</p>
-                <p>INSERT CATEGORY NAME HERE</p>
-              </ModalBody>
-              <ModalFooter>
-                <Button color="default" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button color="primary" onPress={onClose} type="submit">
-                  Delete
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <ModalToDeleteCategory
+        category={categoryToDelete}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+      />
     </>
   );
 };
-
 export default CategoryManagementTable;
