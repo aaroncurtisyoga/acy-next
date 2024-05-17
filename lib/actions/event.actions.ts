@@ -36,7 +36,7 @@ export async function createEvent({ event, path }) {
       },
     });
     revalidatePath(path);
-    return JSON.parse(JSON.stringify(newEvent));
+    return newEvent;
   } catch (error) {
     handleError(error);
   }
@@ -167,16 +167,6 @@ export async function getEventById(eventId: string) {
     handleError(error);
   }
 }
-const populateEvent = (query: any) => {
-  return query.select({
-    category: {
-      select: {
-        id: true,
-        name: true,
-      },
-    },
-  });
-};
 
 export async function updateEvent({ event, path }) {
   try {
