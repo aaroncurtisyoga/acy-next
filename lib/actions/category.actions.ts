@@ -19,6 +19,18 @@ export const createCategory = async ({
   }
 };
 
+export const deleteCategory = async (categoryId: string) => {
+  try {
+    return await prisma.category.delete({
+      where: {
+        id: categoryId,
+      },
+    });
+  } catch (error) {
+    handleError(error);
+  }
+};
+
 export const getAllCategories = async () => {
   try {
     return await prisma.category.findMany();
