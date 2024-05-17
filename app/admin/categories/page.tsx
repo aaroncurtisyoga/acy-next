@@ -1,5 +1,6 @@
 import { FC } from "react";
 import CreateCategory from "@/app/admin/categories/_components/CreateCategory";
+import CategoryManagementTable from "@/app/admin/categories/_components/CategoryManagementTable";
 
 const AdminCategories: FC = () => {
   return (
@@ -7,9 +8,7 @@ const AdminCategories: FC = () => {
       <h1 className={"text-xl mb-5"}>Categories</h1>
       <ul>
         <CreateCategory />
-        <li>list of categories</li>
-        <li>delete category</li>
-        <li>edit category</li>
+        <CategoryManagementTable />
       </ul>
     </div>
   );
