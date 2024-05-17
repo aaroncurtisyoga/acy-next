@@ -11,21 +11,11 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Category } from "@prisma/client";
-import { getAllCategories } from "@/lib/actions/category.actions";
 import ModalToDeleteCategory from "@/app/admin/categories/_components/ModalToDeleteCategory";
 
 const CategoryManagementTable: FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [categoryToDelete, setCategoryToDelete] = useState<Category>();
-  const [categories, setCategories] = useState<Category[]>([]);
-
-  useEffect(() => {
-    const fetchCategories = async () => {
-      const data = await getAllCategories();
-      setCategories(data);
-    };
-    fetchCategories();
-  }, []);
 
   return (
     <>
@@ -60,6 +50,7 @@ const CategoryManagementTable: FC = () => {
       </Table>
       <ModalToDeleteCategory
         category={categoryToDelete}
+        removeCategoryFromState={removeCategoryFromState}
         isOpen={isOpen}
         onOpenChange={onOpenChange}
       />

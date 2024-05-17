@@ -1,6 +1,5 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
 import { PrismaClient } from "@prisma/client";
 import { handleError } from "@/lib/utils";
 import { CreateCategoryParams } from "@/types";
@@ -10,27 +9,32 @@ export const createCategory = async ({
   categoryName,
 }: CreateCategoryParams) => {
   try {
-    return await prisma.category.create({
+    const newCategory = await prisma.category.create({
       data: {
         name: categoryName,
       },
     });
+    return {
+      status: true,
+      newCategory,
+    };
   } catch (error) {
     handleError(error);
+    return { status: false };
   }
 };
 
-export const deleteCategory = async (categoryId: string, path) => {
+export const deleteCategory = async (categoryId: string) => {
   try {
     const deletedCategory = await prisma.category.delete({
       where: {
         id: categoryId,
       },
     });
-    revalidatePath(path);
-    return deletedCategory;
+    return { status: true, deletedCategory };
   } catch (error) {
     handleError(error);
+    return { status: false };
   }
 };
 

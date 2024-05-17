@@ -15,16 +15,22 @@ interface ModalToDeleteCategoryProps {
   category: Category;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  removeCategoryFromState: (categoryId: string) => void;
 }
 
 const ModalToDeleteCategory: FC<ModalToDeleteCategoryProps> = ({
   category,
   isOpen,
   onOpenChange,
+  removeCategoryFromState,
 }) => {
   const handleDeleteCategory = async (categoryId: string) => {
     try {
-      await deleteCategory(categoryId);
+      const result = await deleteCategory(categoryId);
+      if (result.status) {
+        removeCategoryFromState(categoryId);
+        onOpenChange(false);
+      }
     } catch (error) {
       handleError(error);
     }

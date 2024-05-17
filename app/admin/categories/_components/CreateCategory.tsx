@@ -1,7 +1,7 @@
 "use client";
 
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
-import { FC } from "react";
+import { Dispatch, FC, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import {
   Button,
@@ -15,12 +15,18 @@ import {
 } from "@nextui-org/react";
 import { CirclePlus } from "lucide-react";
 import { z } from "zod";
+import { Category } from "@prisma/client";
 import { createCategory } from "@/lib/actions/category.actions";
 import { CategoryFormSchema } from "@/lib/schema";
 import { handleError } from "@/lib/utils";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
-const CreateCategory: FC = () => {
+
+interface CreateCategoryProps {
+  setCategories: Dispatch<SetStateAction<Category[]>>;
+}
+
+const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     control,
@@ -37,9 +43,12 @@ const CreateCategory: FC = () => {
 
   const handleAddCategory: SubmitHandler<Inputs> = async (data) => {
     try {
-      await createCategory({
+      const result = await createCategory({
         categoryName: data.category.trim(),
       });
+      if (result.status) {
+        setCategories((prev) => [...prev, result.newCategory]);
+      }
       reset();
     } catch (e) {
       handleError("Error creating category", e);
