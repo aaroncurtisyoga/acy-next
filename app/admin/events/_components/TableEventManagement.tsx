@@ -68,7 +68,9 @@ const TableEventManagement: FC = () => {
                 </Tooltip>
                 <Tooltip content={"Edit"}>
                   <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
-                    <Pencil size={16} />
+                    <Link href={`/admin/events/${event.id}/edit`}>
+                      <Pencil size={16} />
+                    </Link>
                   </span>
                 </Tooltip>
                 <Tooltip content={"Delete"}>
