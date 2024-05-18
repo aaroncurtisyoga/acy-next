@@ -7,6 +7,7 @@ import { handleError } from "@/lib/utils";
 import {
   DeleteEventParams,
   GetAllEventsParams,
+  GetAllEventsResponse,
   GetRelatedEventsByCategoryParams,
 } from "@/types";
 
@@ -73,7 +74,7 @@ export async function getAllEvents({
   limit = 8,
   page,
   category,
-}: GetAllEventsParams) {
+}: GetAllEventsParams): Promise<GetAllEventsResponse> {
   try {
     const titleCondition = query ? { title: { contains: query } } : {};
     const categoryCondition = category
