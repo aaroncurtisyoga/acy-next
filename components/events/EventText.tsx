@@ -2,8 +2,8 @@
 
 import Link from "next/link";
 import { FC } from "react";
-import { EventWithLocationAndCategory } from "@/components/events/Collection";
 import { formatDateTime } from "@/lib/utils";
+import { EventWithLocationAndCategory } from "@/types";
 
 interface EventTextProps {
   event: EventWithLocationAndCategory;
