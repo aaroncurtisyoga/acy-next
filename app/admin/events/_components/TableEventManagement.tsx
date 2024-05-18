@@ -8,9 +8,11 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
+  Tooltip,
 } from "@nextui-org/react";
 import { getAllEvents } from "@/lib/actions/event.actions";
 import { formatDateTime, handleError } from "@/lib/utils";
+import { Eye, Pencil, Trash2 } from "lucide-react";
 
 const TableEventManagement: FC = () => {
   // todo: consider creating a custom hook for this data fetching & pagination
@@ -44,6 +46,7 @@ const TableEventManagement: FC = () => {
         <TableColumn>Start Date</TableColumn>
         <TableColumn>Name</TableColumn>
         <TableColumn>Category</TableColumn>
+        <TableColumn>Actions</TableColumn>
       </TableHeader>
       <TableBody>
         {events.map((event) => (
@@ -53,6 +56,25 @@ const TableEventManagement: FC = () => {
             </TableCell>
             <TableCell>{event.title}</TableCell>
             <TableCell>{event.category.name}</TableCell>
+            <TableCell>
+              <div className="flex items-center gap-3">
+                <Tooltip content={"View"}>
+                  <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                    <Eye size={16} />
+                  </span>
+                </Tooltip>
+                <Tooltip content={"Edit"}>
+                  <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
+                    <Pencil size={16} />
+                  </span>
+                </Tooltip>
+                <Tooltip content={"Delete"}>
+                  <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
+                    <Trash2 size={16} />
+                  </span>
+                </Tooltip>
+              </div>
+            </TableCell>
           </TableRow>
         ))}
       </TableBody>
