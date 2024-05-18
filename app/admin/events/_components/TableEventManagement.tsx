@@ -13,6 +13,7 @@ import {
 import { getAllEvents } from "@/lib/actions/event.actions";
 import { formatDateTime, handleError } from "@/lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
+import Link from "next/link";
 
 const TableEventManagement: FC = () => {
   // todo: consider creating a custom hook for this data fetching & pagination
@@ -60,7 +61,9 @@ const TableEventManagement: FC = () => {
               <div className="flex items-center gap-3">
                 <Tooltip content={"View"}>
                   <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                    <Eye size={16} />
+                    <Link href={`/events/${event.id}`}>
+                      <Eye size={16} />
+                    </Link>
                   </span>
                 </Tooltip>
                 <Tooltip content={"Edit"}>
