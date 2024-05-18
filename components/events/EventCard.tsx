@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
 import { formatDateTime } from "@/lib/utils";
-import { EventWithLocationAndCategory } from "@/components/events/Collection";
+import { EventWithLocationAndCategory } from "@/types";
 
 interface CardProps {
   event: EventWithLocationAndCategory;
