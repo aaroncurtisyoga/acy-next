@@ -1,3 +1,5 @@
+import { Category, Event, Location } from "@prisma/client";
+
 export type DeleteEventParams = {
   eventId: string;
   path: string;
@@ -81,3 +83,14 @@ export type PlaceDetails = {
   name: string;
   placeId: string;
 };
+
+export type EventWithLocationAndCategory = Event & {
+  location: Location;
+  category: Category;
+};
+
+export interface GetAllEventsResponse {
+  data: EventWithLocationAndCategory[];
+  totalPages: number;
+  hasFiltersApplied: boolean;
+}
