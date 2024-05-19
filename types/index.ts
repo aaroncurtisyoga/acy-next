@@ -1,10 +1,5 @@
 import { Category, Event, Location } from "@prisma/client";
 
-export type DeleteEventParams = {
-  eventId: string;
-  path: string;
-};
-
 export type GetAllEventsParams = {
   query: string;
   category: string;

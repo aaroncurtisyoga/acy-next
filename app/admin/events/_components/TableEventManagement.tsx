@@ -11,7 +11,7 @@ import {
   Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
-import { getAllEvents } from "@/lib/actions/event.actions";
+import { deleteEvent, getAllEvents } from "@/lib/actions/event.actions";
 import { formatDateTime, handleError } from "@/lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
@@ -45,6 +45,12 @@ const TableEventManagement: FC = () => {
     fetchEvents();
   }, [page, searchText, category]);
 
+  const handleDeleteEvent = async () => {
+    const response = await deleteEvent(selectedEvent.id);
+    if (response.success) {
+      setEvents(events.filter((event) => event.id !== selectedEvent.id));
+    }
+  };
   return (
     <>
       <Table aria-label={"Table for Managing Events"} className={"mt-5"}>
@@ -99,6 +105,7 @@ const TableEventManagement: FC = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         header={<h1>Confirm deletion for this event</h1>}
+        primaryAction={handleDeleteEvent}
         primaryActionLabel={"Delete"}
       >
         {selectedEvent && (

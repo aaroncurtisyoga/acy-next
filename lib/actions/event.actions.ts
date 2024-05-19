@@ -5,7 +5,6 @@ import { revalidatePath } from "next/cache";
 import { handleError } from "@/lib/utils";
 
 import {
-  DeleteEventParams,
   GetAllEventsParams,
   GetAllEventsResponse,
   GetRelatedEventsByCategoryParams,
@@ -43,14 +42,19 @@ export async function createEvent({ event, path }) {
   }
 }
 
-export async function deleteEvent({ eventId, path }: DeleteEventParams) {
+export async function deleteEvent(
+  eventId: string,
+): Promise<{ success: boolean }> {
   try {
     const deletedEvent = await prisma.event.delete({
       where: { id: eventId },
     });
-    if (deletedEvent) revalidatePath(path);
+    if (deletedEvent) {
+      return { success: true };
+    }
   } catch (error) {
     handleError(error);
+    return { success: false };
   }
 }
 
