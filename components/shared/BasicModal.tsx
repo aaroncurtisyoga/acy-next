@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React, { FC } from "react";
 import {
   Button,
   Modal,
@@ -8,26 +8,26 @@ import {
   ModalHeader,
 } from "@nextui-org/react";
 
-// I think that the parent would have this:
-// const { isOpen, onOpen, onOpenChange } = useDisclosure();
-
 interface BasicModalProps {
+  children?: React.ReactNode;
+  header?: string | React.ReactNode;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
 }
 
-const BasicModal: FC<BasicModalProps> = ({ isOpen, onOpenChange }) => {
+const BasicModal: FC<BasicModalProps> = ({
+  children,
+  header,
+  isOpen,
+  onOpenChange,
+}) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
       <ModalContent>
         {(onClose) => (
           <>
-            <ModalHeader>
-              <p>todo: modal header and stuff here</p>
-            </ModalHeader>
-            <ModalBody>
-              <p>modal body stuff here</p>
-            </ModalBody>
+            {header && <ModalHeader>{header}</ModalHeader>}
+            <ModalBody>{children}</ModalBody>
             <ModalFooter>
               <Button color="default" onPress={onClose}>
                 Cancel
