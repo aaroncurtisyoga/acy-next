@@ -48,7 +48,10 @@ const TableEventManagement: FC = () => {
   const handleDeleteEvent = async () => {
     const response = await deleteEvent(selectedEvent.id);
     if (response.success) {
+      onOpenChange();
       setEvents(events.filter((event) => event.id !== selectedEvent.id));
+    } else {
+      //   todo: Toast notification saying there was an error or put in modal
     }
   };
   return (
