@@ -21,6 +21,7 @@ model Order {
 
 model Event {
   id                     String    @id @default(uuid())
+  isActive               Boolean   @default(true)
   createdAt              DateTime  @default(now())
   description            String?
   endDateTime            DateTime  @default(now())
@@ -76,4 +77,5 @@ model Category {
   name String @unique
   events Event[]
 }
+
 
