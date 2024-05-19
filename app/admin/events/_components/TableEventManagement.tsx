@@ -75,7 +75,7 @@ const TableEventManagement: FC = () => {
                 </Tooltip>
                 <Tooltip content={"Delete"}>
                   <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
-                    <Trash2 size={16} />
+                    <Trash2 size={16} onClick={() => {}} />
                   </span>
                 </Tooltip>
               </div>
