@@ -13,6 +13,8 @@ interface BasicModalProps {
   header?: string | React.ReactNode;
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
+  primaryAction?: () => void;
+  primaryActionLabel: string;
 }
 
 const BasicModal: FC<BasicModalProps> = ({
@@ -20,6 +22,8 @@ const BasicModal: FC<BasicModalProps> = ({
   header,
   isOpen,
   onOpenChange,
+  primaryAction,
+  primaryActionLabel,
 }) => {
   return (
     <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
@@ -32,7 +36,11 @@ const BasicModal: FC<BasicModalProps> = ({
               <Button color="default" onPress={onClose}>
                 Cancel
               </Button>
-              <p>todo: modal buttons and stuff here</p>
+              {primaryAction && (
+                <Button color="primary" onPress={primaryAction}>
+                  {primaryActionLabel}
+                </Button>
+              )}
             </ModalFooter>
           </>
         )}

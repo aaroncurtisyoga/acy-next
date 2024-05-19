@@ -99,6 +99,7 @@ const TableEventManagement: FC = () => {
         isOpen={isOpen}
         onOpenChange={onOpenChange}
         header={<h1>Confirm deletion for this event</h1>}
+        primaryActionLabel={"Delete"}
       >
         {selectedEvent && (
           <div>
