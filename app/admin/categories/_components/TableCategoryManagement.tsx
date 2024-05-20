@@ -11,7 +11,9 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Category } from "@prisma/client";
-import ModalToDeleteCategory from "@/app/admin/categories/_components/ModalToDeleteCategory";
+import BasicModal from "@/components/shared/BasicModal";
+import { deleteCategory } from "@/lib/actions/category.actions";
+import { handleError } from "@/lib/utils";
 
 interface CategoryManagementTableProps {
   categories: Category[];
@@ -24,6 +26,20 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
 }) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [categoryToDelete, setCategoryToDelete] = useState<Category>();
+
+  const handleDeleteCategory = async (categoryId: string) => {
+    try {
+      const result = await deleteCategory(categoryId);
+      if (result.status) {
+        setCategories((prev) =>
+          prev.filter((category) => category.id !== categoryId),
+        );
+        onOpenChange();
+      }
+    } catch (error) {
+      handleError(error);
+    }
+  };
 
   return (
     <>
@@ -56,12 +72,18 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
           ))}
         </TableBody>
       </Table>
-      <ModalToDeleteCategory
-        category={categoryToDelete}
-        setCategories={setCategories}
-        isOpen={isOpen}
+      <BasicModal
         onOpenChange={onOpenChange}
-      />
+        isOpen={isOpen}
+        header={"Delete Category"}
+        primaryAction={() => handleDeleteCategory(categoryToDelete?.id)}
+        primaryActionLabel={"Delete Category"}
+      >
+        <div>
+          <p>Are you sure you want to delete this Category?</p>
+          <p>{categoryToDelete?.name}</p>
+        </div>
+      </BasicModal>
     </>
   );
 };
