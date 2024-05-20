@@ -3,22 +3,14 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Dispatch, FC, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Button,
-  Input,
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@nextui-org/react";
+import { Button, Input, useDisclosure } from "@nextui-org/react";
 import { CirclePlus } from "lucide-react";
 import { z } from "zod";
 import { Category } from "@prisma/client";
 import { createCategory } from "@/lib/actions/category.actions";
 import { CategoryFormSchema } from "@/lib/schema";
 import { handleError } from "@/lib/utils";
+import BasicModal from "@/components/shared/BasicModal";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
 
@@ -48,6 +40,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
       });
       if (result.status) {
         setCategories((prev) => [...prev, result.newCategory]);
+        onOpenChange();
       }
       reset();
     } catch (e) {
@@ -65,45 +58,32 @@ const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
       <Button startContent={<CirclePlus />} onPress={onOpen}>
         New
       </Button>
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
+      <BasicModal
+        header={"Create Category"}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        primaryAction={handleSubmit(handleAddCategory)}
+        primaryActionLabel={"Create"}
+      >
         <form onSubmit={handleSubmit(handleAddCategory)}>
-          <ModalContent>
-            {(onClose) => (
-              <>
-                <ModalHeader className="flex flex-col gap-1">
-                  Create Category
-                </ModalHeader>
-                <ModalBody>
-                  <Controller
-                    name={"category"}
-                    control={control}
-                    rules={{ required: true }}
-                    render={({ field }) => {
-                      return (
-                        <Input
-                          disabled={isSubmitting}
-                          label="Category"
-                          variant="bordered"
-                          errorMessage={errors.category?.message}
-                          {...field}
-                        />
-                      );
-                    }}
-                  />
-                </ModalBody>
-                <ModalFooter>
-                  <Button color="danger" onPress={onClose}>
-                    Close
-                  </Button>
-                  <Button color="primary" onPress={onClose} type="submit">
-                    Create
-                  </Button>
-                </ModalFooter>
-              </>
-            )}
-          </ModalContent>
+          <Controller
+            name={"category"}
+            control={control}
+            rules={{ required: true }}
+            render={({ field }) => {
+              return (
+                <Input
+                  disabled={isSubmitting}
+                  label="Category"
+                  variant="bordered"
+                  errorMessage={errors.category?.message}
+                  {...field}
+                />
+              );
+            }}
+          />
         </form>
-      </Modal>
+      </BasicModal>
     </>
   );
 };
