@@ -1,15 +1,10 @@
 "use client";
 
-import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalHeader,
-  useDisclosure,
-} from "@nextui-org/react";
+import { useDisclosure } from "@nextui-org/react";
 import CategoryButtons from "@/components/events/CategoryButtons";
 import Search from "@/components/shared/Search";
 import FilterButton from "@/components/events/Filter/FilterButton";
+import BasicModal from "@/components/shared/BasicModal";
 
 interface FilterModalProps {
   hasFiltersApplied: boolean;
@@ -21,21 +16,19 @@ const FilterEvents = ({ hasFiltersApplied }: FilterModalProps) => {
   return (
     <>
       <FilterButton hasFiltersApplied={hasFiltersApplied} onOpen={onOpen} />
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} placement={"center"}>
-        <ModalContent>
-          {() => (
-            <>
-              <ModalHeader className="flex flex-col gap-1 text-xl">
-                Search Filters
-              </ModalHeader>
-              <ModalBody className={"mb-10"}>
-                <Search className={"mb-4"} />
-                <CategoryButtons />
-              </ModalBody>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <BasicModal
+        header={"Search Filters"}
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        placement={"center"}
+        primaryActionLabel={"Filter"}
+        hideButtons
+      >
+        <div>
+          <Search className={"mb-4"} />
+          <CategoryButtons />
+        </div>
+      </BasicModal>
     </>
   );
 };

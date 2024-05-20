@@ -14,7 +14,9 @@ interface BasicModalProps {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   primaryAction?: () => void;
-  primaryActionLabel: string;
+  primaryActionLabel?: string;
+  placement?: "auto" | "top" | "center" | "bottom";
+  hideButtons?: boolean;
 }
 
 const BasicModal: FC<BasicModalProps> = ({
@@ -24,24 +26,35 @@ const BasicModal: FC<BasicModalProps> = ({
   onOpenChange,
   primaryAction,
   primaryActionLabel,
+  placement,
+  hideButtons = false,
 }) => {
   return (
-    <Modal isOpen={isOpen} onOpenChange={onOpenChange}>
-      <ModalContent>
+    <Modal
+      isOpen={isOpen}
+      onOpenChange={onOpenChange}
+      placement={placement ? placement : "auto"}
+    >
+      <ModalContent className={"pb-8"}>
         {(onClose) => (
           <>
             {header && <ModalHeader>{header}</ModalHeader>}
             <ModalBody>{children}</ModalBody>
-            <ModalFooter>
-              <Button color="default" onPress={onClose}>
-                Cancel
-              </Button>
-              {primaryAction && (
-                <Button color="primary" onPress={primaryAction}>
-                  {primaryActionLabel}
-                </Button>
-              )}
-            </ModalFooter>
+            {
+              // If hideButtons is false, render the buttons
+              !hideButtons && (
+                <ModalFooter>
+                  <Button color="default" onPress={onClose}>
+                    Cancel
+                  </Button>
+                  {primaryAction && (
+                    <Button color="primary" onPress={primaryAction}>
+                      {primaryActionLabel}
+                    </Button>
+                  )}
+                </ModalFooter>
+              )
+            }
           </>
         )}
       </ModalContent>
