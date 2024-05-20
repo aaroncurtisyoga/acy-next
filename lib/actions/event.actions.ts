@@ -78,8 +78,11 @@ export async function getAllEvents({
   limit = 8,
   page,
   category,
+  isActive = true,
 }: GetAllEventsParams): Promise<GetAllEventsResponse> {
   try {
+    const activeCondition = { isActive };
+
     const titleCondition = query ? { title: { contains: query } } : {};
     const categoryCondition = category
       ? { category: { name: { equals: category } } }
@@ -89,7 +92,14 @@ export async function getAllEvents({
     const skipAmount = (Number(page) - 1) * limit;
 
     const events = await prisma.event.findMany({
-      where: { AND: [titleCondition, categoryCondition, dateCondition] },
+      where: {
+        AND: [
+          titleCondition,
+          categoryCondition,
+          dateCondition,
+          activeCondition,
+        ],
+      },
       orderBy: { startDateTime: "asc" },
       take: limit,
       skip: skipAmount,
@@ -100,7 +110,14 @@ export async function getAllEvents({
     });
 
     const eventsCount = await prisma.event.count({
-      where: { AND: [titleCondition, categoryCondition, dateCondition] },
+      where: {
+        AND: [
+          titleCondition,
+          categoryCondition,
+          dateCondition,
+          activeCondition,
+        ],
+      },
     });
 
     const hasFiltersApplied: boolean = !!query || !!category;
