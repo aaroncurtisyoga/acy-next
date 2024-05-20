@@ -5,6 +5,7 @@ export type GetAllEventsParams = {
   category: string;
   limit: number;
   page: number;
+  isActive?: boolean;
 };
 
 export type GetRelatedEventsByCategoryParams = {
