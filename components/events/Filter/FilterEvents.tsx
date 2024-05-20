@@ -10,7 +10,6 @@ import {
 import CategoryButtons from "@/components/events/CategoryButtons";
 import Search from "@/components/shared/Search";
 import FilterButton from "@/components/events/Filter/FilterButton";
-import { useMediaQuery } from "usehooks-ts";
 
 interface FilterModalProps {
   hasFiltersApplied: boolean;
