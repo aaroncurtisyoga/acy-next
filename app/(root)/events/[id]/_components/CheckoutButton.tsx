@@ -4,7 +4,7 @@ import Link from "next/link";
 import React, { FC } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
-import Checkout from "@/components/events/EventPage/Checkout";
+import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
 import { Button } from "@nextui-org/react";
 
 interface ICheckoutButtonProps {

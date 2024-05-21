@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import ShareEvent from "@/components/events/EventPage/ShareEvent";
+import ShareEvent from "@/app/(root)/events/[id]/_components/ShareEvent";
 import { formatDateTime } from "@/lib/utils";
 
 interface SubheadingProps {

@@ -4,7 +4,7 @@ import { FC } from "react";
 import { Accordion, AccordionItem } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import { Location as LocationPrisma } from "@prisma/client";
-import DirectionLinks from "@/components/events/EventPage/DirectionLinks";
+import DirectionLinks from "@/app/(root)/events/[id]/_components/DirectionLinks";
 import Map from "@/components/shared/Map";
 
 interface LocationProps {
