@@ -6,15 +6,15 @@ import {
   User,
   Location as PrismaLocation,
 } from "@prisma/client";
-import Attendees from "@/components/events/EventPage/Attendees";
-import CheckoutButton from "@/components/events/EventPage/CheckoutButton";
-import DateAndTime from "@/components/events/EventPage/DateAndTime";
-import DescriptionRichTextEditor from "@/components/events/EventPage/DescriptionDisplay";
-import Headline from "@/components/events/EventPage/Headline";
-import Hero from "@/components/events/EventPage/Hero";
-import Location from "@/components/events/EventPage/Location";
-import RefundPolicy from "@/components/events/EventPage/RefundPolicy";
-import Subheading from "@/components/events/EventPage/Subheadline";
+import Attendees from "@/app/(root)/events/[id]/_components/Attendees";
+import CheckoutButton from "@/app/(root)/events/[id]/_components/CheckoutButton";
+import DateAndTime from "@/app/(root)/events/[id]/_components/DateAndTime";
+import DescriptionRichTextEditor from "@/app/(root)/events/[id]/_components/DescriptionDisplay";
+import Headline from "@/app/(root)/events/[id]/_components/Headline";
+import Hero from "@/app/(root)/events/[id]/_components/Hero";
+import Location from "@/app/(root)/events/[id]/_components/Location";
+import RefundPolicy from "@/app/(root)/events/[id]/_components/RefundPolicy";
+import Subheading from "@/app/(root)/events/[id]/_components/Subheadline";
 import { getEventById } from "@/lib/actions/event.actions";
 import { handleError } from "@/lib/utils";
 import { SearchParamProps } from "@/types";
