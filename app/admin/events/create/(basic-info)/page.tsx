@@ -1,5 +1,5 @@
 import { FC } from "react";
-import BasicInfo from "@/components/events/EventForm/Steps/BasicInfo";
+import BasicInfo from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 const CreateEvent: FC = () => {
   return (
