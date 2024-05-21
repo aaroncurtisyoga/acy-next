@@ -9,7 +9,6 @@ interface ShareEventProps {
   eventId: string;
 }
 const ShareEvent: FC<ShareEventProps> = ({ eventId }) => {
-  const pathname = usePathname();
   const [isRecentlyCopied, setIsRecentlyCopied] = useState<boolean>(false);
   useEffect(() => {
     if (isRecentlyCopied === true) {

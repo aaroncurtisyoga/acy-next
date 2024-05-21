@@ -11,7 +11,7 @@ interface CardProps {
 }
 
 const EventCard: FC<CardProps> = ({ event }) => {
-  const { id, category, imageUrl, isFree, price, startDateTime, title } = event;
+  const { id, category, imageUrl, startDateTime, title } = event;
   return (
     <div
       className={

@@ -7,7 +7,6 @@ import {
   ListOrdered,
   MessageSquareQuote,
   Minus,
-  Quote,
   Strikethrough,
   Underline,
 } from "lucide-react";
