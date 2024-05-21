@@ -1,6 +1,6 @@
 import { FC } from "react";
-import Collection from "@/components/events/Collection";
-import FilterEvents from "@/components/events/Filter/FilterEvents";
+import Collection from "@/app/(root)/_components/Collection";
+import FilterEvents from "@/app/(root)/_components/FilterEvents";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 interface UpcomingEventsProps {

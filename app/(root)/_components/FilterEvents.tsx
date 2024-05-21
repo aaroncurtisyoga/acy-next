@@ -1,10 +1,10 @@
 "use client";
 
 import { useDisclosure } from "@nextui-org/react";
-import CategoryButtons from "@/components/events/CategoryButtons";
-import Search from "@/components/shared/Search";
-import FilterButton from "@/components/events/Filter/FilterButton";
 import BasicModal from "@/components/shared/BasicModal";
+import CategoryButtons from "@/app/(root)/_components/CategoryButtons";
+import FilterButton from "@/app/(root)/_components/FilterButton";
+import Search from "@/components/shared/Search";
 
 interface FilterModalProps {
   hasFiltersApplied: boolean;

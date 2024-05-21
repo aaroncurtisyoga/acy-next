@@ -1,5 +1,5 @@
 import ImageResponsiveHandstand from "@/components/shared/ImageResponsiveHandstand";
-import UpcomingEvents from "@/components/events/UpcomingEvents";
+import UpcomingEvents from "@/app/(root)/_components/UpcomingEvents";
 import { SearchParamProps } from "@/types";
 
 const EventsPage = async ({ searchParams }: SearchParamProps) => {

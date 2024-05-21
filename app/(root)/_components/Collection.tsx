@@ -1,8 +1,8 @@
 import { FC } from "react";
-import EventCard from "@/components/events/EventCard";
-import EventText from "@/components/events/EventText";
-import Pagination from "@/components/events/Pagination";
-import NoEventsFound from "@/components/events/NoEventsFound";
+import EventCard from "@/app/(root)/_components/EventCard";
+import EventText from "@/app/(root)/_components/EventText";
+import NoEventsFound from "@/app/(root)/_components/NoEventsFound";
+import Pagination from "@/app/(root)/_components/Pagination";
 import { EventWithLocationAndCategory } from "@/types";
 
 interface CollectionProps {
