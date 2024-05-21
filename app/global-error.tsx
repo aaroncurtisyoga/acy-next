@@ -1,6 +1,6 @@
 "use client";
 
-import Error from "../components/shared/Error";
+import Error from "../components/Error";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
 import { instructorEmailAddress } from "../constants";

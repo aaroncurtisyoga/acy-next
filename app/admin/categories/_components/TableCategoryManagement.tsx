@@ -11,7 +11,7 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Category } from "@prisma/client";
-import BasicModal from "@/components/shared/BasicModal";
+import BasicModal from "@/components/BasicModal";
 import { deleteCategory } from "@/lib/actions/category.actions";
 import { handleError } from "@/lib/utils";
 

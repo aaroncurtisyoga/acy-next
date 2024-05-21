@@ -10,7 +10,7 @@ import { Category } from "@prisma/client";
 import { createCategory } from "@/lib/actions/category.actions";
 import { CategoryFormSchema } from "@/lib/schema";
 import { handleError } from "@/lib/utils";
-import BasicModal from "@/components/shared/BasicModal";
+import BasicModal from "@/components/BasicModal";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
 

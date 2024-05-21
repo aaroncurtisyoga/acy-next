@@ -15,7 +15,7 @@ import { deleteEvent, getAllEvents } from "@/lib/actions/event.actions";
 import { formatDateTime, handleError } from "@/lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
-import BasicModal from "@/components/shared/BasicModal";
+import BasicModal from "@/components/BasicModal";
 
 const TableEventManagement: FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
