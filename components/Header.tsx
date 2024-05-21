@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -24,7 +24,7 @@ import { adminLinks, authenticatedLinks, userLinks } from "@/constants";
 interface HeaderProps {
   isSimpleNav?: boolean;
 }
-export default function Header({ isSimpleNav = false }) {
+const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
   const router = useRouter();
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, user } = useUser();
@@ -105,4 +105,6 @@ export default function Header({ isSimpleNav = false }) {
       </NavbarMenu>
     </Navbar>
   );
-}
+};
+
+export default Header;
