@@ -14,7 +14,7 @@ import {
 import { getImages } from "@/lib/actions/blob.actions";
 import { cn } from "@/lib/utils";
 import { FieldErrors } from "react-hook-form";
-import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 interface ImagePickerProps {
   errors: FieldErrors<Inputs>;

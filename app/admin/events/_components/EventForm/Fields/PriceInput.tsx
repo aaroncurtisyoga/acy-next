@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Input } from "@nextui-org/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 interface PriceInputProps {
   control: Control;

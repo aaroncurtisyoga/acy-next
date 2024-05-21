@@ -3,7 +3,7 @@ import { Select, SelectItem } from "@nextui-org/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Category } from "@prisma/client";
 import { getAllCategories } from "@/lib/actions/category.actions";
-import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface CategoryDropdownProps {
   control: Control;

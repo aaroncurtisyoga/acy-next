@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Input } from "@nextui-org/react";
-import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface TitleInputProps {
   control: Control;

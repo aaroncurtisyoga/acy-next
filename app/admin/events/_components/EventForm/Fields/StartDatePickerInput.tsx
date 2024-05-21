@@ -1,7 +1,7 @@
 import React, { FC } from "react";
 import DatePicker from "react-datepicker";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/components/events/EventForm/Steps/BasicInfo";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface StartDatePickerInputProps {
   control: Control;

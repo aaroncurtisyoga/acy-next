@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import Tiptap from "@/components/shared/Tiptap";
-import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 interface DescriptionRichTextEditorProps {
   control: Control;
