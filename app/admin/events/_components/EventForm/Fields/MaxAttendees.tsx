@@ -1,15 +1,19 @@
 import { Input } from "@nextui-org/react";
 import { FC } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/components/events/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-interface PriceInputProps {
+interface MaxAttendeesProps {
   control: Control;
   isSubmitting: boolean;
   errors: FieldErrors<Inputs>;
 }
 
-const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
+const MaxAttendees: FC<MaxAttendeesProps> = ({
+  control,
+  isSubmitting,
+  errors,
+}) => {
   return (
     <Controller
       control={control}
@@ -29,4 +33,4 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
   );
 };
 
-export default PriceInput;
+export default MaxAttendees;

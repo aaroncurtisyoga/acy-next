@@ -8,10 +8,10 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Event } from "@prisma/client";
-import PriceInput from "@/components/events/EventForm/Fields/PriceInput";
-import MaxAttendees from "@/components/events/EventForm/Fields/MaxAttendees";
-import ImagePicker from "@/components/events/EventForm/Fields/ImagePicker";
-import DescriptionRichTextEditor from "@/components/events/EventForm/Fields/DescriptionRichTextEditor";
+import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
+import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
+import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
+import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import {

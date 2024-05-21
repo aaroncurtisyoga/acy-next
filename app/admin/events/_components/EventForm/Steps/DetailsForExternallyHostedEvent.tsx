@@ -13,7 +13,7 @@ import {
   selectFormValues,
   setFormData,
 } from "@/lib/redux/features/eventFormSlice";
-import ExternalRegistrationUrlInput from "@/components/events/EventForm/Fields/ExternalRegistrationUrlInput";
+import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 import { Button, Link as NextUiLink } from "@nextui-org/react";
 
 export type Inputs = z.infer<
