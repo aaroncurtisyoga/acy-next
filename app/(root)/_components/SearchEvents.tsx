@@ -6,11 +6,11 @@ import { Input } from "@nextui-org/react";
 import { cn, formUrlQuery, removeKeysFromQuery } from "@/lib/utils";
 import { Search as SearchIcon } from "lucide-react";
 
-interface SearchProps {
+interface SearchEventProps {
   className?: string;
 }
 
-const Search = ({ className }: SearchProps) => {
+const SearchEvent = ({ className }: SearchEventProps) => {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -53,4 +53,4 @@ const Search = ({ className }: SearchProps) => {
   );
 };
 
-export default Search;
+export default SearchEvent;

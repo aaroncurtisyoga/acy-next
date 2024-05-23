@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Collection from "@/app/(root)/_components/Collection";
-import FilterEvents from "@/app/(root)/_components/FilterEvents";
+import FilterEventsModal from "@/app/(root)/_components/FilterEventsModal";
 import { getAllEvents } from "@/lib/actions/event.actions";
 
 interface UpcomingEventsProps {
@@ -28,7 +28,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         <p className={"font-semibold"}>
           Join me in upcoming events to practice together.
         </p>
-        <FilterEvents hasFiltersApplied={hasFiltersApplied} />
+        <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
       </div>
       <Collection
         collectionType={"All_Events"}

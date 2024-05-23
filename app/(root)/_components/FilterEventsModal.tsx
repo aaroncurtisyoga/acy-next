@@ -4,13 +4,13 @@ import { useDisclosure } from "@nextui-org/react";
 import BasicModal from "@/components/BasicModal";
 import CategoryButtons from "@/app/(root)/_components/CategoryButtons";
 import FilterButton from "@/app/(root)/_components/FilterButton";
-import Search from "@/components/Search";
+import SearchEvents from "@/app/(root)/_components/SearchEvents";
 
 interface FilterModalProps {
   hasFiltersApplied: boolean;
 }
 
-const FilterEvents = ({ hasFiltersApplied }: FilterModalProps) => {
+const FilterEventsModal = ({ hasFiltersApplied }: FilterModalProps) => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
@@ -25,7 +25,7 @@ const FilterEvents = ({ hasFiltersApplied }: FilterModalProps) => {
         hideButtons
       >
         <div>
-          <Search className={"mb-4"} />
+          <SearchEvents className={"mb-4"} />
           <CategoryButtons />
         </div>
       </BasicModal>
@@ -33,4 +33,4 @@ const FilterEvents = ({ hasFiltersApplied }: FilterModalProps) => {
   );
 };
 
-export default FilterEvents;
+export default FilterEventsModal;
