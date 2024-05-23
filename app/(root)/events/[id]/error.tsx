@@ -1,7 +1,7 @@
 "use client";
 
 import { Link as NextUiLink } from "@nextui-org/link";
-import Error from "@/components/Error";
+import Error from "@/_components/Error";
 import { instructorEmailAddress } from "@/constants";
 
 export default function ErrorBoundary() {

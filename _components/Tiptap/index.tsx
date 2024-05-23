@@ -4,7 +4,7 @@ import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
-import Toolbar from "@/components/Tiptap/Toolbar";
+import Toolbar from "@/_components/Tiptap/Toolbar";
 
 type TiptapProps = {
   description: string;

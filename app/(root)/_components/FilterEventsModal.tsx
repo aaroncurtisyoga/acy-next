@@ -1,7 +1,7 @@
 "use client";
 
 import { useDisclosure } from "@nextui-org/react";
-import BasicModal from "@/components/BasicModal";
+import BasicModal from "@/_components/BasicModal";
 import CategoryButtons from "@/app/(root)/_components/CategoryButtons";
 import FilterButton from "@/app/(root)/_components/FilterButton";
 import SearchEvents from "@/app/(root)/_components/SearchEvents";

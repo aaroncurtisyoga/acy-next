@@ -1,6 +1,6 @@
 "use client";
 
-import Error from "@/components/Error";
+import Error from "@/_components/Error";
 
 export default function ErrorBoundary() {
   return (

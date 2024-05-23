@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { ReactNode } from "react";
-import Header from "@/components/Header";
+import Header from "@/_components/Header";
 
 export const metadata: Metadata = {
   title: "Admin",

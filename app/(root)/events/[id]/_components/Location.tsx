@@ -5,7 +5,7 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import { Location as LocationPrisma } from "@prisma/client";
 import DirectionLinks from "@/app/(root)/events/[id]/_components/DirectionLinks";
-import GoogleMap from "@/components/GoogleMap";
+import GoogleMap from "@/_components/GoogleMap";
 
 interface LocationProps {
   location: LocationPrisma;
