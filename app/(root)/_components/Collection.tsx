@@ -3,7 +3,7 @@ import EventCard from "@/app/(root)/_components/EventCard";
 import EventText from "@/app/(root)/_components/EventText";
 import NoEventsFound from "@/app/(root)/_components/NoEventsFound";
 import Pagination from "@/app/(root)/_components/Pagination";
-import { EventWithLocationAndCategory } from "@/types";
+import { EventWithLocationAndCategory } from "@/_lib/types";
 
 interface CollectionProps {
   collectionType?: "Events_Organized" | "My_Tickets" | "All_Events";

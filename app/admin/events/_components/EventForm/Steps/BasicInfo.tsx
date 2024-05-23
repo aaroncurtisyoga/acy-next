@@ -21,7 +21,7 @@ import {
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
 import "react-datepicker/dist/react-datepicker.css";
-import { PlaceDetails } from "@/types";
+import { PlaceDetails } from "@/_lib/types";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 

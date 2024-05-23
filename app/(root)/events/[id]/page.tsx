@@ -17,7 +17,7 @@ import RefundPolicy from "@/app/(root)/events/[id]/_components/RefundPolicy";
 import Subheading from "@/app/(root)/events/[id]/_components/Subheadline";
 import { getEventById } from "@/_lib/actions/event.actions";
 import { handleError } from "@/_lib/utils";
-import { SearchParamProps } from "@/types";
+import { SearchParamProps } from "@/_lib/types";
 
 type Event = PrismaEvent & {
   category: Category;

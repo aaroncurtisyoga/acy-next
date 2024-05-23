@@ -1,4 +1,4 @@
-import { TravelMode } from "@/types";
+import { TravelMode } from "@/_lib/types";
 
 export const generateDirectionsUrl = (
   lat: number,
