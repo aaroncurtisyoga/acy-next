@@ -2,7 +2,7 @@ import React, { FC, useEffect } from "react";
 import { Button } from "@nextui-org/react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Event } from "@prisma/client";
-import { checkoutOrder } from "@/lib/actions/order.actions";
+import { checkoutOrder } from "@/_lib/actions/order.actions";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 

@@ -11,8 +11,8 @@ import {
   Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
-import { deleteEvent, getAllEvents } from "@/lib/actions/event.actions";
-import { formatDateTime, handleError } from "@/lib/utils";
+import { deleteEvent, getAllEvents } from "@/_lib/actions/event.actions";
+import { formatDateTime, handleError } from "@/_lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import BasicModal from "@/_components/BasicModal";

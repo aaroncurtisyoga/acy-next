@@ -6,8 +6,8 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Input, Spinner } from "@nextui-org/react";
 import { ArrowRight, Check } from "lucide-react";
-import { addNewsletterEntry } from "@/lib/actions/newsletter.actions";
-import { newsletterFormSchema } from "@/lib/schema";
+import { addNewsletterEntry } from "@/_lib/actions/newsletter.actions";
+import { newsletterFormSchema } from "@/_lib/schema";
 
 type Inputs = z.infer<typeof newsletterFormSchema>;
 

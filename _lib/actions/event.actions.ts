@@ -2,7 +2,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
-import { handleError } from "@/lib/utils";
+import { handleError } from "@/_lib/utils";
 
 import {
   GetAllEventsParams,

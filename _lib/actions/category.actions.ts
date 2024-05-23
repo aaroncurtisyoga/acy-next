@@ -1,7 +1,7 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { handleError } from "@/lib/utils";
+import { handleError } from "@/_lib/utils";
 import { CreateCategoryParams } from "@/types";
 
 const prisma = new PrismaClient();

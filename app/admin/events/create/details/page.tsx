@@ -1,7 +1,7 @@
 "use client";
 
-import { useAppSelector } from "@/lib/redux/hooks";
-import { selectIsHostedExternally } from "@/lib/redux/features/eventFormSlice";
+import { useAppSelector } from "@/_lib/redux/hooks";
+import { selectIsHostedExternally } from "@/_lib/redux/features/eventFormSlice";
 import DetailsForExternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForExternallyHostedEvent";
 import DetailsForInternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 

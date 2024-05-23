@@ -12,13 +12,13 @@ import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/
 import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
 import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
 import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
-import { EventFormDetailsForInternallyHostedEventSchema } from "@/lib/schema";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { EventFormDetailsForInternallyHostedEventSchema } from "@/_lib/schema";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectEventType,
   selectFormValues,
   setFormData,
-} from "@/lib/redux/features/eventFormSlice";
+} from "@/_lib/redux/features/eventFormSlice";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForInternallyHostedEventSchema

@@ -12,8 +12,8 @@ import {
 } from "@nextui-org/react";
 import { Category } from "@prisma/client";
 import BasicModal from "@/_components/BasicModal";
-import { deleteCategory } from "@/lib/actions/category.actions";
-import { handleError } from "@/lib/utils";
+import { deleteCategory } from "@/_lib/actions/category.actions";
+import { handleError } from "@/_lib/utils";
 
 interface CategoryManagementTableProps {
   categories: Category[];

@@ -7,9 +7,9 @@ import { Button, Input, useDisclosure } from "@nextui-org/react";
 import { CirclePlus } from "lucide-react";
 import { z } from "zod";
 import { Category } from "@prisma/client";
-import { createCategory } from "@/lib/actions/category.actions";
-import { CategoryFormSchema } from "@/lib/schema";
-import { handleError } from "@/lib/utils";
+import { createCategory } from "@/_lib/actions/category.actions";
+import { CategoryFormSchema } from "@/_lib/schema";
+import { handleError } from "@/_lib/utils";
 import BasicModal from "@/_components/BasicModal";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;

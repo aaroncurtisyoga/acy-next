@@ -2,7 +2,7 @@
 
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { FC } from "react";
-import { formUrlQuery } from "@/lib/utils";
+import { formUrlQuery } from "@/_lib/utils";
 
 interface PaginationProps {
   page: number | string;

@@ -1,7 +1,7 @@
 import { FC } from "react";
 import Collection from "@/app/(root)/_components/Collection";
 import FilterEventsModal from "@/app/(root)/_components/FilterEventsModal";
-import { getAllEvents } from "@/lib/actions/event.actions";
+import { getAllEvents } from "@/_lib/actions/event.actions";
 
 interface UpcomingEventsProps {
   searchParams: any;

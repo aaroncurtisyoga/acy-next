@@ -13,13 +13,13 @@ import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
-import { EventFormBasicInfoSchema } from "@/lib/schema";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { EventFormBasicInfoSchema } from "@/_lib/schema";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectFormValues,
   selectEventType,
   setFormData,
-} from "@/lib/redux/features/eventFormSlice";
+} from "@/_lib/redux/features/eventFormSlice";
 import "react-datepicker/dist/react-datepicker.css";
 import { PlaceDetails } from "@/types";
 

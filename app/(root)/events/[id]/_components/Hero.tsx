@@ -1,6 +1,6 @@
 import Image from "next/image";
 import { FC } from "react";
-import { getBase64 } from "@/lib/utils/base64";
+import { getBase64 } from "@/_lib/utils/base64";
 
 interface HeroProps {
   imageUrl: string;

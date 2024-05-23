@@ -11,8 +11,8 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { getImages } from "@/lib/actions/blob.actions";
-import { cn } from "@/lib/utils";
+import { getImages } from "@/_lib/actions/blob.actions";
+import { cn } from "@/_lib/utils";
 import { FieldErrors } from "react-hook-form";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 

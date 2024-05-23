@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { FC } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { Event, Order } from "@prisma/client";
-import { getOrdersByUser } from "@/lib/actions/order.actions";
+import { getOrdersByUser } from "@/_lib/actions/order.actions";
 import EventHistoryTable from "@/app/(root)/account/_components/EventHistoryTable";
 
 export const metadata: Metadata = {

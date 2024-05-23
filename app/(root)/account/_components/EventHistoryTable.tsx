@@ -9,7 +9,7 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
-import { formatDateTime, formatPrice } from "@/lib/utils";
+import { formatDateTime, formatPrice } from "@/_lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
 import Link from "next/link";
 

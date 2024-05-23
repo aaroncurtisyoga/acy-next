@@ -10,7 +10,7 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import { Order, User, Event } from "@prisma/client";
-import { formatDateTime, formatPrice } from "@/lib/utils";
+import { formatDateTime, formatPrice } from "@/_lib/utils";
 
 type OrderWithEventFieldsAndUserFields = Order & {
   event: Pick<Event, "title">;

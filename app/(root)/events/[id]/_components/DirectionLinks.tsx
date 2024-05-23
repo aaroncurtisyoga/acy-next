@@ -1,7 +1,7 @@
 import { FC } from "react";
 import { Location } from "@prisma/client";
 import { travelOptions } from "@/constants";
-import { generateDirectionsUrl } from "@/lib/utils/travelLinks";
+import { generateDirectionsUrl } from "@/_lib/utils/travelLinks";
 
 interface DirectionLinksProps extends Pick<Location, "lat" | "lng"> {}
 

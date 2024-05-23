@@ -15,8 +15,8 @@ import Hero from "@/app/(root)/events/[id]/_components/Hero";
 import Location from "@/app/(root)/events/[id]/_components/Location";
 import RefundPolicy from "@/app/(root)/events/[id]/_components/RefundPolicy";
 import Subheading from "@/app/(root)/events/[id]/_components/Subheadline";
-import { getEventById } from "@/lib/actions/event.actions";
-import { handleError } from "@/lib/utils";
+import { getEventById } from "@/_lib/actions/event.actions";
+import { handleError } from "@/_lib/utils";
 import { SearchParamProps } from "@/types";
 
 type Event = PrismaEvent & {

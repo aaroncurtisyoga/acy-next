@@ -1,5 +1,5 @@
 import { getPlaiceholder } from "plaiceholder";
-import { handleError } from "@/lib/utils/index";
+import { handleError } from "@/_lib/utils/index";
 
 export async function getBase64(imageUrl: string) {
   try {

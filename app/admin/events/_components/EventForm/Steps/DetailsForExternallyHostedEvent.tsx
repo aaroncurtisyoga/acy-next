@@ -6,13 +6,13 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Event } from "@prisma/client";
-import { EventFormDetailsForExternallyHostedEventSchema } from "@/lib/schema";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { EventFormDetailsForExternallyHostedEventSchema } from "@/_lib/schema";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectEventType,
   selectFormValues,
   setFormData,
-} from "@/lib/redux/features/eventFormSlice";
+} from "@/_lib/redux/features/eventFormSlice";
 import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 import { Button, Link as NextUiLink } from "@nextui-org/react";
 

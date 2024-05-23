@@ -4,7 +4,7 @@ import {
   Client,
   PlaceAutocompleteResponse,
 } from "@googlemaps/google-maps-services-js";
-import { handleError } from "@/lib/utils";
+import { handleError } from "@/_lib/utils";
 
 const client = new Client({});
 

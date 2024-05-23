@@ -5,14 +5,14 @@ import { FC } from "react";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
 
-import { handleError } from "@/lib/utils";
-import { updateEvent } from "@/lib/actions/event.actions";
-import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
+import { handleError } from "@/_lib/utils";
+import { updateEvent } from "@/_lib/actions/event.actions";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectFormValues,
   resetFormData,
   selectEventType,
-} from "@/lib/redux/features/eventFormSlice";
+} from "@/_lib/redux/features/eventFormSlice";
 
 const SubmitEvent: FC = () => {
   const router = useRouter();
