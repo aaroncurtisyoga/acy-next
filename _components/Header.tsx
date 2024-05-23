@@ -19,7 +19,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
-import { adminLinks, authenticatedLinks, userLinks } from "@/constants";
+import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 
 interface HeaderProps {
   isSimpleNav?: boolean;

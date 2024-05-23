@@ -1,5 +1,5 @@
 import { Bike, Car, Footprints, TramFront } from "lucide-react";
-import { TravelOption } from "@/types";
+import { TravelOption } from "@/_lib/types";
 
 export const userLinks = [];
 

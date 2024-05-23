@@ -2,7 +2,7 @@
 
 import { Link as NextUiLink } from "@nextui-org/link";
 import Error from "@/_components/Error";
-import { instructorEmailAddress } from "@/constants";
+import { instructorEmailAddress } from "@/_lib/constants";
 
 export default function ErrorBoundary() {
   return (

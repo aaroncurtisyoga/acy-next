@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { adminDashboardLinks } from "@/constants";
+import { adminDashboardLinks } from "@/_lib/constants";
 import { Button, link } from "@nextui-org/react";
 
 export default async function AdminDashboard(params: {

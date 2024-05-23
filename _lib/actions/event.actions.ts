@@ -8,7 +8,7 @@ import {
   GetAllEventsParams,
   GetAllEventsResponse,
   GetRelatedEventsByCategoryParams,
-} from "@/types";
+} from "@/_lib/types";
 
 const prisma = new PrismaClient();
 

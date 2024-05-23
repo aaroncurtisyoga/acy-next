@@ -2,7 +2,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { handleError } from "@/_lib/utils";
-import { CreateCategoryParams } from "@/types";
+import { CreateCategoryParams } from "@/_lib/types";
 
 const prisma = new PrismaClient();
 export const createCategory = async ({
