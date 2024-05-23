@@ -5,7 +5,7 @@ import { Accordion, AccordionItem } from "@nextui-org/react";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import { Location as LocationPrisma } from "@prisma/client";
 import DirectionLinks from "@/app/(root)/events/[id]/_components/DirectionLinks";
-import Map from "@/components/Map";
+import GoogleMap from "@/components/GoogleMap";
 
 interface LocationProps {
   location: LocationPrisma;
@@ -36,7 +36,7 @@ const Location: FC<LocationProps> = ({ location }) => {
               }
               disableIndicatorAnimation={true}
             >
-              <Map lat={location.lat} lng={location.lng} />
+              <GoogleMap lat={location.lat} lng={location.lng} />
               <DirectionLinks lat={location.lat} lng={location.lng} />
             </AccordionItem>
           </Accordion>
@@ -47,8 +47,3 @@ const Location: FC<LocationProps> = ({ location }) => {
 };
 
 export default Location;
-
-/*
-<Map geometry={location.geometry} />
-
-*/
