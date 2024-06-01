@@ -3,14 +3,12 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Dispatch, FC, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input, useDisclosure } from "@nextui-org/react";
-import { CirclePlus } from "lucide-react";
+import { Input } from "@nextui-org/react";
 import { z } from "zod";
 import { Category } from "@prisma/client";
 import { createCategory } from "@/_lib/actions/category.actions";
 import { CategoryFormSchema } from "@/_lib/schema";
 import { handleError } from "@/_lib/utils";
-import BasicModal from "@/_components/BasicModal";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
 
@@ -19,7 +17,6 @@ interface CreateCategoryProps {
 }
 
 const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
-  const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const {
     control,
     handleSubmit,
@@ -40,7 +37,6 @@ const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
       });
       if (result.status) {
         setCategories((prev) => [...prev, result.newCategory]);
-        onOpenChange();
       }
       reset();
     } catch (e) {
@@ -54,37 +50,24 @@ const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
   };
 
   return (
-    <>
-      <Button startContent={<CirclePlus />} onPress={onOpen}>
-        New
-      </Button>
-      <BasicModal
-        header={"Create Category"}
-        isOpen={isOpen}
-        onOpenChange={onOpenChange}
-        primaryAction={handleSubmit(handleAddCategory)}
-        primaryActionLabel={"Create"}
-      >
-        <form onSubmit={handleSubmit(handleAddCategory)}>
-          <Controller
-            name={"category"}
-            control={control}
-            rules={{ required: true }}
-            render={({ field }) => {
-              return (
-                <Input
-                  disabled={isSubmitting}
-                  label="Category"
-                  variant="bordered"
-                  errorMessage={errors.category?.message}
-                  {...field}
-                />
-              );
-            }}
-          />
-        </form>
-      </BasicModal>
-    </>
+    <form onSubmit={handleSubmit(handleAddCategory)}>
+      <Controller
+        name={"category"}
+        control={control}
+        rules={{ required: true }}
+        render={({ field }) => {
+          return (
+            <Input
+              disabled={isSubmitting}
+              label="Category"
+              variant="bordered"
+              errorMessage={errors.category?.message}
+              {...field}
+            />
+          );
+        }}
+      />
+    </form>
   );
 };
 

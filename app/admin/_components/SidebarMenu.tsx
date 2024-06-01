@@ -7,12 +7,13 @@ import Link from "next/link";
 
 const SidebarMenu = () => {
   return (
-    <Listbox aria-label="Actions">
+    <Listbox aria-label="Actions" className={"mt-5"}>
       {adminDashboardLinks.map((link) => (
         <ListboxItem
           key={link.path}
           startContent={<link.icon />}
           textValue={link.name}
+          variant={"bordered"}
         >
           <Link href={link.path}>{link.name}</Link>
         </ListboxItem>

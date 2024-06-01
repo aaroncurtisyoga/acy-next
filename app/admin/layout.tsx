@@ -11,7 +11,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
     <div className={"flex flex-col min-h-dvh"}>
       <Header />
       <div className={"flex min-h-screen"}>
-        <div className="w-64 bg-gray-200">
+        <div className="w-64 bg-gray-100">
           <SidebarMenu />
         </div>
         <div className="flex-grow"> {children} </div>
