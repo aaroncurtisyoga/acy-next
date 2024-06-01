@@ -9,7 +9,11 @@ const SidebarMenu = () => {
   return (
     <Listbox aria-label="Actions">
       {adminDashboardLinks.map((link) => (
-        <ListboxItem key={link.path} startContent={<link.icon />}>
+        <ListboxItem
+          key={link.path}
+          startContent={<link.icon />}
+          textValue={link.name}
+        >
           <Link href={link.path}>{link.name}</Link>
         </ListboxItem>
       ))}
