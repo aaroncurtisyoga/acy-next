@@ -5,6 +5,7 @@ import {
   Car,
   Footprints,
   TramFront,
+  ClipboardPlus,
 } from "lucide-react";
 import { TravelOption } from "@/_lib/types";
 
@@ -78,5 +79,6 @@ export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 
 export const adminDashboardLinks = [
   { name: "All Events", path: "/admin/events", icon: CalendarSearch },
+  { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
 ];
