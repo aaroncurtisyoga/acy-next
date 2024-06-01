@@ -1,4 +1,11 @@
-import { Bike, Car, Footprints, TramFront } from "lucide-react";
+import {
+  Bike,
+  Boxes,
+  CalendarSearch,
+  Car,
+  Footprints,
+  TramFront,
+} from "lucide-react";
 import { TravelOption } from "@/_lib/types";
 
 export const userLinks = [];
@@ -70,6 +77,6 @@ export const travelOptions: TravelOption[] = [
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 
 export const adminDashboardLinks = [
-  { name: "Events", path: "/admin/events" },
-  { name: "Categories", path: "/admin/categories" },
+  { name: "All Events", path: "/admin/events", icon: CalendarSearch },
+  { name: "Categories", path: "/admin/categories", icon: Boxes },
 ];
