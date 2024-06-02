@@ -11,13 +11,11 @@ import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectFormValues,
   resetFormData,
-  selectEventType,
 } from "@/_lib/redux/features/eventFormSlice";
 
 const SubmitEvent: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const eventType = useAppSelector(selectEventType);
   const valuesFromRedux = useAppSelector(selectFormValues);
 
   async function createNewEvent() {
@@ -36,41 +34,14 @@ const SubmitEvent: FC = () => {
     }
   }
 
-  /*  async function updateExistingEvent() {
-    try {
-      const updatedEvent = await updateEvent({
-        // todo: check and see if ID is being saved the right way
-        event: { ...valuesFromRedux, _id: valuesFromRedux.id },
-        path: `/events/${valuesFromRedux.id}`,
-      });
-
-      if (updatedEvent) {
-        dispatch(resetFormData());
-        redirect(`/events/${updatedEvent._id}`);
-      }
-    } catch (error) {
-      handleError(error);
-    }
-  }*/
-
-  const onSubmit = async (eventType) => {
-    if (eventType === "Create") {
-      await createNewEvent();
-    }
-
-    /*    if (eventType === "Update") {
-      if (event._id) {
-        await updateExistingEvent(values);
-      } else {
-        redirect("/");
-      }
-    }*/
+  const onSubmit = async () => {
+    await createNewEvent();
   };
 
   return (
     <section className={"wrapper"}>
       <h1>Review Event</h1>
-      <form onSubmit={() => onSubmit(eventType)}>
+      <form onSubmit={() => onSubmit()}>
         <div className="flex justify-between mt-5">
           <Button type={"button"}>
             <NextUiLink
@@ -80,9 +51,7 @@ const SubmitEvent: FC = () => {
               Previous
             </NextUiLink>
           </Button>
-          <Button type={"submit"}>
-            {eventType === "Create" ? "Create" : "Update"}
-          </Button>
+          <Button type={"submit"}>Create Event</Button>
         </div>
       </form>
     </section>
