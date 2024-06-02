@@ -11,13 +11,11 @@ import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectFormValues,
   resetFormData,
-  selectEventType,
 } from "@/_lib/redux/features/eventFormSlice";
 
 const SubmitEvent: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const eventType = useAppSelector(selectEventType);
   const valuesFromRedux = useAppSelector(selectFormValues);
 
   /*
