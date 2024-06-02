@@ -41,20 +41,14 @@ export const createEventFormSlice = createAppSlice({
       state.formValues = eventFormDefaultValues;
       state.eventType = "Create";
     }),
-    setEventType: create.reducer(
-      (state, action: PayloadAction<"Create" | "Update">) => {
-        state.eventType = action.payload;
-      },
-    ),
   }),
   selectors: {
     selectIsHostedExternally: (state) => state.formValues.isHostedExternally,
     selectFormValues: (state) => state.formValues,
-    selectEventType: (state) => state.eventType,
   },
 });
 
 export const { setFormData, resetFormData } = createEventFormSlice.actions;
 
-export const { selectIsHostedExternally, selectFormValues, selectEventType } =
+export const { selectIsHostedExternally, selectFormValues } =
   createEventFormSlice.selectors;
