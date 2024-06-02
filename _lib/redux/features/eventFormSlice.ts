@@ -1,6 +1,7 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/_lib/redux/createAppSlice";
 import { eventFormDefaultValues } from "@/_lib/constants";
+import { isDate } from "@/_lib/utils";
 
 export interface EventFormSliceState {
   formValues: typeof eventFormDefaultValues;
@@ -21,7 +22,19 @@ export const createEventFormSlice = createAppSlice({
         state,
         action: PayloadAction<Partial<typeof eventFormDefaultValues>>,
       ) => {
-        state.formValues = { ...state.formValues, ...action.payload };
+        const payload = action.payload;
+        // Redux doesn't allow date objects to be stored in the store
+        if (isDate(payload.createdAt)) {
+          payload.createdAt = payload.createdAt.toISOString();
+        }
+        if (isDate(payload.startDateTime)) {
+          payload.startDateTime = payload.startDateTime.toISOString();
+        }
+        if (isDate(payload.endDateTime)) {
+          payload.endDateTime = payload.endDateTime.toISOString();
+        }
+
+        state.formValues = { ...state.formValues, ...payload };
       },
     ),
     resetFormData: create.reducer((state) => {
