@@ -12,11 +12,7 @@ import { handleError } from "@/_lib/utils";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
 
-interface CreateCategoryProps {
-  setCategories: Dispatch<SetStateAction<Category[]>>;
-}
-
-const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
+const CreateCategory: FC = () => {
   const {
     control,
     handleSubmit,
@@ -36,7 +32,9 @@ const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
         categoryName: data.category.trim(),
       });
       if (result.status) {
-        setCategories((prev) => [...prev, result.newCategory]);
+        // Todo: Just display a success msg here & ensure /categories page
+        //  is updated when navigated to
+        // setCategories((prev) => [...prev, result.newCategory]);
       }
       reset();
     } catch (e) {
