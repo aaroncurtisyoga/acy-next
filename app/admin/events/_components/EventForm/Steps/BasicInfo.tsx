@@ -6,7 +6,6 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
-import { Event } from "@prisma/client";
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
@@ -17,7 +16,6 @@ import { EventFormBasicInfoSchema } from "@/_lib/schema";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
   selectFormValues,
-  selectEventType,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
 import "react-datepicker/dist/react-datepicker.css";
@@ -28,8 +26,6 @@ export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 const BasicInfo: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  // todo: does eventTYpe even matter... ?
-  const eventType = useAppSelector(selectEventType);
   const formValuesFromRedux = useAppSelector(selectFormValues);
   const eventInitialValues = {
     ...formValuesFromRedux,
