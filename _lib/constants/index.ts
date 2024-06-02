@@ -80,7 +80,7 @@ export const travelOptions: TravelOption[] = [
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 
 export const adminDashboardLinks = [
-  { name: "All Events", path: "/admin/events", icon: Calendar },
+  { name: "Events", path: "/admin/events", icon: Calendar },
   { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "New Category", path: "/admin/categories/create", icon: Box },
