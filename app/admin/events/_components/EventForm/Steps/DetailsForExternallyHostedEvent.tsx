@@ -9,7 +9,6 @@ import { Event } from "@prisma/client";
 import { EventFormDetailsForExternallyHostedEventSchema } from "@/_lib/schema";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
-  selectEventType,
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
@@ -26,16 +25,8 @@ interface BasicInfoProps {
 const DetailsForExternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  const eventType = useAppSelector(selectEventType);
-  const formValuesFromRedux = useAppSelector(selectFormValues);
-  const isUpdateAndEventExists = eventType === "Update" && event;
-  const eventInitialValues = isUpdateAndEventExists
-    ? {
-        ...event,
-        startDateTime: new Date(event.startDateTime),
-        endDateTime: new Date(event.endDateTime),
-      }
-    : formValuesFromRedux;
+  // todo: only select the items that I need here, not the whole form
+  const eventInitialValues = useAppSelector(selectFormValues);
   const {
     control,
     handleSubmit,
