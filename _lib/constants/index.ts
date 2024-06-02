@@ -28,7 +28,8 @@ export const locations = {
 
 export const eventFormBasicInfoDefaultValues = {
   category: "",
-  endDateTime: new Date(),
+  createdAt: "",
+  endDateTime: "",
   isHostedExternally: false,
   location: {
     formattedAddress: "",
@@ -37,7 +38,7 @@ export const eventFormBasicInfoDefaultValues = {
     name: "",
     placeId: "",
   },
-  startDateTime: new Date(),
+  startDateTime: "",
   title: "",
 };
 
