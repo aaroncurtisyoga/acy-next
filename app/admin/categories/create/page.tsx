@@ -3,7 +3,7 @@
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { Dispatch, FC, SetStateAction } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input } from "@nextui-org/react";
+import { Button, Input } from "@nextui-org/react";
 import { z } from "zod";
 import { Category } from "@prisma/client";
 import { createCategory } from "@/_lib/actions/category.actions";
@@ -67,6 +67,7 @@ const CreateCategory: FC<CreateCategoryProps> = ({ setCategories }) => {
           );
         }}
       />
+      <Button type={"submit"}> Create</Button>
     </form>
   );
 };
