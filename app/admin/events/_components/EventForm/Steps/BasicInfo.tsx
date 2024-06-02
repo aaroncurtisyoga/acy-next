@@ -25,27 +25,17 @@ import { PlaceDetails } from "@/_lib/types";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 
-interface EventFormStepOneProps {
-  event?: Event;
-}
-
-const BasicInfo: FC<EventFormStepOneProps> = ({ event }) => {
+const BasicInfo: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
+  // todo: does eventTYpe even matter... ?
   const eventType = useAppSelector(selectEventType);
   const formValuesFromRedux = useAppSelector(selectFormValues);
-  const isUpdateAndEventExists = eventType === "Update" && event;
-  const eventInitialValues = isUpdateAndEventExists
-    ? {
-        ...event,
-        startDateTime: new Date(event.startDateTime),
-        endDateTime: new Date(event.endDateTime),
-      }
-    : {
-        ...formValuesFromRedux,
-        startDateTime: new Date(formValuesFromRedux.startDateTime),
-        endDateTime: new Date(formValuesFromRedux.endDateTime),
-      };
+  const eventInitialValues = {
+    ...formValuesFromRedux,
+    startDateTime: new Date(formValuesFromRedux.startDateTime),
+    endDateTime: new Date(formValuesFromRedux.endDateTime),
+  };
   const {
     control,
     handleSubmit,

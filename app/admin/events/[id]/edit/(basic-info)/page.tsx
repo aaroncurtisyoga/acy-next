@@ -30,10 +30,8 @@ const UpdateEvent: FC = () => {
 
   return (
     <section className={"wrapper"}>
-      <h1>Update Event</h1>
-      <div>
-        <BasicInfo />
-      </div>
+      <h1 className={"mb-5"}>Update Event</h1>
+      <BasicInfo />
     </section>
   );
 };
