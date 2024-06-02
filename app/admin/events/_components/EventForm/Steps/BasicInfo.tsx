@@ -29,8 +29,12 @@ const BasicInfo: FC = () => {
   const formValuesFromRedux = useAppSelector(selectFormValues);
   const eventInitialValues = {
     ...formValuesFromRedux,
-    startDateTime: new Date(formValuesFromRedux.startDateTime),
-    endDateTime: new Date(formValuesFromRedux.endDateTime),
+    startDateTime: formValuesFromRedux.startDateTime
+      ? new Date(formValuesFromRedux.startDateTime)
+      : new Date(),
+    endDateTime: formValuesFromRedux.endDateTime
+      ? new Date(formValuesFromRedux.endDateTime)
+      : new Date(),
   };
   const {
     control,
