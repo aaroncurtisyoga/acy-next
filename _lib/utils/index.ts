@@ -122,3 +122,7 @@ export const handleError = (error: unknown, message?: unknown) => {
   console.error(error);
   throw new Error(typeof error === "string" ? error : JSON.stringify(error));
 };
+
+export const isDate = (date: any): date is Date => {
+  return date instanceof Date;
+};
