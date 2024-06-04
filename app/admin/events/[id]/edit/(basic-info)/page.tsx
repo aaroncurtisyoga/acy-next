@@ -19,7 +19,6 @@ const UpdateEvent: FC = () => {
     const fetchEvent = async () => {
       try {
         const event: Event = await getEventById(id);
-        console.log(event);
         dispatch(setFormData(event));
         setIsEventLoaded(true);
       } catch (err) {

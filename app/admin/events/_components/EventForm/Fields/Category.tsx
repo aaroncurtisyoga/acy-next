@@ -33,7 +33,6 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
       control={control}
       name={"categoryId"}
       render={({ field }) => {
-        console.log("field", field);
         return (
           <Select
             onChange={(e) => field.onChange(e)}
