@@ -26,27 +26,30 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
     getCategories();
   }, []);
 
+  if (categories.length === 0) return null;
+
   return (
     <Controller
       control={control}
-      name={"category"}
-      render={({ field }) => (
-        <Select
-          onChange={(e) => field.onChange(e)}
-          disabled={isSubmitting}
-          errorMessage={errors.category?.message}
-          label={"Category"}
-          variant={"bordered"}
-          {...field}
-        >
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <SelectItem key={category.id} value={category.id}>
-                {category.name}
-              </SelectItem>
+      name={"categoryId"}
+      render={({ field }) => {
+        console.log("field", field);
+        return (
+          <Select
+            onChange={(e) => field.onChange(e)}
+            disabled={isSubmitting}
+            defaultSelectedKeys={[field.value]}
+            errorMessage={errors.categoryId?.message}
+            label={"Category"}
+            variant={"bordered"}
+            {...field}
+          >
+            {categories.map((category) => (
+              <SelectItem key={category.id}>{category.name}</SelectItem>
             ))}
-        </Select>
-      )}
+          </Select>
+        );
+      }}
     />
   );
 };

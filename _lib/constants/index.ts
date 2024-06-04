@@ -27,7 +27,7 @@ export const locations = {
 };
 
 export const eventFormBasicInfoDefaultValues = {
-  category: "",
+  categoryId: "",
   createdAt: "",
   endDateTime: "",
   isHostedExternally: false,

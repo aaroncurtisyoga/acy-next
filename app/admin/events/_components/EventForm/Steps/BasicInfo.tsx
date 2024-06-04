@@ -65,6 +65,7 @@ const BasicInfo: FC = () => {
   }, [formValuesFromRedux.location, setLocationValueInReactHookForm, setValue]);
 
   const onSubmit = async (data) => {
+    console.log(data);
     // Convert Date objects to ISO strings
     const payload = {
       ...data,
