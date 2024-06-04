@@ -26,8 +26,6 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
     getCategories();
   }, []);
 
-  if (categories.length === 0) return null;
-
   return (
     <Controller
       control={control}
@@ -43,9 +41,10 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
             variant={"bordered"}
             {...field}
           >
-            {categories.map((category) => (
-              <SelectItem key={category.id}>{category.name}</SelectItem>
-            ))}
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <SelectItem key={category.id}>{category.name}</SelectItem>
+              ))}
           </Select>
         );
       }}
