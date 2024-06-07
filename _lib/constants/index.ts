@@ -10,7 +10,12 @@ import {
 } from "lucide-react";
 import { TravelOption } from "@/_lib/types";
 
-export const userLinks = [];
+export const userLinks = [
+  {
+    name: "Private Sessions",
+    href: "/private-sessions",
+  },
+];
 
 export const adminLinks = [{ name: "Admin", href: "/admin" }];
 
