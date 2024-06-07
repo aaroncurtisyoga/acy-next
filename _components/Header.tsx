@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import {
   SignedIn,
@@ -24,8 +24,11 @@ import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 interface HeaderProps {
   isSimpleNav?: boolean;
 }
+
 const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
   const router = useRouter();
+  const pathname = usePathname();
+  console.log("pathname", pathname);
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -46,7 +49,27 @@ const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
   }, [isLoaded, user, isSignedIn]);
 
   return (
-    <Navbar onMenuOpenChange={setIsMenuOpen} isBordered maxWidth="xl">
+    <Navbar
+      onMenuOpenChange={setIsMenuOpen}
+      isBordered
+      maxWidth="xl"
+      classNames={{
+        item: [
+          "flex",
+          "relative",
+          "h-full",
+          "items-center",
+          "data-[active=true]:after:content-['']",
+          "data-[active=true]:after:absolute",
+          "data-[active=true]:after:bottom-0",
+          "data-[active=true]:after:left-0",
+          "data-[active=true]:after:right-0",
+          "data-[active=true]:after:h-[2px]",
+          "data-[active=true]:after:rounded-[2px]",
+          "data-[active=true]:after:bg-primary",
+        ],
+      }}
+    >
       <NavbarContent>
         <NavbarBrand>
           <Link href={"/"}>
@@ -58,7 +81,10 @@ const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
       </NavbarContent>
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
         {menuItems.map((link, index) => (
-          <NavbarItem key={`${link.name}-${index}`}>
+          <NavbarItem
+            key={`${link.name}-${index}`}
+            isActive={pathname.includes(link.href)}
+          >
             <Link className="w-full" href={link.href}>
               {link.name}
             </Link>
@@ -75,6 +101,7 @@ const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
           </NavbarItem>
         )}
       </NavbarContent>
+      {/* Content below if for Mobile Nav */}
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
