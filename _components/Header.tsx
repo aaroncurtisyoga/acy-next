@@ -21,14 +21,9 @@ import {
 } from "@nextui-org/react";
 import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 
-interface HeaderProps {
-  isSimpleNav?: boolean;
-}
-
-const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
+const Header: FC = () => {
   const router = useRouter();
   const pathname = usePathname();
-  console.log("pathname", pathname);
   const { signOut } = useClerk();
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -90,16 +85,14 @@ const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
             </Link>
           </NavbarItem>
         ))}
-        {!isSimpleNav && (
-          <NavbarItem className={"min-w-[32px]"}>
-            <SignedIn>
-              <UserButton afterSignOutUrl={"/"} />
-            </SignedIn>
-            <SignedOut>
-              <Link href={"/sign-in"}>Login</Link>
-            </SignedOut>
-          </NavbarItem>
-        )}
+        <NavbarItem className={"min-w-[32px]"}>
+          <SignedIn>
+            <UserButton afterSignOutUrl={"/"} />
+          </SignedIn>
+          <SignedOut>
+            <Link href={"/sign-in"}>Login</Link>
+          </SignedOut>
+        </NavbarItem>
       </NavbarContent>
       {/* Content below if for Mobile Nav */}
       <NavbarContent className="sm:hidden" justify="end">
@@ -114,21 +107,19 @@ const Header: FC<HeaderProps> = ({ isSimpleNav = false }) => {
             <Link href={link.href}>{link.name}</Link>
           </NavbarMenuItem>
         ))}
-        {!isSimpleNav && (
-          <NavbarMenuItem>
-            <SignedIn>
-              <button
-                type="button"
-                onClick={() => signOut(() => router.push("/"))}
-              >
-                Logout
-              </button>
-            </SignedIn>
-            <SignedOut>
-              <Link href={"/sign-in"}>Login</Link>
-            </SignedOut>
-          </NavbarMenuItem>
-        )}
+        <NavbarMenuItem>
+          <SignedIn>
+            <button
+              type="button"
+              onClick={() => signOut(() => router.push("/"))}
+            >
+              Logout
+            </button>
+          </SignedIn>
+          <SignedOut>
+            <Link href={"/sign-in"}>Login</Link>
+          </SignedOut>
+        </NavbarMenuItem>
       </NavbarMenu>
     </Navbar>
   );
