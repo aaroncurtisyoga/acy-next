@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { Card, CardHeader, CardBody, CardFooter } from "@nextui-org/react";
+import { CircleCheck } from "lucide-react";
 
 const PrivateSessions: FC = () => {
   return (
@@ -17,6 +18,35 @@ const PrivateSessions: FC = () => {
           personal goals.
         </p>
       </div>
+      <Card className="max-w-[312px]">
+        <CardHeader>
+          <div className="flex flex-col">
+            <p className="text-md">1 Session</p>
+            <p className="text-small text-default-500">1 hour of training</p>
+          </div>
+        </CardHeader>
+        <CardBody>
+          <p>This includes:</p>
+          <ul>
+            <li className={"flex"}>
+              <CircleCheck />
+              Personalized programming
+            </li>
+            <li className={"flex"}>
+              <CircleCheck />
+              Virtual or In Person
+            </li>
+            <li className={"flex"}>
+              <CircleCheck />
+              Breathwork
+            </li>
+            <li className={"flex"}>
+              <CircleCheck />
+              Meditation
+            </li>
+          </ul>
+        </CardBody>
+      </Card>
     </section>
   );
 };
