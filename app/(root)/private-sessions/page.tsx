@@ -1,11 +1,12 @@
 "use client";
+
 import React, { FC } from "react";
 import PurchaseCard from "@/app/(root)/private-sessions/_components/PurchaseCard";
 import { Tab, Tabs } from "@nextui-org/tabs";
 
 const PrivateSessions: FC = () => {
   return (
-    <section className={"wrapper"}>
+    <section className={"wrapper flex flex-col"}>
       <div className="max-w-xl mx-auto mb-14">
         <h1
           className={"text-4xl font-bold mb-3 text-center mt-12 tracking-tight"}
@@ -19,22 +20,19 @@ const PrivateSessions: FC = () => {
           personal goals.
         </p>
       </div>
-      <div className={"max-w-xl mx-auto flex items-center"}>
-        <Tabs
-          color="primary"
-          aria-label="Tabs colors"
-          radius="md"
-          size={"lg"}
-          className={"mb-6 mx-auto max-w-xl"}
-          classNames={{
-            tab: "font-sm min-w-[120px]",
-          }}
-        >
-          <Tab key="individual" title="Individual" />
-          <Tab key="group" title="Group" />
-        </Tabs>
-      </div>
-
+      <Tabs
+        color="primary"
+        aria-label="Tabs colors"
+        radius="md"
+        size={"lg"}
+        className={"mb-6 mx-auto max-w-xl"}
+        classNames={{
+          tab: "font-sm min-w-[120px]",
+        }}
+      >
+        <Tab key="individual" title="Individual" />
+        <Tab key="group" title="Group" />
+      </Tabs>
       <PurchaseCard />
     </section>
   );
