@@ -1,8 +1,14 @@
 "use client";
 
+import { FC } from "react";
 import { Tab, Tabs } from "@nextui-org/tabs";
+import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
 
-const GroupSizeTabs = () => {
+interface GroupSizeTabsProps {
+  setPrivateSessionType: (value: PrivateSessionType) => void;
+}
+
+const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
   return (
     <Tabs
       color="primary"
