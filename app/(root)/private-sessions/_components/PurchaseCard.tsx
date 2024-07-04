@@ -3,8 +3,13 @@
 import React from "react";
 import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
 import { CircleCheck } from "lucide-react";
+import { OfferingType } from "@/app/(root)/private-sessions/types";
 
-const PurchaseCard = () => {
+interface PurchaseCardProps {
+  offering: OfferingType;
+}
+
+const PurchaseCard = ({ offering }) => {
   return (
     <Card className="max-w-[312px]">
       <CardHeader>
