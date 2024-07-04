@@ -1,8 +1,18 @@
-import React, { FC } from "react";
-import PurchaseCard from "@/app/(root)/private-sessions/_components/PurchaseCard";
+"use client";
+
+import { FC, useState } from "react";
 import GroupSizeTabs from "@/app/(root)/private-sessions/_components/GroupSizeTabs";
+import {
+  INDIVIDUAL_OFFERINGS,
+  GROUP_OFFERINGS,
+  PRIVATE_SESSION,
+} from "@/app/(root)/private-sessions/constants";
+import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
 
 const PrivateSessions: FC = () => {
+  const [privateSessionType, setPrivateSessionType] =
+    useState<PrivateSessionType>(PRIVATE_SESSION);
+
   return (
     <section className={"wrapper flex flex-col"}>
       <div className="max-w-xl mx-auto mb-12">
@@ -18,8 +28,12 @@ const PrivateSessions: FC = () => {
           personal goals.
         </p>
       </div>
-      <GroupSizeTabs />
-      <PurchaseCard />
+      <GroupSizeTabs setPrivateSessionType={setPrivateSessionType} />
+      <div>
+        {/*  {options.map((option, index) => (
+          <PurchaseCard key={index} offering={option} />
+        ))}*/}
+      </div>
     </section>
   );
 };
