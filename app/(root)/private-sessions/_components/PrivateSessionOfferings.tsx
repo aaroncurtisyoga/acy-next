@@ -18,7 +18,7 @@ const PrivateSessionOfferings: FC<OfferingsProps> = ({
   const offerings =
     privateSessionType === INDIVIDUAL ? INDIVIDUAL_OFFERINGS : GROUP_OFFERINGS;
   return (
-    <div className={"flex justify-center"}>
+    <div className={"flex gap-16 justify-center mt-4 pb-40"}>
       {offerings.map((offering) => (
         <OfferingCard key={offering.title} offering={offering} />
       ))}

@@ -11,7 +11,7 @@ interface PurchaseCardProps {
 
 const OfferingCard = ({ offering }) => {
   return (
-    <Card className="max-w-[312px]">
+    <Card className="max-w-[312px] pt-8 px-9 pb-7">
       <CardHeader>
         <div className="flex flex-col">
           <p className="text-xl font-semibold text-md">{offering.title}</p>
