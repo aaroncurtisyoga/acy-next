@@ -58,6 +58,6 @@ export const GROUP_OFFERINGS: OfferingType[] = [
   },
 ];
 
-export const PRIVATE_SESSION: PrivateSessionType = "Individual";
+export const SESSION_FOR_INDIVIDUAL: PrivateSessionType = "Individual";
 
 export const GROUP_SESSION: PrivateSessionType = "Group";

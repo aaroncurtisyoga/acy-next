@@ -5,13 +5,13 @@ import GroupSizeTabs from "@/app/(root)/private-sessions/_components/GroupSizeTa
 import {
   INDIVIDUAL_OFFERINGS,
   GROUP_OFFERINGS,
-  PRIVATE_SESSION,
+  SESSION_FOR_INDIVIDUAL,
 } from "@/app/(root)/private-sessions/constants";
 import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
-    useState<PrivateSessionType>(PRIVATE_SESSION);
+    useState<PrivateSessionType>(SESSION_FOR_INDIVIDUAL);
 
   return (
     <section className={"wrapper flex flex-col"}>

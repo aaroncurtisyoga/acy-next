@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import React, { FC } from "react";
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
 
@@ -19,8 +19,11 @@ const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
       classNames={{
         tab: "font-sm min-w-[120px]",
       }}
+      onSelectionChange={(key: React.Key) => {
+        console.log(key);
+      }}
     >
-      <Tab key="individual" title="Individual" />
+      <Tab key={} title="Individual" />
       <Tab key="group" title="Group" />
     </Tabs>
   );
