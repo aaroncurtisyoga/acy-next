@@ -2,11 +2,7 @@
 
 import { FC, useState } from "react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
-import {
-  INDIVIDUAL_OFFERINGS,
-  GROUP_OFFERINGS,
-  INDIVIDUAL,
-} from "@/app/(root)/private-sessions/constants";
+import { INDIVIDUAL } from "@/app/(root)/private-sessions/constants";
 import { SessionType } from "@/app/(root)/private-sessions/types";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
 
