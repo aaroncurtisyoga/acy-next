@@ -2,14 +2,11 @@
 
 import React, { FC } from "react";
 import { Tab, Tabs } from "@nextui-org/tabs";
-import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
-import {
-  SESSION_FOR_INDIVIDUAL,
-  SESSION_FOR_GROUP,
-} from "@/app/(root)/private-sessions/constants";
+import { SessionType } from "@/app/(root)/private-sessions/types";
+import { INDIVIDUAL, GROUP } from "@/app/(root)/private-sessions/constants";
 
 interface GroupSizeTabsProps {
-  setPrivateSessionType: (value: PrivateSessionType) => void;
+  setPrivateSessionType: (value: SessionType) => void;
 }
 
 const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
@@ -23,12 +20,12 @@ const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
       classNames={{
         tab: "font-sm min-w-[120px]",
       }}
-      onSelectionChange={(key: PrivateSessionType) => {
+      onSelectionChange={(key: SessionType) => {
         setPrivateSessionType(key);
       }}
     >
-      <Tab key={SESSION_FOR_INDIVIDUAL} title="Individual" />
-      <Tab key={SESSION_FOR_GROUP} title="Group" />
+      <Tab key={INDIVIDUAL} title="Individual" />
+      <Tab key={GROUP} title="Group" />
     </Tabs>
   );
 };

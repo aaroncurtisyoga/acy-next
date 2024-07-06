@@ -1,7 +1,4 @@
-import {
-  OfferingType,
-  PrivateSessionType,
-} from "@/app/(root)/private-sessions/types";
+import { OfferingType, SessionType } from "@/app/(root)/private-sessions/types";
 
 export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   {
@@ -58,6 +55,6 @@ export const GROUP_OFFERINGS: OfferingType[] = [
   },
 ];
 
-export const SESSION_FOR_INDIVIDUAL: PrivateSessionType = "Individual";
+export const INDIVIDUAL: SessionType = "Individual";
 
-export const SESSION_FOR_GROUP: PrivateSessionType = "Group";
+export const GROUP: SessionType = "Group";

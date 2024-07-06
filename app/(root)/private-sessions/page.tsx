@@ -5,13 +5,14 @@ import GroupSizeTabs from "@/app/(root)/private-sessions/_components/GroupSizeTa
 import {
   INDIVIDUAL_OFFERINGS,
   GROUP_OFFERINGS,
-  SESSION_FOR_INDIVIDUAL,
+  INDIVIDUAL,
 } from "@/app/(root)/private-sessions/constants";
-import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
+import { SessionType } from "@/app/(root)/private-sessions/types";
+import Offerings from "@/app/(root)/private-sessions/_components/Offerings";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
-    useState<PrivateSessionType>(SESSION_FOR_INDIVIDUAL);
+    useState<SessionType>(INDIVIDUAL);
 
   return (
     <section className={"wrapper flex flex-col"}>
@@ -29,11 +30,7 @@ const PrivateSessions: FC = () => {
         </p>
       </div>
       <GroupSizeTabs setPrivateSessionType={setPrivateSessionType} />
-      <div>
-        {/*  {options.map((option, index) => (
-          <PurchaseCard key={index} offering={option} />
-        ))}*/}
-      </div>
+      <Offerings privateSessionType={privateSessionType} />
     </section>
   );
 };

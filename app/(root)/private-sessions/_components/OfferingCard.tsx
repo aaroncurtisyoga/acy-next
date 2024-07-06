@@ -9,7 +9,7 @@ interface PurchaseCardProps {
   offering: OfferingType;
 }
 
-const PurchaseCard = ({ offering }) => {
+const OfferingCard = ({ offering }) => {
   return (
     <Card className="max-w-[312px]">
       <CardHeader>
@@ -56,4 +56,4 @@ const PurchaseCard = ({ offering }) => {
   );
 };
 
-export default PurchaseCard;
+export default OfferingCard;

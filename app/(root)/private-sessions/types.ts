@@ -5,4 +5,4 @@ export interface OfferingType {
   includes: string[];
 }
 
-export type PrivateSessionType = "Individual" | "Group";
+export type SessionType = "Individual" | "Group";
