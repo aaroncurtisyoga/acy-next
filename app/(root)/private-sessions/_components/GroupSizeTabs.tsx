@@ -3,6 +3,10 @@
 import React, { FC } from "react";
 import { Tab, Tabs } from "@nextui-org/tabs";
 import { PrivateSessionType } from "@/app/(root)/private-sessions/types";
+import {
+  SESSION_FOR_INDIVIDUAL,
+  SESSION_FOR_GROUP,
+} from "@/app/(root)/private-sessions/constants";
 
 interface GroupSizeTabsProps {
   setPrivateSessionType: (value: PrivateSessionType) => void;
@@ -19,12 +23,12 @@ const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
       classNames={{
         tab: "font-sm min-w-[120px]",
       }}
-      onSelectionChange={(key: React.Key) => {
-        console.log(key);
+      onSelectionChange={(key: PrivateSessionType) => {
+        setPrivateSessionType(key);
       }}
     >
-      <Tab key={} title="Individual" />
-      <Tab key="group" title="Group" />
+      <Tab key={SESSION_FOR_INDIVIDUAL} title="Individual" />
+      <Tab key={SESSION_FOR_GROUP} title="Group" />
     </Tabs>
   );
 };
