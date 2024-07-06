@@ -9,7 +9,9 @@ interface GroupSizeTabsProps {
   setPrivateSessionType: (value: SessionType) => void;
 }
 
-const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
+const SelectTypeOfPrivateSession: FC<GroupSizeTabsProps> = ({
+  setPrivateSessionType,
+}) => {
   return (
     <Tabs
       color="primary"
@@ -30,4 +32,4 @@ const GroupSizeTabs: FC<GroupSizeTabsProps> = ({ setPrivateSessionType }) => {
   );
 };
 
-export default GroupSizeTabs;
+export default SelectTypeOfPrivateSession;

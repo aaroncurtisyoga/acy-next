@@ -1,14 +1,14 @@
 "use client";
 
 import { FC, useState } from "react";
-import GroupSizeTabs from "@/app/(root)/private-sessions/_components/GroupSizeTabs";
+import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
 import {
   INDIVIDUAL_OFFERINGS,
   GROUP_OFFERINGS,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/constants";
 import { SessionType } from "@/app/(root)/private-sessions/types";
-import Offerings from "@/app/(root)/private-sessions/_components/Offerings";
+import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
@@ -29,8 +29,10 @@ const PrivateSessions: FC = () => {
           goals.
         </p>
       </div>
-      <GroupSizeTabs setPrivateSessionType={setPrivateSessionType} />
-      <Offerings privateSessionType={privateSessionType} />
+      <SelectTypeOfPrivateSession
+        setPrivateSessionType={setPrivateSessionType}
+      />
+      <PrivateSessionOfferings privateSessionType={privateSessionType} />
     </section>
   );
 };

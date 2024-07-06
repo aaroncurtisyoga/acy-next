@@ -11,7 +11,9 @@ interface OfferingsProps {
   privateSessionType: SessionType;
 }
 
-const Offerings: FC<OfferingsProps> = ({ privateSessionType }) => {
+const PrivateSessionOfferings: FC<OfferingsProps> = ({
+  privateSessionType,
+}) => {
   const offerings =
     privateSessionType === GROUP ? INDIVIDUAL_OFFERINGS : GROUP_OFFERINGS;
   return (
@@ -23,4 +25,4 @@ const Offerings: FC<OfferingsProps> = ({ privateSessionType }) => {
   );
 };
 
-export default Offerings;
+export default PrivateSessionOfferings;
