@@ -14,12 +14,12 @@ const OfferingCard = ({ offering }) => {
     <Card className="max-w-[312px]">
       <CardHeader>
         <div className="flex flex-col">
-          <p className="text-xl font-semibold text-md">1 Session</p>
-          <p className="text-small text-default-500">1 hour of training</p>
+          <p className="text-xl font-semibold text-md">{offering.title}</p>
+          <p className="text-small text-default-500">{offering.description}</p>
         </div>
       </CardHeader>
       <CardBody>
-        <p className={"text-4xl font-semibold"}>$125</p>
+        <p className={"text-4xl font-semibold"}>{offering.price}</p>
         <Button
           className={"text-base"}
           fullWidth={true}
@@ -34,22 +34,12 @@ const OfferingCard = ({ offering }) => {
 
         <p>This includes:</p>
         <ul>
-          <li className={"flex"}>
-            <CircleCheck />
-            Personalized programming
-          </li>
-          <li className={"flex"}>
-            <CircleCheck />
-            Virtual or In Person
-          </li>
-          <li className={"flex"}>
-            <CircleCheck />
-            Breathwork
-          </li>
-          <li className={"flex"}>
-            <CircleCheck />
-            Meditation
-          </li>
+          {offering.features.map((feature) => (
+            <li key={feature} className={"flex"}>
+              <CircleCheck strokeWidth={1.5} />
+              {feature}
+            </li>
+          ))}
         </ul>
       </CardBody>
     </Card>

@@ -3,6 +3,7 @@ import {
   INDIVIDUAL_OFFERINGS,
   GROUP_OFFERINGS,
   GROUP,
+  INDIVIDUAL,
 } from "@/app/(root)/private-sessions/constants";
 import { SessionType } from "@/app/(root)/private-sessions/types";
 import OfferingCard from "@/app/(root)/private-sessions/_components/OfferingCard";
@@ -15,7 +16,7 @@ const PrivateSessionOfferings: FC<OfferingsProps> = ({
   privateSessionType,
 }) => {
   const offerings =
-    privateSessionType === GROUP ? INDIVIDUAL_OFFERINGS : GROUP_OFFERINGS;
+    privateSessionType === INDIVIDUAL ? INDIVIDUAL_OFFERINGS : GROUP_OFFERINGS;
   return (
     <div>
       {offerings.map((offering) => (
