@@ -6,6 +6,12 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
+import {
+  now,
+  getLocalTimeZone,
+  parseZonedDateTime,
+} from "@internationalized/date";
+
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 // import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
@@ -29,11 +35,11 @@ const BasicInfo: FC = () => {
   const eventInitialValues = {
     ...formValuesFromRedux,
     startDateTime: formValuesFromRedux.startDateTime
-      ? new Date(formValuesFromRedux.startDateTime)
-      : new Date(),
+      ? parseZonedDateTime(formValuesFromRedux.startDateTime)
+      : now(getLocalTimeZone()),
     endDateTime: formValuesFromRedux.endDateTime
-      ? new Date(formValuesFromRedux.endDateTime)
-      : new Date(),
+      ? parseZonedDateTime(formValuesFromRedux.endDateTime)
+      : now(getLocalTimeZone()),
   };
   const {
     control,
