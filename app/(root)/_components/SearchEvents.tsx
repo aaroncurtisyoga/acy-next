@@ -3,7 +3,9 @@
 import { useRouter, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { Input } from "@nextui-org/react";
-import { cn, formUrlQuery, removeKeysFromQuery } from "@/_lib/utils";
+import { cn } from "@nextui-org/theme";
+
+import { formUrlQuery, removeKeysFromQuery } from "@/_lib/utils";
 import { Search as SearchIcon } from "lucide-react";
 
 interface SearchEventProps {
