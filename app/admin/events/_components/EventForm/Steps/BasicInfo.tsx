@@ -13,7 +13,7 @@ import {
 } from "@internationalized/date";
 
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
-// import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
+import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
@@ -99,11 +99,11 @@ const BasicInfo: FC = () => {
           errors={errors}
           isSubmitting={isSubmitting}
         />
-        {/*  <EndDatePickerInput
+        <EndDatePickerInput
           control={control}
           errors={errors}
           isSubmitting={isSubmitting}
-        />*/}
+        />
         <Category
           control={control}
           errors={errors}
