@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { FC } from "react";
+import { FC, FormEvent } from "react";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
 
@@ -20,28 +20,30 @@ const SubmitEvent: FC = () => {
 
   async function createNewEvent() {
     try {
-      const newEvent = await createEvent({
-        event: valuesFromRedux,
-        path: "/events",
-      });
-
-      if (newEvent) {
-        dispatch(resetFormData());
-        router.push(`/`);
-      }
+      console.log("valuesFromRedux", valuesFromRedux);
+      // const newEvent = await createEvent({
+      //   event: valuesFromRedux,
+      //   path: "/events",
+      // });
+      //
+      // if (newEvent) {
+      //   dispatch(resetFormData());
+      //   router.push(`/`);
+      // }
     } catch (error) {
       handleError(error);
     }
   }
 
-  const onSubmit = async () => {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
     await createNewEvent();
   };
 
   return (
     <section className={"wrapper"}>
       <h1>Review Event</h1>
-      <form onSubmit={() => onSubmit()}>
+      <form onSubmit={(e) => onSubmit(e)}>
         <div className="flex justify-between mt-5">
           <Button type={"button"}>
             <NextUiLink

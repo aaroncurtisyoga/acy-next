@@ -1,6 +1,6 @@
 "use client";
 
-import Link from "next/link";
+import { useRouter } from "next/router";
 import React, { FC } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
@@ -13,28 +13,34 @@ interface ICheckoutButtonProps {
 }
 
 const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
+  const router = useRouter();
   const { user } = useUser();
   const userId = user?.publicMetadata.userId as string;
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
-  return (
-    <div>
-      {hasEventFinished ? (
-        <p>Sorry, tickets are no longer available.</p>
-      ) : (
-        <>
-          <SignedOut>
-            <Button type="button" fullWidth={true} color={"primary"}>
-              <Link href="/sign-in">Sign Up</Link>
-            </Button>
-          </SignedOut>
+  if (hasEventFinished) {
+    return <p>Sorry, tickets are no longer available.</p>;
+  }
 
-          <SignedIn>
-            <Checkout event={event} userId={userId} />
-          </SignedIn>
-        </>
-      )}
-    </div>
+  return (
+    <>
+      <SignedOut>
+        <Button
+          type="button"
+          fullWidth={true}
+          color={"primary"}
+          onPress={() => {
+            router.push("/sign-in");
+          }}
+        >
+          Sign Up
+        </Button>
+      </SignedOut>
+
+      <SignedIn>
+        <Checkout event={event} userId={userId} />
+      </SignedIn>
+    </>
   );
 };
 

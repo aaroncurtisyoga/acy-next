@@ -7,7 +7,7 @@ export const newsletterFormSchema = z.object({
 });
 
 export const EventFormBasicInfoSchema = z.object({
-  categoryId: z.string().min(2, "Category is required"),
+  category: z.string().min(2, "Category is required"),
   endDateTime: z.date(),
   isHostedExternally: z.boolean(),
   location: z.object({

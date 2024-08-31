@@ -24,9 +24,6 @@ export const createEventFormSlice = createAppSlice({
       ) => {
         const payload = action.payload;
         // Redux doesn't allow date objects to be stored in the store
-        if (isDate(payload.createdAt)) {
-          payload.createdAt = payload.createdAt.toISOString();
-        }
         if (isDate(payload.startDateTime)) {
           payload.startDateTime = payload.startDateTime.toISOString();
         }

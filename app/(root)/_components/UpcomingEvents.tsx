@@ -26,7 +26,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       <h1 className={"text-3xl mb-4 md:text-7xl md:mb-6"}>Practice.</h1>
       <div className={"flex justify-between items-center mb-4"}>
         <p className={"font-semibold"}>
-          Join me in upcoming events to practice together.
+          Here&apos;s some upcoming events I&apos;ve got coming up:
         </p>
         <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
       </div>
