@@ -1,5 +1,4 @@
 import React, { FC } from "react";
-import DatePicker from "react-datepicker";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
