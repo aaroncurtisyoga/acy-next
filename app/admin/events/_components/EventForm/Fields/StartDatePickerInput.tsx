@@ -1,5 +1,7 @@
 import React, { FC } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
+import { DatePicker } from "@nextui-org/react";
+
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface StartDatePickerInputProps {
@@ -20,15 +22,17 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
       render={({ field }) => (
         <div className={"w-full flex flex-col"}>
           <DatePicker
-            disabled={isSubmitting}
-            dateFormat="MM/dd/yyyy h:mm aa"
-            enableTabLoop={false}
+            isDisabled={isSubmitting}
+            isRequired
+            hideTimeZone
             onChange={field.onChange}
-            placeholderText={"Start Date/Time"}
-            selected={new Date(field.value)}
-            showTimeSelect
-            timeInputLabel={"Start Date/Time:"}
-            wrapperClassName="datePicker"
+            variant={"bordered"}
+            label={"Start Date/Time"}
+            // value={field.value}
+            // defaultValue={now(getLocalTimeZone())}
+            // enableTabLoop={false}
+            // placeholderText={"Start Date/Time"}
+            // selected={new Date(field.value)}
           />
           {errors.startDateTime?.message && (
             <div className="p-1 flex relative flex-col gap-1.5">
