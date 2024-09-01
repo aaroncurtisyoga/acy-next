@@ -20,16 +20,15 @@ const SubmitEvent: FC = () => {
 
   async function createNewEvent() {
     try {
-      console.log("valuesFromRedux", valuesFromRedux);
-      // const newEvent = await createEvent({
-      //   event: valuesFromRedux,
-      //   path: "/events",
-      // });
-      //
-      // if (newEvent) {
-      //   dispatch(resetFormData());
-      //   router.push(`/`);
-      // }
+      const newEvent = await createEvent({
+        event: valuesFromRedux,
+        path: "/events",
+      });
+
+      if (newEvent) {
+        dispatch(resetFormData());
+        router.push(`/`);
+      }
     } catch (error) {
       handleError(error);
     }
