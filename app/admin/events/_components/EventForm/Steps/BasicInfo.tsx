@@ -69,7 +69,6 @@ const BasicInfo: FC = () => {
   }, [formValuesFromRedux.location, setLocationValueInReactHookForm, setValue]);
 
   const onSubmit = async (data) => {
-    console.log("BasicInfo data", data);
     // Convert Date objects to ISO strings
     const payload = {
       ...data,
@@ -77,9 +76,8 @@ const BasicInfo: FC = () => {
       endDateTime: data.endDateTime.toString(),
     };
 
-    // dispatch(setFormData(payload));
-    // console.log("Line before router push");
-    // router.push("/admin/events/create/details");
+    dispatch(setFormData(payload));
+    router.push("/admin/events/create/details");
   };
 
   return (
