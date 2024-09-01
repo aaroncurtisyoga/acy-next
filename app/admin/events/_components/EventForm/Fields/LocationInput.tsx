@@ -21,12 +21,6 @@ const LocationInput: FC<LocationInputProps> = ({
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
   const handleSelectLocation = async (placeId: any) => {
-    console.log("handleSelectLocation");
-    console.log("placeId", placeId);
-    // todo: i think that this should work as normal now just double
-    //  check... problem was before the fn() from the autocomplete item
-    //  itself just wasnt being called
-    // console.log("placeId", placeId);
     await placeDetails(placeId).then((place) => {
       console.log(place);
       setLocationValueInReactHookForm({

@@ -16,7 +16,6 @@ const useAutocompleteSuggestions = () => {
       }
 
       autocompleteSuggestions(value).then((r) => {
-        console.log("autocompleteSuggestions", r);
         setSuggestions(r);
       });
     }, 2000),

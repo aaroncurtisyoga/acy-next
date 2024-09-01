@@ -71,11 +71,11 @@ const BasicInfo: FC = () => {
   const onSubmit = async (data) => {
     console.log("BasicInfo data", data);
     // Convert Date objects to ISO strings
-    // const payload = {
-    //   ...data,
-    //   startDateTime: data.startDateTime.toISOString(),
-    //   endDateTime: data.endDateTime.toISOString(),
-    // };
+    const payload = {
+      ...data,
+      startDateTime: data.startDateTime.toISOString(),
+      endDateTime: data.endDateTime.toISOString(),
+    };
 
     // dispatch(setFormData(payload));
     // console.log("Line before router push");
