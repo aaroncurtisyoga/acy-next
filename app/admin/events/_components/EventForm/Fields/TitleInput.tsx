@@ -17,6 +17,7 @@ const TitleInput: FC<TitleInputProps> = ({ control, isSubmitting, errors }) => {
       render={({ field }) => (
         <Input
           disabled={isSubmitting}
+          isInvalid={!!errors.title}
           errorMessage={errors.title?.message}
           label={"Title"}
           onChange={field.onChange}

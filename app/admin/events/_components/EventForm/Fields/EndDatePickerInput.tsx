@@ -22,20 +22,14 @@ const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
         <div className={"w-full flex flex-col"}>
           <DatePicker
             isDisabled={isSubmitting}
-            isRequired
             hideTimeZone
+            isInvalid={!!errors.endDateTime}
+            errorMessage={errors.endDateTime?.message}
             onChange={field.onChange}
             variant={"bordered"}
             label={"End Date/Time"}
             value={field.value}
           />
-          {errors.endDateTime?.message && (
-            <div className="p-1 flex relative flex-col gap-1.5">
-              <div className="text-tiny text-danger">
-                {errors.endDateTime.message}
-              </div>
-            </div>
-          )}
         </div>
       )}
     />

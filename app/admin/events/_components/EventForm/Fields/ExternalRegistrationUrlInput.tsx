@@ -21,6 +21,7 @@ const ExternalRegistrationUrlInput: FC<ExternalRegistrationUrlInputProps> = ({
       render={({ field }) => (
         <Input
           disabled={isSubmitting}
+          isInvalid={!!errors.externalRegistrationUrl}
           errorMessage={errors.externalRegistrationUrl?.message}
           label={"External Registration URL"}
           onChange={(e) => field.onChange(e)}

@@ -63,26 +63,33 @@ const BasicInfo: FC = () => {
     },
     [setValue],
   );
-
   useEffect(() => {
     formValuesFromRedux.location?.formattedAddress &&
       setLocationValueInReactHookForm(formValuesFromRedux.location);
   }, [formValuesFromRedux.location, setLocationValueInReactHookForm, setValue]);
 
   const onSubmit = async (data) => {
+    console.log("BasicInfo data", data);
     // Convert Date objects to ISO strings
-    const payload = {
-      ...data,
-      startDateTime: data.startDateTime.toISOString(),
-      endDateTime: data.endDateTime.toISOString(),
-    };
+    // const payload = {
+    //   ...data,
+    //   startDateTime: data.startDateTime.toISOString(),
+    //   endDateTime: data.endDateTime.toISOString(),
+    // };
 
-    dispatch(setFormData(payload));
-    router.push("/admin/events/create/details");
+    // dispatch(setFormData(payload));
+    // console.log("Line before router push");
+    // router.push("/admin/events/create/details");
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        console.log("onSubmit");
+        handleSubmit(onSubmit)(e);
+      }}
+    >
       <div className={"grid grid-cols-2 gap-5"}>
         <TitleInput
           control={control}
@@ -115,7 +122,7 @@ const BasicInfo: FC = () => {
         />
       </div>
       <div className="flex justify-end">
-        <Button type={"submit"} className={"mt-5"}>
+        <Button type={"submit"} className={"mt-5"} color={"primary"}>
           Next
         </Button>
       </div>

@@ -23,21 +23,15 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
         return (
           <div className={"w-full flex flex-col"}>
             <DatePicker
+              errorMessage={errors.startDateTime?.message}
               isDisabled={isSubmitting}
-              isRequired
+              isInvalid={!!errors.startDateTime}
               hideTimeZone
               onChange={field.onChange}
               variant={"bordered"}
               label={"Start Date/Time"}
               value={field.value}
             />
-            {errors.startDateTime?.message && (
-              <div className="p-1 flex relative flex-col gap-1.5">
-                <div className="text-tiny text-danger">
-                  {errors.startDateTime.message}
-                </div>
-              </div>
-            )}
           </div>
         );
       }}

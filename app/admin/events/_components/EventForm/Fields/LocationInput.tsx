@@ -1,3 +1,5 @@
+"use client";
+
 import React, { FC } from "react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
@@ -7,7 +9,6 @@ import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo
 
 interface LocationInputProps {
   control: Control;
-  // todo: fix this type
   setLocationValueInReactHookForm: any;
   errors: FieldErrors<Inputs>;
 }
@@ -19,8 +20,15 @@ const LocationInput: FC<LocationInputProps> = ({
 }) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
-  const handleSelectLocation = async (placeId: string) => {
+  const handleSelectLocation = async (placeId: any) => {
+    console.log("handleSelectLocation");
+    console.log("placeId", placeId);
+    // todo: i think that this should work as normal now just double
+    //  check... problem was before the fn() from the autocomplete item
+    //  itself just wasnt being called
+    // console.log("placeId", placeId);
     await placeDetails(placeId).then((place) => {
+      console.log(place);
       setLocationValueInReactHookForm({
         formattedAddress: place.formatted_address,
         lat: place.geometry.location.lat,
@@ -32,6 +40,7 @@ const LocationInput: FC<LocationInputProps> = ({
   };
 
   const onInputChange = (value: string) => {
+    console.log("onInputChange", value);
     setSearchValue(value);
   };
 
@@ -42,19 +51,17 @@ const LocationInput: FC<LocationInputProps> = ({
       render={({ field }) => (
         <Autocomplete
           errorMessage={errors.location?.formattedAddress?.message}
+          isInvalid={!!errors.location?.formattedAddress}
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}
           onInputChange={onInputChange}
-          onKeyDown={(e) => e.continuePropagation()}
+          onSelectionChange={(value) => handleSelectLocation(value)}
         >
           {suggestions?.map((location) => (
             <AutocompleteItem
               value={location.description}
               key={location.place_id}
-              onPress={() => {
-                handleSelectLocation(location.place_id);
-              }}
             >
               {location.description}
             </AutocompleteItem>

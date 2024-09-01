@@ -22,6 +22,7 @@ const MaxAttendees: FC<MaxAttendeesProps> = ({
         <Input
           disabled={isSubmitting}
           errorMessage={errors.maxAttendees?.message}
+          isInvalid={!!errors.maxAttendees}
           label={"Max Attendees"}
           onChange={(e) => onChange(Number(e.target.value))}
           type={"number"}

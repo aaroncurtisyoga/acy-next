@@ -18,6 +18,7 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
         <Input
           disabled={isSubmitting}
           errorMessage={errors.price?.message}
+          isInvalid={!!errors.price}
           label={"Price"}
           onChange={field.onChange}
           placeholder={"0.00"}

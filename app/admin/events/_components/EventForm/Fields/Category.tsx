@@ -38,6 +38,7 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
             defaultSelectedKeys={[field.value]}
             errorMessage={errors.category?.message}
             label={"Category"}
+            isInvalid={!!errors.category}
             variant={"bordered"}
             {...field}
           >
