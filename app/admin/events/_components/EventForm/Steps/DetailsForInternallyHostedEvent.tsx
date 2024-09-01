@@ -73,7 +73,9 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
             Previous
           </NextUiLink>
         </Button>
-        <Button type={"submit"}>Next</Button>
+        <Button type={"submit"} color={"primary"}>
+          Next
+        </Button>
       </div>
     </form>
   );
