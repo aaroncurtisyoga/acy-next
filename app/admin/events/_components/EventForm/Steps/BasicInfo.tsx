@@ -21,6 +21,7 @@ import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInp
 import { EventFormBasicInfoSchema } from "@/_lib/schema";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
+  resetFormData,
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
@@ -42,6 +43,7 @@ const BasicInfo: FC = () => {
       : now(getLocalTimeZone()),
   };
   const {
+    reset,
     control,
     handleSubmit,
     setValue,
@@ -118,8 +120,20 @@ const BasicInfo: FC = () => {
           isSubmitting={isSubmitting}
         />
       </div>
-      <div className="flex justify-end">
-        <Button type={"submit"} className={"mt-5"} color={"primary"}>
+      <div className="flex justify-between mt-5">
+        <Button
+          type={"button"}
+          className={"mr-5"}
+          onPress={() => {
+            // Rest react hook form
+            reset();
+            // Reset redux store
+            dispatch(resetFormData());
+          }}
+        >
+          Reset Form
+        </Button>
+        <Button type={"submit"} color={"primary"}>
           Next
         </Button>
       </div>
