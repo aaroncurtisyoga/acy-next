@@ -52,7 +52,9 @@ const SubmitEvent: FC = () => {
               Previous
             </NextUiLink>
           </Button>
-          <Button type={"submit"}>Create Event</Button>
+          <Button type={"submit"} color={"primary"}>
+            Create Event
+          </Button>
         </div>
       </form>
     </section>
