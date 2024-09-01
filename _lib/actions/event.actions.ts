@@ -2,6 +2,7 @@
 
 import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
+import { parseZonedDateTime } from "@internationalized/date";
 import { handleError } from "@/_lib/utils";
 
 import {
@@ -14,10 +15,23 @@ const prisma = new PrismaClient();
 
 export async function createEvent({ event, path }) {
   try {
+    // Parse the string into a ZonedDateTime object
+    const startZonedDateTime = parseZonedDateTime(event.startDateTime);
+    const endZonedDateTime = parseZonedDateTime(event.endDateTime);
+
+    // Convert ZonedDateTime to UTC ISO string
+    const startDateTimeISO = startZonedDateTime.toAbsoluteString();
+    const endDateTimeISO = endZonedDateTime.toAbsoluteString();
+
+    console.log("startDateTimeISO", startDateTimeISO);
+    console.log("endDateTimeISO", endDateTimeISO);
     const newEvent = await prisma.event.create({
       data: {
         ...event,
         ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
+        // Convert string to Date and then to ISO String
+        startDateTime: startDateTimeISO,
+        endDateTime: endDateTimeISO,
         category: {
           connect: {
             id: event.category,
