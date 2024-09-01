@@ -19,7 +19,7 @@ const TitleInput: FC<TitleInputProps> = ({ control, isSubmitting, errors }) => {
           disabled={isSubmitting}
           isInvalid={!!errors.title}
           errorMessage={errors.title?.message}
-          label={"Title"}
+          label={"Event Name"}
           onChange={field.onChange}
           type={"text"}
           variant="bordered"
