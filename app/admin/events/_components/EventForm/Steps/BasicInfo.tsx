@@ -84,7 +84,6 @@ const BasicInfo: FC = () => {
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        console.log("onSubmit");
         handleSubmit(onSubmit)(e);
       }}
     >

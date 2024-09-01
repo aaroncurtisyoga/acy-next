@@ -34,7 +34,6 @@ const LocationInput: FC<LocationInputProps> = ({
   };
 
   const onInputChange = (value: string) => {
-    console.log("onInputChange", value);
     setSearchValue(value);
   };
 
