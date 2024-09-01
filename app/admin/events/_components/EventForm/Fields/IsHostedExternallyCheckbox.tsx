@@ -23,7 +23,7 @@ const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
           isSelected={field.value}
           {...field}
         >
-          External Registration
+          People sign up on a different app
         </Checkbox>
       )}
     />
