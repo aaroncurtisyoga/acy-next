@@ -73,8 +73,8 @@ const BasicInfo: FC = () => {
     // Convert Date objects to ISO strings
     const payload = {
       ...data,
-      startDateTime: data.startDateTime.toISOString(),
-      endDateTime: data.endDateTime.toISOString(),
+      startDateTime: data.startDateTime.toString(),
+      endDateTime: data.endDateTime.toString(),
     };
 
     // dispatch(setFormData(payload));
