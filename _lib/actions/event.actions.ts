@@ -23,8 +23,6 @@ export async function createEvent({ event, path }) {
     const startDateTimeISO = startZonedDateTime.toAbsoluteString();
     const endDateTimeISO = endZonedDateTime.toAbsoluteString();
 
-    console.log("startDateTimeISO", startDateTimeISO);
-    console.log("endDateTimeISO", endDateTimeISO);
     const newEvent = await prisma.event.create({
       data: {
         ...event,
