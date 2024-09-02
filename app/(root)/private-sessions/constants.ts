@@ -3,7 +3,7 @@ import { OfferingType, SessionType } from "@/app/(root)/private-sessions/types";
 export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   {
     title: "1 Session",
-    price: "$125",
+    price: "$115",
     description: "1 hour of training",
     features: [
       "Personalized programming",
@@ -14,7 +14,7 @@ export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   },
   {
     title: "4 Sessions",
-    price: "$450",
+    price: "$395",
     description: "4 hours of training",
     features: [
       "Personalized programming",
