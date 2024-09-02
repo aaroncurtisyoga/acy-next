@@ -19,10 +19,13 @@ const PrivateSessions: FC = () => {
           Train With Me
         </h1>
         <p className={"text-center text-gray-500"}>
-          Whether you want to focus on a certain posture, or you&apos;re looking
-          for support in various aspects of your yoga journey, you can schedule
-          a single session or a group of sessions all catered towards your
-          goals.
+          Private sessions allow me to connect with you on a personal level,
+          focusing on your unique needs. Whether we&apos;re working on specific
+          postures, meditation, improving movement, or mentoring for teaching,
+          my goal is to share everything I’ve learned to help you achieve your
+          goals. If you have any questions, please{" "}
+          <a href="https://www.instagram.com/aaroncurtisyoga/">reach out</a>—I
+          look forward to working with you!
         </p>
       </div>
       <SelectTypeOfPrivateSession
