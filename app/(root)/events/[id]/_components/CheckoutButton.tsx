@@ -1,6 +1,6 @@
 "use client";
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import React, { FC } from "react";
 import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
@@ -30,6 +30,7 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
           fullWidth={true}
           color={"primary"}
           onPress={() => {
+            // After sign in, redirect to the checkout page
             router.push("/sign-in");
           }}
         >
