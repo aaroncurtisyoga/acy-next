@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
+import { Link } from "@nextui-org/react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/constants";
 import { SessionType } from "@/app/(root)/private-sessions/types";
@@ -24,8 +25,14 @@ const PrivateSessions: FC = () => {
           postures, meditation, improving movement, or mentoring for teaching,
           my goal is to share everything I’ve learned to help you achieve your
           goals. If you have any questions, please{" "}
-          <a href="https://www.instagram.com/aaroncurtisyoga/">reach out</a>—I
-          look forward to working with you!
+          <Link
+            isExternal
+            underline={"always"}
+            href="https://www.instagram.com/aaroncurtisyoga/"
+          >
+            reach out
+          </Link>
+          —I look forward to working with you!
         </p>
       </div>
       <SelectTypeOfPrivateSession
