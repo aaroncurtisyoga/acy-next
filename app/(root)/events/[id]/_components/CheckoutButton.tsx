@@ -1,8 +1,11 @@
+"use client";
+
 import React, { FC } from "react";
-import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
-import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
 import { Button } from "@nextui-org/react";
+import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
+import SkeletonButton from "@/app/(root)/events/[id]/_components/SkeletonButton";
 
 interface ICheckoutButtonProps {
   event: Event;
@@ -10,10 +13,15 @@ interface ICheckoutButtonProps {
 }
 
 const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
+  const { isLoaded } = useAuth();
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
   if (hasEventFinished) {
     return <p>Sorry, tickets are no longer available.</p>;
+  }
+
+  if (!isLoaded) {
+    return <SkeletonButton />;
   }
 
   return (
@@ -21,7 +29,7 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
       <SignedOut>
         <SignInButton>
           <Button type="button" fullWidth={true} color={"primary"}>
-            Sign In
+            Sign In to Purchase
           </Button>
         </SignInButton>
       </SignedOut>
