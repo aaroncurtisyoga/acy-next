@@ -1,8 +1,5 @@
-"use client";
-
-import { useRouter } from "next/navigation";
 import React, { FC } from "react";
-import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
 import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
 import { Button } from "@nextui-org/react";
@@ -13,9 +10,6 @@ interface ICheckoutButtonProps {
 }
 
 const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
-  const router = useRouter();
-  const { user } = useUser();
-  const userId = user?.publicMetadata.userId as string;
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
   if (hasEventFinished) {
@@ -25,21 +19,15 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
   return (
     <>
       <SignedOut>
-        <Button
-          type="button"
-          fullWidth={true}
-          color={"primary"}
-          onPress={() => {
-            // After sign in, redirect to the checkout page
-            router.push("/sign-in");
-          }}
-        >
-          Sign Up
-        </Button>
+        <SignInButton>
+          <Button type="button" fullWidth={true} color={"primary"}>
+            Sign In
+          </Button>
+        </SignInButton>
       </SignedOut>
 
       <SignedIn>
-        <Checkout event={event} userId={userId} />
+        <Checkout event={event} />
       </SignedIn>
     </>
   );
