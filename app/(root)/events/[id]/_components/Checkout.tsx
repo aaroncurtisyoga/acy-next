@@ -9,12 +9,9 @@ import { checkoutOrder } from "@/_lib/actions/order.actions";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-type CheckoutProps = { event: Event };
+type CheckoutProps = { event: Event; userId: string };
 
-const Checkout: FC<CheckoutProps> = ({ event }) => {
-  const { user } = useUser();
-  const userId = user?.publicMetadata.userId as string;
-
+const Checkout: FC<CheckoutProps> = ({ event, userId }) => {
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);

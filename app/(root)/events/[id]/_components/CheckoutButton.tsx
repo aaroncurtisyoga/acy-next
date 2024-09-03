@@ -1,7 +1,13 @@
 "use client";
 
 import React, { FC } from "react";
-import { SignedIn, SignedOut, SignInButton, useAuth } from "@clerk/nextjs";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  useUser,
+  useAuth,
+} from "@clerk/nextjs";
 import { Event } from "@prisma/client";
 import { Button } from "@nextui-org/react";
 import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
@@ -13,6 +19,8 @@ interface ICheckoutButtonProps {
 }
 
 const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
+  const { user } = useUser();
+  const userId = user?.publicMetadata.userId as string;
   const { isLoaded } = useAuth();
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
@@ -35,7 +43,7 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
       </SignedOut>
 
       <SignedIn>
-        <Checkout event={event} />
+        <Checkout event={event} userId={userId} />
       </SignedIn>
     </>
   );
