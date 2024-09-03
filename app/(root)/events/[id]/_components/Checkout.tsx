@@ -1,14 +1,20 @@
-import React, { FC, useEffect } from "react";
-import { Button } from "@nextui-org/react";
+"use client";
+
+import { FC, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
+import { Button } from "@nextui-org/react";
+import { useUser } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
 import { checkoutOrder } from "@/_lib/actions/order.actions";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-type CheckoutProps = { event: Event; userId: string };
+type CheckoutProps = { event: Event };
 
-const Checkout: FC<CheckoutProps> = ({ event, userId }) => {
+const Checkout: FC<CheckoutProps> = ({ event }) => {
+  const { user } = useUser();
+  const userId = user?.publicMetadata.userId as string;
+
   useEffect(() => {
     // Check to see if this is a redirect back from Checkout
     const query = new URLSearchParams(window.location.search);
@@ -23,7 +29,9 @@ const Checkout: FC<CheckoutProps> = ({ event, userId }) => {
     }
   }, []);
 
-  const onCheckout = async () => {
+  const onCheckout = async (e) => {
+    e.preventDefault();
+
     const order = {
       eventTitle: event.title,
       eventId: event.id,
@@ -36,7 +44,7 @@ const Checkout: FC<CheckoutProps> = ({ event, userId }) => {
   };
 
   return (
-    <form action={onCheckout} method="post">
+    <form onSubmit={(e) => onCheckout(e)} method="post">
       <Button type="submit" fullWidth={true} color={"primary"}>
         {event.isFree ? "Get Ticket" : "Buy Ticket"}
       </Button>
