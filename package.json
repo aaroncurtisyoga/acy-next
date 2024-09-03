@@ -11,7 +11,7 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@clerk/nextjs": "^5.0.8",
+    "@clerk/nextjs": "^5.4.1",
     "@googlemaps/google-maps-services-js": "^3.4.0",
     "@hookform/resolvers": "^3.3.4",
     "@internationalized/date": "^3.5.5",
