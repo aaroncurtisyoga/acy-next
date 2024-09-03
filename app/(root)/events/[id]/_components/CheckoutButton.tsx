@@ -19,9 +19,8 @@ interface ICheckoutButtonProps {
 }
 
 const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
-  const { user } = useUser();
+  const { user, isLoaded } = useUser();
   const userId = user?.publicMetadata.userId as string;
-  const { isLoaded } = useAuth();
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
   if (hasEventFinished) {
