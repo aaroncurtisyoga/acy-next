@@ -3,7 +3,6 @@
 import { FC, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@nextui-org/react";
-import { useUser } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
 import { checkoutOrder } from "@/_lib/actions/order.actions";
 
