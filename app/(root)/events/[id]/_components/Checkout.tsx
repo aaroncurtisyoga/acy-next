@@ -13,7 +13,7 @@ interface ICheckoutButtonProps {
 }
 
 const Checkout: FC<ICheckoutButtonProps> = ({ event }) => {
-  const { user, isLoaded } = useUser();
+  const { user, isLoaded: isUserLoaded } = useUser();
   const userId = user?.publicMetadata.userId as string;
   const hasEventFinished = new Date(event.endDateTime) < new Date();
 
@@ -21,7 +21,7 @@ const Checkout: FC<ICheckoutButtonProps> = ({ event }) => {
     return <p>Sorry, tickets are no longer available.</p>;
   }
 
-  if (!isLoaded) {
+  if (!isUserLoaded) {
     return <CheckoutSkeleton />;
   }
 
