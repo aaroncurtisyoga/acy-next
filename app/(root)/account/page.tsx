@@ -34,7 +34,7 @@ const AccountPage: FC<AccountPageProps> = async ({ searchParams }) => {
 
   return (
     <section className={"wrapper py-5 md:py-10"}>
-      <h3 className={"text-xl mb-5"}>Event Purchase History</h3>
+      <h3 className={"text-xl mb-5"}>Purchase History</h3>
       <EventHistoryTable orders={orders} />
     </section>
   );

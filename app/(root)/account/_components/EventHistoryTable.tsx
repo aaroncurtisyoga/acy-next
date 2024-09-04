@@ -19,7 +19,7 @@ interface EventHistoryTableProps {
 const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
   const hasOrders = orders.data.length > 0;
   return (
-    <Table aria-label={"Table for Event Purchase History"}>
+    <Table aria-label={"Table for Purchase History"}>
       <TableHeader>
         <TableColumn>Date</TableColumn>
         <TableColumn>Amount</TableColumn>
