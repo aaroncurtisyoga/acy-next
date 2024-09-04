@@ -2,7 +2,6 @@ import React, { FC } from "react";
 import {
   INDIVIDUAL_OFFERINGS,
   GROUP_OFFERINGS,
-  GROUP,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/constants";
 import { SessionType } from "@/app/(root)/private-sessions/types";
