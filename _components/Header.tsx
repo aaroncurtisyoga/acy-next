@@ -66,6 +66,7 @@ const Header: FC = () => {
       }}
     >
       <NavbarContent>
+        {/* Todo: Replace w/ an actual Logo */}
         <NavbarBrand>
           <Link href={"/"}>
             <p className="sm:flex font-semibold text-inherit">
@@ -87,7 +88,7 @@ const Header: FC = () => {
         ))}
         <NavbarItem className={"min-w-[32px]"}>
           <SignedIn>
-            <UserButton afterSignOutUrl={"/"} />
+            <UserButton />
           </SignedIn>
           <SignedOut>
             <Link href={"/sign-in"}>Login</Link>
