@@ -7,7 +7,7 @@ import {
   Location as PrismaLocation,
 } from "@prisma/client";
 import Attendees from "@/app/(root)/events/[id]/_components/Attendees";
-import CheckoutButton from "@/app/(root)/events/[id]/_components/CheckoutButton";
+import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
 import DateAndTime from "@/app/(root)/events/[id]/_components/DateAndTime";
 import DescriptionRichTextEditor from "@/app/(root)/events/[id]/_components/DescriptionDisplay";
 import Headline from "@/app/(root)/events/[id]/_components/Headline";
@@ -61,7 +61,7 @@ const EventPage: FC<SearchParamProps> = async ({ params: { id } }) => {
             {!event.isFree && <RefundPolicy />}
           </div>
         </div>
-        <CheckoutButton event={event} className={"justify-center"} />
+        <Checkout event={event} className={"justify-center"} />
       </div>
     </section>
   );

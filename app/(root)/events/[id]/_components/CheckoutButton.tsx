@@ -1,53 +1,51 @@
 "use client";
 
-import React, { FC } from "react";
-import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Event } from "@prisma/client";
+import { FC, useEffect } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@nextui-org/react";
-import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
-import SkeletonButton from "@/app/(root)/events/[id]/_components/SkeletonButton";
+import { useUser } from "@clerk/nextjs";
+import { Event } from "@prisma/client";
+import { checkoutOrder } from "@/_lib/actions/order.actions";
 
-interface ICheckoutButtonProps {
-  event: Event;
-  className?: string;
-}
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
-  const { user, isLoaded } = useUser();
-  const userId = user?.publicMetadata.userId as string;
-  const hasEventFinished = new Date(event.endDateTime) < new Date();
+type CheckoutProps = { event: Event; userId: string };
 
-  if (hasEventFinished) {
-    return <p>Sorry, tickets are no longer available.</p>;
-  }
+const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      console.log("Order placed! You will receive an email confirmation.");
+    }
 
-  if (!isLoaded) {
-    return <SkeletonButton />;
-  }
+    if (query.get("canceled")) {
+      console.log(
+        "Order canceled -- continue to shop around and checkout when you’re ready.",
+      );
+    }
+  }, []);
+
+  const onCheckout = async (e) => {
+    e.preventDefault();
+
+    const order = {
+      eventTitle: event.title,
+      eventId: event.id,
+      price: event.price,
+      isFree: event.isFree,
+      buyerId: userId,
+    };
+
+    await checkoutOrder(order);
+  };
 
   return (
-    <div
-      id={"event-checkout"}
-      className={
-        "flex-1 w-full border-t-2 h-[140px] p-[24px] fixed bottom-0 z-10 bg-white" +
-        " md:border-[1px] md:rounded-2xl md:relative" +
-        " md:max-w-[360px]"
-      }
-    >
-      <p className={"text-center text-lg mb-3"}>
-        {event.isFree ? "Free" : `$${event.price}`}
-      </p>
-      <SignedOut>
-        <SignInButton>
-          <Button type="button" fullWidth={true} color={"primary"}>
-            Sign In to Purchase
-          </Button>
-        </SignInButton>
-      </SignedOut>
-      <SignedIn>
-        <Checkout event={event} userId={userId} />
-      </SignedIn>
-    </div>
+    <form onSubmit={(e) => onCheckout(e)} method="post">
+      <Button type="submit" fullWidth={true} color={"primary"}>
+        {event.isFree ? "Get Ticket" : "Buy Ticket"}
+      </Button>
+    </form>
   );
 };
 

@@ -1,7 +1,7 @@
-import { Button, Skeleton, Spinner } from "@nextui-org/react";
+import { Button, Skeleton } from "@nextui-org/react";
 import React from "react";
 
-const SkeletonButton: React.FC = () => {
+const CheckoutSkeleton: React.FC = () => {
   return (
     <Skeleton className={"rounded-xl"}>
       <Button type="button" fullWidth={true} color={"primary"}></Button>
@@ -9,4 +9,4 @@ const SkeletonButton: React.FC = () => {
   );
 };
 
-export default SkeletonButton;
+export default CheckoutSkeleton;
