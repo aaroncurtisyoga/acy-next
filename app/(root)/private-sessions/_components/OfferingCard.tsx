@@ -1,9 +1,8 @@
-"use client";
-
 import React, { FC } from "react";
-import { Button, Card, CardBody, CardHeader } from "@nextui-org/react";
+import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { Check } from "lucide-react";
 import { OfferingType } from "@/app/(root)/private-sessions/types";
+import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
 
 interface PurchaseCardProps {
   offering: OfferingType;
@@ -20,19 +19,7 @@ const OfferingCard: FC<PurchaseCardProps> = ({ offering }) => {
       </CardHeader>
       <CardBody className={"pt-1"}>
         <p className={"text-4xl font-semibold"}>{offering.price}</p>
-        <Button
-          radius={"sm"}
-          className={"text-base mt-4"}
-          fullWidth={true}
-          onPress={() => {
-            // Add purchase logic here
-            console.log("Purchase button clicked");
-          }}
-          color={"primary"}
-        >
-          Sign Up
-        </Button>
-
+        <CheckoutButton />
         <p className={"text-sm mt-4 mb-1"}>This includes:</p>
         <ul>
           {offering.features.map((feature) => (
