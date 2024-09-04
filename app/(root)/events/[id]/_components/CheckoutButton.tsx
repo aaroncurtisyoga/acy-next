@@ -1,13 +1,7 @@
 "use client";
 
 import React, { FC } from "react";
-import {
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  useUser,
-  useAuth,
-} from "@clerk/nextjs";
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Event } from "@prisma/client";
 import { Button } from "@nextui-org/react";
 import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
