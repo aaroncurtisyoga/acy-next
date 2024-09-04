@@ -26,7 +26,17 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
   }
 
   return (
-    <>
+    <div
+      id={"event-checkout"}
+      className={
+        "flex-1 w-full border-t-2 h-[140px] p-[24px] fixed bottom-0 z-10 bg-white" +
+        " md:border-[1px] md:rounded-2xl md:relative" +
+        " md:max-w-[360px]"
+      }
+    >
+      <p className={"text-center text-lg mb-3"}>
+        {event.isFree ? "Free" : `$${event.price}`}
+      </p>
       <SignedOut>
         <SignInButton>
           <Button type="button" fullWidth={true} color={"primary"}>
@@ -34,11 +44,10 @@ const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
           </Button>
         </SignInButton>
       </SignedOut>
-
       <SignedIn>
         <Checkout event={event} userId={userId} />
       </SignedIn>
-    </>
+    </div>
   );
 };
 
