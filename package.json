@@ -34,8 +34,8 @@
     "cmdk": "1.0.0",
     "framer-motion": "^11.1.9",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.378.0",
-    "next": "^14.2.3",
+    "lucide-react": "^0.438.0",
+    "next": "^14.2.8",
     "query-string": "^9.0.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
@@ -52,7 +52,7 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
-    "@prisma/client": "^5.14.0",
+    "@prisma/client": "^5.19.1",
     "@types/mailchimp__mailchimp_marketing": "^3.0.20",
     "@types/node": "20.12.11",
     "@types/react": "18.3.2",
@@ -63,7 +63,7 @@
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",
-    "prisma": "^5.14.0",
+    "prisma": "^5.19.1",
     "tailwindcss": "^3.4.3",
     "typescript": "5.4.5"
   }
