@@ -20,6 +20,7 @@ import {
   NavbarMenuItem,
 } from "@nextui-org/react";
 import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
+import { merriweather } from "@/app/fonts";
 
 const Header: FC = () => {
   const router = useRouter();
@@ -69,9 +70,11 @@ const Header: FC = () => {
         {/* Todo: Replace w/ an actual Logo */}
         <NavbarBrand>
           <Link href={"/"}>
-            <p className="sm:flex font-semibold text-inherit">
+            <h1
+              className={`sm:flex font-extrabold text-xl ${merriweather.className}`}
+            >
               Aaron Curtis Yoga
-            </p>
+            </h1>
           </Link>
         </NavbarBrand>
       </NavbarContent>
