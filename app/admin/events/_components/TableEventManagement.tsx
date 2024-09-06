@@ -51,7 +51,7 @@ const TableEventManagement: FC = () => {
       onOpenChange();
       setEvents(events.filter((event) => event.id !== selectedEvent.id));
     } else {
-      //   todo: Toast notification saying there was an error or put in modal
+      //   Todo: Toast notification saying there was an error or put in modal
     }
   };
   return (
@@ -63,46 +63,50 @@ const TableEventManagement: FC = () => {
           <TableColumn>Category</TableColumn>
           <TableColumn>Actions</TableColumn>
         </TableHeader>
-        <TableBody>
-          {events.map((event) => (
-            <TableRow key={event.id}>
-              <TableCell>
-                {formatDateTime(event.startDateTime).dateTime}
-              </TableCell>
-              <TableCell>{event.title}</TableCell>
-              <TableCell>{event.category.name}</TableCell>
-              <TableCell>
-                <div className="flex items-center gap-3">
-                  <Tooltip content={"View"}>
-                    <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                      <Link href={`/events/${event.id}`}>
-                        <Eye size={16} />
-                      </Link>
-                    </span>
-                  </Tooltip>
-                  <Tooltip content={"Edit"}>
-                    <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
-                      <Link href={`/admin/events/${event.id}/edit`}>
-                        <Pencil size={16} />
-                      </Link>
-                    </span>
-                  </Tooltip>
-                  <Tooltip content={"Delete"}>
-                    <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
-                      <Trash2
-                        size={16}
-                        onClick={() => {
-                          setSelectedEvent(event);
-                          onOpen();
-                        }}
-                      />
-                    </span>
-                  </Tooltip>
-                </div>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
+        {events.length === 0 ? (
+          <TableBody emptyContent={"No events created yet."}>{[]}</TableBody>
+        ) : (
+          <TableBody>
+            {events.map((event) => (
+              <TableRow key={event.id}>
+                <TableCell>
+                  {formatDateTime(event.startDateTime).dateTime}
+                </TableCell>
+                <TableCell>{event.title}</TableCell>
+                <TableCell>{event.category.name}</TableCell>
+                <TableCell>
+                  <div className="flex items-center gap-3">
+                    <Tooltip content={"View"}>
+                      <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                        <Link href={`/events/${event.id}`}>
+                          <Eye size={16} />
+                        </Link>
+                      </span>
+                    </Tooltip>
+                    <Tooltip content={"Edit"}>
+                      <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
+                        <Link href={`/admin/events/${event.id}/edit`}>
+                          <Pencil size={16} />
+                        </Link>
+                      </span>
+                    </Tooltip>
+                    <Tooltip content={"Delete"}>
+                      <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
+                        <Trash2
+                          size={16}
+                          onClick={() => {
+                            setSelectedEvent(event);
+                            onOpen();
+                          }}
+                        />
+                      </span>
+                    </Tooltip>
+                  </div>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        )}
       </Table>
       <BasicModal
         isOpen={isOpen}
