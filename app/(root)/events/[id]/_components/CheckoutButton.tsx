@@ -29,11 +29,11 @@ const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
     e.preventDefault();
 
     const order = {
-      eventTitle: event.title,
-      eventId: event.id,
-      price: event.price,
-      isFree: event.isFree,
       buyerId: userId,
+      eventId: event.id,
+      isFree: event.isFree,
+      name: event.title,
+      price: event.price,
     };
 
     await checkoutOrder(order);

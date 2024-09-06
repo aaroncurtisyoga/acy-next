@@ -2,7 +2,7 @@
 
 import Stripe from "stripe";
 import { redirect } from "next/navigation";
-import { PrismaClient } from "@prisma/client";
+import { Prisma, PrismaClient } from "@prisma/client";
 import {
   CheckoutOrderParams,
   CreateOrderParams,
@@ -19,6 +19,15 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
   let checkoutSession: Stripe.Checkout.Session;
 
+  const metadata: { [key: string]: string } = {
+    buyerId: order.buyerId,
+  };
+
+  // Events will have "eventId". Private sessions won't
+  if (order.eventId) {
+    metadata.eventId = order.eventId;
+  }
+
   try {
     checkoutSession = await stripe.checkout.sessions.create({
       line_items: [
@@ -27,16 +36,13 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
             currency: "usd",
             unit_amount: price,
             product_data: {
-              name: order.eventTitle,
+              name: order.name,
             },
           },
           quantity: 1,
         },
       ],
-      metadata: {
-        eventId: order.eventId,
-        buyerId: order.buyerId,
-      },
+      metadata,
       mode: "payment",
       success_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/account`,
       cancel_url: `${process.env.NEXT_PUBLIC_SERVER_URL}/`,
@@ -49,13 +55,21 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 };
 
 export const createOrder = async (order: CreateOrderParams) => {
+  const data: Prisma.OrderCreateInput = {
+    buyer: { connect: { id: order.buyerId } },
+    createdAt: order.createdAt,
+    stripeId: order.stripeId,
+    totalAmount: order.totalAmount,
+    type: order.type,
+  };
+
+  if (order.eventId) {
+    data.event = { connect: { id: order.eventId } };
+  }
+
   try {
     return await prisma.order.create({
-      data: {
-        ...order,
-        eventId: order.eventId,
-        buyerId: order.buyerId,
-      },
+      data,
     });
   } catch (error) {
     handleError(error);
