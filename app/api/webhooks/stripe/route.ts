@@ -1,3 +1,4 @@
+import { OrderType } from "@prisma/client";
 import { NextResponse } from "next/server";
 import stripe from "stripe";
 import { handleError } from "@/_lib/utils";
@@ -8,29 +9,33 @@ export async function POST(request: Request) {
 
   const sig = request.headers.get("stripe-signature") as string;
   const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET!;
-  let event;
+  let stripeEvent: stripe.Event;
 
   try {
-    event = stripe.webhooks.constructEvent(body, sig, endpointSecret);
+    stripeEvent = stripe.webhooks.constructEvent(body, sig, endpointSecret);
   } catch (err) {
     handleError("Stripe webhook error", err);
     return NextResponse.json({ message: "Webhook error", error: err });
   }
 
   // Get the ID and type
-  const eventType = event.type;
+  const stripeEventType = stripeEvent.type;
 
   // CREATE
-  if (eventType === "checkout.session.completed") {
-    const { id, amount_total, metadata, status } = event.data.object;
+  if (stripeEventType === "checkout.session.completed") {
+    const { id, amount_total, metadata } = stripeEvent.data.object;
 
     const order = {
       buyerId: metadata?.buyerId || "",
       createdAt: new Date(),
-      eventId: metadata?.eventId || "",
       stripeId: id,
       totalAmount: amount_total ? (amount_total / 100).toString() : "0",
+      type: (metadata?.type as OrderType) || OrderType.EVENT,
     };
+
+    if (metadata.eventId) {
+      order["eventId"] = metadata.eventId;
+    }
 
     try {
       const newOrder = await createOrder(order);
