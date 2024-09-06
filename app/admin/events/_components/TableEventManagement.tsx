@@ -16,8 +16,12 @@ import { formatDateTime, handleError } from "@/_lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import BasicModal from "@/_components/BasicModal";
+import { TableEventManagementColumns } from "@/_lib/constants";
+import TableLoading from "@/_components/TableLoading";
+import TableEmpty from "@/_components/TableEmpty";
 
 const TableEventManagement: FC = () => {
+  const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedEvent, setSelectedEvent] = useState(null);
   // todo: consider creating a custom hook for this data fetching & pagination
@@ -40,6 +44,8 @@ const TableEventManagement: FC = () => {
         setTotalPages(totalPages);
       } catch (error) {
         handleError("Failed to fetch events", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchEvents();
@@ -55,59 +61,67 @@ const TableEventManagement: FC = () => {
     }
   };
 
+  if (loading) {
+    return <TableLoading columns={TableEventManagementColumns} />;
+  }
+
+  if (events.length === 0) {
+    return (
+      <TableEmpty
+        columns={TableEventManagementColumns}
+        message={"No" + " events have been created yet"}
+      />
+    );
+  }
+
   return (
     <>
       <Table aria-label={"Table for Managing Events"} className={"mt-5"}>
         <TableHeader>
-          <TableColumn>Start Date</TableColumn>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Category</TableColumn>
-          <TableColumn>Actions</TableColumn>
+          {TableEventManagementColumns.map((column) => (
+            <TableColumn key={column}>{column}</TableColumn>
+          ))}
         </TableHeader>
-        {events.length === 0 ? (
-          <TableBody emptyContent={"No events created yet."}>{[]}</TableBody>
-        ) : (
-          <TableBody>
-            {events.map((event) => (
-              <TableRow key={event.id}>
-                <TableCell>
-                  {formatDateTime(event.startDateTime).dateTime}
-                </TableCell>
-                <TableCell>{event.title}</TableCell>
-                <TableCell>{event.category.name}</TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-3">
-                    <Tooltip content={"View"}>
-                      <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
-                        <Link href={`/events/${event.id}`}>
-                          <Eye size={16} />
-                        </Link>
-                      </span>
-                    </Tooltip>
-                    <Tooltip content={"Edit"}>
-                      <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
-                        <Link href={`/admin/events/${event.id}/edit`}>
-                          <Pencil size={16} />
-                        </Link>
-                      </span>
-                    </Tooltip>
-                    <Tooltip content={"Delete"}>
-                      <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
-                        <Trash2
-                          size={16}
-                          onClick={() => {
-                            setSelectedEvent(event);
-                            onOpen();
-                          }}
-                        />
-                      </span>
-                    </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        )}
+        <TableBody>
+          {events.map((event) => (
+            <TableRow key={event.id}>
+              <TableCell>
+                {formatDateTime(event.startDateTime).dateTime}
+              </TableCell>
+              <TableCell>{event.title}</TableCell>
+              <TableCell>{event.category.name}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-3">
+                  <Tooltip content={"View"}>
+                    <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                      <Link href={`/events/${event.id}`}>
+                        <Eye size={16} />
+                      </Link>
+                    </span>
+                  </Tooltip>
+                  <Tooltip content={"Edit"}>
+                    <span className="text-lg text-primary-400 cursor-pointer active:opacity-50">
+                      <Link href={`/admin/events/${event.id}/edit`}>
+                        <Pencil size={16} />
+                      </Link>
+                    </span>
+                  </Tooltip>
+                  <Tooltip content={"Delete"}>
+                    <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
+                      <Trash2
+                        size={16}
+                        onClick={() => {
+                          setSelectedEvent(event);
+                          onOpen();
+                        }}
+                      />
+                    </span>
+                  </Tooltip>
+                </div>
+              </TableCell>
+            </TableRow>
+          ))}
+        </TableBody>
       </Table>
       <BasicModal
         isOpen={isOpen}

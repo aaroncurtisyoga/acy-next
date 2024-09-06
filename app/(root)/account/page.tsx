@@ -17,6 +17,7 @@ export type OrderResponse = {
   data: OrderWithEventFields[];
   totalPages: number;
 };
+
 interface AccountPageProps {
   searchParams: {
     ordersPage: string;

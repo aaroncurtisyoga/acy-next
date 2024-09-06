@@ -89,3 +89,10 @@ export const adminDashboardLinks = [
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "New Category", path: "/admin/categories/create", icon: Box },
 ];
+
+export const TableEventManagementColumns = [
+  "Start Date",
+  "Name",
+  "Category",
+  "Actions",
+];
