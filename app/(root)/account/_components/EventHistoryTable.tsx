@@ -12,46 +12,50 @@ import {
 import { formatDateTime, formatPrice } from "@/_lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
 import Link from "next/link";
+import { EventHistoryTableColumns } from "@/_lib/constants";
+import TableEmpty from "@/_components/TableEmpty";
 
 interface EventHistoryTableProps {
   orders: OrderResponse;
 }
+
 const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
-  const hasOrders = orders.data.length > 0;
+  if (orders.data.length === 0) {
+    return (
+      <TableEmpty
+        columns={EventHistoryTableColumns}
+        message={"We don't" + " have any orders for you just yet"}
+      />
+    );
+  }
+
   return (
     <Table aria-label={"Table for Purchase History"}>
       <TableHeader>
-        <TableColumn>Date</TableColumn>
-        <TableColumn>Amount</TableColumn>
-        <TableColumn>Event</TableColumn>
-        <TableColumn>Order ID</TableColumn>
+        {EventHistoryTableColumns.map((column) => (
+          <TableColumn key={column}>{column}</TableColumn>
+        ))}
       </TableHeader>
-      {hasOrders ? (
-        <TableBody>
-          {orders.data.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell>
-                {formatDateTime(new Date(order.createdAt)).dateOnly}
-              </TableCell>
-              <TableCell>{formatPrice(order.totalAmount)}</TableCell>
-              <TableCell>
-                {/* Todo: Replace w/ Next UI link */}
-                <Link
-                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
-                  className={"text-sm text-blue-600 hover:underline"}
-                >
-                  {order.event.title}
-                </Link>
-              </TableCell>
-              <TableCell>{order.id}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      ) : (
-        <TableBody emptyContent={"No orders have been placed just yet."}>
-          {[]}
-        </TableBody>
-      )}
+      <TableBody>
+        {orders.data.map((order) => (
+          <TableRow key={order.id}>
+            <TableCell>
+              {formatDateTime(new Date(order.createdAt)).dateOnly}
+            </TableCell>
+            <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+            <TableCell>
+              {/* Todo: Replace w/ Next UI link */}
+              <Link
+                href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
+                className={"text-sm text-blue-600 hover:underline"}
+              >
+                {order.event.title}
+              </Link>
+            </TableCell>
+            <TableCell>{order.id}</TableCell>
+          </TableRow>
+        ))}
+      </TableBody>
     </Table>
   );
 };

@@ -96,3 +96,5 @@ export const TableEventManagementColumns = [
   "Category",
   "Actions",
 ];
+
+export const EventHistoryTableColumns = ["Date", "Amount", "Event", "Order ID"];
