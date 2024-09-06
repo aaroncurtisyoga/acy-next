@@ -54,6 +54,7 @@ const TableEventManagement: FC = () => {
       //   Todo: Toast notification saying there was an error or put in modal
     }
   };
+
   return (
     <>
       <Table aria-label={"Table for Managing Events"} className={"mt-5"}>
