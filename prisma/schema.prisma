@@ -13,10 +13,16 @@ model Order {
   createdAt   DateTime @default(now())
   stripeId    String  @unique
   totalAmount String?
-  eventId     String
-  event       Event   @relation(fields: [eventId], references: [id])
+  eventId     String?
+  event       Event?   @relation(fields: [eventId], references: [id])
   buyerId     String
   buyer       User    @relation(fields: [buyerId], references: [id])
+  type        OrderType
+}
+
+enum OrderType {
+  EVENT
+  PRIVATE_SESSION
 }
 
 model Event {
