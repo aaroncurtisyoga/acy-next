@@ -14,6 +14,7 @@ export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
       "Breathwork",
       "Meditation",
     ],
+    package: "Individual - 1 Session",
   },
   {
     title: "4 Sessions",
@@ -27,6 +28,7 @@ export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
       "Async Q & A",
       "Video Support",
     ],
+    package: "Individual - 4 Sessions",
   },
 ];
 
@@ -41,6 +43,7 @@ export const GROUP_OFFERINGS: OfferingType[] = [
       "Breathwork",
       "Meditation",
     ],
+    package: "Group - 1 Session",
   },
   {
     title: "4 Sessions",
@@ -55,6 +58,7 @@ export const GROUP_OFFERINGS: OfferingType[] = [
       "Video Support",
       "Sound Bath",
     ],
+    package: "Group - 4 Sessions",
   },
 ];
 

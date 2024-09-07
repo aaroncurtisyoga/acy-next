@@ -3,6 +3,7 @@ export interface OfferingType {
   price: string;
   description: string;
   features: string[];
+  package: string;
 }
 
 export type SessionType = "Individual" | "Group";
