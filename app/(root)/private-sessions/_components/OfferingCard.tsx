@@ -19,7 +19,6 @@ const OfferingCard: FC<PurchaseCardProps> = ({ offering }) => {
       </CardHeader>
       <CardBody className={"pt-1"}>
         <p className={"text-4xl font-semibold"}>{offering.price}</p>
-        <CheckoutButton />
         <p className={"text-sm mt-4 mb-1"}>This includes:</p>
         <ul>
           {offering.features.map((feature) => (

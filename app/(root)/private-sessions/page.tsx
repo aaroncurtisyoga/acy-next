@@ -1,15 +1,22 @@
 "use client";
 
-import { FC, useState } from "react";
+import React, { FC, useState } from "react";
 import { Link } from "@nextui-org/react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
-import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import {
+  OfferingType,
+  SessionType,
+} from "@/app/(root)/private-sessions/_lib/types";
+import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
+  const [selectedPackage, setSelectedPackage] = useState<OfferingType | null>(
+    null,
+  );
 
   return (
     <section className={"wrapper flex flex-col"}>
@@ -39,6 +46,7 @@ const PrivateSessions: FC = () => {
         setPrivateSessionType={setPrivateSessionType}
       />
       <PrivateSessionOfferings privateSessionType={privateSessionType} />
+      <CheckoutButton />
     </section>
   );
 };

@@ -20,9 +20,7 @@ const PrivateSessionOfferings: FC<OfferingsProps> = ({
     <div
       className={
         "flex flex-col items-center md:items-stretch md:flex-row gap-16" +
-        " justify-center" +
-        " mt-4" +
-        " pb-40"
+        " justify-center mt-4"
       }
     >
       {offerings.map((offering) => (

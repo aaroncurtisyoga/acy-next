@@ -13,7 +13,7 @@ const CheckoutButton: FC = () => {
   }
 
   return (
-    <>
+    <div className={"w-full max-w-[440px] mx-auto mt-10 mb-40"}>
       <SignedOut>
         <SignInButton>
           <Button type="button" fullWidth={true} color={"primary"}>
@@ -34,7 +34,7 @@ const CheckoutButton: FC = () => {
           Purchase
         </Button>
       </SignedIn>
-    </>
+    </div>
   );
 };
 
