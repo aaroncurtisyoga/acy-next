@@ -18,7 +18,7 @@ const CheckoutButton: FC<CheckoutButtonProps> = ({ selectedPackage }) => {
   }
 
   return (
-    <div className={"w-full max-w-[440px] mx-auto mt-10 mb-40"}>
+    <div className={"w-full max-w-[440px] mx-auto mt-1 mb-40"}>
       <SignedOut>
         <SignInButton>
           <Button type="button" fullWidth={true} color={"primary"}>
@@ -29,7 +29,7 @@ const CheckoutButton: FC<CheckoutButtonProps> = ({ selectedPackage }) => {
       <SignedIn>
         <Button
           radius={"sm"}
-          className={"text-base mt-4"}
+          className={"text-base"}
           fullWidth={true}
           onPress={() => {
             console.log("Purchase button clicked");

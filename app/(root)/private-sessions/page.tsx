@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC, useState } from "react";
-import { Link } from "@nextui-org/react";
+import { Link, RadioGroup } from "@nextui-org/react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
@@ -10,6 +10,8 @@ import {
   SessionType,
 } from "@/app/(root)/private-sessions/_lib/types";
 import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
+import { CustomRadio } from "@/app/(root)/_components/FormInputs/CustomRadio";
+import { cn } from "@nextui-org/theme";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
@@ -19,14 +21,25 @@ const PrivateSessions: FC = () => {
   );
 
   return (
-    <section className={"wrapper flex flex-col"}>
-      <div className="max-w-xl mx-auto mb-12">
-        <h1
-          className={"text-4xl font-bold mb-3 text-center mt-12 tracking-tight"}
-        >
-          Train With Me
-        </h1>
-        <p className={"text-center text-gray-500"}>
+    <section className={""}>
+      <RadioGroup
+        className={"mb-12"}
+        label={
+          <h1
+            className={
+              "text-center text-4xl font-bold mb-2 mt-12" + " tracking-tight"
+            }
+          >
+            Train With Me
+          </h1>
+        }
+        description={
+          <p className={"text-center mt-3"}>
+            Select the type of private session you&apos;d like to book.
+          </p>
+        }
+      >
+        <p className={"text-gray-500 max-w-xl text-center mx-auto mb-5"}>
           Private sessions allow me to connect with you on a personal level,
           focusing on your unique needs. Whether we&apos;re working on specific
           postures, meditation, improving movement, or mentoring for teaching,
@@ -41,14 +54,14 @@ const PrivateSessions: FC = () => {
           </Link>
           —I look forward to working with you!
         </p>
-      </div>
-      <SelectTypeOfPrivateSession
-        setPrivateSessionType={setPrivateSessionType}
-      />
-      <PrivateSessionOfferings
-        privateSessionType={privateSessionType}
-        setSelectedPackage={setSelectedPackage}
-      />
+        <SelectTypeOfPrivateSession
+          setPrivateSessionType={setPrivateSessionType}
+        />
+        <PrivateSessionOfferings
+          privateSessionType={privateSessionType}
+          setSelectedPackage={setSelectedPackage}
+        />
+      </RadioGroup>
       <CheckoutButton selectedPackage={selectedPackage} />
     </section>
   );
