@@ -97,4 +97,10 @@ export const TableEventManagementColumns = [
   "Actions",
 ];
 
-export const EventHistoryTableColumns = ["Date", "Amount", "Event", "Order ID"];
+export const EventHistoryTableColumns = [
+  "Date",
+  "Amount",
+  "Event",
+  "Order ID",
+  "Type",
+];

@@ -53,6 +53,7 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
               </Link>
             </TableCell>
             <TableCell>{order.id}</TableCell>
+            <TableCell>{order.type}</TableCell>
           </TableRow>
         ))}
       </TableBody>
