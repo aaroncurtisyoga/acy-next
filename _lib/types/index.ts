@@ -27,6 +27,7 @@ export type CheckoutOrderParams = {
   isFree: boolean;
   name: string;
   price: string;
+  type: OrderType;
 };
 
 export type CreateOrderParams = {
