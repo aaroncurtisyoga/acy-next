@@ -3,7 +3,7 @@
 import { FC, FormEvent, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@nextui-org/react";
-import { Event } from "@prisma/client";
+import { Event, OrderType } from "@prisma/client";
 import { checkoutOrder } from "@/_lib/actions/order.actions";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
@@ -34,6 +34,7 @@ const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
       isFree: event.isFree,
       name: event.title,
       price: event.price,
+      type: OrderType.EVENT,
     };
 
     await checkoutOrder(order);
