@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC, FormEvent, useEffect } from "react";
 import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@nextui-org/react";
 import { Event } from "@prisma/client";
@@ -25,7 +25,7 @@ const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
     }
   }, []);
 
-  const onCheckout = async (e) => {
+  const onCheckout = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const order = {
