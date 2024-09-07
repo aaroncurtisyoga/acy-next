@@ -1,4 +1,7 @@
-import { OfferingType, SessionType } from "@/app/(root)/private-sessions/types";
+import {
+  OfferingType,
+  SessionType,
+} from "@/app/(root)/private-sessions/_lib/types";
 
 export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   {
