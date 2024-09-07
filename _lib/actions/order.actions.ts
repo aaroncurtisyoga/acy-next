@@ -19,6 +19,7 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
   let checkoutSession: Stripe.Checkout.Session;
 
+  // Metadata for the order.  Useful for storing additional info
   const metadata: { [key: string]: string } = {
     buyerId: order.buyerId,
     type: order.type,
