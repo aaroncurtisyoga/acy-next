@@ -22,12 +22,8 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const metadata: { [key: string]: string } = {
     buyerId: order.buyerId,
     type: order.type,
+    ...(order.eventId && { eventId: order.eventId }),
   };
-
-  // Events will have "eventId". Private sessions won't
-  if (order.eventId) {
-    metadata.eventId = order.eventId;
-  }
 
   try {
     checkoutSession = await stripe.checkout.sessions.create({
