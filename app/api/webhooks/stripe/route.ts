@@ -31,11 +31,8 @@ export async function POST(request: Request) {
       stripeId: id,
       totalAmount: amount_total ? (amount_total / 100).toString() : "0",
       type: (metadata?.type as OrderType) || OrderType.EVENT,
+      ...(metadata?.eventId && { eventId: metadata.eventId }),
     };
-
-    if (metadata.eventId) {
-      order["eventId"] = metadata.eventId;
-    }
 
     try {
       const newOrder = await createOrder(order);
