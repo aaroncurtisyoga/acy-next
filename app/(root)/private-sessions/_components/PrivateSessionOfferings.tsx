@@ -1,11 +1,11 @@
 import React, { FC } from "react";
+import OfferingCard from "@/app/(root)/private-sessions/_components/OfferingCard";
 import {
-  INDIVIDUAL_OFFERINGS,
   GROUP_OFFERINGS,
   INDIVIDUAL,
-} from "@/app/(root)/private-sessions/constants";
-import { SessionType } from "@/app/(root)/private-sessions/types";
-import OfferingCard from "@/app/(root)/private-sessions/_components/OfferingCard";
+  INDIVIDUAL_OFFERINGS,
+} from "@/app/(root)/private-sessions/_lib/constants";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface OfferingsProps {
   privateSessionType: SessionType;

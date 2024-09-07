@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { Check } from "lucide-react";
-import { OfferingType } from "@/app/(root)/private-sessions/types";
 import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
+import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface PurchaseCardProps {
   offering: OfferingType;

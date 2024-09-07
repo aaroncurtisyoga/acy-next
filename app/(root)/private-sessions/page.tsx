@@ -3,9 +3,9 @@
 import { FC, useState } from "react";
 import { Link } from "@nextui-org/react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
-import { INDIVIDUAL } from "@/app/(root)/private-sessions/constants";
-import { SessionType } from "@/app/(root)/private-sessions/types";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
+import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
