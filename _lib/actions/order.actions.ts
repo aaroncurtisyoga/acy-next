@@ -21,6 +21,7 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
   const metadata: { [key: string]: string } = {
     buyerId: order.buyerId,
+    type: order.type,
   };
 
   // Events will have "eventId". Private sessions won't
