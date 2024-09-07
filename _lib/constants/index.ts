@@ -104,3 +104,8 @@ export const EventHistoryTableColumns = [
   "Order ID",
   "Type",
 ];
+
+export const orderTypeLabels = {
+  EVENT: "Event",
+  PRIVATE_SESSION: "Private Session",
+};

@@ -12,7 +12,7 @@ import {
 import { formatDateTime, formatPrice } from "@/_lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
 import Link from "next/link";
-import { EventHistoryTableColumns } from "@/_lib/constants";
+import { EventHistoryTableColumns, orderTypeLabels } from "@/_lib/constants";
 import TableEmpty from "@/_components/TableEmpty";
 
 interface EventHistoryTableProps {
@@ -53,7 +53,7 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
               </Link>
             </TableCell>
             <TableCell>{order.id}</TableCell>
-            <TableCell>{order.type}</TableCell>
+            <TableCell>{orderTypeLabels[order.type]}</TableCell>
           </TableRow>
         ))}
       </TableBody>
