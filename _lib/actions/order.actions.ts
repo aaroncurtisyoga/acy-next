@@ -120,7 +120,7 @@ export async function getOrdersByUser({
     const skipAmount = (Number(page) - 1) * limit;
     const orders = await prisma.order.findMany({
       where: { buyer: { id: userId } },
-      orderBy: { createdAt: "asc" },
+      orderBy: { createdAt: "desc" },
       skip: skipAmount,
       take: limit,
       include: { event: { select: { title: true, id: true } } },
