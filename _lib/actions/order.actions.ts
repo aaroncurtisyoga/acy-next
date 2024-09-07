@@ -60,11 +60,8 @@ export const createOrder = async (order: CreateOrderParams) => {
     stripeId: order.stripeId,
     totalAmount: order.totalAmount,
     type: order.type,
+    ...(order.eventId && { event: { connect: { id: order.eventId } } }),
   };
-
-  if (order.eventId) {
-    data.event = { connect: { id: order.eventId } };
-  }
 
   try {
     return await prisma.order.create({
