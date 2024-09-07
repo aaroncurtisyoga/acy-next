@@ -5,14 +5,19 @@ import {
   INDIVIDUAL,
   INDIVIDUAL_OFFERINGS,
 } from "@/app/(root)/private-sessions/_lib/constants";
-import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import {
+  OfferingType,
+  SessionType,
+} from "@/app/(root)/private-sessions/_lib/types";
 
 interface OfferingsProps {
   privateSessionType: SessionType;
+  setSelectedPackage: (offering: OfferingType | null) => void;
 }
 
 const PrivateSessionOfferings: FC<OfferingsProps> = ({
   privateSessionType,
+  setSelectedPackage,
 }) => {
   const offerings =
     privateSessionType === INDIVIDUAL ? INDIVIDUAL_OFFERINGS : GROUP_OFFERINGS;
@@ -24,6 +29,7 @@ const PrivateSessionOfferings: FC<OfferingsProps> = ({
       }
     >
       {offerings.map((offering) => (
+        // todo: pass this the setSelectedPackage function when ready
         <OfferingCard key={offering.title} offering={offering} />
       ))}
     </div>

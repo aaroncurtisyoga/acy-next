@@ -45,8 +45,11 @@ const PrivateSessions: FC = () => {
       <SelectTypeOfPrivateSession
         setPrivateSessionType={setPrivateSessionType}
       />
-      <PrivateSessionOfferings privateSessionType={privateSessionType} />
-      <CheckoutButton />
+      <PrivateSessionOfferings
+        privateSessionType={privateSessionType}
+        setSelectedPackage={setSelectedPackage}
+      />
+      <CheckoutButton selectedPackage={selectedPackage} />
     </section>
   );
 };

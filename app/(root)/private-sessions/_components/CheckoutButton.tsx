@@ -4,8 +4,13 @@ import React, { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@nextui-org/react";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/_components/CheckoutButtonSkeleton";
+import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
-const CheckoutButton: FC = () => {
+interface CheckoutButtonProps {
+  selectedPackage: OfferingType | null;
+}
+
+const CheckoutButton: FC<CheckoutButtonProps> = ({ selectedPackage }) => {
   const { user, isLoaded: isUserLoaded } = useUser();
 
   if (!isUserLoaded) {
