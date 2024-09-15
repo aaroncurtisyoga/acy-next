@@ -62,6 +62,11 @@ export const GROUP_OFFERINGS: OfferingType[] = [
   },
 ];
 
+export const ALL_OFFERINGS: OfferingType[] = [
+  ...INDIVIDUAL_OFFERINGS,
+  ...GROUP_OFFERINGS,
+];
+
 export const INDIVIDUAL: SessionType = "Individual";
 
 export const GROUP: SessionType = "Group";
