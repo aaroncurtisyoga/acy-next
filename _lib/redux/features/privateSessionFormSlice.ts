@@ -1,6 +1,8 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/_lib/redux/createAppSlice";
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
+import { findOfferingByPackage } from "@/app/(root)/private-sessions/_lib/helpers";
+import { ALL_OFFERINGS } from "@/app/(root)/private-sessions/_lib/constants";
 
 export interface PrivateSessionFormSliceState {
   selectedPackage: OfferingType;
@@ -15,17 +17,20 @@ export const privateSessionFormSlice = createAppSlice({
   initialState,
   reducers: (create) => ({
     setSelectedPackage: create.reducer(
-      (state, action: PayloadAction<Partial<typeof OfferingType>>) => {
-        const payload = action.payload;
-        state.selectedPackage = { ...state.selectedPackage, ...payload };
+      (state, action: PayloadAction<string>) => {
+        const selectedPackageName = action.payload;
+        state.selectedPackage = findOfferingByPackage(
+          selectedPackageName,
+          ALL_OFFERINGS,
+        );
       },
     ),
   }),
   selectors: {
-    selectPackage: (state) => state.selectedPackage,
+    selectedPackage: (state) => state.selectedPackage,
   },
 });
 
 export const { setSelectedPackage } = privateSessionFormSlice.actions;
 
-export const { selectPackage } = privateSessionFormSlice.selectors;
+export const { selectedPackage } = privateSessionFormSlice.selectors;
