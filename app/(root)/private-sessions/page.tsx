@@ -5,25 +5,19 @@ import { Link, RadioGroup } from "@nextui-org/react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
-import {
-  OfferingType,
-  SessionType,
-} from "@/app/(root)/private-sessions/_lib/types";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
-  const [selectedPackage, setSelectedPackage] = useState<OfferingType | null>(
-    null,
-  );
+  const [selectedPackage, setSelectedPackage] = useState<String | null>(null);
 
   return (
     <section className={""}>
       <RadioGroup
         onValueChange={(value) => {
-          console.log(typeof value);
-          // setSelectedPackage(value)
+          setSelectedPackage(value);
         }}
         className={"mb-12"}
         label={
@@ -62,12 +56,6 @@ const PrivateSessions: FC = () => {
         <PrivateSessionOfferings privateSessionType={privateSessionType} />
       </RadioGroup>
       <CheckoutButton selectedPackage={selectedPackage} />
-      {selectedPackage ? (
-        <div>
-          <p>{selectedPackage.title}</p>
-          <p>{selectedPackage.description}</p>
-        </div>
-      ) : null}
     </section>
   );
 };

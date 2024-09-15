@@ -4,13 +4,14 @@ import React, { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@nextui-org/react";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/_components/CheckoutButtonSkeleton";
-import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface CheckoutButtonProps {
-  selectedPackage: OfferingType | null;
+  selectedPackage: String | null;
 }
 
 const CheckoutButton: FC<CheckoutButtonProps> = ({ selectedPackage }) => {
+  // selecktedPackage is going to be a string... so i'll need to use that
+  // string to find the whole object in the offerings array
   const { user, isLoaded: isUserLoaded } = useUser();
 
   if (!isUserLoaded) {
