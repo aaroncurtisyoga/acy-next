@@ -21,6 +21,10 @@ const PrivateSessions: FC = () => {
   return (
     <section className={""}>
       <RadioGroup
+        onValueChange={(value) => {
+          console.log(typeof value);
+          // setSelectedPackage(value)
+        }}
         className={"mb-12"}
         label={
           <h1
@@ -55,12 +59,15 @@ const PrivateSessions: FC = () => {
         <SelectTypeOfPrivateSession
           setPrivateSessionType={setPrivateSessionType}
         />
-        <PrivateSessionOfferings
-          privateSessionType={privateSessionType}
-          setSelectedPackage={setSelectedPackage}
-        />
+        <PrivateSessionOfferings privateSessionType={privateSessionType} />
       </RadioGroup>
       <CheckoutButton selectedPackage={selectedPackage} />
+      {selectedPackage ? (
+        <div>
+          <p>{selectedPackage.title}</p>
+          <p>{selectedPackage.description}</p>
+        </div>
+      ) : null}
     </section>
   );
 };

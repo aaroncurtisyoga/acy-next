@@ -12,7 +12,7 @@ const OfferingCard: FC<PurchaseCardProps> = ({ offering }) => {
   return (
     <Card className="w-[312px] pt-8 px-3 pb-7">
       <CardHeader>
-        <CustomRadio description={offering.description} value={offering.title}>
+        <CustomRadio description={offering.description} value={offering}>
           {offering.title}
         </CustomRadio>
       </CardHeader>
