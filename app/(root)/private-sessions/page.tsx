@@ -10,8 +10,6 @@ import {
   SessionType,
 } from "@/app/(root)/private-sessions/_lib/types";
 import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
-import { CustomRadio } from "@/app/(root)/_components/FormInputs/CustomRadio";
-import { cn } from "@nextui-org/theme";
 
 const PrivateSessions: FC = () => {
   const [privateSessionType, setPrivateSessionType] =
