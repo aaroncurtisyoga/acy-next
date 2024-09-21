@@ -3,27 +3,37 @@ import { Link, RadioGroup } from "@nextui-org/react";
 import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch } from "@/_lib/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
 import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
-import { setSelectedPackage } from "@/_lib/redux/features/privateSessionFormSlice";
+import {
+  selectedPackage,
+  setSelectedPackage,
+} from "@/_lib/redux/features/privateSessionFormSlice";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
 import { SelectPackageFormSchema } from "@/_lib/schema";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
+/*
+ *  Todo:
+ *    1. fix TS error on eventInitialValues
+ *    2. make sure that the redux, react-hook-form, and zod are working together
+ * */
 const SelectPackageForm: FC = () => {
   const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
+  const eventInitialValues: Inputs = useAppSelector(selectedPackage);
   const {
     handleSubmit,
     control,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(SelectPackageFormSchema),
+    defaultValues: eventInitialValues,
   });
 
   const onSubmit = (data) => {};
