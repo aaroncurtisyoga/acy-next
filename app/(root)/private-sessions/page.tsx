@@ -4,20 +4,22 @@ import React, { FC, useState } from "react";
 import { Link, RadioGroup } from "@nextui-org/react";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
+import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { setSelectedPackage } from "@/_lib/redux/features/privateSessionFormSlice";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
-import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
 
 const PrivateSessions: FC = () => {
+  const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
-  const [selectedPackage, setSelectedPackage] = useState<String | null>(null);
 
   return (
-    <section className={""}>
+    <section>
       <RadioGroup
         onValueChange={(value) => {
-          setSelectedPackage(value);
+          dispatch(setSelectedPackage(value));
         }}
         className={"mb-12"}
         label={
@@ -55,7 +57,7 @@ const PrivateSessions: FC = () => {
         />
         <PrivateSessionOfferings privateSessionType={privateSessionType} />
       </RadioGroup>
-      <CheckoutButton selectedPackage={selectedPackage} />
+      <CheckoutButton />
     </section>
   );
 };

@@ -1,18 +1,26 @@
 "use client";
 
-import React, { FC } from "react";
+import React, { FC, FormEvent } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@nextui-org/react";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/_components/CheckoutButtonSkeleton";
+import { OrderType } from "@prisma/client";
+import { loadStripe } from "@stripe/stripe-js";
 
-interface CheckoutButtonProps {
-  selectedPackage: String | null;
-}
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-const CheckoutButton: FC<CheckoutButtonProps> = ({ selectedPackage }) => {
-  // selecktedPackage is going to be a string... so i'll need to use that
-  // string to find the whole object in the offerings array
+const CheckoutButton: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
+
+  const onCheckout = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const order = {
+      buyerId: user.publicMetadata.userId as string,
+      // name: 'placeholder'
+      type: OrderType.PRIVATE_SESSION,
+    };
+  };
 
   if (!isUserLoaded) {
     return <CheckoutButtonSkeleton />;

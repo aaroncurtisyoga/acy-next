@@ -1,6 +1,6 @@
-// Function to find an offering by package name
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
+// Function to find an offering by package name
 export function findOfferingByPackage(
   packageName: string,
   allOfferings: OfferingType[],

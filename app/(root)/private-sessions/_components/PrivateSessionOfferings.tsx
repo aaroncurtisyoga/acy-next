@@ -5,10 +5,7 @@ import {
   INDIVIDUAL,
   INDIVIDUAL_OFFERINGS,
 } from "@/app/(root)/private-sessions/_lib/constants";
-import {
-  OfferingType,
-  SessionType,
-} from "@/app/(root)/private-sessions/_lib/types";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface OfferingsProps {
   privateSessionType: SessionType;
