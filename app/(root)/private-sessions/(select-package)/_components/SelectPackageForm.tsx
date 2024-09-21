@@ -1,22 +1,20 @@
-"use client";
-
 import React, { FC, useState } from "react";
 import { Link, RadioGroup } from "@nextui-org/react";
-import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/_components/SelectTypeOfPrivateSession";
-import PrivateSessionOfferings from "@/app/(root)/private-sessions/_components/PrivateSessionOfferings";
-import CheckoutButton from "@/app/(root)/private-sessions/_components/CheckoutButton";
 import { useAppDispatch } from "@/_lib/redux/hooks";
+import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
+import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
+import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
 import { setSelectedPackage } from "@/_lib/redux/features/privateSessionFormSlice";
-import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
 
-const PrivateSessions: FC = () => {
+const SelectPackageForm: FC = () => {
   const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
 
   return (
-    <section>
+    <form>
       <RadioGroup
         onValueChange={(value) => {
           dispatch(setSelectedPackage(value));
@@ -58,8 +56,8 @@ const PrivateSessions: FC = () => {
         <PrivateSessionOfferings privateSessionType={privateSessionType} />
       </RadioGroup>
       <CheckoutButton />
-    </section>
+    </form>
   );
 };
 
-export default PrivateSessions;
+export default SelectPackageForm;
