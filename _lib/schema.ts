@@ -1,6 +1,5 @@
 import { z } from "zod";
 import { ZonedDateTime } from "@internationalized/date";
-
 export const newsletterFormSchema = z.object({
   email: z
     .string({ required_error: "Email address is required" })

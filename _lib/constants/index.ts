@@ -9,6 +9,7 @@ import {
   ClipboardPlus,
 } from "lucide-react";
 import { TravelOption } from "@/_lib/types";
+import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
 export const userLinks = [
   {
@@ -108,4 +109,12 @@ export const EventHistoryTableColumns = [
 export const orderTypeLabels = {
   EVENT: "Event",
   PRIVATE_SESSION: "Private Session",
+};
+
+export const selectPackageFormDefaultValues: OfferingType = {
+  title: "",
+  price: "",
+  description: "",
+  features: [],
+  package: "",
 };
