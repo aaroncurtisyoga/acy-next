@@ -56,3 +56,5 @@ export const EventFormDetailsForInternallyHostedEventSchema = z.object({
 export const CategoryFormSchema = z.object({
   category: z.string().min(2, "Category required"),
 });
+
+export const SelectPackageFormSchema = z.object({});

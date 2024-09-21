@@ -34,7 +34,7 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
         return (
           <Select
             onChange={(e) => field.onChange(e)}
-            disabled={isSubmitting}
+            isDisabled={isSubmitting}
             defaultSelectedKeys={[field.value]}
             errorMessage={errors.category?.message}
             label={"Category"}

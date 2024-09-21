@@ -121,7 +121,7 @@ const NewsletterForm = () => {
             onChange={(e) => {
               field.onChange(e);
             }}
-            disabled={isSubmitting}
+            isDisabled={isSubmitting}
             errorMessage={
               (errors.email && errors.email.message) ||
               (errors.root && errors.root.message)
