@@ -37,10 +37,11 @@ const SelectPackageForm: FC = () => {
     >
       <Controller
         control={control}
-        name={"package"}
+        name={"selectedPackage"}
         render={({ field }) => (
           <RadioGroup
             isDisabled={isSubmitting}
+            errorMessage={errors.selectedPackage?.message}
             onValueChange={(value) => {
               dispatch(setSelectedPackage(value));
             }}

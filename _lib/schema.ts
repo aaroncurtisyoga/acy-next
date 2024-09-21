@@ -57,4 +57,14 @@ export const CategoryFormSchema = z.object({
   category: z.string().min(2, "Category required"),
 });
 
-export const SelectPackageFormSchema = z.object({});
+export const SelectPackageFormSchema = z.object({
+  selectedPackage: z
+    .object({
+      title: z.string(),
+      price: z.string(),
+      description: z.string(),
+      features: z.array(z.string()),
+      package: z.string(),
+    })
+    .required(),
+});
