@@ -3,9 +3,9 @@
 import React, { FC, FormEvent } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@nextui-org/react";
-import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/_components/CheckoutButtonSkeleton";
 import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
+import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButtonSkeleton";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
