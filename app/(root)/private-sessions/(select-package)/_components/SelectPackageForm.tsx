@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useEffect, useState } from "react";
 import { Link, RadioGroup } from "@nextui-org/react";
 import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
@@ -14,27 +14,33 @@ import {
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
 import { SelectPackageFormSchema } from "@/_lib/schema";
+import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
+import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
+import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
-/*
- *  Todo:
- *    1. fix TS error on eventInitialValues
- *    2. make sure that the redux, react-hook-form, and zod are working together
- * */
 const SelectPackageForm: FC = () => {
   const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
-  const eventInitialValues: Inputs = useAppSelector(selectedPackage);
+  const selectedPackageFromRedux: Inputs = useAppSelector(selectedPackage);
   const {
     handleSubmit,
     control,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(SelectPackageFormSchema),
-    defaultValues: eventInitialValues,
+    defaultValues: selectedPackageFromRedux,
   });
+
+  useEffect(() => {
+    // update the form’s default values when the Redux store changes
+    if (selectedPackageFromRedux) {
+      reset(selectedPackageFromRedux);
+    }
+  }, [selectedPackageFromRedux, reset]);
 
   const onSubmit = (data) => {};
 
@@ -47,46 +53,20 @@ const SelectPackageForm: FC = () => {
     >
       <Controller
         control={control}
-        name={"selectedPackage"}
+        name={"package"}
         render={({ field }) => (
           <RadioGroup
             isDisabled={isSubmitting}
-            errorMessage={errors.selectedPackage?.message}
+            isInvalid={!!errors.package}
+            errorMessage={errors.package?.message}
             onValueChange={(value) => {
               dispatch(setSelectedPackage(value));
             }}
             className={"mb-12"}
-            label={
-              <h1
-                className={
-                  "text-center text-4xl font-bold mb-2 mt-12" +
-                  " tracking-tight"
-                }
-              >
-                Train With Me
-              </h1>
-            }
-            description={
-              <p className={"text-center mt-3"}>
-                Select the type of private session you&apos;d like to book.
-              </p>
-            }
+            label={<PackageLabel />}
+            description={<PackageDescription />}
           >
-            <p className={"text-gray-500 max-w-xl text-center mx-auto mb-5"}>
-              Private sessions allow me to connect with you on a personal level,
-              focusing on your unique needs. Whether we&apos;re working on
-              specific postures, meditation, improving movement, or mentoring
-              for teaching, my goal is to share everything I’ve learned to help
-              you achieve your goals. If you have any questions, please{" "}
-              <Link
-                isExternal
-                underline={"always"}
-                href="https://www.instagram.com/aaroncurtisyoga/"
-              >
-                reach out
-              </Link>
-              —I look forward to working with you!
-            </p>
+            <AdditionalDescription />
             <SelectTypeOfPrivateSession
               setPrivateSessionType={setPrivateSessionType}
             />

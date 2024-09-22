@@ -26,6 +26,9 @@ export const privateSessionFormSlice = createAppSlice({
         );
         if (foundOffering) {
           state.selectedPackage = foundOffering;
+        } else {
+          // Handle error or fallback state
+          state.selectedPackage = selectPackageFormDefaultValues; // or similar
         }
       },
     ),

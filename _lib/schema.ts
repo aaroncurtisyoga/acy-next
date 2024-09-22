@@ -57,13 +57,9 @@ export const CategoryFormSchema = z.object({
 });
 
 export const SelectPackageFormSchema = z.object({
-  selectedPackage: z
-    .object({
-      title: z.string(),
-      price: z.string(),
-      description: z.string(),
-      features: z.array(z.string()),
-      package: z.string(),
-    })
-    .required(),
+  title: z.string(),
+  price: z.string(),
+  description: z.string(),
+  features: z.array(z.string()),
+  package: z.string().min(1, "Please select a package"), // Required with custom message
 });
