@@ -12,11 +12,15 @@ import {
   setSelectedPackage,
 } from "@/_lib/redux/features/privateSessionFormSlice";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
-import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
+import {
+  ALL_OFFERINGS,
+  INDIVIDUAL,
+} from "@/app/(root)/private-sessions/_lib/constants";
 import { SelectPackageFormSchema } from "@/_lib/schema";
 import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
 import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
 import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
+import { findOfferingByPackage } from "@/app/(root)/private-sessions/_lib/helpers";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
@@ -45,7 +49,11 @@ const SelectPackageForm: FC = () => {
   }, [selectedPackageFromRedux, reset]);
 
   const onSubmit = (data) => {
+    const selectedPackage = data.package;
     dispatch(setSelectedPackage(data.package));
+    // when this becomes a wizard form, move this into redux
+    const foundOffering = findOfferingByPackage(selectedPackage, ALL_OFFERINGS);
+    //   make the api call here
   };
 
   return (

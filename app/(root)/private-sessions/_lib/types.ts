@@ -6,10 +6,6 @@ export interface OfferingType {
   package: string;
 }
 
-export interface PackageType {
-  package: string;
-}
-
 export interface PackageDetailsType {
   title: string;
   price: string;
