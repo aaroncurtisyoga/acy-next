@@ -57,5 +57,5 @@ export const CategoryFormSchema = z.object({
 });
 
 export const SelectPackageFormSchema = z.object({
-  package: z.string().min(1, "Please select a package"), // Required
+  package: z.string().trim().min(1, "Please select a package"), // Required
 });
