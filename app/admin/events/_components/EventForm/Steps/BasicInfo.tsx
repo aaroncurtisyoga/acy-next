@@ -33,7 +33,7 @@ const BasicInfo: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const formValuesFromRedux = useAppSelector(selectFormValues);
-  const eventInitialValues = {
+  const eventFormInitialValues = {
     ...formValuesFromRedux,
     startDateTime: formValuesFromRedux.startDateTime
       ? parseZonedDateTime(formValuesFromRedux.startDateTime)
@@ -50,7 +50,7 @@ const BasicInfo: FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(EventFormBasicInfoSchema),
-    defaultValues: eventInitialValues,
+    defaultValues: eventFormInitialValues,
   });
 
   const setLocationValueInReactHookForm = useCallback(
