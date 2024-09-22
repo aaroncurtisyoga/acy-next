@@ -111,10 +111,9 @@ export const orderTypeLabels = {
   PRIVATE_SESSION: "Private Session",
 };
 
-export const selectPackageFormDefaultValues: OfferingType = {
+export const selectedPackageDetailsDefaultValues = {
   title: "",
   price: "",
   description: "",
   features: [],
-  package: "",
 };

@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Link, RadioGroup } from "@nextui-org/react";
+import { RadioGroup } from "@nextui-org/react";
 import * as z from "zod";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -24,7 +24,7 @@ const SelectPackageForm: FC = () => {
   const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
-  const selectedPackageFromRedux: Inputs = useAppSelector(selectedPackage);
+  const selectedPackageFromRedux = useAppSelector(selectedPackage);
   const {
     handleSubmit,
     control,
@@ -32,17 +32,21 @@ const SelectPackageForm: FC = () => {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(SelectPackageFormSchema),
-    defaultValues: selectedPackageFromRedux,
+    defaultValues: {
+      package: selectedPackageFromRedux ?? "",
+    },
   });
 
+  // Update form values if the Redux store changes
   useEffect(() => {
-    // update the form’s default values when the Redux store changes
     if (selectedPackageFromRedux) {
-      reset(selectedPackageFromRedux);
+      reset({ package: selectedPackageFromRedux }); // Reset form with new value if updated in Redux
     }
   }, [selectedPackageFromRedux, reset]);
 
-  const onSubmit = (data) => {};
+  const onSubmit = (data) => {
+    dispatch(setSelectedPackage(data.package));
+  };
 
   return (
     <form
@@ -59,12 +63,12 @@ const SelectPackageForm: FC = () => {
             isDisabled={isSubmitting}
             isInvalid={!!errors.package}
             errorMessage={errors.package?.message}
-            onValueChange={(value) => {
-              dispatch(setSelectedPackage(value));
-            }}
+            onValueChange={field.onChange}
             className={"mb-12"}
             label={<PackageLabel />}
             description={<PackageDescription />}
+            value={field.value}
+            {...field}
           >
             <AdditionalDescription />
             <SelectTypeOfPrivateSession

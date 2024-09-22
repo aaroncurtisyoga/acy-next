@@ -1,16 +1,16 @@
 import { PayloadAction } from "@reduxjs/toolkit";
 import { createAppSlice } from "@/_lib/redux/createAppSlice";
-import { findOfferingByPackage } from "@/app/(root)/private-sessions/_lib/helpers";
-import { ALL_OFFERINGS } from "@/app/(root)/private-sessions/_lib/constants";
-import { selectPackageFormDefaultValues } from "@/_lib/constants";
-import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
+import { selectedPackageDetailsDefaultValues } from "@/_lib/constants";
+import { PackageDetailsType } from "@/app/(root)/private-sessions/_lib/types";
 
 export interface PrivateSessionFormSliceState {
-  selectedPackage: OfferingType;
+  package: string;
+  packageDetails: PackageDetailsType;
 }
 
 const initialState: PrivateSessionFormSliceState = {
-  selectedPackage: selectPackageFormDefaultValues,
+  package: "",
+  packageDetails: selectedPackageDetailsDefaultValues,
 };
 
 export const privateSessionFormSlice = createAppSlice({
@@ -19,22 +19,12 @@ export const privateSessionFormSlice = createAppSlice({
   reducers: (create) => ({
     setSelectedPackage: create.reducer(
       (state, action: PayloadAction<string>) => {
-        const selectedPackageName = action.payload;
-        const foundOffering = findOfferingByPackage(
-          selectedPackageName,
-          ALL_OFFERINGS,
-        );
-        if (foundOffering) {
-          state.selectedPackage = foundOffering;
-        } else {
-          // Handle error or fallback state
-          state.selectedPackage = selectPackageFormDefaultValues; // or similar
-        }
+        state.package = action.payload;
       },
     ),
   }),
   selectors: {
-    selectedPackage: (state) => state.selectedPackage,
+    selectedPackage: (state) => state.package,
   },
 });
 
