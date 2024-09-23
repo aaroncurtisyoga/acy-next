@@ -20,7 +20,7 @@ const OfferingCard: FC<PurchaseCardProps> = ({ offering }) => {
         </CustomRadio>
       </CardHeader>
       <CardBody className={"pt-1 px-7"}>
-        <p className={"text-4xl font-semibold"}>{offering.price}</p>
+        <p className={"text-4xl font-semibold"}>${offering.price}</p>
         <p className={"text-sm mt-4 mb-1"}>This includes:</p>
         <ul>
           {offering.features.map((feature) => (

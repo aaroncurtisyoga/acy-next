@@ -6,7 +6,7 @@ import {
 export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   {
     title: "1 Session",
-    price: "$115",
+    price: "115",
     description: "1 hour of training",
     features: [
       "Personalized programming",
@@ -18,7 +18,7 @@ export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   },
   {
     title: "4 Sessions",
-    price: "$395",
+    price: "395",
     description: "4 hours of training",
     features: [
       "Personalized programming",
@@ -35,7 +35,7 @@ export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
 export const GROUP_OFFERINGS: OfferingType[] = [
   {
     title: "1 Session",
-    price: "$200",
+    price: "200",
     description: "1 hour of training",
     features: [
       "Unique programming for your group",
@@ -47,7 +47,7 @@ export const GROUP_OFFERINGS: OfferingType[] = [
   },
   {
     title: "4 Sessions",
-    price: "$700",
+    price: "700",
     description: "4 hours of training",
     features: [
       "Unique programming for your group",
