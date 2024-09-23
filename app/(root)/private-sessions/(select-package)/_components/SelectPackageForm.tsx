@@ -21,10 +21,13 @@ import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_co
 import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
 import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
 import { findOfferingByPackage } from "@/app/(root)/private-sessions/_lib/helpers";
+import { useUser } from "@clerk/nextjs";
+import { OrderType } from "@prisma/client";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
 const SelectPackageForm: FC = () => {
+  const { user, isLoaded: isUserLoaded } = useUser();
   const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
@@ -49,11 +52,18 @@ const SelectPackageForm: FC = () => {
   }, [selectedPackageFromRedux, reset]);
 
   const onSubmit = (data) => {
+    console.log("inside onSubmit", data);
     const selectedPackage = data.package;
     dispatch(setSelectedPackage(data.package));
     // when this becomes a wizard form, move this into redux
     const foundOffering = findOfferingByPackage(selectedPackage, ALL_OFFERINGS);
     //   make the api call here
+
+    const order = {
+      buyerId: user.publicMetadata.userId as string,
+      // name: 'placeholder'
+      type: OrderType.PRIVATE_SESSION,
+    };
   };
 
   return (
@@ -73,6 +83,9 @@ const SelectPackageForm: FC = () => {
             errorMessage={errors.package?.message}
             onValueChange={field.onChange}
             className={"mb-12"}
+            classNames={{
+              errorMessage: "text-center mt-3",
+            }}
             label={<PackageLabel />}
             description={<PackageDescription />}
             value={field.value}
