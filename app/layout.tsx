@@ -12,8 +12,8 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en" className={`${robotoFlex.className}`}>
-      <body>
+    <html lang="en">
+      <body className={`${robotoFlex.className}`}>
         <Providers>
           {children}
           <Analytics />

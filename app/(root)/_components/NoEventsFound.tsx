@@ -1,4 +1,5 @@
 import { FC } from "react";
+import NoEventsCard from "@/app/(root)/_components/NoEventsCard";
 
 interface NoEventsFoundProps {
   hasFiltersApplied: boolean;
@@ -12,10 +13,7 @@ const NoEventsFound: FC<NoEventsFoundProps> = ({ hasFiltersApplied }) => {
           Whoops... there&apos;s no events that match your search.
         </p>
       ) : (
-        <p className={"text-default-600"}>
-          Whoops... there aren&apos;t any events listed just yet. Check back
-          soon!
-        </p>
+        <NoEventsCard />
       )}
     </div>
   );
