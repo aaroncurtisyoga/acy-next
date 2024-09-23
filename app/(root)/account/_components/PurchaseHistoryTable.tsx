@@ -19,7 +19,7 @@ interface EventHistoryTableProps {
   orders: OrderResponse;
 }
 
-const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
+const PurchaseHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
   if (orders.data.length === 0) {
     return (
       <TableEmpty
@@ -61,4 +61,4 @@ const EventHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
   );
 };
 
-export default EventHistoryTable;
+export default PurchaseHistoryTable;

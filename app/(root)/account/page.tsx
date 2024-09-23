@@ -3,7 +3,7 @@ import { FC } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { Event, Order } from "@prisma/client";
 import { getOrdersByUser } from "@/_lib/actions/order.actions";
-import EventHistoryTable from "@/app/(root)/account/_components/EventHistoryTable";
+import PurchaseHistoryTable from "@/app/(root)/account/_components/PurchaseHistoryTable";
 
 export const metadata: Metadata = {
   title: "Account",
@@ -36,7 +36,7 @@ const AccountPage: FC<AccountPageProps> = async ({ searchParams }) => {
   return (
     <section className={"wrapper py-5 md:py-10"}>
       <h3 className={"text-xl mb-5"}>Purchase History</h3>
-      <EventHistoryTable orders={orders} />
+      <PurchaseHistoryTable orders={orders} />
     </section>
   );
 };
