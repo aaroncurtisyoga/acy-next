@@ -23,8 +23,12 @@ import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-pac
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { useUser } from "@clerk/nextjs";
 import { OrderType } from "@prisma/client";
+import { checkoutOrder } from "@/_lib/actions/order.actions";
+import { loadStripe } from "@stripe/stripe-js";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
+
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const SelectPackageForm: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
@@ -51,19 +55,21 @@ const SelectPackageForm: FC = () => {
     }
   }, [selectedPackageFromRedux, reset]);
 
-  const onSubmit = (data) => {
-    console.log("inside onSubmit", data);
+  const onSubmit = async (data) => {
     const selectedPackage = data.package;
     dispatch(setSelectedPackage(data.package));
-    // when this becomes a wizard form, move this into redux
+    // todo: when this becomes a wizard form, move this into redux
     const packageDetails = getPackageDetails(selectedPackage, ALL_OFFERINGS);
-    //   make the api call here
 
     const order = {
       buyerId: user.publicMetadata.userId as string,
-      // name: 'placeholder'
+      isFree: false,
       type: OrderType.PRIVATE_SESSION,
+      name: packageDetails.package,
+      price: packageDetails.price,
     };
+
+    await checkoutOrder(order);
   };
 
   return (
