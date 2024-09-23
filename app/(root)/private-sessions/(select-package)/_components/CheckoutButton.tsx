@@ -12,16 +12,6 @@ loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 const CheckoutButton: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
 
-  const onCheckout = async (e: FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    const order = {
-      buyerId: user.publicMetadata.userId as string,
-      // name: 'placeholder'
-      type: OrderType.PRIVATE_SESSION,
-    };
-  };
-
   if (!isUserLoaded) {
     return <CheckoutButtonSkeleton />;
   }
@@ -37,12 +27,10 @@ const CheckoutButton: FC = () => {
       </SignedOut>
       <SignedIn>
         <Button
+          type={"submit"}
           radius={"sm"}
           className={"text-base"}
           fullWidth={true}
-          onPress={() => {
-            console.log("Purchase button clicked");
-          }}
           color={"primary"}
         >
           Purchase
