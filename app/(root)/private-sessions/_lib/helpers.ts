@@ -1,7 +1,7 @@
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
 // Function to find an offering by package name
-export function findOfferingByPackage(
+export function getPackageDetails(
   packageName: string,
   allOfferings: OfferingType[],
 ): OfferingType | undefined {

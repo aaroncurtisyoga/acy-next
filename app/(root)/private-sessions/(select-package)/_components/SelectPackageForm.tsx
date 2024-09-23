@@ -20,7 +20,7 @@ import { SelectPackageFormSchema } from "@/_lib/schema";
 import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
 import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
 import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
-import { findOfferingByPackage } from "@/app/(root)/private-sessions/_lib/helpers";
+import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { useUser } from "@clerk/nextjs";
 import { OrderType } from "@prisma/client";
 
@@ -56,7 +56,7 @@ const SelectPackageForm: FC = () => {
     const selectedPackage = data.package;
     dispatch(setSelectedPackage(data.package));
     // when this becomes a wizard form, move this into redux
-    const foundOffering = findOfferingByPackage(selectedPackage, ALL_OFFERINGS);
+    const packageDetails = getPackageDetails(selectedPackage, ALL_OFFERINGS);
     //   make the api call here
 
     const order = {
