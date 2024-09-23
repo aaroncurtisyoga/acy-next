@@ -1,5 +1,5 @@
 import { z } from "zod";
-
+import { ZonedDateTime } from "@internationalized/date";
 export const newsletterFormSchema = z.object({
   email: z
     .string({ required_error: "Email address is required" })
@@ -7,8 +7,12 @@ export const newsletterFormSchema = z.object({
 });
 
 export const EventFormBasicInfoSchema = z.object({
-  categoryId: z.string().min(2, "Category is required"),
-  endDateTime: z.date(),
+  category: z.string().min(2, "Category is required"),
+  endDateTime: z
+    .instanceof(ZonedDateTime)
+    .refine((val) => val instanceof ZonedDateTime, {
+      message: "Invalid date",
+    }),
   isHostedExternally: z.boolean(),
   location: z.object({
     formattedAddress: z.string().min(3, "Address is required"),
@@ -17,7 +21,11 @@ export const EventFormBasicInfoSchema = z.object({
     name: z.string(),
     placeId: z.string(),
   }),
-  startDateTime: z.date(),
+  startDateTime: z
+    .instanceof(ZonedDateTime)
+    .refine((val) => val instanceof ZonedDateTime, {
+      message: "Invalid date",
+    }),
   title: z.string().min(3, "Must be at least 3 characters"),
 });
 
@@ -46,4 +54,8 @@ export const EventFormDetailsForInternallyHostedEventSchema = z.object({
 
 export const CategoryFormSchema = z.object({
   category: z.string().min(2, "Category required"),
+});
+
+export const SelectPackageFormSchema = z.object({
+  package: z.string().trim().min(1, "Please select a package"), // Required
 });

@@ -6,6 +6,12 @@ import * as z from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@nextui-org/react";
+import {
+  now,
+  getLocalTimeZone,
+  parseZonedDateTime,
+} from "@internationalized/date";
+
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
@@ -15,10 +21,10 @@ import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInp
 import { EventFormBasicInfoSchema } from "@/_lib/schema";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import {
+  resetFormData,
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
-import "react-datepicker/dist/react-datepicker.css";
 import { PlaceDetails } from "@/_lib/types";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
@@ -27,23 +33,24 @@ const BasicInfo: FC = () => {
   const router = useRouter();
   const dispatch = useAppDispatch();
   const formValuesFromRedux = useAppSelector(selectFormValues);
-  const eventInitialValues = {
+  const eventFormInitialValues = {
     ...formValuesFromRedux,
     startDateTime: formValuesFromRedux.startDateTime
-      ? new Date(formValuesFromRedux.startDateTime)
-      : new Date(),
+      ? parseZonedDateTime(formValuesFromRedux.startDateTime)
+      : now(getLocalTimeZone()),
     endDateTime: formValuesFromRedux.endDateTime
-      ? new Date(formValuesFromRedux.endDateTime)
-      : new Date(),
+      ? parseZonedDateTime(formValuesFromRedux.endDateTime)
+      : now(getLocalTimeZone()),
   };
   const {
+    reset,
     control,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(EventFormBasicInfoSchema),
-    defaultValues: eventInitialValues,
+    defaultValues: eventFormInitialValues,
   });
 
   const setLocationValueInReactHookForm = useCallback(
@@ -58,7 +65,6 @@ const BasicInfo: FC = () => {
     },
     [setValue],
   );
-
   useEffect(() => {
     formValuesFromRedux.location?.formattedAddress &&
       setLocationValueInReactHookForm(formValuesFromRedux.location);
@@ -68,8 +74,8 @@ const BasicInfo: FC = () => {
     // Convert Date objects to ISO strings
     const payload = {
       ...data,
-      startDateTime: data.startDateTime.toISOString(),
-      endDateTime: data.endDateTime.toISOString(),
+      startDateTime: data.startDateTime.toString(),
+      endDateTime: data.endDateTime.toString(),
     };
 
     dispatch(setFormData(payload));
@@ -77,7 +83,12 @@ const BasicInfo: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
+    <form
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleSubmit(onSubmit)(e);
+      }}
+    >
       <div className={"grid grid-cols-2 gap-5"}>
         <TitleInput
           control={control}
@@ -109,8 +120,20 @@ const BasicInfo: FC = () => {
           isSubmitting={isSubmitting}
         />
       </div>
-      <div className="flex justify-end">
-        <Button type={"submit"} className={"mt-5"}>
+      <div className="flex justify-between mt-5">
+        <Button
+          type={"button"}
+          className={"mr-5"}
+          onPress={() => {
+            // Rest react hook form
+            reset();
+            // Reset redux store
+            dispatch(resetFormData());
+          }}
+        >
+          Reset Form
+        </Button>
+        <Button type={"submit"} color={"primary"}>
           Next
         </Button>
       </div>

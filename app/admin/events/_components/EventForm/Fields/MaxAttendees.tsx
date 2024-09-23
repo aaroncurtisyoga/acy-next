@@ -20,8 +20,9 @@ const MaxAttendees: FC<MaxAttendeesProps> = ({
       name={"maxAttendees"}
       render={({ field: { onChange, ...field } }) => (
         <Input
-          disabled={isSubmitting}
+          isDisabled={isSubmitting}
           errorMessage={errors.maxAttendees?.message}
+          isInvalid={!!errors.maxAttendees}
           label={"Max Attendees"}
           onChange={(e) => onChange(Number(e.target.value))}
           type={"number"}

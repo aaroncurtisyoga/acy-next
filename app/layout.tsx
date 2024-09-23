@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ReactNode } from "react";
 import { Analytics } from "@vercel/analytics/react";
 import { Providers } from "@/app/providers";
+import { robotoFlex } from "@/app/fonts";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -11,7 +12,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${robotoFlex.className}`}>
       <body>
         <Providers>
           {children}

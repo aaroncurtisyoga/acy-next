@@ -56,7 +56,7 @@ const CreateCategory: FC = () => {
         render={({ field }) => {
           return (
             <Input
-              disabled={isSubmitting}
+              isDisabled={isSubmitting}
               label="Category"
               variant="bordered"
               errorMessage={errors.category?.message}

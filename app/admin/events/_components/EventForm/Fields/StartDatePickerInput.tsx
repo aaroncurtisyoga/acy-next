@@ -1,6 +1,7 @@
 import React, { FC } from "react";
-import DatePicker from "react-datepicker";
 import { Control, Controller, FieldErrors } from "react-hook-form";
+import { DatePicker } from "@nextui-org/react";
+
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface StartDatePickerInputProps {
@@ -18,28 +19,22 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
     <Controller
       control={control}
       name={"startDateTime"}
-      render={({ field }) => (
-        <div className={"w-full flex flex-col"}>
-          <DatePicker
-            disabled={isSubmitting}
-            dateFormat="MM/dd/yyyy h:mm aa"
-            enableTabLoop={false}
-            onChange={field.onChange}
-            placeholderText={"Start Date/Time"}
-            selected={new Date(field.value)}
-            showTimeSelect
-            timeInputLabel={"Start Date/Time:"}
-            wrapperClassName="datePicker"
-          />
-          {errors.startDateTime?.message && (
-            <div className="p-1 flex relative flex-col gap-1.5">
-              <div className="text-tiny text-danger">
-                {errors.startDateTime.message}
-              </div>
-            </div>
-          )}
-        </div>
-      )}
+      render={({ field }) => {
+        return (
+          <div className={"w-full flex flex-col"}>
+            <DatePicker
+              errorMessage={errors.startDateTime?.message}
+              isDisabled={isSubmitting}
+              isInvalid={!!errors.startDateTime}
+              hideTimeZone
+              onChange={field.onChange}
+              variant={"bordered"}
+              label={"Start Date/Time"}
+              value={field.value}
+            />
+          </div>
+        );
+      }}
     />
   );
 };

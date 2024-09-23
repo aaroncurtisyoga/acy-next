@@ -1,4 +1,4 @@
-import { Category, Event, Location } from "@prisma/client";
+import { Category, Event, Location, OrderType } from "@prisma/client";
 
 export type GetAllEventsParams = {
   query: string;
@@ -22,19 +22,21 @@ export type CreateCategoryParams = {
 
 // ====== ORDER PARAMS
 export type CheckoutOrderParams = {
-  eventTitle: string;
-  eventId: string;
-  price: string;
-  isFree: boolean;
   buyerId: string;
+  eventId?: string;
+  isFree: boolean;
+  name: string;
+  price: string;
+  type: OrderType;
 };
 
 export type CreateOrderParams = {
   buyerId: string;
   createdAt: Date;
-  eventId: string;
+  eventId?: string;
   stripeId: string;
   totalAmount: string;
+  type: OrderType;
 };
 
 export type GetOrdersByEventParams = {

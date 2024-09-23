@@ -1,10 +1,10 @@
 import { PropsWithChildren } from "react";
-import Header from "@/_components/Header";
+import SimpleNav from "@/app/(auth)/_components/SimpleNav";
 
 const Layout = ({ children }: PropsWithChildren<{}>) => {
   return (
     <div className="flex flex-col min-h-dvh">
-      <Header isSimpleNav={true} />
+      <SimpleNav />
       <main className={"grow flex justify-center items-center"}>
         {children}
       </main>

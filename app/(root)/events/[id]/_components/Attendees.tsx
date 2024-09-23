@@ -1,6 +1,7 @@
 import { FC } from "react";
 import { Avatar, AvatarGroup } from "@nextui-org/react";
 import { User } from "@prisma/client";
+
 interface AttendeesProps {
   attendees: User[];
 }

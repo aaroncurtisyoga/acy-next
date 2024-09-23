@@ -1,40 +1,51 @@
 "use client";
 
-import Link from "next/link";
-import React, { FC } from "react";
-import { SignedIn, SignedOut, useUser } from "@clerk/nextjs";
-import { Event } from "@prisma/client";
-import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
+import { FC, FormEvent, useEffect } from "react";
+import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@nextui-org/react";
+import { Event, OrderType } from "@prisma/client";
+import { checkoutOrder } from "@/_lib/actions/order.actions";
 
-interface ICheckoutButtonProps {
-  event: Event;
-  className?: string;
-}
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
-const CheckoutButton: FC<ICheckoutButtonProps> = ({ event }) => {
-  const { user } = useUser();
-  const userId = user?.publicMetadata.userId as string;
-  const hasEventFinished = new Date(event.endDateTime) < new Date();
+type CheckoutProps = { event: Event; userId: string };
+
+const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
+  useEffect(() => {
+    // Check to see if this is a redirect back from Checkout
+    const query = new URLSearchParams(window.location.search);
+    if (query.get("success")) {
+      console.log("Order placed! You will receive an email confirmation.");
+    }
+
+    if (query.get("canceled")) {
+      console.log(
+        "Order canceled -- continue to shop around and checkout when you’re ready.",
+      );
+    }
+  }, []);
+
+  const onCheckout = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    const order = {
+      buyerId: userId,
+      eventId: event.id,
+      isFree: event.isFree,
+      name: event.title,
+      price: event.price,
+      type: OrderType.EVENT,
+    };
+
+    await checkoutOrder(order);
+  };
 
   return (
-    <div>
-      {hasEventFinished ? (
-        <p>Sorry, tickets are no longer available.</p>
-      ) : (
-        <>
-          <SignedOut>
-            <Button type="button" fullWidth={true} color={"primary"}>
-              <Link href="/sign-in">Sign Up</Link>
-            </Button>
-          </SignedOut>
-
-          <SignedIn>
-            <Checkout event={event} userId={userId} />
-          </SignedIn>
-        </>
-      )}
-    </div>
+    <form onSubmit={(e) => onCheckout(e)} method="post">
+      <Button type="submit" fullWidth={true} color={"primary"}>
+        {event.isFree ? "Get Ticket" : "Buy Ticket"}
+      </Button>
+    </form>
   );
 };
 

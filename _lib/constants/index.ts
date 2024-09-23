@@ -9,8 +9,14 @@ import {
   ClipboardPlus,
 } from "lucide-react";
 import { TravelOption } from "@/_lib/types";
+import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
-export const userLinks = [];
+export const userLinks = [
+  {
+    name: "Private Sessions",
+    href: "/private-sessions",
+  },
+];
 
 export const adminLinks = [{ name: "Admin", href: "/admin" }];
 
@@ -27,8 +33,7 @@ export const locations = {
 };
 
 export const eventFormBasicInfoDefaultValues = {
-  categoryId: "",
-  createdAt: "",
+  category: "",
   endDateTime: "",
   isHostedExternally: false,
   location: {
@@ -85,3 +90,30 @@ export const adminDashboardLinks = [
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "New Category", path: "/admin/categories/create", icon: Box },
 ];
+
+export const TableEventManagementColumns = [
+  "Start Date",
+  "Name",
+  "Category",
+  "Actions",
+];
+
+export const EventHistoryTableColumns = [
+  "Date",
+  "Amount",
+  "Event",
+  "Order ID",
+  "Type",
+];
+
+export const orderTypeLabels = {
+  EVENT: "Event",
+  PRIVATE_SESSION: "Private Session",
+};
+
+export const selectedPackageDetailsDefaultValues = {
+  title: "",
+  price: "",
+  description: "",
+  features: [],
+};

@@ -17,13 +17,13 @@ const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
       name={"isHostedExternally"}
       render={({ field }) => (
         <Checkbox
-          disabled={isSubmitting}
+          isDisabled={isSubmitting}
           size={"lg"}
           onChange={field.onChange}
           isSelected={field.value}
           {...field}
         >
-          External Registration
+          People sign up on a different app
         </Checkbox>
       )}
     />

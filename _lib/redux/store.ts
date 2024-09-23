@@ -1,8 +1,13 @@
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
 import { createEventFormSlice } from "@/_lib/redux/features/eventFormSlice";
+import { privateSessionFormSlice } from "@/_lib/redux/features/privateSessionFormSlice";
 
-const rootReducer = combineSlices(createEventFormSlice);
+const rootReducer = combineSlices(
+  createEventFormSlice,
+  privateSessionFormSlice,
+);
+
 export type RootState = ReturnType<typeof rootReducer>;
 
 export const makeStore = () => {

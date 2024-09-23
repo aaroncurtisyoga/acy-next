@@ -16,8 +16,12 @@ import { formatDateTime, handleError } from "@/_lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import Link from "next/link";
 import BasicModal from "@/_components/BasicModal";
+import { TableEventManagementColumns } from "@/_lib/constants";
+import TableLoading from "@/_components/TableLoading";
+import TableEmpty from "@/_components/TableEmpty";
 
 const TableEventManagement: FC = () => {
+  const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedEvent, setSelectedEvent] = useState(null);
   // todo: consider creating a custom hook for this data fetching & pagination
@@ -40,6 +44,8 @@ const TableEventManagement: FC = () => {
         setTotalPages(totalPages);
       } catch (error) {
         handleError("Failed to fetch events", error);
+      } finally {
+        setLoading(false);
       }
     };
     fetchEvents();
@@ -51,17 +57,30 @@ const TableEventManagement: FC = () => {
       onOpenChange();
       setEvents(events.filter((event) => event.id !== selectedEvent.id));
     } else {
-      //   todo: Toast notification saying there was an error or put in modal
+      //   Todo: Toast notification saying there was an error or put in modal
     }
   };
+
+  if (loading) {
+    return <TableLoading columns={TableEventManagementColumns} />;
+  }
+
+  if (events.length === 0) {
+    return (
+      <TableEmpty
+        columns={TableEventManagementColumns}
+        message={"No" + " events have been created yet"}
+      />
+    );
+  }
+
   return (
     <>
       <Table aria-label={"Table for Managing Events"} className={"mt-5"}>
         <TableHeader>
-          <TableColumn>Start Date</TableColumn>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Category</TableColumn>
-          <TableColumn>Actions</TableColumn>
+          {TableEventManagementColumns.map((column) => (
+            <TableColumn key={column}>{column}</TableColumn>
+          ))}
         </TableHeader>
         <TableBody>
           {events.map((event) => (
