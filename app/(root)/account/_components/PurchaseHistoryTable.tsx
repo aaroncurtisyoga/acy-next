@@ -45,12 +45,16 @@ const PurchaseHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
             <TableCell>{formatPrice(order.totalAmount)}</TableCell>
             <TableCell>
               {/* Todo: Replace w/ Next UI link */}
-              <Link
-                href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
-                className={"text-sm text-blue-600 hover:underline"}
-              >
-                {order.event.title}
-              </Link>
+              {order.event?.id ? (
+                <Link
+                  href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
+                  className={"text-sm text-blue-600 hover:underline"}
+                >
+                  {order.event.title}
+                </Link>
+              ) : (
+                <span className="text-sm text-gray-400">N/A</span>
+              )}
             </TableCell>
             <TableCell>{order.id}</TableCell>
             <TableCell>{orderTypeLabels[order.type]}</TableCell>
