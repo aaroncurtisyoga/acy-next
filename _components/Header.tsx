@@ -19,8 +19,10 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
+
 import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 import { merriweather } from "@/app/fonts";
+import { User } from "lucide-react";
 
 const Header: FC = () => {
   const router = useRouter();
@@ -32,6 +34,7 @@ const Header: FC = () => {
 
   useEffect(() => {
     if (!isLoaded) return;
+
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
       setMenuItems(() => [
@@ -67,7 +70,6 @@ const Header: FC = () => {
       }}
     >
       <NavbarContent>
-        {/* Todo: Replace w/ an actual Logo */}
         <NavbarBrand>
           <Link href={"/"}>
             <h1
@@ -78,26 +80,38 @@ const Header: FC = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
+      {/* Only show this section when isLoaded is true to prevent layout shift */}
+
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
-        {menuItems.map((link, index) => (
-          <NavbarItem
-            key={`${link.name}-${index}`}
-            isActive={pathname.includes(link.href)}
-          >
-            <Link className="w-full" href={link.href}>
-              {link.name}
-            </Link>
-          </NavbarItem>
-        ))}
-        <NavbarItem className={"min-w-[32px]"}>
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <SignedOut>
-            <Link href={"/sign-in"}>Login</Link>
-          </SignedOut>
-        </NavbarItem>
+        {isLoaded && (
+          <>
+            {menuItems.map((link, index) => (
+              <NavbarItem
+                key={`${link.name}-${index}`}
+                isActive={pathname.includes(link.href)}
+              >
+                <Link className="w-full" href={link.href}>
+                  {link.name}
+                </Link>
+              </NavbarItem>
+            ))}
+            <NavbarItem
+              isActive={pathname.includes("/sign-in")}
+              className="min-w-[32px]"
+            >
+              <SignedIn>
+                <UserButton />
+              </SignedIn>
+              <SignedOut>
+                <Link href={"/sign-in"}>
+                  <User />
+                </Link>
+              </SignedOut>
+            </NavbarItem>
+          </>
+        )}
       </NavbarContent>
+
       {/* Content below if for Mobile Nav */}
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
