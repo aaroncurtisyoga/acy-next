@@ -83,6 +83,10 @@ const Header: FC = () => {
       {/* Only show this section when isLoaded is true to prevent layout shift */}
 
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
+        {/* todo:
+                 might be able to animate in the entire header so that
+                 everything fades in after isLoaded is determined
+      */}
         {isLoaded && (
           <>
             {menuItems.map((link, index) => (
