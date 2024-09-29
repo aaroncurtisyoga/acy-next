@@ -16,9 +16,6 @@ const config: Config = {
         "2/1": "2/1",
       },
       backgroundImage: {},
-      fontFamily: {
-        sans: ["Roboto Flex", "sans-serif"], // Apply Roboto Flex to sans family
-      },
     },
   },
   darkMode: "class",
