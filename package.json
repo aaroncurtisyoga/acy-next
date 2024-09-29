@@ -34,7 +34,7 @@
     "cmdk": "1.0.0",
     "framer-motion": "^11.1.9",
     "lodash": "^4.17.21",
-    "lucide-react": "^0.438.0",
+    "lucide-react": "^0.446.0",
     "next": "^14.2.8",
     "query-string": "^9.0.0",
     "react": "^18.3.1",
@@ -52,6 +52,7 @@
   },
   "devDependencies": {
     "@hookform/devtools": "^4.3.1",
+    "@playwright/test": "^1.47.2",
     "@prisma/client": "^5.19.1",
     "@types/mailchimp__mailchimp_marketing": "^3.0.20",
     "@types/node": "20.12.11",
