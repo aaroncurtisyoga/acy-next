@@ -13,7 +13,7 @@ export async function getAllUsers({ query, limit = 8, page }) {
     });
     return {
       data: users,
-      totalPage: Math.ceil(users.length / limit),
+      totalPages: Math.ceil(users.length / limit),
     };
   } catch (error) {
     handleError(error);
