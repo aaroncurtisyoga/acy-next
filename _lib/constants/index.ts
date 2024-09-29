@@ -7,6 +7,7 @@ import {
   Footprints,
   TramFront,
   ClipboardPlus,
+  UsersRound,
 } from "lucide-react";
 import { TravelOption } from "@/_lib/types";
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
@@ -21,16 +22,6 @@ export const userLinks = [
 export const adminLinks = [{ name: "Admin", href: "/admin" }];
 
 export const authenticatedLinks = [{ name: "Account", href: "/account" }];
-
-export const signUpLinks = {
-  crossFitDc: "https://crossfitdc.com/",
-  dcBoulderingProject: "https://www.dcboulderingproject.com/yoga-fitness",
-};
-
-export const locations = {
-  BOULDERING_PROJECT: "DC Bouldering Project",
-  CROSSFIT_DC: "CrossFit DC",
-};
 
 export const eventFormBasicInfoDefaultValues = {
   category: "",
@@ -89,6 +80,7 @@ export const adminDashboardLinks = [
   { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "New Category", path: "/admin/categories/create", icon: Box },
+  { name: "Users", path: "/admin/users", icon: UsersRound },
 ];
 
 export const TableEventManagementColumns = [
