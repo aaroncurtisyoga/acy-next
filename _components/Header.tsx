@@ -22,7 +22,6 @@ import {
 
 import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 import { merriweather } from "@/app/fonts";
-import { User } from "lucide-react";
 
 const Header: FC = () => {
   const router = useRouter();
@@ -108,7 +107,7 @@ const Header: FC = () => {
               </SignedIn>
               <SignedOut>
                 <Link href={"/sign-in"}>
-                  <User />
+                  <Link href={"/sign-in"}>Login</Link>
                 </Link>
               </SignedOut>
             </NavbarItem>
