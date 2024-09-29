@@ -90,6 +90,14 @@ export const TableEventManagementColumns = [
   "Actions",
 ];
 
+export const TableManageUsersColumns = [
+  "Email",
+  "First Name",
+  "Last Name",
+  "UID",
+  "Actions",
+];
+
 export const EventHistoryTableColumns = [
   "Date",
   "Amount",
