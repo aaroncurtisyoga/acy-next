@@ -106,9 +106,7 @@ const Header: FC = () => {
                 <UserButton />
               </SignedIn>
               <SignedOut>
-                <Link href={"/sign-in"}>
-                  <Link href={"/sign-in"}>Login</Link>
-                </Link>
+                <Link href={"/sign-in"}>Login</Link>
               </SignedOut>
             </NavbarItem>
           </>
