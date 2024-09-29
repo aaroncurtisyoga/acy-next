@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
@@ -11,9 +11,47 @@ import {
 } from "@nextui-org/react";
 import { TableManageUsersColumns } from "@/_lib/constants";
 import { Trash2 } from "lucide-react";
+import { handleError } from "@/_lib/utils";
+import { getAllUsers } from "@/_lib/actions/user.actions";
+import TableLoading from "@/_components/TableLoading";
+import TableEmpty from "@/_components/TableEmpty";
 
 const ManageUsersTable: FC = () => {
-  const users = [];
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
+  const [totalPages, setTotalPages] = useState(0);
+  const [page, setPage] = useState(1);
+  const [searchText, setSearchText] = useState("");
+
+  useEffect(() => {
+    const fetchUsers = async () => {
+      try {
+        const { data, totalPages } = await getAllUsers({
+          limit: 8,
+          page,
+          query: searchText,
+        });
+        setUsers(data);
+        setTotalPages(totalPages);
+      } catch (error) {
+        handleError("Failed to fetch users", error);
+      }
+    };
+    fetchUsers();
+  }, [page, searchText]);
+
+  if (loading) {
+    return <TableLoading columns={TableManageUsersColumns} />;
+  }
+
+  if (!users.length) {
+    return (
+      <TableEmpty
+        columns={TableManageUsersColumns}
+        message={"No users in the system yet"}
+      />
+    );
+  }
 
   return (
     <>
