@@ -19,3 +19,13 @@ export async function getAllUsers({ query, limit = 8, page }) {
     handleError(error);
   }
 }
+
+export async function deleteUser(userId: string) {
+  try {
+    return await prisma.user.delete({
+      where: { id: userId },
+    });
+  } catch (error) {
+    handleError(error);
+  }
+}
