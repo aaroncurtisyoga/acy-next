@@ -91,9 +91,9 @@ export const TableEventManagementColumns = [
 ];
 
 export const TableManageUsersColumns = [
-  "Email",
   "First Name",
   "Last Name",
+  "Email",
   "UID",
   "Actions",
 ];
