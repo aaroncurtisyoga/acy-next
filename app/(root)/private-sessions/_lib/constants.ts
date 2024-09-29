@@ -5,6 +5,18 @@ import {
 
 export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
   {
+    title: "0 Session",
+    price: "1",
+    description: "1 hour of training",
+    features: [
+      "test Personalized programming",
+      "test Virtual or In Person",
+      "test Breathwork",
+      "test Meditation",
+    ],
+    package: "test - Individual - 1 Session",
+  },
+  {
     title: "1 Session",
     price: "115",
     description: "1 hour of training",
