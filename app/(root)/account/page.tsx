@@ -1,9 +1,9 @@
-import type { Metadata } from "next";
 import { FC } from "react";
 import { auth } from "@clerk/nextjs/server";
 import { Event, Order } from "@prisma/client";
-import { getOrdersByUser } from "@/_lib/actions/order.actions";
+import type { Metadata } from "next";
 import PurchaseHistoryTable from "@/app/(root)/account/_components/PurchaseHistoryTable";
+import { getOrdersByUser } from "@/_lib/actions/order.actions";
 
 export const metadata: Metadata = {
   title: "Account",

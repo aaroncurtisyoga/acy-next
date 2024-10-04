@@ -1,8 +1,8 @@
-import { OrderType } from "@prisma/client";
 import { NextResponse } from "next/server";
+import { OrderType } from "@prisma/client";
 import stripe from "stripe";
-import { handleError } from "@/_lib/utils";
 import { createOrder } from "@/_lib/actions/order.actions";
+import { handleError } from "@/_lib/utils";
 
 export async function POST(request: Request) {
   const body = await request.text();

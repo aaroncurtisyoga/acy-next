@@ -1,7 +1,7 @@
 "use client";
 
-import Image from "next/image";
 import React, { FC, useState } from "react";
+import Image from "next/image";
 import {
   Modal,
   ModalContent,
@@ -11,10 +11,10 @@ import {
   Button,
   useDisclosure,
 } from "@nextui-org/react";
-import { getImages } from "@/_lib/actions/blob.actions";
 import { cn } from "@nextui-org/theme";
 import { FieldErrors } from "react-hook-form";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { getImages } from "@/_lib/actions/blob.actions";
 
 interface ImagePickerProps {
   errors: FieldErrors<Inputs>;

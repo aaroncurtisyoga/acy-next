@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import React, { FC } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery } from "@/_lib/utils";
 
 interface PaginationProps {

@@ -1,5 +1,5 @@
-import { Input } from "@nextui-org/react";
 import { FC } from "react";
+import { Input } from "@nextui-org/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 

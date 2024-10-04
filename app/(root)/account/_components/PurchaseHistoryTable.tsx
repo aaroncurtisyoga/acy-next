@@ -1,6 +1,7 @@
 "use client";
 
 import { FC } from "react";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -9,11 +10,10 @@ import {
   TableHeader,
   TableRow,
 } from "@nextui-org/react";
+import TableEmpty from "@/_components/TableEmpty";
+import { EventHistoryTableColumns, orderTypeLabels } from "@/_lib/constants";
 import { formatDateTime, formatPrice } from "@/_lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
-import Link from "next/link";
-import { EventHistoryTableColumns, orderTypeLabels } from "@/_lib/constants";
-import TableEmpty from "@/_components/TableEmpty";
 
 interface EventHistoryTableProps {
   orders: OrderResponse;

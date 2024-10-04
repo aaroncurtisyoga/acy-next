@@ -1,5 +1,5 @@
-import { Button, Skeleton } from "@nextui-org/react";
 import React from "react";
+import { Button, Skeleton } from "@nextui-org/react";
 
 const CheckoutSkeleton: React.FC = () => {
   return (

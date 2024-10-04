@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Listbox, ListboxItem } from "@nextui-org/react";
 import { adminDashboardLinks } from "@/_lib/constants";
-import Link from "next/link";
 
 const SidebarMenu = () => {
   return (

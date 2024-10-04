@@ -1,7 +1,7 @@
 "use server";
 
-import { z } from "zod";
 import mailchimp from "@mailchimp/mailchimp_marketing";
+import { z } from "zod";
 import { newsletterFormSchema } from "@/_lib/schema";
 import { handleError } from "@/_lib/utils";
 type Inputs = z.infer<typeof newsletterFormSchema>;

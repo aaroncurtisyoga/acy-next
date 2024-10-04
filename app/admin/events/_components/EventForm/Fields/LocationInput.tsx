@@ -1,11 +1,11 @@
 "use client";
 
 import React, { FC } from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Control, Controller, FieldErrors } from "react-hook-form";
+import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 import { placeDetails } from "@/_lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/_lib/hooks/useAutocompleteSuggestions";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface LocationInputProps {
   control: Control;

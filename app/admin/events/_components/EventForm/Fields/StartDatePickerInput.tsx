@@ -1,7 +1,6 @@
 import React, { FC } from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
 import { DatePicker } from "@nextui-org/react";
-
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 interface StartDatePickerInputProps {

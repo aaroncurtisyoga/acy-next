@@ -1,9 +1,9 @@
 "use client";
 
-import Link from "next/link";
 import { FC } from "react";
-import { formatDateTime } from "@/_lib/utils";
+import Link from "next/link";
 import { EventWithLocationAndCategory } from "@/_lib/types";
+import { formatDateTime } from "@/_lib/utils";
 
 interface EventTextProps {
   event: EventWithLocationAndCategory;

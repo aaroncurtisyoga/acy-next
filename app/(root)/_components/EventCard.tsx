@@ -1,10 +1,10 @@
 "use client";
 
+import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
-import { formatDateTime } from "@/_lib/utils";
 import { EventWithLocationAndCategory } from "@/_lib/types";
+import { formatDateTime } from "@/_lib/utils";
 
 interface CardProps {
   event: EventWithLocationAndCategory;

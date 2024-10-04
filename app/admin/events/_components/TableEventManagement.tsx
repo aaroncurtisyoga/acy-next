@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
+import Link from "next/link";
 import {
   Table,
   TableBody,
@@ -11,14 +12,13 @@ import {
   Tooltip,
   useDisclosure,
 } from "@nextui-org/react";
-import { deleteEvent, getAllEvents } from "@/_lib/actions/event.actions";
-import { formatDateTime, handleError } from "@/_lib/utils";
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import Link from "next/link";
 import BasicModal from "@/_components/BasicModal";
-import { TableEventManagementColumns } from "@/_lib/constants";
-import TableLoading from "@/_components/TableLoading";
 import TableEmpty from "@/_components/TableEmpty";
+import TableLoading from "@/_components/TableLoading";
+import { deleteEvent, getAllEvents } from "@/_lib/actions/event.actions";
+import { TableEventManagementColumns } from "@/_lib/constants";
+import { formatDateTime, handleError } from "@/_lib/utils";
 
 const TableEventManagement: FC = () => {
   const [loading, setLoading] = useState(true);

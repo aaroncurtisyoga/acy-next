@@ -9,12 +9,12 @@ import {
   TableRow,
   Tooltip,
 } from "@nextui-org/react";
-import { TableManageUsersColumns } from "@/_lib/constants";
 import { Trash2 } from "lucide-react";
-import { handleError } from "@/_lib/utils";
-import { getAllUsers } from "@/_lib/actions/user.actions";
-import TableLoading from "@/_components/TableLoading";
 import TableEmpty from "@/_components/TableEmpty";
+import TableLoading from "@/_components/TableLoading";
+import { getAllUsers } from "@/_lib/actions/user.actions";
+import { TableManageUsersColumns } from "@/_lib/constants";
+import { handleError } from "@/_lib/utils";
 
 const ManageUsersTable: FC = () => {
   const [loading, setLoading] = useState(true);

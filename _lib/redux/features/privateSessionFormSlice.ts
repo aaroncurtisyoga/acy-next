@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/_lib/redux/createAppSlice";
 import { selectedPackageDetailsDefaultValues } from "@/_lib/constants";
+import { createAppSlice } from "@/_lib/redux/createAppSlice";
 import { PackageDetailsType } from "@/app/(root)/private-sessions/_lib/types";
 
 export interface PrivateSessionFormSliceState {

@@ -1,8 +1,8 @@
 "use client";
 
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { FC, useEffect, useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -19,7 +19,6 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
-
 import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 import { merriweather } from "@/app/fonts";
 

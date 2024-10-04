@@ -1,7 +1,7 @@
 // tailwind.config.ts
 
-import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [

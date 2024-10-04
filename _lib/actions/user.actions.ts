@@ -1,5 +1,5 @@
-import { handleError } from "@/_lib/utils";
 import prisma from "@/_lib/prisma";
+import { handleError } from "@/_lib/utils";
 
 export async function getAllUsers({ query, limit = 8, page }) {
   const skipAmount = (Number(page) - 1) * limit;

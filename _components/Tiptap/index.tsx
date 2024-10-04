@@ -1,9 +1,9 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
 import { Link } from "@tiptap/extension-link";
 import Underline from "@tiptap/extension-underline";
+import { useEditor, EditorContent } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
 import Toolbar from "@/_components/Tiptap/Toolbar";
 
 type TiptapProps = {
