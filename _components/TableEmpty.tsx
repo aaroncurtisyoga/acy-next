@@ -8,7 +8,7 @@ interface EmptyTableProps {
 
 const TableLoading: FC<EmptyTableProps> = ({ columns, message }) => {
   return (
-    <Table>
+    <Table aria-label={"Table Empty"}>
       <TableHeader>
         {columns.map((column, index) => (
           <TableColumn key={index}>{column}</TableColumn>

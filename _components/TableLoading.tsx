@@ -13,7 +13,7 @@ interface EmptyTableProps {
 
 const TableLoading: FC<EmptyTableProps> = ({ columns }) => {
   return (
-    <Table>
+    <Table aria-label={"Table Loading"}>
       <TableHeader>
         {columns.map((column, index) => (
           <TableColumn key={index}>{column}</TableColumn>
