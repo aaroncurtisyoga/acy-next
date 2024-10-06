@@ -4,6 +4,7 @@ import { FC, useEffect, useState } from "react";
 import {
   Table,
   TableBody,
+  TableCell,
   TableColumn,
   TableHeader,
   TableRow,
@@ -33,6 +34,7 @@ const ManageUsersTable: FC = () => {
         });
         setUsers(data);
         setTotalPages(totalPages);
+        setLoading(false);
       } catch (error) {
         handleError("Failed to fetch users", error);
       }
@@ -64,11 +66,11 @@ const ManageUsersTable: FC = () => {
         <TableBody>
           {users.map((user) => (
             <TableRow key={user.id}>
-              <TableColumn>{user.firstName}</TableColumn>
-              <TableColumn>{user.lastName}</TableColumn>
-              <TableColumn>{user.email}</TableColumn>
-              <TableColumn>{user.id}</TableColumn>
-              <TableColumn>
+              <TableCell>{user.firstName}</TableCell>
+              <TableCell>{user.lastName}</TableCell>
+              <TableCell>{user.email}</TableCell>
+              <TableCell>{user.id}</TableCell>
+              <TableCell>
                 <Tooltip content={"Delete"}>
                   <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
                     <Trash2
@@ -79,7 +81,7 @@ const ManageUsersTable: FC = () => {
                     />
                   </span>
                 </Tooltip>
-              </TableColumn>
+              </TableCell>
             </TableRow>
           ))}
         </TableBody>
