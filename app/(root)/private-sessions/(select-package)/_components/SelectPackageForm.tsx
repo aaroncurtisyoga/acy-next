@@ -6,25 +6,25 @@ import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
-import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
-import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
-import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
-import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { checkoutOrder } from "@/_lib/actions/order.actions";
 import {
   selectedPackage,
   setSelectedPackage,
 } from "@/_lib/redux/features/privateSessionFormSlice";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { SelectPackageFormSchema } from "@/_lib/schema";
+import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
+import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
+import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
+import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
+import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
+import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
 import {
   ALL_OFFERINGS,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/_lib/constants";
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
-import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
-import { checkoutOrder } from "@/_lib/actions/order.actions";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 

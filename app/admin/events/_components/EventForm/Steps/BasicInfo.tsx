@@ -11,12 +11,6 @@ import {
 import { Button } from "@nextui-org/react";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
-import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
-import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
-import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
-import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
-import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
 import {
   resetFormData,
   selectFormValues,
@@ -25,6 +19,12 @@ import {
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { EventFormBasicInfoSchema } from "@/_lib/schema";
 import { PlaceDetails } from "@/_lib/types";
+import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
+import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
+import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
+import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
+import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
+import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 

@@ -9,22 +9,18 @@
           "external",    // External e.g. Next, Tanstack, etc.
           "internal",    // Internal modules e.g. Components
           "index",       // Index file
-          "object"       // Imported objects
+          "object",       // Imported objects
+          "type"         // Imported types
         ],
         "pathGroups": [
-          {
-            "pattern": "react",
-            "group": "builtin",
-            "position": "before"
-          },
           {
             "pattern": "next/**",
             "group": "external",
             "position": "before"
           },
           {
-            "pattern": "**/_components/**",
-            "group": "internal",
+            "pattern": "react",
+            "group": "builtin",
             "position": "before"
           },
           {

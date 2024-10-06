@@ -1,9 +1,9 @@
 "use client";
 
-import DetailsForExternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForExternallyHostedEvent";
-import DetailsForInternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 import { selectIsHostedExternally } from "@/_lib/redux/features/eventFormSlice";
 import { useAppSelector } from "@/_lib/redux/hooks";
+import DetailsForExternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForExternallyHostedEvent";
+import DetailsForInternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 const CreateEvent = () => {
   const isHostedExternally = useAppSelector(selectIsHostedExternally);

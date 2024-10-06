@@ -8,16 +8,16 @@ import { Button } from "@nextui-org/react";
 import { Event } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
-import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
-import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
-import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
 import {
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { EventFormDetailsForInternallyHostedEventSchema } from "@/_lib/schema";
+import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
+import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
+import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
+import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForInternallyHostedEventSchema

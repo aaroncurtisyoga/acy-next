@@ -7,13 +7,13 @@ import { Button, Link as NextUiLink } from "@nextui-org/react";
 import { Event } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 import {
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
 import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
 import { EventFormDetailsForExternallyHostedEventSchema } from "@/_lib/schema";
+import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForExternallyHostedEventSchema
