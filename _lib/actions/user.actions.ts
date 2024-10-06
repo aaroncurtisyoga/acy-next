@@ -1,7 +1,10 @@
-import prisma from "@/_lib/prisma";
-import { handleError } from "@/_lib/utils";
+"use server";
 
-export async function getAllUsers({ query, limit = 8, page }) {
+import { PrismaClient } from "@prisma/client";
+import { handleError } from "@/_lib/utils";
+const prisma = new PrismaClient();
+
+export async function getAllUsers({ query, limit = 8, page = 1 }) {
   const skipAmount = (Number(page) - 1) * limit;
   try {
     const users = await prisma.user.findMany({
