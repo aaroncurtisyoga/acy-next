@@ -109,7 +109,15 @@ const ManageUsersTable: FC = () => {
         primaryAction={handleDeleteUser}
         primaryActionLabel={"Delete"}
       >
-        <p>content here</p>
+        {selectedUser && (
+          <div>
+            <p className={"mb-5"}>Are you sure you want to delete user?</p>
+            <p>
+              Name: {selectedUser.firstName} {selectedUser.lastName}
+            </p>
+            <p>Email: {selectedUser.email}</p>
+          </div>
+        )}
       </BasicModal>
     </>
   );
