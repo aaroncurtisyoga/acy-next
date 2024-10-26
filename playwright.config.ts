@@ -1,6 +1,6 @@
 import path from "path";
-import dotenv from "dotenv";
 import { defineConfig, devices } from "@playwright/test";
+import dotenv from "dotenv";
 
 /**
  * Read environment variables from file.
@@ -24,7 +24,7 @@ export default defineConfig({
   reporter: "html",
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {
-    baseURL: "http://127.0.0.1:3000",
+    baseURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://127.0.0.1:3000",
     trace: "on-first-retry",
   },
 
