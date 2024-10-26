@@ -16,12 +16,15 @@ export const userLinks = [
   {
     name: "Private Sessions",
     href: "/private-sessions",
+    testId: "private-sessions",
   },
 ];
 
-export const adminLinks = [{ name: "Admin", href: "/admin" }];
+export const adminLinks = [{ name: "Admin", href: "/admin", testId: "admin" }];
 
-export const authenticatedLinks = [{ name: "Account", href: "/account" }];
+export const authenticatedLinks = [
+  { name: "Account", href: "/account", testId: "account" },
+];
 
 export const eventFormBasicInfoDefaultValues = {
   category: "",

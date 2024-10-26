@@ -85,7 +85,7 @@ const Header: FC = () => {
           <>
             {menuItems.map((link, index) => (
               <NavbarItem
-                data-testid={`navbar-item-${link.name.toLowerCase()}`}
+                data-testid={`navbar-item-${link.testId}`}
                 key={`${link.name}-${index}`}
                 isActive={pathname.includes(link.href)}
               >
