@@ -120,7 +120,7 @@ const Header: FC = () => {
       <NavbarMenu data-testid="navbar-menu" className="items-end">
         {menuItems.map((link, index) => (
           <NavbarMenuItem
-            data-testid={`menu-item-${link.name.toLowerCase()}`}
+            data-testid={`menu-item-${link.testId}`}
             key={`${link.name}-${index}`}
           >
             <Link href={link.href}>{link.name}</Link>
