@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Desktop Navigation with Test IDs", () => {
+test.describe("Desktop Navigation", () => {
   test.beforeEach(async ({ page }) => {
     await page.setViewportSize({ width: 1280, height: 800 });
     await page.goto("/");
