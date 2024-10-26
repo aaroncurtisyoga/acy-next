@@ -34,7 +34,6 @@ test.describe("Footer Component", () => {
     );
     await submitButton.click();
 
-    // Assuming there's a confirmation message after submission
     const confirmationMessage = page
       .locator("[data-testid='footer-newsletter']")
       .locator("text=Thank you for signing up!");
