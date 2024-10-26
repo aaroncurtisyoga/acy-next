@@ -117,26 +117,41 @@ const Header: FC = () => {
           className="sm:hidden"
         />
       </NavbarContent>
-      <NavbarMenu data-testid="navbar-menu" className="items-end">
+      <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
           <NavbarMenuItem
             data-testid={`menu-item-${link.testId}`}
             key={`${link.name}-${index}`}
+            className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
           >
-            <Link href={link.href}>{link.name}</Link>
+            <Link
+              href={link.href}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              {link.name}
+            </Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem data-testid="menu-login">
+        <NavbarMenuItem
+          data-testid="menu-login"
+          className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+        >
           <SignedIn>
             <button
               type="button"
               onClick={() => signOut(() => router.push("/"))}
+              className="w-full text-lg font-medium text-gray-800 text-right"
             >
               Logout
             </button>
           </SignedIn>
           <SignedOut>
-            <Link href={"/sign-in"}>Login</Link>
+            <Link
+              href={"/sign-in"}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              Login
+            </Link>
           </SignedOut>
         </NavbarMenuItem>
       </NavbarMenu>
