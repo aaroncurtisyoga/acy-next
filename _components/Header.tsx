@@ -47,6 +47,7 @@ const Header: FC = () => {
 
   return (
     <Navbar
+      data-testid="navbar"
       onMenuOpenChange={setIsMenuOpen}
       isBordered
       maxWidth="xl"
@@ -68,7 +69,7 @@ const Header: FC = () => {
       }}
     >
       <NavbarContent>
-        <NavbarBrand>
+        <NavbarBrand data-testid="navbar-brand">
           <Link href={"/"}>
             <h1
               className={`sm:flex font-extrabold text-xl ${merriweather.className}`}
@@ -78,17 +79,13 @@ const Header: FC = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
-      {/* Only show this section when isLoaded is true to prevent layout shift */}
 
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
-        {/* todo:
-                 might be able to animate in the entire header so that
-                 everything fades in after isLoaded is determined
-      */}
         {isLoaded && (
           <>
             {menuItems.map((link, index) => (
               <NavbarItem
+                data-testid={`navbar-item-${link.name.toLowerCase()}`}
                 key={`${link.name}-${index}`}
                 isActive={pathname.includes(link.href)}
               >
@@ -98,6 +95,7 @@ const Header: FC = () => {
               </NavbarItem>
             ))}
             <NavbarItem
+              data-testid="navbar-login"
               isActive={pathname.includes("/sign-in")}
               className="min-w-[32px]"
             >
@@ -112,20 +110,23 @@ const Header: FC = () => {
         )}
       </NavbarContent>
 
-      {/* Content below if for Mobile Nav */}
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
+          data-testid="menu-toggle"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           className="sm:hidden"
         />
       </NavbarContent>
-      <NavbarMenu className="items-end">
+      <NavbarMenu data-testid="navbar-menu" className="items-end">
         {menuItems.map((link, index) => (
-          <NavbarMenuItem key={`${link.name}-${index}`}>
+          <NavbarMenuItem
+            data-testid={`menu-item-${link.name.toLowerCase()}`}
+            key={`${link.name}-${index}`}
+          >
             <Link href={link.href}>{link.name}</Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
+        <NavbarMenuItem data-testid="menu-login">
           <SignedIn>
             <button
               type="button"
