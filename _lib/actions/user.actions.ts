@@ -23,12 +23,18 @@ export async function getAllUsers({ query, limit = 8, page = 1 }) {
   }
 }
 
-export async function deleteUser(userId: string) {
+export async function deleteUser(
+  userId: string,
+): Promise<{ success: boolean }> {
   try {
-    return await prisma.user.delete({
+    const deletedUser = await prisma.user.delete({
       where: { id: userId },
     });
+    if (deletedUser) {
+      return { success: true };
+    }
   } catch (error) {
     handleError(error);
+    return { success: false };
   }
 }
