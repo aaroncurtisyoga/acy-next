@@ -9,16 +9,20 @@ import {
   TableHeader,
   TableRow,
   Tooltip,
+  useDisclosure,
 } from "@nextui-org/react";
 import { Trash2 } from "lucide-react";
+import BasicModal from "@/_components/BasicModal";
 import TableEmpty from "@/_components/TableEmpty";
 import TableLoading from "@/_components/TableLoading";
-import { getAllUsers } from "@/_lib/actions/user.actions";
+import { deleteUser, getAllUsers } from "@/_lib/actions/user.actions";
 import { TableManageUsersColumns } from "@/_lib/constants";
 import { handleError } from "@/_lib/utils";
 
 const ManageUsersTable: FC = () => {
   const [loading, setLoading] = useState(true);
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
@@ -41,6 +45,17 @@ const ManageUsersTable: FC = () => {
     };
     fetchUsers();
   }, [page, searchText]);
+
+  const handleDeleteUser = async () => {
+    const response = await deleteUser(selectedUser.id);
+
+    if (response.success) {
+      onOpenChange();
+      setUsers(users.filter((user) => user.id !== selectedUser.id));
+    } else {
+      //   Todo: Toast notification saying there was an error
+    }
+  };
 
   if (loading) {
     return <TableLoading columns={TableManageUsersColumns} />;
@@ -76,7 +91,8 @@ const ManageUsersTable: FC = () => {
                     <Trash2
                       size={16}
                       onClick={() => {
-                        console.log("Delete user");
+                        setSelectedUser(user);
+                        onOpen();
                       }}
                     />
                   </span>
@@ -86,6 +102,15 @@ const ManageUsersTable: FC = () => {
           ))}
         </TableBody>
       </Table>
+      <BasicModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        header={<h1>Confirm deletion of User</h1>}
+        primaryAction={handleDeleteUser}
+        primaryActionLabel={"Delete"}
+      >
+        <p>content here</p>
+      </BasicModal>
     </>
   );
 };
