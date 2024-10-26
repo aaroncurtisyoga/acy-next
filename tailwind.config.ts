@@ -62,7 +62,7 @@ const config: Config = {
               200: "#a0b8ff",
               300: "#809fff",
               400: "#6087ff",
-              500: "#587ee0", // your provided blue
+              500: "#587ee0",
               600: "#506ccc",
               700: "#4058aa",
               800: "#304488",
