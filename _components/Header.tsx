@@ -114,8 +114,31 @@ const Header: FC = () => {
         <NavbarMenuToggle
           data-testid="menu-toggle"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
+          aria-pressed={isMenuOpen}
+          className="sm:hidden w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform"
+        >
+          <span className="sr-only">
+            {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          </span>
+          <span
+            className={`pointer-events-none flex flex-col items-center justify-center transition-transform duration-150 ${
+              isMenuOpen ? "rotate-45" : "rotate-0"
+            }`}
+          >
+            <span
+              className={`block h-px w-6 bg-current transition-transform ${
+                isMenuOpen ? "translate-y-px" : "-translate-y-1"
+              }`}
+            />
+            <span
+              className={`block h-px w-6 bg-current transition-transform ${
+                isMenuOpen
+                  ? "-rotate-90 translate-y-0"
+                  : "rotate-0 translate-y-1"
+              }`}
+            />
+          </span>
+        </NavbarMenuToggle>
       </NavbarContent>
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
