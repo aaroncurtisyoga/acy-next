@@ -131,6 +131,13 @@ const NewsletterForm = () => {
                 className="focus:outline-none"
                 type="submit"
                 disabled={isSubmitting}
+                aria-label={
+                  isSubmitting
+                    ? "Submitting"
+                    : isSubmitSuccessful
+                      ? "Submission successful"
+                      : "Submit newsletter form"
+                }
               >
                 {determineFormIcon(isSubmitting, isSubmitSuccessful)}
               </button>

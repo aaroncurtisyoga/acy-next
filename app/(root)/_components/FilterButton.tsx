@@ -19,6 +19,7 @@ const FilterButton = ({ hasFiltersApplied, onOpen }: FilterButtonProps) => {
       type={"button"}
       variant={hasFiltersApplied ? "solid" : "flat"}
       isIconOnly={true}
+      aria-label={"Filter events"}
     />
   );
 };
