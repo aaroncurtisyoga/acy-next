@@ -113,9 +113,9 @@ const ManageUsersTable: FC = () => {
           <div>
             <p className={"mb-5"}>Are you sure you want to delete user?</p>
             <p>
-              Name: {selectedUser.firstName} {selectedUser.lastName}
+              {selectedUser.firstName} {selectedUser.lastName}
             </p>
-            <p>Email: {selectedUser.email}</p>
+            <p>{selectedUser.email}</p>
           </div>
         )}
       </BasicModal>
