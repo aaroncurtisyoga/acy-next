@@ -23,9 +23,17 @@ jobs:
         run: npx playwright install --with-deps
 
       - name: Build Next.js application
+        env:
+          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN_DEV }}
         run: npm run build
 
       - name: Run Playwright tests
+        env:
+          DATABASE_URL: ${{ secrets.DEV_DATABASE_URL }}
+          NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY: ${{ secrets.NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY }}
+          BLOB_READ_WRITE_TOKEN: ${{ secrets.BLOB_READ_WRITE_TOKEN_DEV }}
         run: npx playwright test
 
       - uses: actions/upload-artifact@v4
