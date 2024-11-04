@@ -1,6 +1,6 @@
 import React, { FC } from "react";
-import { Control, Controller } from "react-hook-form";
 import { Checkbox } from "@nextui-org/react";
+import { Control, Controller } from "react-hook-form";
 
 interface IsHostedExternallyCheckboxProps {
   control: Control;

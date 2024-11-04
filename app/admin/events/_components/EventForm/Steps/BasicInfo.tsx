@@ -1,31 +1,30 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FC, useCallback, useEffect } from "react";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button } from "@nextui-org/react";
 import {
   now,
   getLocalTimeZone,
   parseZonedDateTime,
 } from "@internationalized/date";
-
+import { Button } from "@nextui-org/react";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import {
+  resetFormData,
+  selectFormValues,
+  setFormData,
+} from "@/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { EventFormBasicInfoSchema } from "@/_lib/schema";
+import { PlaceDetails } from "@/_lib/types";
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
-import { EventFormBasicInfoSchema } from "@/_lib/schema";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import {
-  resetFormData,
-  selectFormValues,
-  setFormData,
-} from "@/_lib/redux/features/eventFormSlice";
-import { PlaceDetails } from "@/_lib/types";
 
 export type Inputs = z.infer<typeof EventFormBasicInfoSchema>;
 

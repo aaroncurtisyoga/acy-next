@@ -1,7 +1,7 @@
 import React, { FC, useEffect, useState } from "react";
 import { Select, SelectItem } from "@nextui-org/react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Category } from "@prisma/client";
+import { Control, Controller, FieldErrors } from "react-hook-form";
 import { getAllCategories } from "@/_lib/actions/category.actions";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 

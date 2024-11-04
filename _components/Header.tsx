@@ -1,8 +1,8 @@
 "use client";
 
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter, usePathname } from "next/navigation";
-import { FC, useEffect, useState } from "react";
 import {
   SignedIn,
   SignedOut,
@@ -19,7 +19,6 @@ import {
   NavbarMenu,
   NavbarMenuItem,
 } from "@nextui-org/react";
-
 import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 import { merriweather } from "@/app/fonts";
 
@@ -48,6 +47,7 @@ const Header: FC = () => {
 
   return (
     <Navbar
+      data-testid="navbar"
       onMenuOpenChange={setIsMenuOpen}
       isBordered
       maxWidth="xl"
@@ -69,7 +69,7 @@ const Header: FC = () => {
       }}
     >
       <NavbarContent>
-        <NavbarBrand>
+        <NavbarBrand data-testid="navbar-brand">
           <Link href={"/"}>
             <h1
               className={`sm:flex font-extrabold text-xl ${merriweather.className}`}
@@ -79,17 +79,13 @@ const Header: FC = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
-      {/* Only show this section when isLoaded is true to prevent layout shift */}
 
       <NavbarContent className="hidden sm:flex gap-4" justify="end">
-        {/* todo:
-                 might be able to animate in the entire header so that
-                 everything fades in after isLoaded is determined
-      */}
         {isLoaded && (
           <>
             {menuItems.map((link, index) => (
               <NavbarItem
+                data-testid={`navbar-item-${link.testId}`}
                 key={`${link.name}-${index}`}
                 isActive={pathname.includes(link.href)}
               >
@@ -99,6 +95,7 @@ const Header: FC = () => {
               </NavbarItem>
             ))}
             <NavbarItem
+              data-testid="navbar-login"
               isActive={pathname.includes("/sign-in")}
               className="min-w-[32px]"
             >
@@ -113,30 +110,71 @@ const Header: FC = () => {
         )}
       </NavbarContent>
 
-      {/* Content below if for Mobile Nav */}
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
+          data-testid="menu-toggle"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          className="sm:hidden"
-        />
+          aria-pressed={isMenuOpen}
+          className="sm:hidden w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform"
+        >
+          <span className="sr-only">
+            {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          </span>
+          <span
+            className={`pointer-events-none flex flex-col items-center justify-center transition-transform duration-150 ${
+              isMenuOpen ? "rotate-45" : "rotate-0"
+            }`}
+          >
+            <span
+              className={`block h-px w-6 bg-current transition-transform ${
+                isMenuOpen ? "translate-y-px" : "-translate-y-1"
+              }`}
+            />
+            <span
+              className={`block h-px w-6 bg-current transition-transform ${
+                isMenuOpen
+                  ? "-rotate-90 translate-y-0"
+                  : "rotate-0 translate-y-1"
+              }`}
+            />
+          </span>
+        </NavbarMenuToggle>
       </NavbarContent>
-      <NavbarMenu className="items-end">
+      <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
-          <NavbarMenuItem key={`${link.name}-${index}`}>
-            <Link href={link.href}>{link.name}</Link>
+          <NavbarMenuItem
+            data-testid={`menu-item-${link.testId}`}
+            key={`${link.name}-${index}`}
+            className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <Link
+              href={link.href}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              {link.name}
+            </Link>
           </NavbarMenuItem>
         ))}
-        <NavbarMenuItem>
+        <NavbarMenuItem
+          data-testid="menu-login"
+          className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+        >
           <SignedIn>
             <button
               type="button"
               onClick={() => signOut(() => router.push("/"))}
+              className="w-full text-lg font-medium text-gray-800 text-right"
             >
               Logout
             </button>
           </SignedIn>
           <SignedOut>
-            <Link href={"/sign-in"}>Login</Link>
+            <Link
+              href={"/sign-in"}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              Login
+            </Link>
           </SignedOut>
         </NavbarMenuItem>
       </NavbarMenu>

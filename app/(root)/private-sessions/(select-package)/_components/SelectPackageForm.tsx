@@ -1,30 +1,30 @@
 import React, { FC, useEffect, useState } from "react";
-import { RadioGroup } from "@nextui-org/react";
-import * as z from "zod";
-import { Controller, useForm } from "react-hook-form";
+import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
-import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
-import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
+import { RadioGroup } from "@nextui-org/react";
+import { OrderType } from "@prisma/client";
+import { loadStripe } from "@stripe/stripe-js";
+import { Controller, useForm } from "react-hook-form";
+import * as z from "zod";
+import { checkoutOrder } from "@/_lib/actions/order.actions";
 import {
   selectedPackage,
   setSelectedPackage,
 } from "@/_lib/redux/features/privateSessionFormSlice";
-import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { SelectPackageFormSchema } from "@/_lib/schema";
+import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
+import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
+import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
+import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
+import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
+import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
 import {
   ALL_OFFERINGS,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/_lib/constants";
-import { SelectPackageFormSchema } from "@/_lib/schema";
-import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
-import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
-import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
-import { useUser } from "@clerk/nextjs";
-import { OrderType } from "@prisma/client";
-import { checkoutOrder } from "@/_lib/actions/order.actions";
-import { loadStripe } from "@stripe/stripe-js";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 

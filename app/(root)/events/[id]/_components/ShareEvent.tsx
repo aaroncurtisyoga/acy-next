@@ -1,6 +1,5 @@
 "use client";
 
-import { usePathname } from "next/navigation";
 import { FC, useEffect, useState } from "react";
 import { Button, Tooltip } from "@nextui-org/react";
 import { Check, Share } from "lucide-react";

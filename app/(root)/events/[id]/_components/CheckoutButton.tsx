@@ -1,9 +1,9 @@
 "use client";
 
 import { FC, FormEvent, useEffect } from "react";
-import { loadStripe } from "@stripe/stripe-js";
 import { Button } from "@nextui-org/react";
 import { Event, OrderType } from "@prisma/client";
+import { loadStripe } from "@stripe/stripe-js";
 import { checkoutOrder } from "@/_lib/actions/order.actions";
 
 loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);

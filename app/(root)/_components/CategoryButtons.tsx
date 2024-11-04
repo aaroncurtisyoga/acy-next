@@ -1,7 +1,7 @@
 "use client";
 
-import { useRouter, useSearchParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@nextui-org/react";
 import { Category } from "@prisma/client";
 import { getAllCategories } from "@/_lib/actions/category.actions";

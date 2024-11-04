@@ -16,7 +16,7 @@ model Order {
   eventId     String?
   event       Event?   @relation(fields: [eventId], references: [id])
   buyerId     String
-  buyer       User    @relation(fields: [buyerId], references: [id])
+  buyer       User    @relation(fields: [buyerId], references: [id], onDelete: Cascade)
   type        OrderType
 }
 

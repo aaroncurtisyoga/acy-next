@@ -1,23 +1,23 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FC } from "react";
-import { Button } from "@nextui-org/react";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Link as NextUiLink } from "@nextui-org/link";
+import { Button } from "@nextui-org/react";
 import { Event } from "@prisma/client";
-import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
-import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
-import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
-import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
-import { EventFormDetailsForInternallyHostedEventSchema } from "@/_lib/schema";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { EventFormDetailsForInternallyHostedEventSchema } from "@/_lib/schema";
+import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
+import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
+import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
+import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForInternallyHostedEventSchema

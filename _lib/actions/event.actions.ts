@@ -1,15 +1,14 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 import { parseZonedDateTime } from "@internationalized/date";
-import { handleError } from "@/_lib/utils";
-
+import { PrismaClient } from "@prisma/client";
 import {
   GetAllEventsParams,
   GetAllEventsResponse,
   GetRelatedEventsByCategoryParams,
 } from "@/_lib/types";
+import { handleError } from "@/_lib/utils";
 
 const prisma = new PrismaClient();
 

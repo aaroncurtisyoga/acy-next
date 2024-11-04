@@ -1,7 +1,7 @@
 // tailwind.config.ts
 
-import type { Config } from "tailwindcss";
 import { nextui } from "@nextui-org/react";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
@@ -62,7 +62,7 @@ const config: Config = {
               200: "#a0b8ff",
               300: "#809fff",
               400: "#6087ff",
-              500: "#587ee0", // your provided blue
+              500: "#587ee0",
               600: "#506ccc",
               700: "#4058aa",
               800: "#304488",

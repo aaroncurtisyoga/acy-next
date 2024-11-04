@@ -1,8 +1,8 @@
 import React, { FC } from "react";
 import { Card, CardBody, CardHeader } from "@nextui-org/react";
 import { Check } from "lucide-react";
-import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 import { CustomRadio } from "@/app/(root)/_components/FormInputs/CustomRadio";
+import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface PurchaseCardProps {
   offering: OfferingType;

@@ -1,8 +1,8 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { NextUIProvider } from "@nextui-org/react";
 import { ClerkProvider } from "@clerk/nextjs";
+import { NextUIProvider } from "@nextui-org/react";
 import { StoreProvider } from "@/app/StoreProvider";
 
 export function Providers({ children }: { children: React.ReactNode }) {

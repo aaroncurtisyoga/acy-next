@@ -1,6 +1,6 @@
 import { PayloadAction } from "@reduxjs/toolkit";
-import { createAppSlice } from "@/_lib/redux/createAppSlice";
 import { eventFormDefaultValues } from "@/_lib/constants";
+import { createAppSlice } from "@/_lib/redux/createAppSlice";
 import { isDate } from "@/_lib/utils";
 
 export interface EventFormSliceState {

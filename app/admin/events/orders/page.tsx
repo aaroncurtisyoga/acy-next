@@ -1,7 +1,7 @@
-import type { Metadata } from "next";
 import { getOrdersByEvent } from "@/_lib/actions/order.actions";
 import { SearchParamProps } from "@/_lib/types";
 import OrdersTable from "@/app/admin/events/orders/_components/OrdersTable";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "Orders",

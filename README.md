@@ -54,9 +54,10 @@ NEXT_PUBLIC_SERVER_URL
 ```
 
 My app is built with [Next.js](https://nextjs.org/). The common scripts are:
-- `npm run dev`
-- `npm run lint`
-- `npm build` 
+- `npm run dev` to start dev server
+- `npm build` for prod build
+- `npm run lint` to run eslint
+- `npm run lint:fix` to try & fix lint errors
 
 
 ## <a name="tech-stack">Tech Stack</a>

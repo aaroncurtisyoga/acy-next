@@ -2,11 +2,11 @@
 
 import React, { FC } from "react";
 import { Tab, Tabs } from "@nextui-org/tabs";
-import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import {
   GROUP,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/_lib/constants";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface GroupSizeTabsProps {
   setPrivateSessionType: (value: SessionType) => void;

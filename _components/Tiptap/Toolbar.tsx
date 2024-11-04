@@ -1,3 +1,4 @@
+import { Button } from "@nextui-org/react";
 import { type Editor } from "@tiptap/react";
 import {
   Bold,
@@ -10,7 +11,6 @@ import {
   Strikethrough,
   Underline,
 } from "lucide-react";
-import { Button } from "@nextui-org/react";
 
 type ToolbarProps = {
   editor: Editor;

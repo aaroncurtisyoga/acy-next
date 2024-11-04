@@ -2,8 +2,8 @@
 
 import React, { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Event } from "@prisma/client";
 import { Button } from "@nextui-org/react";
+import { Event } from "@prisma/client";
 import CheckoutButton from "@/app/(root)/events/[id]/_components/CheckoutButton";
 import CheckoutSkeleton from "@/app/(root)/events/[id]/_components/CheckoutSkeleton";
 

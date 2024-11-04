@@ -1,12 +1,12 @@
 "use client";
 
-import { useRouter, useParams } from "next/navigation";
 import React, { FC, useEffect, useState } from "react";
+import { useRouter, useParams } from "next/navigation";
 import { Event } from "@prisma/client";
-import { handleError } from "@/_lib/utils";
 import { getEventById } from "@/_lib/actions/event.actions";
-import { useAppDispatch } from "@/_lib/redux/hooks";
 import { setFormData } from "@/_lib/redux/features/eventFormSlice";
+import { useAppDispatch } from "@/_lib/redux/hooks";
+import { handleError } from "@/_lib/utils";
 import BasicInfo from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 const UpdateEvent: FC = () => {

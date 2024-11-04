@@ -1,19 +1,19 @@
 "use client";
 
-import { useRouter } from "next/navigation";
 import { FC } from "react";
-import * as z from "zod";
-import { useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { Button, Link as NextUiLink } from "@nextui-org/react";
 import { Event } from "@prisma/client";
-import { EventFormDetailsForExternallyHostedEventSchema } from "@/_lib/schema";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   selectFormValues,
   setFormData,
 } from "@/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
+import { EventFormDetailsForExternallyHostedEventSchema } from "@/_lib/schema";
 import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
-import { Button, Link as NextUiLink } from "@nextui-org/react";
 
 export type Inputs = z.infer<
   typeof EventFormDetailsForExternallyHostedEventSchema
