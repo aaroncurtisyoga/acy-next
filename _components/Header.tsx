@@ -12,18 +12,9 @@ import {
 } from "@nextui-org/react";
 import { merriweather } from "@/app/fonts";
 
-const DesktopNavigation = dynamic(
-  () => import("@/_components/DesktopNavigation"),
-  {
-    ssr: false,
-  },
-);
-const MobileNavigation = dynamic(
-  () => import("@/_components/MobileNavigation"),
-  {
-    ssr: false,
-  },
-);
+const Navigation = dynamic(() => import("@/_components/Navigation"), {
+  ssr: false,
+});
 
 const Header = () => {
   return (
@@ -39,18 +30,11 @@ const Header = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
-
-      {/* Desktop Navigation */}
-      <NavbarContent className="hidden sm:flex" justify="end">
-        <DesktopNavigation />
-      </NavbarContent>
-
-      {/* Mobile Navigation */}
-      <NavbarContent className="sm:hidden" justify="end">
+      <NavbarContent justify="end">
         <NavbarMenuToggle aria-label="Open menu" />
       </NavbarContent>
       <NavbarMenu>
-        <MobileNavigation />
+        <Navigation />
       </NavbarMenu>
     </Navbar>
   );

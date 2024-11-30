@@ -4,7 +4,7 @@ import Link from "next/link";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import HeaderMenuItems from "@/_components/HeaderMenuItems";
 
-const MobileNavigation = () => {
+const Navigation = () => {
   const { signOut } = useClerk();
 
   return (
@@ -31,4 +31,4 @@ const MobileNavigation = () => {
   );
 };
 
-export default MobileNavigation;
+export default Navigation;
