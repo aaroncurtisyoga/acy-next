@@ -4,7 +4,7 @@ import {
 } from "@/app/(root)/private-sessions/_lib/types";
 
 export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
-  {
+  /*{
     title: "0 Session",
     price: "1",
     description: "Test hour of training",
@@ -15,7 +15,7 @@ export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
       "test Meditation",
     ],
     package: "test - Individual - 1 Session",
-  },
+  },*/
   {
     title: "1 Session",
     price: "115",
