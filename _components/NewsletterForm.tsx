@@ -15,6 +15,8 @@ type Inputs = z.infer<typeof newsletterFormSchema>;
  * Todo:
  *  1. Add a success message that replaces the Form and just says something
  *  like "Success! Please, check your email to confirm your subscription."
+ *  2. Add a loading spinner to the button when the form is submitting? but
+ *  do it in a way that doesnt cause another hydration err
  * */
 const NewsletterForm = () => {
   const {
@@ -61,19 +63,6 @@ const NewsletterForm = () => {
       type: "server",
       message: result.message,
     });
-  };
-
-  const determineFormIcon = (
-    isSubmitting: boolean,
-    isSubmitSuccessful: boolean,
-  ) => {
-    if (isSubmitting) {
-      return <Spinner size={"sm"} />;
-    }
-    if (isSubmitSuccessful) {
-      return <Check className={"text-success"} />;
-    }
-    return <ArrowRight className={"text-default-900"} />;
   };
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
@@ -133,15 +122,9 @@ const NewsletterForm = () => {
                 className="focus:outline-none"
                 type="submit"
                 disabled={isSubmitting}
-                aria-label={
-                  isSubmitting
-                    ? "Submitting"
-                    : isSubmitSuccessful
-                      ? "Submission successful"
-                      : "Submit newsletter form"
-                }
+                aria-label="Submit newsletter form"
               >
-                {determineFormIcon(isSubmitting, isSubmitSuccessful)}
+                <ArrowRight className={"text-default-900"} />
               </button>
             }
             {...field}
