@@ -11,6 +11,11 @@ import { newsletterFormSchema } from "@/_lib/schema";
 
 type Inputs = z.infer<typeof newsletterFormSchema>;
 
+/*
+ * Todo:
+ *  1. Add a success message that replaces the Form and just says something
+ *  like "Success! Please, check your email to confirm your subscription."
+ * */
 const NewsletterForm = () => {
   const {
     control,
@@ -70,6 +75,7 @@ const NewsletterForm = () => {
     }
     return <ArrowRight className={"text-default-900"} />;
   };
+
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
     const result = await addNewsletterEntry(data);
     if (result.formErrors) {
@@ -98,11 +104,7 @@ const NewsletterForm = () => {
               label: "font-medium",
               mainWrapper: "w-64",
             }}
-            description={`${
-              isSubmitSuccessful
-                ? "Thank you for signing up!"
-                : "Be the first to know about events & more!"
-            }`}
+            description={"Subscribe to know about my events & more"}
             type={"email"}
             label={"Newsletter:"}
             labelPlacement="outside"
