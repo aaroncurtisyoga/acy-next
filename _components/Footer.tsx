@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { Link as NextUiLink } from "@nextui-org/react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
+import ClientOnly from "@/_components/ClientOnly";
 import NewsletterForm from "@/_components/NewsletterForm";
 import { instructorEmailAddress } from "@/_lib/constants";
-
 const Footer = () => {
   return (
     <footer data-testid="footer" className={"border-t py-6 bg-zinc-50"}>
@@ -15,7 +15,9 @@ const Footer = () => {
       >
         {/* Newsletter Signup Form */}
         <div data-testid="footer-newsletter" className={"flex justify-center"}>
-          <NewsletterForm />
+          <ClientOnly>
+            <NewsletterForm />
+          </ClientOnly>
         </div>
 
         {/* Social Media Links */}
