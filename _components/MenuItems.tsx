@@ -49,19 +49,12 @@ const MenuItems = () => {
       {/* The Login/Logout button using Clerk's API */}
       <div className="w-full">
         <SignedIn>
-          <button
-            type="button"
-            onClick={() => signOut()}
-            className="w-full text-lg font-medium text-gray-800 py-3 px-4 border-b border-gray-400 hover:bg-primary/10 focus:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200"
-          >
+          <button type="button" onClick={() => signOut()} className="menu-item">
             Logout
           </button>
         </SignedIn>
         <SignedOut>
-          <Link
-            href="/sign-in"
-            className="text-right block w-full text-lg  font-medium text-gray-800 py-3 px-4 border-b border-gray-400 hover:bg-primary/10 focus:bg-primary/20 focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-200"
-          >
+          <Link href="/sign-in" className="menu-item">
             Login
           </Link>
         </SignedOut>
