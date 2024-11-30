@@ -10,9 +10,8 @@ import {
   UsersRound,
 } from "lucide-react";
 import { TravelOption } from "@/_lib/types";
-import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
-export const userLinks = [
+export const unauthenticatedLinks = [
   {
     name: "Private Sessions",
     href: "/private-sessions",

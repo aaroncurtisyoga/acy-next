@@ -6,7 +6,7 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
 } from "@nextui-org/react";
-import Navigation from "@/_components/Navigation";
+import MenuItems from "@/_components/MenuItems";
 import { merriweather } from "@/app/fonts";
 
 const Header = () => {
@@ -27,7 +27,7 @@ const Header = () => {
         <NavbarMenuToggle aria-label="Open menu" />
       </NavbarContent>
       <NavbarMenu>
-        <Navigation />
+        <MenuItems />
       </NavbarMenu>
     </Navbar>
   );

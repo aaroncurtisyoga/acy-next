@@ -2,7 +2,7 @@ import { test, expect } from "@playwright/test";
 
 test.describe("Header Component", () => {
   // Tests for Desktop
-  test.describe("Desktop Navigation", () => {
+  test.describe("Desktop MenuItems", () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 1280, height: 800 });
       await page.goto("/");
@@ -58,7 +58,7 @@ test.describe("Header Component", () => {
   });
 
   // Tests for Mobile
-  test.describe("Mobile Navigation", () => {
+  test.describe("Mobile MenuItems", () => {
     test.beforeEach(async ({ page }) => {
       await page.setViewportSize({ width: 500, height: 800 });
       await page.goto("/");
