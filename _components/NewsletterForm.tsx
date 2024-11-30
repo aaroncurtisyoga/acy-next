@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input, Spinner } from "@nextui-org/react";
-import { ArrowRight, Check } from "lucide-react";
+import { Input } from "@nextui-org/react";
+import { ArrowRight } from "lucide-react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { addNewsletterEntry } from "@/_lib/actions/newsletter.actions";
