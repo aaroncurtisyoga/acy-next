@@ -9,7 +9,8 @@
 2. [Quick Start](#quick-start)
 3. [Tech Stack](#tech-stack)
 4. [Features](#features)
-5. [Get in touch](#contact)
+5. [Postgres DB](#postgres)
+6. [Get in touch](#contact)
 
 
 ## <a name="introduction">Intro</a>
@@ -80,6 +81,24 @@ My app is built with [Next.js](https://nextjs.org/). The common scripts are:
 3. **Events:** Admins can create, read, update, and delete events. End users can view events.
 4. **🛠️ - Search & Filter:** Users can search and filter events
 5. **🛠️ - Checkout and Pay:** Users can pay for events using Stripe
+
+## <a name="postgres">Vercel Postgres DB</a>
+
+You can use Prisma Studio to view and manage your Vercel Postgres database schema and data. Depending on the environment, use one of the following commands:
+
+- **Local Development Database**:
+   ```bash
+   npx prisma studio
+   ```
+  This command opens Prisma Studio using your local `.env` configuration, connecting to your development database.
+
+- **Production Database**:
+   ```bash
+   dotenv -e .env.production -- npx prisma studio
+   ```
+  This command opens Prisma Studio using the `.env.production` file, connecting to your production database.
+
+> **Tip**: Ensure each environment file has the correct `DATABASE_URL` for seamless connections.
 
 
 ## <a name="contact">Get in touch</a>
