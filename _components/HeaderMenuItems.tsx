@@ -1,6 +1,6 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
@@ -14,20 +14,21 @@ interface HeaderMenuItemsProps {
 const HeaderMenuItems: FC<HeaderMenuItemsProps> = ({ isMenu }) => {
   const pathname = usePathname();
   const { isSignedIn, isLoaded, user } = useUser();
+  // UserLinks are available to all users
+  const [menuItems, setMenuItems] = useState([...userLinks]);
 
-  // Generate menu items dynamically
-  const getMenuItems = () => {
-    if (!isLoaded) return userLinks;
+  useEffect(() => {
+    if (!isLoaded) return;
 
     const isAdmin = user?.publicMetadata.role === "admin";
-    return [
-      ...userLinks,
+
+    // Update menu items based on user state
+    setMenuItems((prev) => [
+      ...prev,
       ...(isSignedIn ? authenticatedLinks : []),
       ...(isAdmin ? adminLinks : []),
-    ];
-  };
-
-  const menuItems = getMenuItems();
+    ]);
+  }, [isLoaded, isSignedIn, user]);
 
   return (
     <>
