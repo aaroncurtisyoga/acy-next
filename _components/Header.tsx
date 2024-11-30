@@ -1,7 +1,3 @@
-"use client";
-
-import React from "react";
-import dynamic from "next/dynamic";
 import Link from "next/link";
 import {
   Navbar,
@@ -10,11 +6,8 @@ import {
   NavbarMenuToggle,
   NavbarMenu,
 } from "@nextui-org/react";
+import Navigation from "@/_components/Navigation";
 import { merriweather } from "@/app/fonts";
-
-const Navigation = dynamic(() => import("@/_components/Navigation"), {
-  ssr: false,
-});
 
 const Header = () => {
   return (
