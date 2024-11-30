@@ -1,18 +1,36 @@
-import React from "react";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import Link from "next/link";
+import { usePathname } from "next/navigation";
+import { useUser } from "@clerk/nextjs";
 import { NavbarItem, NavbarMenuItem } from "@nextui-org/react";
+import { adminLinks, authenticatedLinks, userLinks } from "@/_lib/constants";
 
 interface MenuItemsProps {
-  menuItems: Array<{ href: string; name: string; testId: string }>;
-  isMenu: boolean; // true for `NavbarMenuItem`, false for `NavbarItem`
-  pathname: string;
+  isMenu: boolean; // true for Mobile, false for Desktop
 }
 
-const HeaderMenuItems: React.FC<MenuItemsProps> = ({
-  menuItems,
-  isMenu,
-  pathname,
-}) => {
+const HeaderMenuItems: React.FC<MenuItemsProps> = ({ isMenu }) => {
+  const pathname = usePathname();
+  const { isSignedIn, isLoaded, user } = useUser();
+  const [menuItems, setMenuItems] = useState([...userLinks]);
+
+  useEffect(() => {
+    if (!isLoaded) return;
+
+    const isAdmin = user?.publicMetadata.role === "admin";
+    setMenuItems([
+      ...userLinks,
+      ...(isSignedIn ? authenticatedLinks : []),
+      ...(isAdmin ? adminLinks : []),
+    ]);
+  }, [isSignedIn, isLoaded, user]);
+
+  if (!isLoaded) {
+    return <span>Loading...</span>;
+  }
+
   return (
     <>
       {menuItems.map((link, index) =>
