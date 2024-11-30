@@ -10,7 +10,7 @@ const Footer = () => {
       <div
         className={
           "wrapper-width flex flex-col justify-center md:flex-row" +
-          " md:justify-between md:items-start *:flex-1 gap-8 md:gap-0"
+          " md:justify-between md:items-start gap-8 md:gap-0"
         }
       >
         {/* Newsletter Signup Form */}
