@@ -15,7 +15,7 @@ const Footer = () => {
       >
         {/* Newsletter Signup Form */}
         <div data-testid="footer-newsletter" className={"flex justify-center"}>
-          <NewsletterForm />
+          {/*<NewsletterForm />*/}
         </div>
 
         {/* Social Media Links */}
