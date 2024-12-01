@@ -7,9 +7,9 @@ import { ArrowRight, Check } from "lucide-react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { addNewsletterEntry } from "@/_lib/actions/newsletter.actions";
-import { newsletterFormSchema } from "@/_lib/schema";
+import { NewsletterFormSchema } from "@/_lib/schema";
 
-type Inputs = z.infer<typeof newsletterFormSchema>;
+type Inputs = z.infer<typeof NewsletterFormSchema>;
 
 const NewsletterForm = () => {
   const {
@@ -19,10 +19,7 @@ const NewsletterForm = () => {
     setError,
     formState: { errors, isSubmitting, isSubmitSuccessful },
   } = useForm<Inputs>({
-    resolver: zodResolver(newsletterFormSchema),
-    defaultValues: {
-      email: "",
-    },
+    resolver: zodResolver(NewsletterFormSchema),
   });
   const [resetFormOnNextInput, setResetFormOnNextInput] = useState(false);
 
@@ -35,7 +32,7 @@ const NewsletterForm = () => {
   }, [reset, isSubmitSuccessful]);
 
   const handleErrorsFromServerSideValidation = (
-    formErrors: z.ZodFormattedError<typeof newsletterFormSchema>,
+    formErrors: z.ZodFormattedError<typeof NewsletterFormSchema>,
   ) => {
     for (const formInput in formErrors) {
       // @ts-ignore
