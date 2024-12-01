@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import Link from "next/link";
 import {
   Navbar,
@@ -10,8 +13,16 @@ import MenuItems from "@/_components/MenuItems";
 import { merriweather } from "@/app/fonts";
 
 const Header = () => {
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
   return (
-    <Navbar data-testid="navbar" isBordered maxWidth="xl">
+    <Navbar
+      data-testid="navbar"
+      isBordered
+      maxWidth="xl"
+      isMenuOpen={isMenuOpen}
+      onMenuOpenChange={setIsMenuOpen}
+    >
       <NavbarContent>
         <NavbarBrand data-testid="navbar-brand">
           <Link href="/">
@@ -24,7 +35,9 @@ const Header = () => {
         </NavbarBrand>
       </NavbarContent>
       <NavbarContent justify="end">
-        <NavbarMenuToggle aria-label="Open menu" />
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+        />
       </NavbarContent>
       <NavbarMenu>
         <MenuItems />
