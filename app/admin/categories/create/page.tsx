@@ -1,9 +1,8 @@
 "use client";
 
-import { Dispatch, FC, SetStateAction } from "react";
+import { FC } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Button, Input } from "@nextui-org/react";
-import { Category } from "@prisma/client";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { createCategory } from "@/_lib/actions/category.actions";
