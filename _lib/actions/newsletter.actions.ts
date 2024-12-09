@@ -2,13 +2,13 @@
 
 import mailchimp from "@mailchimp/mailchimp_marketing";
 import { z } from "zod";
-import { newsletterFormSchema } from "@/_lib/schema";
+import { NewsletterFormSchema } from "@/_lib/schema";
 import { handleError } from "@/_lib/utils";
-type Inputs = z.infer<typeof newsletterFormSchema>;
+type Inputs = z.infer<typeof NewsletterFormSchema>;
 
 export async function addNewsletterEntry(data: Inputs) {
   // Validate form data
-  const formValidationResult = newsletterFormSchema.safeParse(data);
+  const formValidationResult = NewsletterFormSchema.safeParse(data);
 
   if (formValidationResult.success === false) {
     return { formErrors: formValidationResult.error.format() };
