@@ -3,7 +3,9 @@ import { NavbarMenuItem } from "@nextui-org/react";
 const CustomMenuItem = ({ children, ...props }) => {
   return (
     <NavbarMenuItem
-      className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+      className="w-full px-2 max-w-screen-2xl lg:mx-auto py-3 text-right rounded-sm border-b
+      border-gray-400 hover:bg-primary/10 focus:bg-primary/20 focus:outline-none
+      focus:ring-2 focus:ring-primary"
       {...props}
     >
       {children}

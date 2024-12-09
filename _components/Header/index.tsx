@@ -51,9 +51,6 @@ const Header: FC = () => {
       isMenuOpen={isMenuOpen}
       isBordered
       maxWidth="2xl"
-      classNames={{
-        menu: "w-full max-w-screen-2xl lg:mx-auto",
-      }}
     >
       {/* Brand */}
       <NavbarContent>
