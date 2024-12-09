@@ -24,22 +24,25 @@ const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
   const { signOut } = useClerk();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([...unauthenticatedLinks]);
+  const [menuItems, setMenuItems] = useState(unauthenticatedLinks);
 
   useEffect(() => {
+    // Only update menu items after Clerk has loaded
     if (!isLoaded) return;
 
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
-      setMenuItems(() => [
+      setMenuItems([
         ...unauthenticatedLinks,
         ...authenticatedLinks,
         ...(isAdmin ? adminLinks : []),
       ]);
     } else {
-      setMenuItems([...unauthenticatedLinks]);
+      setMenuItems(unauthenticatedLinks);
     }
-  }, [isLoaded, user, isSignedIn]);
+  }, [isLoaded, isSignedIn, user]);
+
+  const handleMenuItemClick = () => setIsMenuOpen(false);
 
   return (
     <Navbar
@@ -49,22 +52,18 @@ const Header: FC = () => {
       isBordered
       maxWidth="xl"
     >
-      {/* Brand / Logo */}
       <NavbarContent>
         <NavbarBrand data-testid="navbar-brand">
-          <Link href={"/"} onClick={() => setIsMenuOpen(false)}>
+          <Link href="/" onClick={handleMenuItemClick}>
             <Logo />
           </Link>
         </NavbarBrand>
       </NavbarContent>
-
-      {/* Hamburger Menu Toggle*/}
       <NavbarContent justify="end">
         <NavbarMenuToggle
           data-testid="menu-toggle"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-pressed={isMenuOpen}
-          className="w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform"
+          aria-expanded={isMenuOpen}
         >
           <span className="sr-only">
             {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
@@ -91,23 +90,19 @@ const Header: FC = () => {
       </NavbarContent>
 
       {/* Menu Items */}
-      <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
+      <NavbarMenu>
         {menuItems.map((link, index) => (
-          <CustomMenuItem
-            data-testid={`menu-item-${link.testId}`}
-            key={`${link.name}-${index}`}
-          >
+          <CustomMenuItem key={`${link.name}-${index}`}>
             <Link
               href={link.href}
-              onClick={() => setIsMenuOpen(false)}
+              onClick={handleMenuItemClick}
               className="block w-full text-lg font-medium text-gray-800"
             >
               {link.name}
             </Link>
           </CustomMenuItem>
         ))}
-
-        <CustomMenuItem data-testid="menu-login">
+        <CustomMenuItem>
           <SignedIn>
             <button
               type="button"
@@ -118,12 +113,7 @@ const Header: FC = () => {
             </button>
           </SignedIn>
           <SignedOut>
-            <Link
-              href={"/sign-in"}
-              className="block w-full text-lg font-medium text-gray-800"
-            >
-              Login
-            </Link>
+            <Link href="/sign-in">Login</Link>
           </SignedOut>
         </CustomMenuItem>
       </NavbarMenu>
