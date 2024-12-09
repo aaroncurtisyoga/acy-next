@@ -36,6 +36,7 @@ const Header: FC = () => {
     <Navbar
       data-testid="navbar"
       onMenuOpenChange={setIsMenuOpen}
+      isMenuOpen={isMenuOpen}
       isBordered
       maxWidth="xl"
       classNames={{
@@ -56,7 +57,11 @@ const Header: FC = () => {
       }}
     >
       <Logo />
-      <MobileNavbarContent isMenuOpen={isMenuOpen} menuItems={menuItems} />
+      <MobileNavbarContent
+        isMenuOpen={isMenuOpen}
+        menuItems={menuItems}
+        setIsMenuOpen={setIsMenuOpen}
+      />
       <DesktopNavbarContent isLoaded={isLoaded} menuItems={menuItems} />
     </Navbar>
   );

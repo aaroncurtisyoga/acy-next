@@ -1,6 +1,8 @@
-import { FC } from "react";
+"use client";
+
+import { FC, useEffect } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import {
   NavbarContent,
@@ -12,47 +14,27 @@ import {
 interface MobileNavbarContentProps {
   isMenuOpen: boolean;
   menuItems: { name: string; href: string; testId: string }[];
+  setIsMenuOpen: (open: boolean) => void;
 }
 
 const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   isMenuOpen,
   menuItems,
+  setIsMenuOpen,
 }) => {
   const router = useRouter();
+  const pathname = usePathname();
   const { signOut } = useClerk();
+
+  useEffect(() => {
+    // Close the menu when the route changes if it's open
+    if (isMenuOpen) {
+      setIsMenuOpen(false);
+    }
+  }, [pathname, setIsMenuOpen, isMenuOpen]);
 
   return (
     <>
-      <NavbarContent className="sm:hidden" justify="end">
-        <NavbarMenuToggle
-          data-testid="menu-toggle"
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-pressed={isMenuOpen}
-          className="sm:hidden w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform"
-        >
-          <span className="sr-only">
-            {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          </span>
-          <span
-            className={`pointer-events-none flex flex-col items-center justify-center transition-transform duration-150 ${
-              isMenuOpen ? "rotate-45" : "rotate-0"
-            }`}
-          >
-            <span
-              className={`block h-px w-6 bg-current transition-transform ${
-                isMenuOpen ? "translate-y-px" : "-translate-y-1"
-              }`}
-            />
-            <span
-              className={`block h-px w-6 bg-current transition-transform ${
-                isMenuOpen
-                  ? "-rotate-90 translate-y-0"
-                  : "rotate-0 translate-y-1"
-              }`}
-            />
-          </span>
-        </NavbarMenuToggle>
-      </NavbarContent>
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
           <NavbarMenuItem
@@ -91,6 +73,36 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           </SignedOut>
         </NavbarMenuItem>
       </NavbarMenu>
+      <NavbarContent className="sm:hidden" justify="end">
+        <NavbarMenuToggle
+          data-testid="menu-toggle"
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+          aria-pressed={isMenuOpen}
+          className="sm:hidden w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform"
+        >
+          <span className="sr-only">
+            {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
+          </span>
+          <span
+            className={`pointer-events-none flex flex-col items-center justify-center transition-transform duration-150 ${
+              isMenuOpen ? "rotate-45" : "rotate-0"
+            }`}
+          >
+            <span
+              className={`block h-px w-6 bg-current transition-transform ${
+                isMenuOpen ? "translate-y-px" : "-translate-y-1"
+              }`}
+            />
+            <span
+              className={`block h-px w-6 bg-current transition-transform ${
+                isMenuOpen
+                  ? "-rotate-90 translate-y-0"
+                  : "rotate-0 translate-y-1"
+              }`}
+            />
+          </span>
+        </NavbarMenuToggle>
+      </NavbarContent>
     </>
   );
 };
