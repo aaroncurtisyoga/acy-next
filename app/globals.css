@@ -31,11 +31,11 @@
   }
 
   .wrapper {
-    @apply w-full max-w-7xl lg:mx-auto p-6;
+    @apply w-full max-w-screen-2xl lg:mx-auto p-6;
   }
 
   .wrapper-width {
-    @apply w-full max-w-7xl lg:mx-auto px-6 ;
+    @apply w-full max-w-screen-2xl lg:mx-auto px-6 ;
   }
 
   .error-headline {

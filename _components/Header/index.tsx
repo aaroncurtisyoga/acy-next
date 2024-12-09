@@ -50,7 +50,10 @@ const Header: FC = () => {
       onMenuOpenChange={setIsMenuOpen}
       isMenuOpen={isMenuOpen}
       isBordered
-      maxWidth="xl"
+      maxWidth="2xl"
+      classNames={{
+        menu: "w-full max-w-screen-2xl lg:mx-auto",
+      }}
     >
       <NavbarContent>
         <NavbarBrand data-testid="navbar-brand">
@@ -59,6 +62,7 @@ const Header: FC = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
+
       <NavbarContent justify="end">
         <NavbarMenuToggle
           data-testid="menu-toggle"
