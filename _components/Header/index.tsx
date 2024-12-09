@@ -9,9 +9,9 @@ import {
   NavbarBrand,
   NavbarContent,
   NavbarMenu,
-  NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
+import CustomMenuItem from "@/_components/Header/CustomMenuItem";
 import Logo from "@/_components/Header/Logo";
 import {
   adminLinks,
@@ -49,6 +49,7 @@ const Header: FC = () => {
       isBordered
       maxWidth="xl"
     >
+      {/* Brand / Logo */}
       <NavbarContent>
         <NavbarBrand data-testid="navbar-brand">
           <Link href={"/"} onClick={() => setIsMenuOpen(false)}>
@@ -57,7 +58,8 @@ const Header: FC = () => {
         </NavbarBrand>
       </NavbarContent>
 
-      <NavbarContent className="" justify="end">
+      {/* Hamburger Menu Toggle*/}
+      <NavbarContent justify="end">
         <NavbarMenuToggle
           data-testid="menu-toggle"
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
@@ -87,12 +89,13 @@ const Header: FC = () => {
           </span>
         </NavbarMenuToggle>
       </NavbarContent>
+
+      {/* Menu Items */}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
-          <NavbarMenuItem
+          <CustomMenuItem
             data-testid={`menu-item-${link.testId}`}
             key={`${link.name}-${index}`}
-            className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
           >
             <Link
               href={link.href}
@@ -101,12 +104,10 @@ const Header: FC = () => {
             >
               {link.name}
             </Link>
-          </NavbarMenuItem>
+          </CustomMenuItem>
         ))}
-        <NavbarMenuItem
-          data-testid="menu-login"
-          className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-        >
+
+        <CustomMenuItem data-testid="menu-login">
           <SignedIn>
             <button
               type="button"
@@ -124,7 +125,7 @@ const Header: FC = () => {
               Login
             </Link>
           </SignedOut>
-        </NavbarMenuItem>
+        </CustomMenuItem>
       </NavbarMenu>
     </Navbar>
   );
