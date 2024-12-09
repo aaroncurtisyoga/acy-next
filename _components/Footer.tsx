@@ -14,14 +14,17 @@ const Footer = () => {
         }
       >
         {/* Newsletter Signup Form */}
-        <div data-testid="footer-newsletter" className={"flex justify-center"}>
+        <div
+          data-testid="footer-newsletter"
+          className={"flex-1 flex justify-center md:justify-start"}
+        >
           <NewsletterForm />
         </div>
 
         {/* Social Media Links */}
         <div
           data-testid="footer-social-links"
-          className={"flex justify-center"}
+          className={"flex-1 flex justify-center"}
         >
           <Link
             href={"https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"}
@@ -52,7 +55,9 @@ const Footer = () => {
         {/* Contact and Credits */}
         <div
           data-testid="footer-contact"
-          className={"text-center md:text-end *:mb-4 *:md:mb-2 *:text-tiny"}
+          className={
+            "flex-1 text-center md:text-end *:mb-4 *:md:mb-2" + " *:text-tiny"
+          }
         >
           <p data-testid="footer-copyright">
             © {new Date().getFullYear()} All Rights Reserved
