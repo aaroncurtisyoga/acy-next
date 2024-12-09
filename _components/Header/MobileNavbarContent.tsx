@@ -26,53 +26,8 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   const pathname = usePathname();
   const { signOut } = useClerk();
 
-  useEffect(() => {
-    // Close the menu when the route changes if it's open
-    if (isMenuOpen) {
-      setIsMenuOpen(false);
-    }
-  }, [pathname, setIsMenuOpen, isMenuOpen]);
-
   return (
     <>
-      <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
-        {menuItems.map((link, index) => (
-          <NavbarMenuItem
-            data-testid={`menu-item-${link.testId}`}
-            key={`${link.name}-${index}`}
-            className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <Link
-              href={link.href}
-              className="block w-full text-lg font-medium text-gray-800"
-            >
-              {link.name}
-            </Link>
-          </NavbarMenuItem>
-        ))}
-        <NavbarMenuItem
-          data-testid="menu-login"
-          className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-        >
-          <SignedIn>
-            <button
-              type="button"
-              onClick={() => signOut(() => router.push("/"))}
-              className="w-full text-lg font-medium text-gray-800 text-right"
-            >
-              Logout
-            </button>
-          </SignedIn>
-          <SignedOut>
-            <Link
-              href={"/sign-in"}
-              className="block w-full text-lg font-medium text-gray-800"
-            >
-              Login
-            </Link>
-          </SignedOut>
-        </NavbarMenuItem>
-      </NavbarMenu>
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
           data-testid="menu-toggle"
@@ -103,6 +58,45 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           </span>
         </NavbarMenuToggle>
       </NavbarContent>
+      <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
+        {menuItems.map((link, index) => (
+          <NavbarMenuItem
+            data-testid={`menu-item-${link.testId}`}
+            key={`${link.name}-${index}`}
+            className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+          >
+            <Link
+              href={link.href}
+              onClick={() => setIsMenuOpen(false)}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              {link.name}
+            </Link>
+          </NavbarMenuItem>
+        ))}
+        <NavbarMenuItem
+          data-testid="menu-login"
+          className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+        >
+          <SignedIn>
+            <button
+              type="button"
+              onClick={() => signOut(() => router.push("/"))}
+              className="w-full text-lg font-medium text-gray-800 text-right"
+            >
+              Logout
+            </button>
+          </SignedIn>
+          <SignedOut>
+            <Link
+              href={"/sign-in"}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              Login
+            </Link>
+          </SignedOut>
+        </NavbarMenuItem>
+      </NavbarMenu>
     </>
   );
 };
