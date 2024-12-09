@@ -1,6 +1,6 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Header Component", () => {
+test.describe("Index Component", () => {
   // Tests for Desktop
   test.describe("Desktop MenuItems", () => {
     test.beforeEach(async ({ page }) => {
