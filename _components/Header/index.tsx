@@ -55,6 +55,7 @@ const Header: FC = () => {
         menu: "w-full max-w-screen-2xl lg:mx-auto",
       }}
     >
+      {/* Brand */}
       <NavbarContent>
         <NavbarBrand data-testid="navbar-brand">
           <Link href="/" onClick={handleMenuItemClick}>
@@ -62,7 +63,7 @@ const Header: FC = () => {
           </Link>
         </NavbarBrand>
       </NavbarContent>
-
+      {/* Hamburger Menu */}
       <NavbarContent justify="end">
         <NavbarMenuToggle
           data-testid="menu-toggle"
@@ -92,7 +93,6 @@ const Header: FC = () => {
           </span>
         </NavbarMenuToggle>
       </NavbarContent>
-
       {/* Menu Items */}
       <NavbarMenu>
         {menuItems.map((link, index) => (
