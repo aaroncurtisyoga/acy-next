@@ -6,6 +6,7 @@ import { useUser } from "@clerk/nextjs";
 import { Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
 import DesktopNavbarContent from "@/_components/Header/DesktopNavbarContent";
 import Logo from "@/_components/Header/Logo";
+import MobileNavbarContent from "@/_components/Header/MobileNavbarContent";
 import {
   adminLinks,
   authenticatedLinks,
