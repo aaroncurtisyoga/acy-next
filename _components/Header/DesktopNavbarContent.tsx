@@ -3,7 +3,6 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { NavbarContent, NavbarItem } from "@nextui-org/react";
 import AuthButtons from "@/_components/Header/AuthButtons";
 
