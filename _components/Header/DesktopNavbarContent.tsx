@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 import { NavbarContent, NavbarItem } from "@nextui-org/react";
+import AuthButtons from "@/_components/Header/AuthButtons";
 
 interface DesktopNavbarContentProps {
   menuItems: { name: string; href: string; testId: string }[];
@@ -32,12 +33,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
           isActive={pathname.includes("/sign-in")}
           className="min-w-[32px]"
         >
-          <SignedIn>
-            <UserButton />
-          </SignedIn>
-          <SignedOut>
-            <Link href={"/sign-in"}>Login</Link>
-          </SignedOut>
+          <AuthButtons />
         </NavbarItem>
       </>
     </NavbarContent>
