@@ -1,14 +1,15 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
+import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
 import {
   NavbarContent,
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
 } from "@nextui-org/react";
-import AuthButtons from "@/_components/Header/AuthButtons";
 
 interface MobileNavbarContentProps {
   isMenuOpen: boolean;
@@ -21,6 +22,10 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   menuItems,
   setIsMenuOpen,
 }) => {
+  const router = useRouter();
+  const pathname = usePathname();
+  const { signOut } = useClerk();
+
   return (
     <>
       <NavbarContent className="sm:hidden" justify="end">
@@ -73,7 +78,23 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           data-testid="menu-login"
           className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
         >
-          <AuthButtons />
+          <SignedIn>
+            <button
+              type="button"
+              onClick={() => signOut(() => router.push("/"))}
+              className="w-full text-lg font-medium text-gray-800 text-right"
+            >
+              Logout
+            </button>
+          </SignedIn>
+          <SignedOut>
+            <Link
+              href={"/sign-in"}
+              className="block w-full text-lg font-medium text-gray-800"
+            >
+              Login
+            </Link>
+          </SignedOut>
         </NavbarMenuItem>
       </NavbarMenu>
     </>

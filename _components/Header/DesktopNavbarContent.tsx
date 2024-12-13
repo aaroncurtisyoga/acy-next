@@ -3,6 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { useAuth } from "@clerk/nextjs";
 import {
   NavbarContent,
   NavbarItem,
@@ -12,13 +13,13 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { User } from "lucide-react";
-import AuthButtons from "@/_components/Header/AuthButtons";
 
 interface DesktopNavbarContentProps {
   menuItems: { name: string; href: string; testId: string }[];
 }
 
 const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
+  const { userId, isLoaded } = useAuth();
   const pathname = usePathname();
 
   return (
@@ -41,9 +42,17 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
           </button>
         </DropdownTrigger>
         <DropdownMenu aria-label="User Menu" variant="flat">
-          <DropdownItem>
-            <AuthButtons />
-          </DropdownItem>
+          {
+            isLoaded && userId ? (
+              <DropdownItem key="logout">
+                <Link href="/sign-out">Logout</Link>
+              </DropdownItem>
+            ) : isLoaded && !userId ? (
+              <DropdownItem key="login">
+                <Link href="/sign-in">Login</Link>
+              </DropdownItem>
+            ) : null /* Show nothing until isLoaded is true */
+          }
         </DropdownMenu>
       </Dropdown>
     </NavbarContent>
