@@ -16,7 +16,7 @@ import {
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([...unauthenticatedLinks]);
+  const [menuItems, setMenuItems] = useState([]);
 
   useEffect(() => {
     // Only update menu items after Clerk has loaded
@@ -25,7 +25,6 @@ const Header: FC = () => {
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
       setMenuItems(() => [
-        ...unauthenticatedLinks,
         ...authenticatedLinks,
         ...(isAdmin ? adminLinks : []),
       ]);
@@ -73,7 +72,7 @@ const Header: FC = () => {
         setIsMenuOpen={setIsMenuOpen}
       />
 
-      <DesktopNavbarContent isLoaded={isLoaded} menuItems={menuItems} />
+      <DesktopNavbarContent menuItems={menuItems} />
     </Navbar>
   );
 };

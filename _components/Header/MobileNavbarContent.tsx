@@ -1,15 +1,11 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { SignedIn, SignedOut, useClerk } from "@clerk/nextjs";
-import {
-  NavbarContent,
-  NavbarMenu,
-  NavbarMenuItem,
-  NavbarMenuToggle,
-} from "@nextui-org/react";
+import { useRouter } from "next/navigation";
+import { useClerk, useUser } from "@clerk/nextjs";
+import { NavbarContent, NavbarMenu, NavbarMenuToggle } from "@nextui-org/react";
+import CustomMobileMenuItem from "@/_components/Header/CustomMobileMenuItem";
 
 interface MobileNavbarContentProps {
   isMenuOpen: boolean;
@@ -23,11 +19,12 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   setIsMenuOpen,
 }) => {
   const router = useRouter();
-  const pathname = usePathname();
+  const { isSignedIn } = useUser();
   const { signOut } = useClerk();
 
   return (
     <>
+      {/* Hamburger Menu */}
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
           data-testid="menu-toggle"
@@ -58,44 +55,32 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           </span>
         </NavbarMenuToggle>
       </NavbarContent>
+      {/* Auth and Unauthenticated Links*/}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
-          <NavbarMenuItem
-            data-testid={`menu-item-${link.testId}`}
-            key={`${link.name}-${index}`}
-            className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-          >
-            <Link
-              href={link.href}
-              onClick={() => setIsMenuOpen(false)}
-              className="block w-full text-lg font-medium text-gray-800"
-            >
-              {link.name}
-            </Link>
-          </NavbarMenuItem>
+          <CustomMobileMenuItem
+            link={link}
+            setIsMenuOpen={setIsMenuOpen}
+            key={link.name}
+          />
         ))}
-        <NavbarMenuItem
-          data-testid="menu-login"
-          className="py-3 px-4 w-full text-right border-b border-gray-400 hover:bg-gray-100 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
-        >
-          <SignedIn>
+
+        {/* Show the Log in or Log Out Button */}
+        {isSignedIn ? (
+          <CustomMobileMenuItem>
             <button
               type="button"
               onClick={() => signOut(() => router.push("/"))}
               className="w-full text-lg font-medium text-gray-800 text-right"
             >
-              Logout
+              Log out
             </button>
-          </SignedIn>
-          <SignedOut>
-            <Link
-              href={"/sign-in"}
-              className="block w-full text-lg font-medium text-gray-800"
-            >
-              Login
-            </Link>
-          </SignedOut>
-        </NavbarMenuItem>
+          </CustomMobileMenuItem>
+        ) : (
+          <CustomMobileMenuItem>
+            <Link href={"/sign-in"}>Log in</Link>
+          </CustomMobileMenuItem>
+        )}
       </NavbarMenu>
     </>
   );

@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useAuth } from "@clerk/nextjs";
+import { useUser } from "@clerk/nextjs";
 import {
   NavbarContent,
   NavbarItem,
@@ -19,7 +19,7 @@ interface DesktopNavbarContentProps {
 }
 
 const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
-  const { userId, isLoaded } = useAuth();
+  const { isSignedIn } = useUser();
   const pathname = usePathname();
 
   return (
@@ -42,17 +42,15 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
           </button>
         </DropdownTrigger>
         <DropdownMenu aria-label="User Menu" variant="flat">
-          {
-            isLoaded && userId ? (
-              <DropdownItem key="logout">
-                <Link href="/sign-out">Logout</Link>
-              </DropdownItem>
-            ) : isLoaded && !userId ? (
-              <DropdownItem key="login">
-                <Link href="/sign-in">Login</Link>
-              </DropdownItem>
-            ) : null /* Show nothing until isLoaded is true */
-          }
+          {isSignedIn ? (
+            <DropdownItem key="logout">
+              <Link href="/sign-out">Log out</Link>
+            </DropdownItem>
+          ) : (
+            <DropdownItem key="login">
+              <Link href="/sign-in">Log in</Link>
+            </DropdownItem>
+          )}
         </DropdownMenu>
       </Dropdown>
     </NavbarContent>
