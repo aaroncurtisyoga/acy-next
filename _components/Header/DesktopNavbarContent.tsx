@@ -24,6 +24,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
 
   return (
     <NavbarContent className="hidden sm:flex gap-4" justify="end">
+      {/* Auth and Unauthenticated Links */}
       {menuItems.map((link, index) => (
         <NavbarItem
           data-testid={`navbar-item-${link.testId}`}
