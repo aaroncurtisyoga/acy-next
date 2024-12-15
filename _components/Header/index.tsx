@@ -66,12 +66,14 @@ const Header: FC = () => {
         </NavbarBrand>
       </NavbarContent>
 
+      {/* Mobile Navbar */}
       <MobileNavbarContent
         isMenuOpen={isMenuOpen}
         menuItems={menuItems}
         setIsMenuOpen={setIsMenuOpen}
       />
 
+      {/* Desktop Navbar */}
       <DesktopNavbarContent menuItems={menuItems} />
     </Navbar>
   );

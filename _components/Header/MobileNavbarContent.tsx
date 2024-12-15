@@ -55,6 +55,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           </span>
         </NavbarMenuToggle>
       </NavbarContent>
+
       {/* Auth and Unauthenticated Links*/}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
@@ -65,7 +66,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           />
         ))}
 
-        {/* Show the Log in or Log Out Button */}
+        {/* Show the Login or Log Out Button */}
         {isSignedIn ? (
           <CustomMobileMenuItem>
             <button
