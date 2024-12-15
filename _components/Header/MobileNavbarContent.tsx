@@ -56,7 +56,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
         </NavbarMenuToggle>
       </NavbarContent>
 
-      {/* Auth and Unauthenticated Links*/}
+      {/* Auth and Unauthenticated Links */}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
         {menuItems.map((link, index) => (
           <CustomMobileMenuItem

@@ -16,7 +16,7 @@ import {
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([]);
+  const [menuItems, setMenuItems] = useState([...unauthenticatedLinks]);
 
   useEffect(() => {
     // Only update menu items after Clerk has loaded
