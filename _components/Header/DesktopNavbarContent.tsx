@@ -43,11 +43,11 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="User Menu" variant="flat">
           {isSignedIn ? (
-            <DropdownItem key="logout">
+            <DropdownItem key="logout" title={"Log out"}>
               <Link href="/sign-out">Log out</Link>
             </DropdownItem>
           ) : (
-            <DropdownItem key="login">
+            <DropdownItem key="login" title={"Log In"}>
               <Link href="/sign-in">Log in</Link>
             </DropdownItem>
           )}

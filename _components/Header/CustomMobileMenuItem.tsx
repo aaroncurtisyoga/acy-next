@@ -14,7 +14,11 @@ const CustomMobileMenuItem: FC<CustomMenuItemProps> = ({
   setIsMenuOpen,
 }) => {
   return (
-    <NavbarMenuItem className="py-3 px-4 w-full text-right border-b border-gray-400 focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary">
+    <NavbarMenuItem
+      className="py-3 px-4 w-full text-right border-b border-gray-400
+    focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+      title={link?.name ? link.name : undefined}
+    >
       {/* If children gets passed in, use that */}
       {children ? (
         children
