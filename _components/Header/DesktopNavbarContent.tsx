@@ -1,9 +1,9 @@
 "use client";
 
 import { FC } from "react";
-import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
+import { useClerk, useUser } from "@clerk/nextjs";
 import {
   NavbarContent,
   NavbarItem,
@@ -20,12 +20,15 @@ interface DesktopNavbarContentProps {
 
 const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
   const { isSignedIn } = useUser();
+  const router = useRouter();
   const pathname = usePathname();
+  const { signOut } = useClerk();
 
+  // @ts-ignore
   return (
     <NavbarContent className="hidden sm:flex gap-4" justify="end">
       {/* Auth and Unauthenticated Links */}
-      {menuItems.map((link, index) => (
+      {/*{menuItems.map((link, index) => (
         <NavbarItem
           data-testid={`navbar-item-${link.testId}`}
           key={`${link.name}-${index}`}
@@ -35,7 +38,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
             {link.name}
           </Link>
         </NavbarItem>
-      ))}
+      ))}*/}
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
           <button aria-label="User menu" className="flex items-center">
@@ -43,13 +46,23 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
           </button>
         </DropdownTrigger>
         <DropdownMenu aria-label="User Menu" variant="flat">
+          {/* ts-ignore */}
+          {menuItems.map((link) => (
+            <DropdownItem href={link.href} title={link.name} key={link.name}>
+              {link.name}
+            </DropdownItem>
+          ))}
           {isSignedIn ? (
-            <DropdownItem key="logout" title={"Log out"}>
-              <Link href="/sign-out">Log out</Link>
+            <DropdownItem
+              key="logout"
+              title={"Log out"}
+              onPress={() => signOut(() => router.push("/"))}
+            >
+              Log out
             </DropdownItem>
           ) : (
-            <DropdownItem key="login" title={"Log In"}>
-              <Link href="/sign-in">Log in</Link>
+            <DropdownItem key="login" title={"Log In"} href="/sign-in">
+              Log in
             </DropdownItem>
           )}
         </DropdownMenu>
