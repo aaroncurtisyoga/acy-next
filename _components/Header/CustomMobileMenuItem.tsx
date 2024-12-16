@@ -19,11 +19,7 @@ const CustomMobileMenuItem: FC<CustomMenuItemProps> = ({
     focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
       title={link?.name ? link.name : undefined}
     >
-      {/* If children gets passed in, use that */}
-      {children ? (
-        children
-      ) : (
-        // Otherwise, create a link
+      {children ?? (
         <Link
           href={link.href}
           onClick={() => setIsMenuOpen(false)}
