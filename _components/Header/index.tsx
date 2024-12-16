@@ -18,16 +18,18 @@ const Header: FC = () => {
     // Only update menu items after Clerk has loaded
     if (!isLoaded) return;
 
+    // Update authenticated menu items based on user's role
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
-      setLinksForLoggedInUsers(() => [
+      setLinksForLoggedInUsers([
         ...authenticatedLinks,
         ...(isAdmin ? adminLinks : []),
       ]);
     } else {
+      // Reset authenticated menu items if user is not signed in
       setLinksForLoggedInUsers([]);
     }
-  }, [isLoaded, user, isSignedIn, authenticatedLinks]);
+  }, [isLoaded, user, isSignedIn]);
 
   return (
     <Navbar
