@@ -9,13 +9,13 @@ import CustomMobileMenuItem from "@/_components/Header/CustomMobileMenuItem";
 
 interface MobileNavbarContentProps {
   isMenuOpen: boolean;
-  menuItems: { name: string; href: string; testId: string }[];
+  authenticatedLinks: { name: string; href: string; testId: string }[];
   setIsMenuOpen: (open: boolean) => void;
 }
 
 const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   isMenuOpen,
-  menuItems,
+  authenticatedLinks,
   setIsMenuOpen,
 }) => {
   const router = useRouter();
@@ -56,9 +56,9 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
         </NavbarMenuToggle>
       </NavbarContent>
 
-      {/* Auth and Unauthenticated Links */}
+      {/* Authenticated Links */}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
-        {menuItems.map((link, index) => (
+        {authenticatedLinks.map((link, index) => (
           <CustomMobileMenuItem
             link={link}
             setIsMenuOpen={setIsMenuOpen}

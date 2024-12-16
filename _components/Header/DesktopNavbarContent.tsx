@@ -1,6 +1,7 @@
 "use client";
 
 import { FC } from "react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
@@ -13,12 +14,15 @@ import {
   DropdownTrigger,
 } from "@nextui-org/react";
 import { User } from "lucide-react";
+import { unauthenticatedLinks } from "@/_lib/constants";
 
 interface DesktopNavbarContentProps {
-  menuItems: { name: string; href: string; testId: string }[];
+  authenticatedLinks: { name: string; href: string; testId: string }[];
 }
 
-const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
+const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({
+  authenticatedLinks,
+}) => {
   const { isSignedIn } = useUser();
   const router = useRouter();
   const pathname = usePathname();
@@ -28,7 +32,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
   return (
     <NavbarContent className="hidden sm:flex gap-4" justify="end">
       {/* Auth and Unauthenticated Links */}
-      {/*{menuItems.map((link, index) => (
+      {unauthenticatedLinks.map((link, index) => (
         <NavbarItem
           data-testid={`navbar-item-${link.testId}`}
           key={`${link.name}-${index}`}
@@ -38,7 +42,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
             {link.name}
           </Link>
         </NavbarItem>
-      ))}*/}
+      ))}
       <Dropdown placement="bottom-end">
         <DropdownTrigger>
           <button aria-label="User menu" className="flex items-center">
@@ -47,7 +51,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ menuItems }) => {
         </DropdownTrigger>
         <DropdownMenu aria-label="User Menu" variant="flat">
           {/* ts-ignore */}
-          {menuItems.map((link) => (
+          {authenticatedLinks.map((link) => (
             <DropdownItem href={link.href} title={link.name} key={link.name}>
               {link.name}
             </DropdownItem>

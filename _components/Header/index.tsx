@@ -7,16 +7,12 @@ import { Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
 import DesktopNavbarContent from "@/_components/Header/DesktopNavbarContent";
 import Logo from "@/_components/Header/Logo";
 import MobileNavbarContent from "@/_components/Header/MobileNavbarContent";
-import {
-  adminLinks,
-  authenticatedLinks,
-  unauthenticatedLinks,
-} from "@/_lib/constants";
+import { adminLinks, authenticatedLinks } from "@/_lib/constants";
 
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([...unauthenticatedLinks]);
+  const [linksForLoggedInUsers, setLinksForLoggedInUsers] = useState([]);
 
   useEffect(() => {
     // Only update menu items after Clerk has loaded
@@ -24,14 +20,14 @@ const Header: FC = () => {
 
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
-      setMenuItems(() => [
+      setLinksForLoggedInUsers(() => [
         ...authenticatedLinks,
         ...(isAdmin ? adminLinks : []),
       ]);
     } else {
-      setMenuItems([...unauthenticatedLinks]);
+      setLinksForLoggedInUsers([]);
     }
-  }, [isLoaded, user, isSignedIn]);
+  }, [isLoaded, user, isSignedIn, authenticatedLinks]);
 
   return (
     <Navbar
@@ -69,12 +65,12 @@ const Header: FC = () => {
       {/* Mobile Navbar */}
       <MobileNavbarContent
         isMenuOpen={isMenuOpen}
-        menuItems={menuItems}
+        authenticatedLinks={linksForLoggedInUsers}
         setIsMenuOpen={setIsMenuOpen}
       />
 
       {/* Desktop Navbar */}
-      <DesktopNavbarContent menuItems={menuItems} />
+      <DesktopNavbarContent authenticatedLinks={linksForLoggedInUsers} />
     </Navbar>
   );
 };
