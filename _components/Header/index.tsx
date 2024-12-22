@@ -6,6 +6,7 @@ import { Navbar } from "@nextui-org/react";
 import DesktopNavbarContent from "@/_components/Header/DesktopNavbarContent";
 import Logo from "@/_components/Header/Logo";
 import MobileNavbarContent from "@/_components/Header/MobileNavbarContent";
+import UserDropdown from "@/_components/Header/UserDropdown";
 import { adminLinks, authenticatedLinks } from "@/_lib/constants";
 
 const Header: FC = () => {
@@ -60,7 +61,13 @@ const Header: FC = () => {
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
-      <DesktopNavbarContent authenticatedLinks={linksForLoggedInUsers} />
+      <DesktopNavbarContent>
+        <UserDropdown
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          linksForLoggedInUsers={linksForLoggedInUsers}
+        />
+      </DesktopNavbarContent>
     </Navbar>
   );
 };
