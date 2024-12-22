@@ -6,7 +6,10 @@ import { instructorEmailAddress } from "@/_lib/constants";
 
 const Footer = () => {
   return (
-    <footer data-testid="footer" className={"border-t py-6 bg-zinc-50"}>
+    <footer
+      data-testid="footer"
+      className="border-t py-6 bg-zinc-50 text-gray-800"
+    >
       <div
         className={
           "wrapper-width flex flex-col justify-center md:flex-row" +
@@ -16,7 +19,7 @@ const Footer = () => {
         {/* Newsletter Signup Form */}
         <div
           data-testid="footer-newsletter"
-          className={"flex-1 flex justify-center md:justify-start"}
+          className="flex-1 flex justify-center md:justify-start"
         >
           <NewsletterForm />
         </div>
@@ -24,12 +27,13 @@ const Footer = () => {
         {/* Social Media Links */}
         <div
           data-testid="footer-social-links"
-          className={"flex-1 flex justify-center"}
+          className="flex-1 flex justify-center"
         >
           <Link
             href={"https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"}
             target={"_blank"}
             data-testid="footer-youtube-link"
+            aria-label={"Visit Aaron on YouTube"}
           >
             <Youtube />
           </Link>
@@ -40,13 +44,15 @@ const Footer = () => {
             }
             target={"_blank"}
             data-testid="footer-spotify-link"
+            aria-label={"See Aaron's playlists on Spotify"}
           >
             <AudioLines />
           </Link>
           <Link
-            href={"https://www.instagram.com/aaroncurtisyoga/"}
-            target={"_blank"}
+            href="https://www.instagram.com/aaroncurtisyoga/"
+            target="_blank"
             data-testid="footer-instagram-link"
+            aria-label={"Follow Aaron on Instagram"}
           >
             <Instagram />
           </Link>
@@ -55,9 +61,7 @@ const Footer = () => {
         {/* Contact and Credits */}
         <div
           data-testid="footer-contact"
-          className={
-            "flex-1 text-center md:text-end *:mb-4 *:md:mb-2" + " *:text-tiny"
-          }
+          className="flex-1 text-center md:text-end *:mb-4 *:md:mb-2 text-sm"
         >
           <p data-testid="footer-copyright">
             © {new Date().getFullYear()} All Rights Reserved
@@ -68,11 +72,10 @@ const Footer = () => {
               data-testid="footer-email-link"
               isExternal
               size="sm"
-              underline={"hover"}
-              className={"text-tiny"}
+              underline="hover"
+              className="text-blue-700 hover:text-blue-500 focus-visible:ring focus-visible:ring-blue-300"
               href={`mailto:${instructorEmailAddress}`}
             >
-              {" "}
               Email
             </NextUiLink>
           </p>
@@ -80,12 +83,12 @@ const Footer = () => {
             Made by{" "}
             <NextUiLink
               data-testid="footer-github-link"
-              className={"text-tiny"}
+              className="text-blue-700 hover:text-blue-500 focus-visible:ring focus-visible:ring-blue-300"
               href="https://github.com/aaroncurtisyoga/acy-next"
               isExternal
               size="sm"
               target="_blank"
-              underline={"hover"}
+              underline="hover"
             >
               Aaron
             </NextUiLink>

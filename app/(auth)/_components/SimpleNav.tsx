@@ -3,7 +3,7 @@ import Logo from "@/_components/Header/Logo";
 
 const SimpleNav = () => {
   return (
-    <Navbar isBordered maxWidth="xl">
+    <Navbar isBordered maxWidth="2xl">
       <Logo />
     </Navbar>
   );
