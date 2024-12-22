@@ -24,9 +24,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         "px-5 py-5 md:py-8" + " md:px-16 md:py-10 min-h-[50dvh] md:min-h-auto"
       }
     >
-      <h1
-        className={`text-3xl mb-4 md:text-7xl md:mb-6 ${merriweather.className}`}
-      >
+      <h1 className={`text-3xl mb-4 md:mb-6 ${merriweather.className}`}>
         Practice.
       </h1>
       <div className={"flex justify-between items-center mb-4"}>

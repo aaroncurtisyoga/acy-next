@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { NavbarContent, NavbarMenu, NavbarMenuToggle } from "@nextui-org/react";
 import CustomMobileMenuItem from "@/_components/Header/CustomMobileMenuItem";
+import { unauthenticatedLinks } from "@/_lib/constants";
 
 interface MobileNavbarContentProps {
   isMenuOpen: boolean;
@@ -58,9 +59,16 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           </span>
         </NavbarMenuToggle>
       </NavbarContent>
-
-      {/* Authenticated Links */}
+      {/* Unauthenticated Links */}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
+        {unauthenticatedLinks.map((link, index) => (
+          <CustomMobileMenuItem
+            link={link}
+            setIsMenuOpen={setIsMenuOpen}
+            key={link.name}
+          />
+        ))}
+        {/* Authenticated Links */}
         {authenticatedLinks.map((link, index) => (
           <CustomMobileMenuItem
             link={link}

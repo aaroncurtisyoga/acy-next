@@ -36,7 +36,7 @@ const Header: FC = () => {
       onMenuOpenChange={setIsMenuOpen}
       isMenuOpen={isMenuOpen}
       isBordered
-      maxWidth="xl"
+      maxWidth="2xl"
       classNames={{
         item: [
           "flex",
@@ -56,8 +56,8 @@ const Header: FC = () => {
     >
       <Logo setIsMenuOpen={setIsMenuOpen} />
       <MobileNavbarContent
-        isMenuOpen={isMenuOpen}
         authenticatedLinks={linksForLoggedInUsers}
+        isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
       <DesktopNavbarContent authenticatedLinks={linksForLoggedInUsers} />
