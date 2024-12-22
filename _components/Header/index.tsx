@@ -1,35 +1,32 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
+import { Navbar } from "@nextui-org/react";
 import DesktopNavbarContent from "@/_components/Header/DesktopNavbarContent";
 import Logo from "@/_components/Header/Logo";
 import MobileNavbarContent from "@/_components/Header/MobileNavbarContent";
-import {
-  adminLinks,
-  authenticatedLinks,
-  unauthenticatedLinks,
-} from "@/_lib/constants";
+import { adminLinks, authenticatedLinks } from "@/_lib/constants";
 
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [menuItems, setMenuItems] = useState([...unauthenticatedLinks]);
+  const [linksForLoggedInUsers, setLinksForLoggedInUsers] = useState([]);
 
   useEffect(() => {
+    // Only update menu items after Clerk has loaded
     if (!isLoaded) return;
 
+    // Update authenticated menu items based on user's role
     if (isSignedIn) {
       const isAdmin = user?.publicMetadata.role === "admin";
-      setMenuItems(() => [
-        ...unauthenticatedLinks,
+      setLinksForLoggedInUsers([
         ...authenticatedLinks,
         ...(isAdmin ? adminLinks : []),
       ]);
     } else {
-      setMenuItems([...unauthenticatedLinks]);
+      // Reset authenticated menu items if user is not signed in
+      setLinksForLoggedInUsers([]);
     }
   }, [isLoaded, user, isSignedIn]);
 
@@ -57,21 +54,13 @@ const Header: FC = () => {
         ],
       }}
     >
-      <NavbarContent>
-        <NavbarBrand data-testid="navbar-brand">
-          <Link href={"/"} onClick={() => setIsMenuOpen(false)}>
-            <Logo />
-          </Link>
-        </NavbarBrand>
-      </NavbarContent>
-
+      <Logo setIsMenuOpen={setIsMenuOpen} />
       <MobileNavbarContent
         isMenuOpen={isMenuOpen}
-        menuItems={menuItems}
+        authenticatedLinks={linksForLoggedInUsers}
         setIsMenuOpen={setIsMenuOpen}
       />
-
-      <DesktopNavbarContent isLoaded={isLoaded} menuItems={menuItems} />
+      <DesktopNavbarContent authenticatedLinks={linksForLoggedInUsers} />
     </Navbar>
   );
 };
