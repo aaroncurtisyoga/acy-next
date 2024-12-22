@@ -33,7 +33,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           aria-controls={"mobile-menu"}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           aria-pressed={isMenuOpen}
-          className="sm:hidden w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform"
+          className="navbar-menu-toggle"
         >
           <span className="sr-only">
             {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}

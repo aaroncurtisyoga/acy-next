@@ -15,8 +15,7 @@ const CustomMobileMenuItem: FC<CustomMenuItemProps> = ({
 }) => {
   return (
     <NavbarMenuItem
-      className="py-3 px-4 w-full text-right border-b border-gray-400
-    focus:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-primary"
+      className="navbar-menu-item"
       title={link?.name ? link.name : undefined}
     >
       {children ?? (
