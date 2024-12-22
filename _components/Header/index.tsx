@@ -1,9 +1,8 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import Link from "next/link";
 import { useUser } from "@clerk/nextjs";
-import { Navbar, NavbarBrand, NavbarContent } from "@nextui-org/react";
+import { Navbar } from "@nextui-org/react";
 import DesktopNavbarContent from "@/_components/Header/DesktopNavbarContent";
 import Logo from "@/_components/Header/Logo";
 import MobileNavbarContent from "@/_components/Header/MobileNavbarContent";
@@ -55,23 +54,12 @@ const Header: FC = () => {
         ],
       }}
     >
-      {/* Brand */}
-      <NavbarContent>
-        <NavbarBrand data-testid="navbar-brand">
-          <Link href={"/"} onClick={() => setIsMenuOpen(false)}>
-            <Logo />
-          </Link>
-        </NavbarBrand>
-      </NavbarContent>
-
-      {/* Mobile Navbar */}
+      <Logo setIsMenuOpen={setIsMenuOpen} />
       <MobileNavbarContent
         isMenuOpen={isMenuOpen}
         authenticatedLinks={linksForLoggedInUsers}
         setIsMenuOpen={setIsMenuOpen}
       />
-
-      {/* Desktop Navbar */}
       <DesktopNavbarContent authenticatedLinks={linksForLoggedInUsers} />
     </Navbar>
   );
