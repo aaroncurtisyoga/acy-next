@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
@@ -22,12 +22,34 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({
   const { signOut } = useClerk();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
   const handleSignOut = () => {
     signOut(() => router.push("/"));
     setIsMenuOpen(false);
   };
+
+  // Close menu when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        dropdownRef.current &&
+        !dropdownRef.current.contains(event.target as Node)
+      ) {
+        setIsMenuOpen(false);
+      }
+    };
+
+    if (isMenuOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMenuOpen]);
 
   return (
     <NavbarContent className="hidden sm:flex gap-4" justify="end">
@@ -45,7 +67,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({
       ))}
 
       {/* User Dropdown */}
-      <div className="relative">
+      <div className="relative" ref={dropdownRef}>
         <button
           aria-label="User menu"
           className="flex items-center"
