@@ -36,7 +36,7 @@ const Header: FC = () => {
       onMenuOpenChange={setIsMenuOpen}
       isMenuOpen={isMenuOpen}
       isBordered
-      maxWidth="xl"
+      maxWidth="2xl"
       classNames={{
         item: [
           "flex",
