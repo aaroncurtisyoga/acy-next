@@ -4,7 +4,7 @@ import { NavbarBrand, NavbarContent } from "@nextui-org/react";
 import { merriweather } from "@/app/fonts";
 
 interface LogoProps {
-  setIsMenuOpen: (value: boolean) => void;
+  setIsMenuOpen?: (value: boolean) => void;
 }
 
 const Logo: FC<LogoProps> = ({ setIsMenuOpen }) => {
