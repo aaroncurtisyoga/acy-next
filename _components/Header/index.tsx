@@ -62,11 +62,7 @@ const Header: FC = () => {
         setIsMenuOpen={setIsMenuOpen}
       />
       <DesktopNavbarContent>
-        <UserDropdown
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-          linksForLoggedInUsers={linksForLoggedInUsers}
-        />
+        <UserDropdown linksForLoggedInUsers={linksForLoggedInUsers} />
       </DesktopNavbarContent>
     </Navbar>
   );

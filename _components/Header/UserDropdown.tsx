@@ -1,52 +1,46 @@
 "use client";
 
-import { FC, useEffect, useRef } from "react";
-import { router } from "next/client";
+import { FC, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { User } from "lucide-react";
 
 interface UserDropdownProps {
-  isMenuOpen: boolean;
-  setIsMenuOpen: (isOpen: boolean) => void;
-  linksForLoggedInUsers: any;
+  linksForLoggedInUsers: { href: string; name: string }[];
 }
 
-const UserDropdown: FC<UserDropdownProps> = ({
-  isMenuOpen,
-  setIsMenuOpen,
-  linksForLoggedInUsers,
-}) => {
+const UserDropdown: FC<UserDropdownProps> = ({ linksForLoggedInUsers }) => {
   const { signOut } = useClerk();
   const { isSignedIn } = useUser();
+  const router = useRouter();
 
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const [isDesktopMenuOpen, setIsDesktopMenuOpen] = useState(false);
 
-  // Close menu when clicking outside
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node)
-      ) {
-        setIsMenuOpen(false);
-      }
-    };
+  const toggleMenu = () => {
+    setIsDesktopMenuOpen((prev) => !prev);
+  };
 
-    if (isMenuOpen) {
-      document.addEventListener("mousedown", handleClickOutside);
+  const handleClickOutside = (event: MouseEvent) => {
+    if (
+      dropdownRef.current &&
+      !dropdownRef.current.contains(event.target as Node)
+    ) {
+      setIsDesktopMenuOpen(false);
     }
+  };
 
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [isMenuOpen]);
-
-  const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
+  }, []);
 
   const handleSignOut = () => {
     signOut(() => router.push("/"));
-    setIsMenuOpen(false);
+    setIsDesktopMenuOpen(false);
   };
 
   return (
@@ -58,7 +52,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
       >
         <User className="w-6 h-6" />
       </button>
-      {isMenuOpen && (
+      {isDesktopMenuOpen && (
         <div
           className="absolute right-0 mt-2 w-48 bg-white shadow-lg rounded-md border z-10"
           role="menu"
@@ -68,7 +62,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
               href={link.href}
               key={link.name}
               className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-              onClick={() => setIsMenuOpen(false)} // Close menu on link click
+              onClick={() => setIsDesktopMenuOpen(false)}
             >
               {link.name}
             </Link>
@@ -84,7 +78,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
             <Link
               href="/sign-in"
               className="block px-4 py-2 text-gray-700 hover:bg-gray-100"
-              onClick={() => setIsMenuOpen(false)} // Close menu on link click
+              onClick={() => setIsDesktopMenuOpen(false)}
             >
               Log in
             </Link>
