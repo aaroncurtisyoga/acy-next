@@ -10,13 +10,13 @@ import { unauthenticatedLinks } from "@/_lib/constants";
 
 interface MobileNavbarContentProps {
   isMenuOpen: boolean;
-  authenticatedLinks: { name: string; href: string; testId: string }[];
+  linksForLoggedInUsers: { name: string; href: string; testId: string }[];
   setIsMenuOpen: (open: boolean) => void;
 }
 
 const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   isMenuOpen,
-  authenticatedLinks,
+  linksForLoggedInUsers,
   setIsMenuOpen,
 }) => {
   const router = useRouter();
@@ -69,7 +69,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           />
         ))}
         {/* Authenticated Links */}
-        {authenticatedLinks.map((link, index) => (
+        {linksForLoggedInUsers.map((link, index) => (
           <CustomMobileMenuItem
             link={link}
             setIsMenuOpen={setIsMenuOpen}

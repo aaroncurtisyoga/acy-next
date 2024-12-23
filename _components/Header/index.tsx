@@ -57,7 +57,7 @@ const Header: FC = () => {
     >
       <Logo setIsMenuOpen={setIsMenuOpen} />
       <MobileNavbarContent
-        authenticatedLinks={linksForLoggedInUsers}
+        linksForLoggedInUsers={linksForLoggedInUsers}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
       />
