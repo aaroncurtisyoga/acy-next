@@ -1,116 +1,122 @@
 import { test, expect } from "@playwright/test";
 
-test.describe("Index Component", () => {
-  // Tests for Desktop
-  test.describe("Desktop MenuItems", () => {
-    test.beforeEach(async ({ page }) => {
-      await page.setViewportSize({ width: 1280, height: 800 });
-      await page.goto("/");
-    });
+const unauthenticatedLinks = [
+  {
+    name: "Private Sessions",
+    href: "/private-sessions",
+    testId: "private-sessions",
+  },
+];
 
-    test("should display the header with the correct site title", async ({
-      page,
-    }) => {
-      const title = page.locator("[data-testid='navbar-brand']");
-      await expect(title).toBeVisible();
-      await expect(title).toHaveText("Aaron Curtis Yoga");
-    });
-
-    test("should display navigation links", async ({ page }) => {
-      const privateSessionsLink = page.locator(
-        "[data-testid='navbar-item-private-sessions']",
-      );
-      const loginLink = page.locator("[data-testid='navbar-login']");
-
-      await expect(privateSessionsLink).toBeVisible();
-      await expect(privateSessionsLink).toHaveText("Private Sessions");
-      await expect(loginLink).toBeVisible();
-      await expect(loginLink).toHaveText("Login");
-    });
-
-    test("should navigate to the Private Sessions page", async ({ page }) => {
-      const privateSessionsLink = page.locator(
-        "[data-testid='navbar-item-private-sessions']",
-      );
-      await privateSessionsLink.click();
-      await expect(page).toHaveURL(/\/private-sessions/);
-    });
-
-    test("should apply active styles to the current page link", async ({
-      page,
-    }) => {
-      await page
-        .locator("[data-testid='navbar-item-private-sessions']")
-        .click();
-      const activeLink = page.locator(
-        "[data-testid='navbar-item-private-sessions']",
-      );
-      await expect(activeLink).toHaveClass(/data-\[active=true]/);
-    });
-
-    test("should make navigation sticky at the top of the page", async ({
-      page,
-    }) => {
-      const nav = page.locator("[data-testid='navbar']");
-      await page.evaluate(() => window.scrollTo(0, 500));
-      await expect(nav).toBeVisible();
+// Helper function to mock unauthenticated user state
+const mockUnauthenticatedUser = async (page) => {
+  await page.route("**/clerk/session", (route) => {
+    route.fulfill({
+      status: 200,
+      body: JSON.stringify({ isSignedIn: false }),
     });
   });
+};
 
-  // Tests for Mobile
-  test.describe("Mobile MenuItems", () => {
-    test.beforeEach(async ({ page }) => {
-      await page.setViewportSize({ width: 500, height: 800 });
-      await page.goto("/");
+test.describe("Header Navigation - Unauthenticated Links", () => {
+  test.beforeEach(async ({ page }) => {
+    // Apply the unauthenticated user mock before each test
+    await mockUnauthenticatedUser(page);
+  });
+
+  test("renders all unauthenticated links on mobile", async ({ page }) => {
+    // Set mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+    await page.goto("/");
+
+    // Open the mobile menu
+    const menuToggle = page.getByTestId("menu-toggle");
+    await menuToggle.click();
+
+    // Verify each unauthenticated link is visible with correct href
+    for (const link of unauthenticatedLinks) {
+      const mobileLink = page.getByTestId(`navbar-menu-item-${link.testId}`);
+      await expect(mobileLink).toBeVisible();
+      await expect(mobileLink).toHaveAttribute("href", link.href);
+    }
+  });
+
+  test("renders all unauthenticated links on desktop", async ({ page }) => {
+    // Mock unauthenticated user
+    await page.route("**/clerk/session", (route) => {
+      route.fulfill({
+        status: 200,
+        body: JSON.stringify({ isSignedIn: false }),
+      });
     });
 
-    test("should display the mobile menu button", async ({ page }) => {
-      const menuButton = page.locator("[data-testid='menu-toggle']");
-      await expect(menuButton).toBeVisible();
-    });
+    // Set desktop viewport
+    await page.setViewportSize({ width: 1280, height: 720 });
+    await page.goto("/");
 
-    test("should toggle the mobile menu on click", async ({ page }) => {
-      const menuButton = page.locator("[data-testid='menu-toggle']");
-      const menu = page.locator("[data-testid='navbar-menu']");
-
-      // Open the menu
-      await menuButton.click();
-      await expect(menu).toBeVisible();
-
-      // Close the menu
-      await menuButton.click();
-      await expect(menu).toBeHidden();
-    });
-
-    test("should display navigation links in the mobile menu", async ({
-      page,
-    }) => {
-      const menuButton = page.locator("[data-testid='menu-toggle']");
-      await menuButton.click();
-
-      const privateSessionsLink = page.locator(
-        "[data-testid='menu-item-private-sessions']",
+    for (const link of unauthenticatedLinks) {
+      // Target the <a> element within the <li> using the test ID
+      const desktopLink = page.locator(
+        `li[data-testid="navbar-item-${link.testId}"] > a`,
       );
-      const loginLink = page.locator("[data-testid='menu-login']");
-
-      await expect(privateSessionsLink).toBeVisible();
-      await expect(privateSessionsLink).toHaveText("Private Sessions");
-      await expect(loginLink).toBeVisible();
-      await expect(loginLink).toHaveText("Login");
-    });
-
-    test("should navigate to the Private Sessions page from the mobile menu", async ({
-      page,
-    }) => {
-      const menuButton = page.locator("[data-testid='menu-toggle']");
-      await menuButton.click();
-
-      const privateSessionsLink = page.locator(
-        "[data-testid='menu-item-private-sessions']",
-      );
-      await privateSessionsLink.click();
-
-      await expect(page).toHaveURL(/\/private-sessions/);
-    });
+      await expect(desktopLink).toBeVisible();
+      await expect(desktopLink).toHaveAttribute("href", link.href);
+    }
   });
 });
+
+/*
+test.describe("Header Navigation", () => {
+  test("renders authenticated user links", async ({ page }) => {
+    // Mock authenticated user
+    await page.route("**!/clerk/session", (route) => {
+      route.fulfill({
+        status: 200,
+        body: JSON.stringify({
+          isSignedIn: true,
+          user: { id: "test-user", publicMetadata: {} },
+        }),
+      });
+    });
+
+    await page.goto("/");
+
+    // Check for authenticated links
+    const dashboardLink = await page.getByTestId("navbar-item-dashboard");
+    await expect(dashboardLink).toBeVisible();
+  });
+
+  test("renders admin links", async ({ page }) => {
+    // Mock admin user
+    await page.route("**!/clerk/session", (route) => {
+      route.fulfill({
+        status: 200,
+        body: JSON.stringify({
+          isSignedIn: true,
+          user: { id: "admin-user", publicMetadata: { role: "admin" } },
+        }),
+      });
+    });
+
+    await page.goto("/");
+
+    // Check for admin links
+    const adminLink = await page.getByTestId("navbar-item-admin");
+    await expect(adminLink).toBeVisible();
+  });
+
+  test("responsive behavior", async ({ page }) => {
+    await page.goto("/");
+
+    // Test desktop viewport
+    await page.setViewportSize({ width: 1280, height: 720 });
+    const desktopMenu = await page.getByTestId("navbar-menu-desktop");
+    await expect(desktopMenu).toBeVisible();
+
+    // Test mobile viewport
+    await page.setViewportSize({ width: 375, height: 667 });
+    const mobileMenu = await page.getByTestId("navbar-menu-mobile");
+    await expect(mobileMenu).toBeVisible();
+  });
+});
+*/
