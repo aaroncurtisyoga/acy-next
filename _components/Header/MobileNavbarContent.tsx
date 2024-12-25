@@ -84,13 +84,16 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
               type="button"
               onClick={() => signOut(() => router.push("/"))}
               className="w-full text-lg font-medium text-gray-800 text-right"
+              data-testid={"mobile-log-out-button"}
             >
               Log out
             </button>
           </CustomMobileMenuItem>
         ) : (
           <CustomMobileMenuItem>
-            <Link href={"/sign-in"}>Log in</Link>
+            <Link href={"/sign-in"} data-testid={"mobile-log-in-link"}>
+              Log in
+            </Link>
           </CustomMobileMenuItem>
         )}
       </NavbarMenu>
