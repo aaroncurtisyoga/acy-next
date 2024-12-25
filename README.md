@@ -1,29 +1,29 @@
-141 lines (104 sloc)  6.31 KB
-   
 <h1 style="text-align: center;">AaronCurtisYoga.com</h1>
-<p style="text-align: center;">Fullstack Next.js App for Aaron Curtis Yoga </p>
+<p style="text-align: center;">Fullstack Next.js App for Aaron Curtis Yoga</p>
 
 ## <a name="table">Table of Contents</a>
 
-1. [Intro](#introduction)
+1. [Introduction](#introduction)
 2. [Quick Start](#quick-start)
 3. [Tech Stack](#tech-stack)
 4. [Features](#features)
-5. [Postgres DB](#postgres)
-6. [Get in touch](#contact)
+5. [Postgres Database](#postgres)
+6. [Testing](#testing)
+7. [Contact](#contact)
 
 
-## <a name="introduction">Intro</a>
+## <a name="introduction">Introduction</a>
 
-This app is set up to help current and future yoga students: 
-Learn about me, Find my weekly schedule, sign up to my newsletter, and register for events (_work in progress_)
+This app is designed to help current and future yoga students:
+- Learn about Aaron Curtis
+- Find weekly schedules
+- Sign up for the newsletter
+- Register for events (_work in progress_)
 
 
 ## <a name="quick-start">Quick Start</a>
 
-Before getting started, create a .env in the root of your project and
-
-**Set Up Environment Variables**
+Before getting started, create a `.env` file in the root of your project and set up the environment variables:
 
 ```env
 [//]: # (Vercel Blob Storage for Images)
@@ -54,35 +54,37 @@ STRIPE_WEBHOOK_SECRET=
 NEXT_PUBLIC_SERVER_URL
 ```
 
-My app is built with [Next.js](https://nextjs.org/). The common scripts are:
-- `npm run dev` to start dev server
-- `npm build` for prod build
-- `npm run lint` to run eslint
-- `npm run lint:fix` to try & fix lint errors
+### Common Scripts
+- `npm run dev` to start the development server
+- `npm build` for production build
+- `npm run lint` to run ESLint
+- `npm run lint:fix` to fix linting errors
 
 
 ## <a name="tech-stack">Tech Stack</a>
 
-- Next.js (_TypeScript_)
-- NextUI ([docs](https://nextui.org/))
-- React Hook Form docs ([docs](https://react-hook-form.com/))
-- Vercel Postgres ([docs](https://vercel.com/docs/databases/postgres))
-- Vercel Blob Storage ([docs](https://vercel.com/docs/storage))
+- **Next.js** ([docs](https://nextjs.org/)) (_TypeScript_)
+- **NextUI** ([docs](https://nextui.org/))
+- **React Hook Form** ([docs](https://react-hook-form.com/))
+- **Vercel Postgres** ([docs](https://vercel.com/docs/databases/postgres))
+- **Vercel Blob Storage** ([docs](https://vercel.com/docs/storage))
 
-    **_3rd Party Api's_**
-- Clerk ([docs](https://docs.clerk.dev/))
-- Stripe ([docs](https://stripe.com/docs))
-- Mailchimp Marketing API ([docs](https://mailchimp.com/developer/marketing/))
+  **_Third-Party APIs_**
+- **Clerk** ([docs](https://docs.clerk.dev/))
+- **Stripe** ([docs](https://stripe.com/docs))
+- **Mailchimp Marketing API** ([docs](https://mailchimp.com/developer/marketing/))
+
+
 ## <a name="features">Features</a>
 
-1. **Newsletter:** People can sign up to the Newsletter & stay up-to-date w/ upcoming events
-2. **️Authentication:** Role Based Access Control (RBAC) with Clerk
+1. **Newsletter:** Stay up-to-date with upcoming events by signing up for the newsletter.
+2. **Authentication:** Role-Based Access Control (RBAC) powered by Clerk.
+3. **Events Management:** Admins can create, read, update, and delete events. End users can view events.
+4. **Search & Filter:** Users can search and filter events.
+5. **Checkout and Payment:** Secure payments powered by Stripe.
 
-3. **Events:** Admins can create, read, update, and delete events. End users can view events.
-4. **🛠️ - Search & Filter:** Users can search and filter events
-5. **🛠️ - Checkout and Pay:** Users can pay for events using Stripe
 
-## <a name="postgres">Vercel Postgres DB</a>
+## <a name="postgres">Postgres Database</a>
 
 You can use Prisma Studio to view and manage your Vercel Postgres database schema and data. Depending on the environment, use one of the following commands:
 
@@ -90,18 +92,35 @@ You can use Prisma Studio to view and manage your Vercel Postgres database schem
    ```bash
    npx prisma studio
    ```
-  This command opens Prisma Studio using your local `.env` configuration, connecting to your development database.
+  Opens Prisma Studio using your local `.env` configuration, connecting to your development database.
 
 - **Production Database**:
    ```bash
    dotenv -e .env.production -- npx prisma studio
    ```
-  This command opens Prisma Studio using the `.env.production` file, connecting to your production database.
+  Opens Prisma Studio using the `.env.production` file, connecting to your production database.
 
 > **Tip**: Ensure each environment file has the correct `DATABASE_URL` for seamless connections.
 
 
-## <a name="contact">Get in touch</a>
-* IG  [aaroncurtisyoga](https://www.instagram.com/aaroncurtisyoga/)
-* ✉️ aaroncurtisyoga@gmail.com
+## <a name="testing">Testing</a>
 
+This application uses [Playwright](https://playwright.dev/) for end-to-end testing.
+
+- **Run Tests Locally**:
+  To execute all tests from the terminal, use the following command:
+  ```bash
+  npx playwright test
+  ```
+  > **Note**: The development server must be running prior to executing this command.
+
+- **Automated Testing**:
+  A GitHub Action is set up to automatically run these tests whenever the application is deployed to both development and production environments.
+
+- **IDE Recommendation**:
+  Regardless of your preferred IDE, it is recommended to leverage the [Playwright Test extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). This extension provides a comprehensive set of tools for efficiently running and monitoring tests.
+
+
+## <a name="contact">Contact</a>
+- **Instagram:** [@aaroncurtisyoga](https://www.instagram.com/aaroncurtisyoga/)
+- **Email:** aaroncurtisyoga@gmail.com
