@@ -5,12 +5,13 @@ import dotenv from "dotenv";
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 export default defineConfig({
-  testDir: ".e2e/tests",
+  testDir: "e2e/tests",
   fullyParallel: true,
   forbidOnly: !!process.env.CI,
   retries: process.env.CI ? 1 : 0,
   workers: process.env.CI ? "75%" : undefined,
-  reporter: "html",
+  reporter: [["html", { outputFolder: "e2e/playwright-report" }]],
+  outputDir: "e2e/test-results",
   use: {
     baseURL: process.env.NEXT_PUBLIC_SERVER_URL || "http://127.0.0.1:3000",
     trace: "on-first-retry",
