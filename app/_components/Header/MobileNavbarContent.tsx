@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { NavbarContent, NavbarMenu, NavbarMenuToggle } from "@nextui-org/react";
-import CustomMobileMenuItem from "@/_components/Header/CustomMobileMenuItem";
+import CustomMobileMenuItem from "@/app/_components/Header/CustomMobileMenuItem";
 import { unauthenticatedLinks } from "@/_lib/constants";
 
 interface MobileNavbarContentProps {

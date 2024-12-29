@@ -13,9 +13,9 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import BasicModal from "@/_components/BasicModal";
-import TableEmpty from "@/_components/TableEmpty";
-import TableLoading from "@/_components/TableLoading";
+import BasicModal from "@/app/_components/BasicModal";
+import TableEmpty from "@/app/_components/TableEmpty";
+import TableLoading from "@/app/_components/TableLoading";
 import { deleteEvent, getAllEvents } from "@/_lib/actions/event.actions";
 import { TableEventManagementColumns } from "@/_lib/constants";
 import { formatDateTime, handleError } from "@/_lib/utils";

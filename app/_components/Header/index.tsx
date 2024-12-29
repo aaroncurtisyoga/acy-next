@@ -3,10 +3,10 @@
 import { FC, useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { Navbar } from "@nextui-org/react";
-import DesktopNavbarContent from "@/_components/Header/DesktopNavbarContent";
-import Logo from "@/_components/Header/Logo";
-import MobileNavbarContent from "@/_components/Header/MobileNavbarContent";
-import UserDropdown from "@/_components/Header/UserDropdown";
+import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
+import Logo from "@/app/_components/Header/Logo";
+import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
+import UserDropdown from "@/app/_components/Header/UserDropdown";
 import { adminLinks, authenticatedLinks } from "@/_lib/constants";
 
 const Header: FC = () => {
