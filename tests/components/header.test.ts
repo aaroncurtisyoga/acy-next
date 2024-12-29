@@ -8,115 +8,90 @@ const unauthenticatedLinks = [
   },
 ];
 
-// Helper function to mock unauthenticated user state
+// Mock helper for different user states
 const mockUnauthenticatedUser = async (page) => {
-  await page.route("**/clerk/session", (route) => {
+  await page.route("**/clerk/session", (route) =>
     route.fulfill({
       status: 200,
       body: JSON.stringify({ isSignedIn: false }),
-    });
-  });
+    }),
+  );
 };
 
-test.describe("Header Navigation - Unauthenticated Links", () => {
-  test.beforeEach(async ({ page }) => {
-    // Apply the unauthenticated user mock before each test
-    await mockUnauthenticatedUser(page);
-  });
+const mockAuthenticatedUser = async (page, role = "user") => {
+  const user = {
+    isSignedIn: true,
+    user: { id: "test-user", publicMetadata: { role } },
+  };
+  await page.route("**/clerk/session", (route) =>
+    route.fulfill({
+      status: 200,
+      body: JSON.stringify(user),
+    }),
+  );
+};
 
-  test("renders all unauthenticated links on mobile", async ({ page }) => {
-    // Set mobile viewport
-    await page.setViewportSize({ width: 375, height: 667 });
-    await page.goto("/");
-
-    // Open the mobile menu
-    const menuToggle = page.getByTestId("menu-toggle");
-    await menuToggle.click();
-
-    // Verify each unauthenticated link is visible with correct href
-    for (const link of unauthenticatedLinks) {
-      const mobileLink = page.getByTestId(`navbar-menu-item-${link.testId}`);
-      await expect(mobileLink).toBeVisible();
-      await expect(mobileLink).toHaveAttribute("href", link.href);
-    }
-  });
-
-  test("renders all unauthenticated links on desktop", async ({ page }) => {
-    // Mock unauthenticated user
-    await page.route("**/clerk/session", (route) => {
-      route.fulfill({
-        status: 200,
-        body: JSON.stringify({ isSignedIn: false }),
-      });
-    });
-
-    // Set desktop viewport
-    await page.setViewportSize({ width: 1280, height: 720 });
-    await page.goto("/");
-
-    for (const link of unauthenticatedLinks) {
-      // Target the <a> element within the <li> using the test ID
-      const desktopLink = page.locator(
-        `li[data-testid="navbar-item-${link.testId}"] > a`,
-      );
-      await expect(desktopLink).toBeVisible();
-      await expect(desktopLink).toHaveAttribute("href", link.href);
-    }
-  });
-});
-
-/*
 test.describe("Header Navigation", () => {
-  test("renders authenticated user links", async ({ page }) => {
-    // Mock authenticated user
-    await page.route("**!/clerk/session", (route) => {
-      route.fulfill({
-        status: 200,
-        body: JSON.stringify({
-          isSignedIn: true,
-          user: { id: "test-user", publicMetadata: {} },
-        }),
-      });
+  test.describe("Unauthenticated Links", () => {
+    test.beforeEach(async ({ page }) => {
+      await mockUnauthenticatedUser(page);
     });
 
-    await page.goto("/");
+    test("are visible on mobile", async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto("/");
+      await page.getByTestId("menu-toggle").click();
 
-    // Check for authenticated links
-    const dashboardLink = await page.getByTestId("navbar-item-dashboard");
-    await expect(dashboardLink).toBeVisible();
-  });
-
-  test("renders admin links", async ({ page }) => {
-    // Mock admin user
-    await page.route("**!/clerk/session", (route) => {
-      route.fulfill({
-        status: 200,
-        body: JSON.stringify({
-          isSignedIn: true,
-          user: { id: "admin-user", publicMetadata: { role: "admin" } },
-        }),
-      });
+      for (const link of unauthenticatedLinks) {
+        const mobileLink = page.getByTestId(`navbar-menu-item-${link.testId}`);
+        await expect(mobileLink).toBeVisible();
+        await expect(mobileLink).toHaveAttribute("href", link.href);
+      }
     });
 
-    await page.goto("/");
+    test("are visible on desktop", async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto("/");
 
-    // Check for admin links
-    const adminLink = await page.getByTestId("navbar-item-admin");
-    await expect(adminLink).toBeVisible();
+      for (const link of unauthenticatedLinks) {
+        const desktopLink = page.locator(
+          `li[data-testid="navbar-item-${link.testId}"] > a`,
+        );
+        await expect(desktopLink).toBeVisible();
+        await expect(desktopLink).toHaveAttribute("href", link.href);
+      }
+    });
   });
 
-  test("responsive behavior", async ({ page }) => {
-    await page.goto("/");
+  test.describe("Authenticated Links", () => {
+    test("are visible for regular users", async ({ page }) => {
+      await mockAuthenticatedUser(page);
+      await page.goto("/");
+      const dashboardLink = page.getByTestId("navbar-item-dashboard");
+      await expect(dashboardLink).toBeVisible();
+    });
 
-    // Test desktop viewport
-    await page.setViewportSize({ width: 1280, height: 720 });
-    const desktopMenu = await page.getByTestId("navbar-menu-desktop");
-    await expect(desktopMenu).toBeVisible();
+    test("include admin links for admin users", async ({ page }) => {
+      await mockAuthenticatedUser(page, "admin");
+      await page.goto("/");
+      const adminLink = page.getByTestId("navbar-item-admin");
+      await expect(adminLink).toBeVisible();
+    });
+  });
 
-    // Test mobile viewport
-    await page.setViewportSize({ width: 375, height: 667 });
-    const mobileMenu = await page.getByTestId("navbar-menu-mobile");
-    await expect(mobileMenu).toBeVisible();
+  test.describe("Responsive Behavior", () => {
+    test("renders desktop menu on large screens", async ({ page }) => {
+      await page.setViewportSize({ width: 1280, height: 720 });
+      await page.goto("/");
+      const desktopMenu = page.getByTestId("navbar-menu-desktop");
+      await expect(desktopMenu).toBeVisible();
+    });
+
+    test("renders mobile menu on small screens", async ({ page }) => {
+      await page.setViewportSize({ width: 375, height: 667 });
+      await page.goto("/");
+      const mobileMenu = page.getByTestId("navbar-menu-mobile");
+      await expect(mobileMenu).toBeVisible();
+    });
   });
 });
-*/
