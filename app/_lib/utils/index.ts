@@ -1,5 +1,5 @@
 import qs from "query-string";
-import { RemoveUrlQueryParams, UrlQueryParams } from "@/_lib/types";
+import { RemoveUrlQueryParams, UrlQueryParams } from "@/app/_lib/types";
 
 export const formatDateTime = (dateString: Date) => {
   const dateTimeOptions: Intl.DateTimeFormatOptions = {

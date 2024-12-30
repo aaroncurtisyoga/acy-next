@@ -1,6 +1,6 @@
 import { combineSlices, configureStore } from "@reduxjs/toolkit";
-import { createEventFormSlice } from "@/_lib/redux/features/eventFormSlice";
-import { privateSessionFormSlice } from "@/_lib/redux/features/privateSessionFormSlice";
+import { createEventFormSlice } from "@/app/_lib/redux/features/eventFormSlice";
+import { privateSessionFormSlice } from "@/app/_lib/redux/features/privateSessionFormSlice";
 import type { Action, ThunkAction } from "@reduxjs/toolkit";
 
 const rootReducer = combineSlices(
