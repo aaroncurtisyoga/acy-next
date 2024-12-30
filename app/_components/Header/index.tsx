@@ -7,7 +7,7 @@ import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent"
 import Logo from "@/app/_components/Header/Logo";
 import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 import UserDropdown from "@/app/_components/Header/UserDropdown";
-import { adminLinks, authenticatedLinks } from "@/_lib/constants";
+import { adminLinks, authenticatedLinks } from "@/app/_lib/constants";
 
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
