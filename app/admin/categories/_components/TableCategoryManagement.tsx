@@ -1,4 +1,5 @@
 "use client";
+
 import { Dispatch, FC, SetStateAction, useState } from "react";
 import {
   Button,
@@ -12,8 +13,8 @@ import {
 } from "@nextui-org/react";
 import { Category } from "@prisma/client";
 import BasicModal from "@/app/_components/BasicModal";
-import { deleteCategory } from "@/_lib/actions/category.actions";
-import { handleError } from "@/_lib/utils";
+import { deleteCategory } from "@/app/_lib/actions/category.actions";
+import { handleError } from "@/app/_lib/utils";
 
 interface CategoryManagementTableProps {
   categories: Category[];
