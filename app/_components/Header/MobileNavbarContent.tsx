@@ -61,7 +61,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
       </NavbarContent>
       {/* Unauthenticated Links */}
       <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
-        {unauthenticatedLinks.map((link, index) => (
+        {unauthenticatedLinks.map((link) => (
           <CustomMobileMenuItem
             link={link}
             setIsMenuOpen={setIsMenuOpen}
@@ -69,7 +69,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           />
         ))}
         {/* Authenticated Links */}
-        {linksForLoggedInUsers.map((link, index) => (
+        {linksForLoggedInUsers.map((link) => (
           <CustomMobileMenuItem
             link={link}
             setIsMenuOpen={setIsMenuOpen}
