@@ -1,7 +1,7 @@
 "use server";
 
 import { PrismaClient } from "@prisma/client";
-import { handleError } from "@/_lib/utils";
+import { handleError } from "@/app/_lib/utils";
 const prisma = new PrismaClient();
 
 export async function getAllUsers({ query, limit = 8, page = 1 }) {

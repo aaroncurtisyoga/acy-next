@@ -9,7 +9,7 @@ import {
   ClipboardPlus,
   UsersRound,
 } from "lucide-react";
-import { TravelOption } from "@/_lib/types";
+import { TravelOption } from "@/app/_lib/types";
 
 export const unauthenticatedLinks = [
   {

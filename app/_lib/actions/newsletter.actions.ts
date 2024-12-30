@@ -2,8 +2,8 @@
 
 import mailchimp from "@mailchimp/mailchimp_marketing";
 import { z } from "zod";
-import { NewsletterFormSchema } from "@/_lib/schema";
-import { handleError } from "@/_lib/utils";
+import { NewsletterFormSchema } from "@/app/_lib/schema";
+import { handleError } from "@/app/_lib/utils";
 type Inputs = z.infer<typeof NewsletterFormSchema>;
 
 export async function addNewsletterEntry(data: Inputs) {
