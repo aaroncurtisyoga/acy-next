@@ -6,8 +6,8 @@ import { Input, Spinner } from "@nextui-org/react";
 import { ArrowRight, Check } from "lucide-react";
 import { SubmitHandler, useForm, Controller } from "react-hook-form";
 import { z } from "zod";
-import { addNewsletterEntry } from "@/_lib/actions/newsletter.actions";
-import { NewsletterFormSchema } from "@/_lib/schema";
+import { addNewsletterEntry } from "@/app/_lib/actions/newsletter.actions";
+import { NewsletterFormSchema } from "@/app/_lib/schema";
 
 type Inputs = z.infer<typeof NewsletterFormSchema>;
 

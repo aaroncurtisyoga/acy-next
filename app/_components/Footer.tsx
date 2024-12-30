@@ -2,7 +2,7 @@ import Link from "next/link";
 import { Link as NextUiLink } from "@nextui-org/react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 import NewsletterForm from "@/app/_components/NewsletterForm";
-import { instructorEmailAddress } from "@/_lib/constants";
+import { instructorEmailAddress } from "@/app/_lib/constants";
 
 const Footer = () => {
   return (
