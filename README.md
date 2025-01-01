@@ -56,7 +56,7 @@ NEXT_PUBLIC_SERVER_URL
 
 ### Common Scripts
 - `npm run dev` to start the development server
-- `npm build` for production build
+- `npm run build` for production build
 - `npm run lint` to run ESLint
 - `npm run lint:fix` to fix linting errors
 
