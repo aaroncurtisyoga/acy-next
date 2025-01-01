@@ -6,9 +6,6 @@ import {
   User,
   Location as PrismaLocation,
 } from "@prisma/client";
-import { getEventById } from "@/app/_lib/actions/event.actions";
-import { SearchParamProps } from "@/app/_lib/types";
-import { handleError } from "@/app/_lib/utils";
 import Attendees from "@/app/(root)/events/[id]/_components/Attendees";
 import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
 import DateAndTime from "@/app/(root)/events/[id]/_components/DateAndTime";
@@ -18,6 +15,9 @@ import Hero from "@/app/(root)/events/[id]/_components/Hero";
 import Location from "@/app/(root)/events/[id]/_components/Location";
 import RefundPolicy from "@/app/(root)/events/[id]/_components/RefundPolicy";
 import Subheading from "@/app/(root)/events/[id]/_components/Subheadline";
+import { getEventById } from "@/app/_lib/actions/event.actions";
+import { SearchParamProps } from "@/app/_lib/types";
+import { handleError } from "@/app/_lib/utils";
 
 type Event = PrismaEvent & {
   category: Category;

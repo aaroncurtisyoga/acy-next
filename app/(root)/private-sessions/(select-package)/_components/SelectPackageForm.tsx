@@ -6,13 +6,6 @@ import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import { checkoutOrder } from "@/app/_lib/actions/order.actions";
-import {
-  selectedPackage,
-  setSelectedPackage,
-} from "@/app/_lib/redux/features/privateSessionFormSlice";
-import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
-import { SelectPackageFormSchema } from "@/app/_lib/schema";
 import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
 import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
 import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
@@ -25,6 +18,13 @@ import {
 } from "@/app/(root)/private-sessions/_lib/constants";
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import { checkoutOrder } from "@/app/_lib/actions/order.actions";
+import {
+  selectedPackage,
+  setSelectedPackage,
+} from "@/app/_lib/redux/features/privateSessionFormSlice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { SelectPackageFormSchema } from "@/app/_lib/schema";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
