@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import _ from "lodash";
-import { autocompleteSuggestions } from "@/_lib/actions/google.actions";
+import { autocompleteSuggestions } from "@/app/_lib/actions/google.actions";
 
 const useAutocompleteSuggestions = () => {
   const [searchValue, setSearchValue] = useState("");

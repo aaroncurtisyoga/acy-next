@@ -10,9 +10,9 @@ import * as z from "zod";
 import {
   selectFormValues,
   setFormData,
-} from "@/_lib/redux/features/eventFormSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { EventFormDetailsForExternallyHostedEventSchema } from "@/_lib/schema";
+} from "@/app/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { EventFormDetailsForExternallyHostedEventSchema } from "@/app/_lib/schema";
 import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 
 export type Inputs = z.infer<

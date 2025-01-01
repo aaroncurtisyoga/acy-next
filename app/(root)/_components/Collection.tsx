@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { EventWithLocationAndCategory } from "@/_lib/types";
+import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import EventCard from "@/app/(root)/_components/EventCard";
 import EventText from "@/app/(root)/_components/EventText";
 import NoEventsFound from "@/app/(root)/_components/NoEventsFound";

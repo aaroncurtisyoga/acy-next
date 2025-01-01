@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { getAllEvents } from "@/_lib/actions/event.actions";
+import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import Collection from "@/app/(root)/_components/Collection";
 import FilterEventsModal from "@/app/(root)/_components/FilterEventsModal";
 import { merriweather } from "@/app/fonts";

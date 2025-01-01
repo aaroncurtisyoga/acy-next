@@ -6,13 +6,13 @@ import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import { checkoutOrder } from "@/_lib/actions/order.actions";
+import { checkoutOrder } from "@/app/_lib/actions/order.actions";
 import {
   selectedPackage,
   setSelectedPackage,
-} from "@/_lib/redux/features/privateSessionFormSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { SelectPackageFormSchema } from "@/_lib/schema";
+} from "@/app/_lib/redux/features/privateSessionFormSlice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { SelectPackageFormSchema } from "@/app/_lib/schema";
 import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
 import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
 import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";

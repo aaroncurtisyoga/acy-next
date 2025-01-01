@@ -6,9 +6,9 @@ import {
   User,
   Location as PrismaLocation,
 } from "@prisma/client";
-import { getEventById } from "@/_lib/actions/event.actions";
-import { SearchParamProps } from "@/_lib/types";
-import { handleError } from "@/_lib/utils";
+import { getEventById } from "@/app/_lib/actions/event.actions";
+import { SearchParamProps } from "@/app/_lib/types";
+import { handleError } from "@/app/_lib/utils";
 import Attendees from "@/app/(root)/events/[id]/_components/Attendees";
 import Checkout from "@/app/(root)/events/[id]/_components/Checkout";
 import DateAndTime from "@/app/(root)/events/[id]/_components/DateAndTime";

@@ -8,8 +8,8 @@ import {
   CreateOrderParams,
   GetOrdersByEventParams,
   GetOrdersByUserParams,
-} from "@/_lib/types";
-import { handleError } from "@/_lib/utils";
+} from "@/app/_lib/types";
+import { handleError } from "@/app/_lib/utils";
 
 const prisma = new PrismaClient();
 

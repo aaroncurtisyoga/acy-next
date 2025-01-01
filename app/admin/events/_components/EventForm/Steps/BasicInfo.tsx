@@ -15,10 +15,10 @@ import {
   resetFormData,
   selectFormValues,
   setFormData,
-} from "@/_lib/redux/features/eventFormSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { EventFormBasicInfoSchema } from "@/_lib/schema";
-import { PlaceDetails } from "@/_lib/types";
+} from "@/app/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { EventFormBasicInfoSchema } from "@/app/_lib/schema";
+import { PlaceDetails } from "@/app/_lib/types";
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";

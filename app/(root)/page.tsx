@@ -1,4 +1,4 @@
-import { SearchParamProps } from "@/_lib/types";
+import { SearchParamProps } from "@/app/_lib/types";
 import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
 import UpcomingEvents from "@/app/(root)/_components/UpcomingEvents";
 

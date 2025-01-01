@@ -13,7 +13,7 @@ import {
 } from "@nextui-org/react";
 import { cn } from "@nextui-org/theme";
 import { FieldErrors } from "react-hook-form";
-import { getImages } from "@/_lib/actions/blob.actions";
+import { getImages } from "@/app/_lib/actions/blob.actions";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
 interface ImagePickerProps {

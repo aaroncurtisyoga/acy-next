@@ -11,8 +11,11 @@ import {
   TableRow,
 } from "@nextui-org/react";
 import TableEmpty from "@/app/_components/TableEmpty";
-import { EventHistoryTableColumns, orderTypeLabels } from "@/_lib/constants";
-import { formatDateTime, formatPrice } from "@/_lib/utils";
+import {
+  EventHistoryTableColumns,
+  orderTypeLabels,
+} from "@/app/_lib/constants";
+import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 import { OrderResponse } from "@/app/(root)/account/page";
 
 interface EventHistoryTableProps {
