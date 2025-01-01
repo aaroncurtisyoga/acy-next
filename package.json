@@ -52,6 +52,7 @@
     "zod": "^3.23.8"
   },
   "devDependencies": {
+    "@clerk/testing": "^1.4.4",
     "@hookform/devtools": "^4.3.1",
     "@playwright/test": "^1.47.2",
     "@prisma/client": "^5.19.1",
