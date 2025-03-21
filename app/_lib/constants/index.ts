@@ -15,14 +15,16 @@ export const unauthenticatedLinks = [
   {
     name: "Private Sessions",
     href: "/private-sessions",
-    testId: "private-sessions",
+    testId: "private-sessions-link",
   },
 ];
 
-export const adminLinks = [{ name: "Admin", href: "/admin", testId: "admin" }];
+export const adminLinks = [
+  { name: "Admin", href: "/admin", testId: "admin-link" },
+];
 
 export const authenticatedLinks = [
-  { name: "Account", href: "/account", testId: "account" },
+  { name: "Account", href: "/account", testId: "account-link" },
 ];
 
 export const eventFormBasicInfoDefaultValues = {

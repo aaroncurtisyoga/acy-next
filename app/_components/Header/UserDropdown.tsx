@@ -7,7 +7,7 @@ import { useClerk, useUser } from "@clerk/nextjs";
 import { User } from "lucide-react";
 
 interface UserDropdownProps {
-  linksForLoggedInUsers: { href: string; name: string }[];
+  linksForLoggedInUsers: { href: string; name: string; testId: string }[];
 }
 
 const UserDropdown: FC<UserDropdownProps> = ({ linksForLoggedInUsers }) => {
@@ -46,6 +46,7 @@ const UserDropdown: FC<UserDropdownProps> = ({ linksForLoggedInUsers }) => {
   return (
     <div className="relative" ref={dropdownRef}>
       <button
+        data-testid="user-menu-button"
         aria-label="User menu"
         className="flex items-center"
         onClick={toggleMenu}
@@ -59,6 +60,7 @@ const UserDropdown: FC<UserDropdownProps> = ({ linksForLoggedInUsers }) => {
         >
           {linksForLoggedInUsers.map((link) => (
             <Link
+              data-testid={link.testId}
               href={link.href}
               key={link.name}
               className="block px-4 py-2 text-gray-700 hover:bg-gray-100"

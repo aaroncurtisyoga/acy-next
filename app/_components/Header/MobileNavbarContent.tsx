@@ -26,9 +26,13 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   return (
     <>
       {/* Hamburger Menu */}
-      <NavbarContent className="sm:hidden" justify="end">
+      <NavbarContent
+        className="sm:hidden"
+        justify="end"
+        data-testid="navbar-menu-mobile"
+      >
         <NavbarMenuToggle
-          data-testid="menu-toggle"
+          data-testid=""
           role={"button"}
           aria-expanded={isMenuOpen}
           aria-controls={"mobile-menu"}
