@@ -2,104 +2,110 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { useClerk, useUser } from "@clerk/nextjs";
-import { NavbarContent, NavbarMenu, NavbarMenuToggle } from "@nextui-org/react";
-import CustomMobileMenuItem from "@/app/_components/Header/CustomMobileMenuItem";
+import { usePathname, useRouter } from "next/navigation";
+import { useClerk } from "@clerk/nextjs";
+import { Menu } from "lucide-react";
+import {
+  NavbarContent,
+  NavbarMenuToggle,
+  NavbarMenu,
+  NavbarMenuItem,
+} from "@nextui-org/react";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 
 interface MobileNavbarContentProps {
+  linksForLoggedInUsers: { href: string; name: string; testId: string }[];
   isMenuOpen: boolean;
-  linksForLoggedInUsers: { name: string; href: string; testId: string }[];
-  setIsMenuOpen: (open: boolean) => void;
+  setIsMenuOpen: (value: boolean) => void;
+  isSignedIn?: boolean;
 }
 
 const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
-  isMenuOpen,
   linksForLoggedInUsers,
+  isMenuOpen,
   setIsMenuOpen,
+  isSignedIn = false,
 }) => {
-  const router = useRouter();
-  const { isSignedIn } = useUser();
+  const pathname = usePathname();
   const { signOut } = useClerk();
+  const router = useRouter();
+
+  const closeMenu = () => {
+    setIsMenuOpen(false);
+  };
+
+  const handleSignOut = () => {
+    signOut(() => router.push("/"));
+    closeMenu();
+  };
 
   return (
     <>
-      {/* Hamburger Menu */}
-      <NavbarContent
-        className="sm:hidden"
-        justify="end"
-        data-testid="navbar-menu-mobile"
-      >
+      <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
-          data-testid=""
-          role={"button"}
-          aria-expanded={isMenuOpen}
-          aria-controls={"mobile-menu"}
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          aria-pressed={isMenuOpen}
-          className="navbar-menu-toggle"
-        >
-          <span className="sr-only">
-            {isMenuOpen ? "Close navigation menu" : "Open navigation menu"}
-          </span>
-          <span
-            className={`pointer-events-none flex flex-col items-center justify-center transition-transform duration-150 ${
-              isMenuOpen ? "rotate-45" : "rotate-0"
-            }`}
-          >
-            <span
-              className={`block h-px w-6 bg-current transition-transform ${
-                isMenuOpen ? "translate-y-px" : "-translate-y-1"
-              }`}
-            />
-            <span
-              className={`block h-px w-6 bg-current transition-transform ${
-                isMenuOpen
-                  ? "-rotate-90 translate-y-0"
-                  : "rotate-0 translate-y-1"
-              }`}
-            />
-          </span>
-        </NavbarMenuToggle>
+          icon={<Menu />}
+          data-testid="menu-toggle"
+        />
       </NavbarContent>
-      {/* Unauthenticated Links */}
-      <NavbarMenu data-testid="navbar-menu" className="items-end w-full">
-        {unauthenticatedLinks.map((link) => (
-          <CustomMobileMenuItem
-            link={link}
-            setIsMenuOpen={setIsMenuOpen}
-            key={link.name}
-          />
-        ))}
-        {/* Authenticated Links */}
-        {linksForLoggedInUsers.map((link) => (
-          <CustomMobileMenuItem
-            link={link}
-            setIsMenuOpen={setIsMenuOpen}
-            key={link.name}
-          />
+
+      <NavbarMenu data-testid="navbar-menu-mobile">
+        {/* Unauthenticated Links - visible to all users */}
+        {unauthenticatedLinks.map((link, index) => (
+          <NavbarMenuItem
+            key={`${link.name}-${index}`}
+            isActive={pathname.includes(link.href)}
+          >
+            <Link
+              data-testid={`navbar-menu-item-${link.testId}`}
+              className="w-full"
+              href={link.href}
+              onClick={closeMenu}
+            >
+              {link.name}
+            </Link>
+          </NavbarMenuItem>
         ))}
 
-        {/* Show the Login or Log Out Button */}
-        {isSignedIn ? (
-          <CustomMobileMenuItem>
+        {/* Authenticated Links - only visible when signed in */}
+        {isSignedIn &&
+          linksForLoggedInUsers.map((link, index) => (
+            <NavbarMenuItem
+              key={`${link.name}-${index}`}
+              isActive={pathname.includes(link.href)}
+            >
+              <Link
+                data-testid={`navbar-menu-item-${link.testId}`}
+                className="w-full"
+                href={link.href}
+                onClick={closeMenu}
+              >
+                {link.name}
+              </Link>
+            </NavbarMenuItem>
+          ))}
+
+        {/* Auth Links - show sign in or sign out */}
+        <NavbarMenuItem>
+          {isSignedIn ? (
             <button
-              type="button"
-              onClick={() => signOut(() => router.push("/"))}
-              className="w-full text-lg font-medium text-gray-800 text-right"
-              data-testid={"mobile-log-out-button"}
+              data-testid="navbar-menu-item-logout"
+              className="w-full text-left"
+              onClick={handleSignOut}
             >
               Log out
             </button>
-          </CustomMobileMenuItem>
-        ) : (
-          <CustomMobileMenuItem>
-            <Link href={"/sign-in"} data-testid={"mobile-log-in-link"}>
+          ) : (
+            <Link
+              data-testid="navbar-menu-item-login"
+              className="w-full"
+              href="/sign-in"
+              onClick={closeMenu}
+            >
               Log in
             </Link>
-          </CustomMobileMenuItem>
-        )}
+          )}
+        </NavbarMenuItem>
       </NavbarMenu>
     </>
   );

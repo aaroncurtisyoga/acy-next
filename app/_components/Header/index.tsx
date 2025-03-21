@@ -12,7 +12,13 @@ import { adminLinks, authenticatedLinks } from "@/app/_lib/constants";
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [linksForLoggedInUsers, setLinksForLoggedInUsers] = useState([]);
+  const [linksForLoggedInUsers, setLinksForLoggedInUsers] = useState<
+    Array<{
+      name: string;
+      href: string;
+      testId: string;
+    }>
+  >([]);
 
   useEffect(() => {
     // Only update menu items after Clerk has loaded
@@ -20,7 +26,7 @@ const Header: FC = () => {
 
     // Update authenticated menu items based on user's role
     if (isSignedIn) {
-      const isAdmin = user?.publicMetadata.role === "admin";
+      const isAdmin = user?.publicMetadata?.role === "admin";
       setLinksForLoggedInUsers([
         ...authenticatedLinks,
         ...(isAdmin ? adminLinks : []),
@@ -56,13 +62,22 @@ const Header: FC = () => {
       }}
     >
       <Logo setIsMenuOpen={setIsMenuOpen} />
+
+      {/* Mobile navigation - UserDropdown will be part of the mobile menu content */}
       <MobileNavbarContent
         linksForLoggedInUsers={linksForLoggedInUsers}
         isMenuOpen={isMenuOpen}
         setIsMenuOpen={setIsMenuOpen}
+        isSignedIn={isSignedIn}
       />
+
+      {/* Desktop navigation with separate UserDropdown */}
       <DesktopNavbarContent>
-        <UserDropdown linksForLoggedInUsers={linksForLoggedInUsers} />
+        <UserDropdown
+          linksForLoggedInUsers={linksForLoggedInUsers}
+          isSignedIn={isSignedIn}
+          className="hidden sm:block" // Hide on mobile, show on desktop
+        />
       </DesktopNavbarContent>
     </Navbar>
   );

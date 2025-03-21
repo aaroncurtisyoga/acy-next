@@ -27,13 +27,15 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
             key={`${link.name}-${index}`}
             isActive={pathname.includes(link.href)}
           >
-            <Link className="w-full" href={link.href}>
+            <Link className="w-full" href={link.href} aria-label={link.name}>
               {link.name}
             </Link>
           </NavbarItem>
         ))}
+
+        {/* User Dropdown is passed as children */}
+        {children}
       </NavbarContent>
-      {children}
     </>
   );
 };
