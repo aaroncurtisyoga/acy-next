@@ -1,13 +1,6 @@
 import { clerk, setupClerkTestingToken } from "@clerk/testing/playwright";
 import { test, expect } from "@playwright/test";
-
-const unauthenticatedLinks = [
-  {
-    name: "Private Sessions",
-    href: "/private-sessions",
-    testId: "private-sessions-link",
-  },
-];
+import { unauthenticatedLinks } from "@/e2e/tests/constants/navigation";
 
 test.describe("Desktop Header Navigation", () => {
   // Set desktop viewport for all tests in this file
@@ -15,11 +8,6 @@ test.describe("Desktop Header Navigation", () => {
     await setupClerkTestingToken({ page });
     await page.setViewportSize({ width: 1280, height: 720 });
     await page.goto("/");
-  });
-
-  test("desktop menu is visible", async ({ page }) => {
-    const desktopMenu = page.getByTestId("navbar-menu-desktop");
-    await expect(desktopMenu).toBeVisible();
   });
 
   test("displays unauthenticated links correctly", async ({ page }) => {
@@ -114,5 +102,10 @@ test.describe("Desktop Header Navigation", () => {
     const accountLink = page.getByTestId("account-link");
     await expect(accountLink).toBeVisible();
     await expect(accountLink).toHaveAttribute("href", "/account");
+  });
+
+  test("desktop menu is visible", async ({ page }) => {
+    const desktopMenu = page.getByTestId("navbar-menu-desktop");
+    await expect(desktopMenu).toBeVisible();
   });
 });

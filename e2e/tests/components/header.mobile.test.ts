@@ -1,13 +1,6 @@
 import { clerk, setupClerkTestingToken } from "@clerk/testing/playwright";
 import { test, expect } from "@playwright/test";
-
-const unauthenticatedLinks = [
-  {
-    name: "Private Sessions",
-    href: "/private-sessions",
-    testId: "private-sessions-link",
-  },
-];
+import { unauthenticatedLinks } from "@/e2e/tests/constants/navigation";
 
 test.describe("Mobile Header Navigation", () => {
   // Set mobile viewport for all tests in this file
@@ -17,12 +10,6 @@ test.describe("Mobile Header Navigation", () => {
     await page.goto("/");
   });
 
-  test("mobile menu is visible when toggled", async ({ page }) => {
-    await page.getByTestId("menu-toggle").click();
-    const mobileMenu = page.getByTestId("navbar-menu-mobile");
-    await expect(mobileMenu).toBeVisible();
-  });
-
   test("displays unauthenticated links correctly", async ({ page }) => {
     // Ensure we're not signed in
     try {
@@ -30,8 +17,7 @@ test.describe("Mobile Header Navigation", () => {
     } catch (e) {
       // May already be signed out, which is fine
     }
-    // Reload after sign out
-    await page.goto("/");
+    await page.goto("/"); // Reload after signout
 
     // Open the mobile menu
     await page.getByTestId("menu-toggle").click();
@@ -70,8 +56,7 @@ test.describe("Mobile Header Navigation", () => {
       );
     }
 
-    // Reload with auth state
-    await page.goto("/");
+    await page.goto("/"); // Reload with auth state
 
     // Open the mobile menu if user menu is within it
     await page.getByTestId("menu-toggle").click();
@@ -81,7 +66,7 @@ test.describe("Mobile Header Navigation", () => {
     if (await userMenuButton.isVisible()) await userMenuButton.click();
 
     // Check if the admin link is visible and has the correct href
-    const adminLink = page.getByTestId("navbar-menu-item-admin-link");
+    const adminLink = page.getByTestId("admin-link");
     await expect(adminLink).toBeVisible();
     await expect(adminLink).toHaveAttribute("href", "/admin");
   });
@@ -126,8 +111,14 @@ test.describe("Mobile Header Navigation", () => {
     if (await userMenuButton.isVisible()) await userMenuButton.click();
 
     // Check if the account link is visible in the dropdown
-    const accountLink = page.getByTestId("navbar-menu-item-account-link");
+    const accountLink = page.getByTestId("account-link");
     await expect(accountLink).toBeVisible();
     await expect(accountLink).toHaveAttribute("href", "/account");
+  });
+
+  test("mobile menu is visible when toggled", async ({ page }) => {
+    await page.getByTestId("menu-toggle").click();
+    const mobileMenu = page.getByTestId("navbar-menu-mobile");
+    await expect(mobileMenu).toBeVisible();
   });
 });
