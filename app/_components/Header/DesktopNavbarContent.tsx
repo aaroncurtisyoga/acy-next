@@ -23,11 +23,15 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
         {/* Auth and Unauthenticated Links */}
         {unauthenticatedLinks.map((link, index) => (
           <NavbarItem
-            data-testid={`navbar-item-${link.testId}`}
             key={`${link.name}-${index}`}
             isActive={pathname.includes(link.href)}
           >
-            <Link className="w-full" href={link.href} aria-label={link.name}>
+            <Link
+              className="w-full"
+              href={link.href}
+              aria-label={link.name}
+              data-testid={`${link.testId}`}
+            >
               {link.name}
             </Link>
           </NavbarItem>

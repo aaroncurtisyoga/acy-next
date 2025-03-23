@@ -1,6 +1,16 @@
-import { clerk, setupClerkTestingToken } from "@clerk/testing/playwright";
+import { setupClerkTestingToken } from "@clerk/testing/playwright";
 import { test, expect } from "@playwright/test";
-import { unauthenticatedLinks } from "@/e2e/tests/constants/navigation";
+import {
+  getUnauthenticatedLinks,
+  getUserLinks,
+  getAdminLinks,
+} from "@/e2e/tests/constants/navigation";
+import { signInAs, ensureSignedOut } from "@/e2e/tests/utils/auth";
+import {
+  verifyLinks,
+  openMobileMenu,
+  openMobileUserMenu,
+} from "@/e2e/tests/utils/navigation";
 
 test.describe("Mobile Header Navigation", () => {
   // Set mobile viewport for all tests in this file
@@ -10,115 +20,50 @@ test.describe("Mobile Header Navigation", () => {
     await page.goto("/");
   });
 
+  test("mobile menu is visible when toggled", async ({ page }) => {
+    await openMobileMenu(page);
+    const mobileMenu = page.getByTestId("navbar-menu-mobile");
+    await expect(mobileMenu).toBeVisible();
+  });
+
   test("displays unauthenticated links correctly", async ({ page }) => {
-    // Ensure we're not signed in
-    try {
-      await clerk.signOut({ page });
-    } catch (e) {
-      // May already be signed out, which is fine
-    }
-    await page.goto("/"); // Reload after signout
+    await ensureSignedOut(page);
 
     // Open the mobile menu
-    await page.getByTestId("menu-toggle").click();
+    await openMobileMenu(page);
 
-    for (const link of unauthenticatedLinks) {
-      const mobileLink = page.getByTestId(`navbar-menu-item-${link.testId}`);
-      await expect(mobileLink).toBeVisible();
-      await expect(mobileLink).toHaveAttribute("href", link.href);
-    }
+    // Get mobile version of unauthenticated links (isMobile = true)
+    const mobileLinks = getUnauthenticatedLinks(true);
+    await verifyLinks(page, mobileLinks);
   });
 
   test("shows admin links for admin users in mobile menu", async ({ page }) => {
-    if (
-      process.env.E2E_CLERK_ADMIN_USERNAME &&
-      process.env.E2E_CLERK_ADMIN_PASSWORD
-    ) {
-      await clerk.signIn({
-        page,
-        signInParams: {
-          strategy: "password",
-          identifier: process.env.E2E_CLERK_ADMIN_USERNAME,
-          password: process.env.E2E_CLERK_ADMIN_PASSWORD,
-        },
-      });
-    } else {
-      // For testing without env variables, have route mocking
-      // as a fallback and less reliable than real auth
-      await page.route("**/clerk/session", (route) =>
-        route.fulfill({
-          status: 200,
-          body: JSON.stringify({
-            isSignedIn: true,
-            user: { id: "test-admin", publicMetadata: { role: "admin" } },
-          }),
-        }),
-      );
-    }
+    await signInAs(page, "admin");
 
-    await page.goto("/"); // Reload with auth state
+    // Open the mobile menu
+    await openMobileMenu(page);
 
-    // Open the mobile menu if user menu is within it
-    await page.getByTestId("menu-toggle").click();
+    // Open the user menu button if needed
+    await openMobileUserMenu(page);
 
-    // Click the user menu button to open the dropdown (if it's separate)
-    const userMenuButton = page.getByTestId("user-menu-button");
-    if (await userMenuButton.isVisible()) await userMenuButton.click();
-
-    // Check if the admin link is visible and has the correct href
-    const adminLink = page.getByTestId("admin-link");
-    await expect(adminLink).toBeVisible();
-    await expect(adminLink).toHaveAttribute("href", "/admin");
+    // Get mobile version of admin links (isMobile = true)
+    const mobileAdminLinks = getAdminLinks(true);
+    await verifyLinks(page, mobileAdminLinks);
   });
 
   test("shows account link for all authenticated users in mobile menu", async ({
     page,
   }) => {
-    if (
-      process.env.E2E_CLERK_USER_USERNAME &&
-      process.env.E2E_CLERK_USER_PASSWORD
-    ) {
-      await clerk.signIn({
-        page,
-        signInParams: {
-          strategy: "password",
-          identifier: process.env.E2E_CLERK_USER_USERNAME,
-          password: process.env.E2E_CLERK_USER_PASSWORD,
-        },
-      });
-    } else {
-      // For testing without env variables, implement route mocking
-      // This is a fallback and less reliable than real auth
-      await page.route("**/clerk/session", (route) =>
-        route.fulfill({
-          status: 200,
-          body: JSON.stringify({
-            isSignedIn: true,
-            user: { id: "test-user", publicMetadata: { role: "user" } },
-          }),
-        }),
-      );
-    }
+    await signInAs(page, "user");
 
-    await page.goto("/"); // Reload with auth state
+    // Open the mobile menu
+    await openMobileMenu(page);
 
-    // Open the mobile menu if user menu is within it
-    await page.getByTestId("menu-toggle").click();
+    // Open the user menu if needed
+    await openMobileUserMenu(page);
 
-    // Click the user menu button to open the dropdown (if it's separate)
-    // Using a more flexible selector that works in mobile context
-    const userMenuButton = page.getByRole("button", { name: "User menu" });
-    if (await userMenuButton.isVisible()) await userMenuButton.click();
-
-    // Check if the account link is visible in the dropdown
-    const accountLink = page.getByTestId("account-link");
-    await expect(accountLink).toBeVisible();
-    await expect(accountLink).toHaveAttribute("href", "/account");
-  });
-
-  test("mobile menu is visible when toggled", async ({ page }) => {
-    await page.getByTestId("menu-toggle").click();
-    const mobileMenu = page.getByTestId("navbar-menu-mobile");
-    await expect(mobileMenu).toBeVisible();
+    // Get mobile version of user links (isMobile = true)
+    const mobileUserLinks = getUserLinks(true);
+    await verifyLinks(page, mobileUserLinks);
   });
 });
