@@ -3,10 +3,10 @@ import { CalendarX } from "lucide-react";
 
 export default function NoEventsCard() {
   return (
-    <Card className="mx-auto text-center p-6 mt-2 shadow-md bg-slate-50/30">
-      <CardHeader className="flex items-center">
+    <Card className="mx-auto text-center p-6 shadow-md bg-slate-50/30">
+      <CardHeader className="flex">
         <CalendarX className="w-10 h-10 text-primary-900 mr-3" />
-        <h3 className="text-primary-900 italic">
+        <h3 className="text-primary-900 italic text-left">
           Nothing on the calendar right this moment
         </h3>
       </CardHeader>

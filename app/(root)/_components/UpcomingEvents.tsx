@@ -18,6 +18,9 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     page,
     query: searchText,
   });
+
+  const hasEvents = data.length > 0;
+
   return (
     <div
       className={
@@ -27,12 +30,16 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       <h1 className={`text-3xl mb-4 md:mb-6 ${merriweather.className}`}>
         Practice.
       </h1>
-      <div className={"flex justify-between items-center mb-4"}>
-        <p className={"font-semibold"}>
-          Here&apos;s some upcoming events I&apos;ve got coming up:
-        </p>
-        <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
-      </div>
+
+      {hasEvents && (
+        <div className={"flex justify-between items-center mb-4"}>
+          <p className={"font-semibold"}>
+            Here&apos;s some upcoming events I&apos;ve got coming up:
+          </p>
+          <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
+        </div>
+      )}
+
       <Collection
         collectionType={"All_Events"}
         data={data}
