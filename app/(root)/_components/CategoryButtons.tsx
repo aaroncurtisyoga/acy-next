@@ -4,8 +4,8 @@ import React, { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Button } from "@nextui-org/react";
 import { Category } from "@prisma/client";
-import { getAllCategories } from "@/_lib/actions/category.actions";
-import { formUrlQuery, removeKeysFromQuery } from "@/_lib/utils";
+import { getAllCategories } from "@/app/_lib/actions/category.actions";
+import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
 
 const CategoryButtons: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("");

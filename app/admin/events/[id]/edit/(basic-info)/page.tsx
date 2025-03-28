@@ -3,10 +3,10 @@
 import React, { FC, useEffect, useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import { Event } from "@prisma/client";
-import { getEventById } from "@/_lib/actions/event.actions";
-import { setFormData } from "@/_lib/redux/features/eventFormSlice";
-import { useAppDispatch } from "@/_lib/redux/hooks";
-import { handleError } from "@/_lib/utils";
+import { getEventById } from "@/app/_lib/actions/event.actions";
+import { setFormData } from "@/app/_lib/redux/features/eventFormSlice";
+import { useAppDispatch } from "@/app/_lib/redux/hooks";
+import { handleError } from "@/app/_lib/utils";
 import BasicInfo from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
 const UpdateEvent: FC = () => {

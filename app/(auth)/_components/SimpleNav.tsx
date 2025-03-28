@@ -1,9 +1,9 @@
 import { Navbar } from "@nextui-org/react";
-import Logo from "@/_components/Header/Logo";
+import Logo from "@/app/_components/Header/Logo";
 
 const SimpleNav = () => {
   return (
-    <Navbar isBordered maxWidth="xl">
+    <Navbar isBordered maxWidth="2xl">
       <Logo />
     </Navbar>
   );

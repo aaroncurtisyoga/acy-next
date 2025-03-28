@@ -1,6 +1,6 @@
 import { FC } from "react";
 import { CalendarCheck2 } from "lucide-react";
-import { formatDateTime } from "@/_lib/utils";
+import { formatDateTime } from "@/app/_lib/utils";
 
 interface DateAndTimeProps {
   endDateTime: Date;

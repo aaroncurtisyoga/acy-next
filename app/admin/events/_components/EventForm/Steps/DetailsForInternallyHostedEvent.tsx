@@ -11,9 +11,9 @@ import * as z from "zod";
 import {
   selectFormValues,
   setFormData,
-} from "@/_lib/redux/features/eventFormSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { EventFormDetailsForInternallyHostedEventSchema } from "@/_lib/schema";
+} from "@/app/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { EventFormDetailsForInternallyHostedEventSchema } from "@/app/_lib/schema";
 import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
 import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
 import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";

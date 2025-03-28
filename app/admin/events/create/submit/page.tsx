@@ -4,13 +4,13 @@ import { FC, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
-import { createEvent } from "@/_lib/actions/event.actions";
+import { createEvent } from "@/app/_lib/actions/event.actions";
 import {
   selectFormValues,
   resetFormData,
-} from "@/_lib/redux/features/eventFormSlice";
-import { useAppDispatch, useAppSelector } from "@/_lib/redux/hooks";
-import { handleError } from "@/_lib/utils";
+} from "@/app/_lib/redux/features/eventFormSlice";
+import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { handleError } from "@/app/_lib/utils";
 
 const SubmitEvent: FC = () => {
   const router = useRouter();

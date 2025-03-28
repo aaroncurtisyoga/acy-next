@@ -13,12 +13,12 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Eye, Pencil, Trash2 } from "lucide-react";
-import BasicModal from "@/_components/BasicModal";
-import TableEmpty from "@/_components/TableEmpty";
-import TableLoading from "@/_components/TableLoading";
-import { deleteEvent, getAllEvents } from "@/_lib/actions/event.actions";
-import { TableEventManagementColumns } from "@/_lib/constants";
-import { formatDateTime, handleError } from "@/_lib/utils";
+import BasicModal from "@/app/_components/BasicModal";
+import TableEmpty from "@/app/_components/TableEmpty";
+import TableLoading from "@/app/_components/TableLoading";
+import { deleteEvent, getAllEvents } from "@/app/_lib/actions/event.actions";
+import { TableEventManagementColumns } from "@/app/_lib/constants";
+import { formatDateTime, handleError } from "@/app/_lib/utils";
 
 const TableEventManagement: FC = () => {
   const [loading, setLoading] = useState(true);

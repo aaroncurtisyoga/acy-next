@@ -3,8 +3,8 @@ import { NextResponse } from "next/server";
 import { WebhookEvent } from "@clerk/nextjs/server";
 import { clerkClient } from "@clerk/nextjs/server";
 import { Webhook } from "svix";
-import prisma from "@/_lib/prisma";
-import { handleError } from "@/_lib/utils";
+import prisma from "@/app/_lib/prisma";
+import { handleError } from "@/app/_lib/utils";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhooks

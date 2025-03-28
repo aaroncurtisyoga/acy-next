@@ -12,12 +12,12 @@ import {
   useDisclosure,
 } from "@nextui-org/react";
 import { Trash2 } from "lucide-react";
-import BasicModal from "@/_components/BasicModal";
-import TableEmpty from "@/_components/TableEmpty";
-import TableLoading from "@/_components/TableLoading";
-import { deleteUser, getAllUsers } from "@/_lib/actions/user.actions";
-import { TableManageUsersColumns } from "@/_lib/constants";
-import { handleError } from "@/_lib/utils";
+import BasicModal from "@/app/_components/BasicModal";
+import TableEmpty from "@/app/_components/TableEmpty";
+import TableLoading from "@/app/_components/TableLoading";
+import { deleteUser, getAllUsers } from "@/app/_lib/actions/user.actions";
+import { TableManageUsersColumns } from "@/app/_lib/constants";
+import { handleError } from "@/app/_lib/utils";
 
 const ManageUsersTable: FC = () => {
   const [loading, setLoading] = useState(true);

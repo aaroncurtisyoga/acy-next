@@ -1,7 +1,7 @@
 import { FC } from "react";
-import { getAllEvents } from "@/_lib/actions/event.actions";
 import Collection from "@/app/(root)/_components/Collection";
 import FilterEventsModal from "@/app/(root)/_components/FilterEventsModal";
+import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
 interface UpcomingEventsProps {
@@ -18,6 +18,9 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     page,
     query: searchText,
   });
+
+  const hasEvents = data.length > 0;
+
   return (
     <div
       className={
@@ -27,12 +30,16 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       <h1 className={`text-3xl mb-4 md:mb-6 ${merriweather.className}`}>
         Practice.
       </h1>
-      <div className={"flex justify-between items-center mb-4"}>
-        <p className={"font-semibold"}>
-          Here&apos;s some upcoming events I&apos;ve got coming up:
-        </p>
-        <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
-      </div>
+
+      {hasEvents && (
+        <div className={"flex justify-between items-center mb-4"}>
+          <p className={"font-semibold"}>
+            Here&apos;s some upcoming events I&apos;ve got coming up:
+          </p>
+          <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
+        </div>
+      )}
+
       <Collection
         collectionType={"All_Events"}
         data={data}

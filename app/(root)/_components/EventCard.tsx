@@ -3,8 +3,8 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { EventWithLocationAndCategory } from "@/_lib/types";
-import { formatDateTime } from "@/_lib/utils";
+import { EventWithLocationAndCategory } from "@/app/_lib/types";
+import { formatDateTime } from "@/app/_lib/utils";
 
 interface CardProps {
   event: EventWithLocationAndCategory;

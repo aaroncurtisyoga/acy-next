@@ -6,7 +6,10 @@
 .pnp.js
 
 # testing
-/coverage
+e2e/test-results/
+e2e/playwright-report/
+e2e/blob-report/
+e2e/playwright/.cache/
 
 # next.js
 /.next/
@@ -31,7 +34,3 @@ yarn-error.log*
 
 .vercel
 node_modules/
-/test-results/
-/playwright-report/
-/blob-report/
-/playwright/.cache/

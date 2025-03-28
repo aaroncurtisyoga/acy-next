@@ -2,8 +2,9 @@
 
 import { Link as NextUiLink } from "@nextui-org/link";
 import { Button } from "@nextui-org/react";
-import Error from "@/_components/Error";
-import { instructorEmailAddress } from "../_lib/constants";
+import Error from "@/app/_components/Error";
+import { instructorEmailAddress } from "@/app/_lib/constants";
+
 export default function GlobalError({
   reset,
 }: {
