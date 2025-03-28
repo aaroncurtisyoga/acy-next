@@ -13,7 +13,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
       <div className={"relative"}>
         <ImageResponsiveHandstand />
       </div>
-      <UpcomingEvents searchParams={searchParams} />
+      {/*<UpcomingEvents searchParams={searchParams} />*/}
     </section>
   );
 };
