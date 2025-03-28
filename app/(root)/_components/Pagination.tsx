@@ -31,13 +31,23 @@ const Pagination: FC<PaginationProps> = ({
   };
 
   return (
-    <div>
-      <button onClick={() => onClick("prev")} disabled={Number(page) <= 1}>
+    <div className="flex items-center justify-center gap-4 mt-6">
+      <button
+        onClick={() => onClick("prev")}
+        disabled={Number(page) <= 1}
+        className="flex items-center px-4 py-2 rounded-md disabled:opacity-50 bg-gray-100"
+        aria-label="Previous page"
+      >
         Previous
       </button>
+      <span className="text-sm">
+        Page {page} of {totalPages}
+      </span>
       <button
         onClick={() => onClick("next")}
         disabled={Number(page) >= totalPages}
+        className="flex items-center px-4 py-2 rounded-md disabled:opacity-50 bg-gray-100"
+        aria-label="Next page"
       >
         Next
       </button>

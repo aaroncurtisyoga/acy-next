@@ -23,7 +23,7 @@ export default function NoEventsCard() {
         </p>
         <p className={"mt-2"}>
           <span className="text-xl">✨</span> I hope this day finds you in
-          happiness and health. And I look forward to practice with you soon
+          happiness and health. And I look forward to practicing with you soon!
         </p>
       </CardBody>
     </Card>
