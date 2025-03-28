@@ -50,14 +50,27 @@ const Header: FC = () => {
           "relative",
           "h-full",
           "items-center",
+          // Active state styling
           "data-[active=true]:after:content-['']",
           "data-[active=true]:after:absolute",
           "data-[active=true]:after:bottom-0",
           "data-[active=true]:after:left-0",
           "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[2px]",
+          "data-[active=true]:after:h-[3px]",
           "data-[active=true]:after:rounded-[2px]",
           "data-[active=true]:after:bg-primary",
+          // Hover state styling
+          "hover:after:content-['']",
+          "hover:after:absolute",
+          "hover:after:bottom-0",
+          "hover:after:left-0",
+          "hover:after:right-0",
+          "hover:after:h-[3px]",
+          "hover:after:rounded-[2px]",
+          "hover:after:bg-primary",
+          // Transition
+          "after:transition-all",
+          "after:duration-200",
         ],
       }}
     >

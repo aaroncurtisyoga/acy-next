@@ -3,18 +3,27 @@ import { CalendarX } from "lucide-react";
 
 export default function NoEventsCard() {
   return (
-    <Card className="mx-auto text-center p-6 mt-2 shadow-md">
+    <Card className="mx-auto text-center p-6 mt-2 shadow-md bg-slate-50/30">
       <CardHeader className="flex items-center">
         <CalendarX className="w-10 h-10 text-primary-900 mr-3" />
         <h3 className="text-primary-900 italic">
-          No events scheduled at the moment
+          Nothing on the calendar right this moment
         </h3>
       </CardHeader>
       <CardBody className="py-3">
         <p>
-          I don&apos;t have any events scheduled at the moment, but I&apos;m
-          looking forward to getting some scheduled soon. Please check back for
-          updates or sign up for the newsletter.
+          <span className="text-xl">🙂</span> Hey, thanks for dropping by. I
+          don&lsquo;t have any events scheduled right this moment, but
+          I&lsquo;ll be back with more offerings soon
+        </p>
+        <p className={"mt-2"}>
+          <span className="text-xl">📬</span> If you want to get notifications
+          sent right to your inbox, there&lsquo;s the option to sign up for my
+          newsletter right at the bottom of this page
+        </p>
+        <p className={"mt-2"}>
+          <span className="text-xl">✨</span> I hope this day finds you in
+          happiness and health. And I look forward to practice with you soon
         </p>
       </CardBody>
     </Card>

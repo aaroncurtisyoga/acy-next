@@ -1,5 +1,5 @@
 import { FC, PropsWithChildren } from "react";
-import Header from "@/app/_components/Header";
+import Header from "@/app/_components/Header/Header";
 import SidebarMenu from "@/app/admin/_components/SidebarMenu";
 import type { Metadata } from "next";
 
