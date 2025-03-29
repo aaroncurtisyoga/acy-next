@@ -22,6 +22,7 @@
     "@reduxjs/toolkit": "^2.6.1",
     "@stripe/stripe-js": "^4.4.0",
     "@tiptap/extension-link": "^2.3.2",
+    "@tiptap/extension-placeholder": "^2.11.6",
     "@tiptap/extension-underline": "^2.3.2",
     "@tiptap/pm": "^2.3.2",
     "@tiptap/react": "^2.3.2",
