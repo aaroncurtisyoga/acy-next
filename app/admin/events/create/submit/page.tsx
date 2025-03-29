@@ -3,7 +3,7 @@
 import { FC, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
-import { Link as NextUiLink } from "@nextui-org/link";
+import { Link as HeroUiLink } from "@heroui/react";
 import { createEvent } from "@/app/_lib/actions/event.actions";
 import {
   selectFormValues,
@@ -44,12 +44,12 @@ const SubmitEvent: FC = () => {
       <form onSubmit={(e) => onSubmit(e)}>
         <div className="flex justify-between mt-5">
           <Button type={"button"}>
-            <NextUiLink
+            <HeroUiLink
               href={"/events/details"}
               className={"text-default-foreground"}
             >
               Previous
-            </NextUiLink>
+            </HeroUiLink>
           </Button>
           <Button type={"submit"} color={"primary"}>
             Create Event
