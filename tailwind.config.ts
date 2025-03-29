@@ -1,7 +1,7 @@
 // tailwind.config.ts
 
-import { nextui } from "@nextui-org/react";
 import type { Config } from "tailwindcss";
+import { heroui } from "@heroui/react";
 
 const config: Config = {
   content: [
@@ -20,7 +20,7 @@ const config: Config = {
   },
   darkMode: "class",
   plugins: [
-    nextui({
+    heroui({
       prefix: "nextui",
       addCommonColors: false,
       defaultTheme: "light",

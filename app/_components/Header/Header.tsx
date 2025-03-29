@@ -2,12 +2,12 @@
 
 import { FC, useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Navbar } from "@nextui-org/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
 import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 import UserDropdown from "@/app/_components/Header/UserDropdown";
 import { adminLinks, authenticatedLinks } from "@/app/_lib/constants";
+import { Navbar } from "@heroui/react";
 
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();

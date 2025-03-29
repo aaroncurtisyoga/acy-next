@@ -3,7 +3,7 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { ClerkProvider, useUser } from "@clerk/nextjs";
-import { NextUIProvider } from "@nextui-org/react";
+import { HeroUIProvider } from "@heroui/system";
 import { StoreProvider } from "@/app/StoreProvider";
 
 interface ProvidersProps {
@@ -16,7 +16,7 @@ export function Providers({ children }: ProvidersProps) {
   return (
     <StoreProvider>
       <ClerkProvider>
-        <NextUIProvider navigate={router.push}>{children}</NextUIProvider>
+        <HeroUIProvider navigate={router.push}>{children}</HeroUIProvider>
       </ClerkProvider>
     </StoreProvider>
   );

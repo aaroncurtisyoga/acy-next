@@ -4,14 +4,14 @@ import { FC } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
-import {
-  NavbarContent,
-  NavbarMenuToggle,
-  NavbarMenu,
-  NavbarMenuItem,
-} from "@nextui-org/react";
 import { Menu } from "lucide-react";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
+import {
+  NavbarContent,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from "@heroui/react";
 
 interface MobileNavbarContentProps {
   linksForLoggedInUsers: { href: string; name: string; testId: string }[];

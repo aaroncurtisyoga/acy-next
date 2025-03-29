@@ -1,7 +1,6 @@
 import React, { FC, useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { RadioGroup } from "@nextui-org/react";
 import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Controller, useForm } from "react-hook-form";
@@ -25,6 +24,7 @@ import {
 } from "@/app/_lib/redux/features/privateSessionFormSlice";
 import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
+import { RadioGroup } from "@heroui/radio";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 

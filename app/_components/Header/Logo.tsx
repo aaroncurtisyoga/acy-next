@@ -2,8 +2,8 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { NavbarBrand } from "@nextui-org/react";
 import { merriweather } from "@/app/fonts";
+import { NavbarBrand } from "@heroui/react";
 
 interface LogoProps {
   setIsMenuOpen?: (value: boolean) => void;

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Link as NextUiLink } from "@nextui-org/react";
+import { Link as HeroUiLink } from "@heroui/react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 import NewsletterForm from "@/app/_components/NewsletterForm";
 import { instructorEmailAddress } from "@/app/_lib/constants";
@@ -68,7 +68,7 @@ const Footer = () => {
           </p>
           <p>
             Reach out by{" "}
-            <NextUiLink
+            <HeroUiLink
               data-testid="footer-email-link"
               isExternal
               size="sm"
@@ -77,11 +77,11 @@ const Footer = () => {
               href={`mailto:${instructorEmailAddress}`}
             >
               Email
-            </NextUiLink>
+            </HeroUiLink>
           </p>
           <p>
             Made by{" "}
-            <NextUiLink
+            <HeroUiLink
               data-testid="footer-github-link"
               className="text-blue-700 hover:text-blue-500 focus-visible:ring focus-visible:ring-blue-300"
               href="https://github.com/aaroncurtisyoga/acy-next"
@@ -91,7 +91,7 @@ const Footer = () => {
               underline="hover"
             >
               Aaron
-            </NextUiLink>
+            </HeroUiLink>
           </p>
         </div>
       </div>

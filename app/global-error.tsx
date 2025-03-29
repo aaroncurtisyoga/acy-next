@@ -1,9 +1,9 @@
 "use client";
 
-import { Link as NextUiLink } from "@nextui-org/link";
-import { Button } from "@nextui-org/react";
 import Error from "@/app/_components/Error";
 import { instructorEmailAddress } from "@/app/_lib/constants";
+import { Button } from "@heroui/react";
+import { Link as HeroUiLink } from "@heroui/link";
 
 export default function GlobalError({
   reset,
@@ -21,16 +21,16 @@ export default function GlobalError({
           <p className={"error-subHeadline"}>
             If you would like to try refreshing the page, please click the
             button below. If the issue persists, please{" "}
-            <NextUiLink
+            <HeroUiLink
               isExternal
               underline={"hover"}
               className={"text-xl md:text-2xl"}
               href={`mailto:${instructorEmailAddress}`}
             >
               let us know.
-            </NextUiLink>
+            </HeroUiLink>
           </p>
-          <Button onClick={() => reset()}>Try to refresh</Button>
+          <Button onPress={() => reset()}>Try to refresh</Button>
         </Error>
       </body>
     </html>
