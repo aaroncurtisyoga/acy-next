@@ -13,6 +13,11 @@ interface LocationInputProps {
   errors: FieldErrors<Inputs>;
 }
 
+interface LocationSuggestion {
+  place_id: string;
+  description: string;
+}
+
 const LocationInput: FC<LocationInputProps> = ({
   control,
   setLocationValueInReactHookForm,
@@ -20,7 +25,7 @@ const LocationInput: FC<LocationInputProps> = ({
 }) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
-  const handleSelectLocation = async (placeId: any) => {
+  const handleSelectLocation = async (placeId: string) => {
     await placeDetails(placeId).then((place) => {
       setLocationValueInReactHookForm({
         formattedAddress: place.formatted_address,
@@ -36,6 +41,15 @@ const LocationInput: FC<LocationInputProps> = ({
     setSearchValue(value);
   };
 
+  // Create a mapping of keys to place_ids for lookup
+  const placeIdMap = React.useMemo(() => {
+    const map: Record<string, string> = {};
+    suggestions?.forEach((location: LocationSuggestion) => {
+      map[location.place_id] = location.place_id;
+    });
+    return map;
+  }, [suggestions]);
+
   return (
     <Controller
       control={control}
@@ -48,13 +62,16 @@ const LocationInput: FC<LocationInputProps> = ({
           placeholder="Search for a location"
           variant={"bordered"}
           onInputChange={onInputChange}
-          onSelectionChange={(value) => handleSelectLocation(value)}
+          onSelectionChange={(key) => {
+            // Convert the key to a string and use it to look up the place_id
+            const placeId = placeIdMap[key.toString()];
+            if (placeId) {
+              handleSelectLocation(placeId);
+            }
+          }}
         >
-          {suggestions?.map((location) => (
-            <AutocompleteItem
-              value={location.description}
-              key={location.place_id}
-            >
+          {suggestions?.map((location: LocationSuggestion) => (
+            <AutocompleteItem key={location.place_id} id={location.place_id}>
               {location.description}
             </AutocompleteItem>
           ))}

@@ -1,21 +1,36 @@
 "use client";
 
-import React from "react";
-import Link from "next/link";
+import { usePathname, useRouter } from "next/navigation";
 import { Listbox, ListboxItem } from "@heroui/react";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 
 const SidebarMenu = () => {
+  const pathname = usePathname();
+  const router = useRouter();
+
+  // Function to handle navigation
+  const handleNavigation = (path: string) => {
+    console.log("Navigating to:", path);
+    router.push(path);
+  };
+
   return (
-    <Listbox aria-label="Actions" className={"mt-5"}>
+    <Listbox
+      aria-label="Admin Navigation"
+      className="mt-5"
+      selectionMode="single"
+      selectedKeys={[pathname]}
+    >
       {adminDashboardLinks.map((link) => (
         <ListboxItem
           key={link.path}
-          startContent={<link.icon />}
+          startContent={<link.icon size={18} />}
           textValue={link.name}
-          variant={"bordered"}
+          variant="bordered"
+          className={`mb-2 ${pathname === link.path ? "bg-primary-100" : ""}`}
+          onPress={() => handleNavigation(link.path)}
         >
-          <Link href={link.path}>{link.name}</Link>
+          {link.name}
         </ListboxItem>
       ))}
     </Listbox>
