@@ -5,13 +5,21 @@ import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
 interface UpcomingEventsProps {
-  searchParams: any;
+  searchParams: Promise<{
+    page?: string;
+    query?: string;
+    category?: string;
+  }>;
 }
 
 const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
-  const page = Number(searchParams?.page) || 1;
-  const searchText = (searchParams?.query as string) || "";
-  const category = (searchParams?.category as string) || "";
+  // Await the searchParams promise before accessing its properties
+  const resolvedParams = await searchParams;
+
+  const page = Number(resolvedParams?.page) || 1;
+  const searchText = (resolvedParams?.query as string) || "";
+  const category = (resolvedParams?.category as string) || "";
+
   const { data, hasFiltersApplied, totalPages } = await getAllEvents({
     category,
     limit: 8,

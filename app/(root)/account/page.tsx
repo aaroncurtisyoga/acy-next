@@ -19,15 +19,20 @@ export type OrderResponse = {
 };
 
 interface AccountPageProps {
-  searchParams: {
-    ordersPage: string;
-  };
+  searchParams: Promise<{
+    ordersPage?: string;
+  }>;
 }
 
 const AccountPage: FC<AccountPageProps> = async ({ searchParams }) => {
-  const { sessionClaims } = auth();
-  const userId = sessionClaims?.metadata?.userId as string;
-  const ordersPage = Number(searchParams?.ordersPage) || 1;
+  // Await the auth function to get the session claims
+  const authResult = await auth();
+  const userId = authResult?.sessionClaims?.metadata?.userId as string;
+
+  // Await the searchParams promise before accessing its properties
+  const resolvedParams = await searchParams;
+  const ordersPage = Number(resolvedParams?.ordersPage) || 1;
+
   const orders: OrderResponse = await getOrdersByUser({
     userId,
     page: ordersPage,
