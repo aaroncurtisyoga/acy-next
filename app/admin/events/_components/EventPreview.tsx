@@ -8,7 +8,7 @@ import {
   Link,
   Image,
   Spacer,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 const EventPreview = ({ event }) => {
   const {

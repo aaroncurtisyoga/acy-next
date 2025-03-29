@@ -1,14 +1,14 @@
 // tailwind.config.ts
 
-import type { Config } from "tailwindcss";
 import { heroui } from "@heroui/react";
+import type { Config } from "tailwindcss";
 
 const config: Config = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./_components/**/*.{js,ts,jsx,tsx,mdx}",
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
-    "./node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}",
+    "./node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
@@ -21,7 +21,7 @@ const config: Config = {
   darkMode: "class",
   plugins: [
     heroui({
-      prefix: "nextui",
+      prefix: "hero",
       addCommonColors: false,
       defaultTheme: "light",
       defaultExtendTheme: "light",
@@ -164,7 +164,7 @@ const config: Config = {
               200: "#1b488e",
               300: "#175ab1",
               400: "#126bd5",
-              500: "#587ee0", // your provided blue
+              500: "#587ee0",
               600: "#829fe3",
               700: "#adc0e7",
               800: "#d7e0ea",

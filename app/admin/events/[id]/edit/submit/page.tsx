@@ -2,8 +2,8 @@
 
 import { FC } from "react";
 import { redirect, useRouter } from "next/navigation";
-import { Link as NextUiLink } from "@nextui-org/link";
-import { Button } from "@nextui-org/react";
+import { Link as NextUiLink } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { updateEvent } from "@/app/_lib/actions/event.actions";
 import {
   selectFormValues,

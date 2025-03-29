@@ -1,6 +1,6 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
-import { NavbarMenuItem } from "@nextui-org/react";
+import { NavbarMenuItem } from "@heroui/react";
 import { NavbarLink } from "@/app/_lib/types";
 
 interface CustomMenuItemProps {

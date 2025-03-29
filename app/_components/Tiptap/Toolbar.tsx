@@ -1,4 +1,4 @@
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { type Editor } from "@tiptap/react";
 import {
   Bold,
@@ -21,7 +21,7 @@ const Toolbar = ({ editor }: ToolbarProps) => {
       <Button
         isIconOnly
         type={"button"}
-        onClick={() => editor.chain().focus().toggleBold().run()}
+        onPress={() => editor.chain().focus().toggleBold().run()}
         className={editor.isActive("bold") ? "bg-default-300" : ""}
         variant="light"
       >

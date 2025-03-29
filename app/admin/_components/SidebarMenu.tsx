@@ -2,7 +2,7 @@
 
 import React from "react";
 import Link from "next/link";
-import { Listbox, ListboxItem } from "@nextui-org/react";
+import { Listbox, ListboxItem } from "@heroui/react";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 
 const SidebarMenu = () => {

@@ -5,7 +5,7 @@ import {
   TableColumn,
   TableHeader,
   Spinner,
-} from "@nextui-org/react";
+} from "@heroui/react";
 
 interface EmptyTableProps {
   columns: Array<string>;

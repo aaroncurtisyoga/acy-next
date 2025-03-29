@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { DatePicker } from "@nextui-org/react";
+import { DatePicker } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 

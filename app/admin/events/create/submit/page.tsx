@@ -2,8 +2,8 @@
 
 import { FC, FormEvent } from "react";
 import { useRouter } from "next/navigation";
+import { Button } from "@heroui/react";
 import { Link as NextUiLink } from "@nextui-org/link";
-import { Button } from "@nextui-org/react";
 import { createEvent } from "@/app/_lib/actions/event.actions";
 import {
   selectFormValues,

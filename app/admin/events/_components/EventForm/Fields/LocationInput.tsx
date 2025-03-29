@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC } from "react";
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { placeDetails } from "@/app/_lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/app/_lib/hooks/useAutocompleteSuggestions";

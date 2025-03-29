@@ -1,5 +1,5 @@
 import React, { FC, useEffect, useState } from "react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem } from "@heroui/react";
 import { Category } from "@prisma/client";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";

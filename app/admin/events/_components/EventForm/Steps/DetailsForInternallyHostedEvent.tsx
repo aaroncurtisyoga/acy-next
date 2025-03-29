@@ -2,9 +2,9 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
+import { Link as HeroUiLink } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Link as NextUiLink } from "@nextui-org/link";
-import { Button } from "@nextui-org/react";
 import { Event } from "@prisma/client";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
@@ -66,12 +66,12 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
       </div>
       <div className="flex justify-between mt-5">
         <Button type={"button"}>
-          <NextUiLink
+          <HeroUiLink
             href={"/events/create"}
             className={"text-default-foreground"}
           >
             Previous
-          </NextUiLink>
+          </HeroUiLink>
         </Button>
         <Button type={"submit"} color={"primary"}>
           Next

@@ -1,4 +1,4 @@
-import { Navbar } from "@nextui-org/react";
+import { Navbar } from "@heroui/react";
 import Logo from "@/app/_components/Header/Logo";
 
 const SimpleNav = () => {

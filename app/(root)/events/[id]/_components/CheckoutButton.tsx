@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, FormEvent, useEffect } from "react";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { Event, OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { checkoutOrder } from "@/app/_lib/actions/order.actions";

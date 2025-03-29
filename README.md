@@ -64,7 +64,7 @@ NEXT_PUBLIC_SERVER_URL
 ## <a name="tech-stack">Tech Stack</a>
 
 - **Next.js** ([docs](https://nextjs.org/)) (_TypeScript_)
-- **NextUI** ([docs](https://nextui.org/))
+- **HeroUI** ([docs](https://www.heroui.com/))
 - **React Hook Form** ([docs](https://react-hook-form.com/))
 - **Vercel Postgres** ([docs](https://vercel.com/docs/databases/postgres))
 - **Vercel Blob Storage** ([docs](https://vercel.com/docs/storage))

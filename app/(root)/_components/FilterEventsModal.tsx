@@ -1,6 +1,6 @@
 "use client";
 
-import { useDisclosure } from "@nextui-org/react";
+import { useDisclosure } from "@heroui/react";
 import CategoryButtons from "@/app/(root)/_components/CategoryButtons";
 import FilterButton from "@/app/(root)/_components/FilterButton";
 import SearchEvents from "@/app/(root)/_components/SearchEvents";
