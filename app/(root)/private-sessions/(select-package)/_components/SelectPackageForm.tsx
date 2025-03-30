@@ -18,13 +18,7 @@ import {
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import { checkoutOrder } from "@/app/_lib/actions/order.actions";
-import {
-  selectedPackage,
-  setSelectedPackage,
-} from "@/app/_lib/redux/features/privateSessionFormSlice";
-import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
-import { RadioGroup } from "@heroui/radio";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
@@ -32,10 +26,8 @@ loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
 
 const SelectPackageForm: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
-  const dispatch = useAppDispatch();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
-  const selectedPackageFromRedux = useAppSelector(selectedPackage);
   const {
     handleSubmit,
     control,
@@ -79,33 +71,34 @@ const SelectPackageForm: FC = () => {
         handleSubmit(onSubmit)(e);
       }}
     >
-      <Controller
-        control={control}
-        name={"package"}
-        render={({ field }) => (
-          <RadioGroup
-            isDisabled={isSubmitting}
-            isInvalid={!!errors.package}
-            errorMessage={errors.package?.message}
-            onValueChange={field.onChange}
-            className={"mb-12"}
-            classNames={{
-              errorMessage: "text-center mt-3",
-            }}
-            label={<PackageLabel />}
-            description={<PackageDescription />}
-            value={field.value}
-            {...field}
-          >
-            <AdditionalDescription />
-            <SelectTypeOfPrivateSession
-              setPrivateSessionType={setPrivateSessionType}
-            />
-            <PrivateSessionOfferings privateSessionType={privateSessionType} />
-          </RadioGroup>
-        )}
-      />
-      <CheckoutButton />
+      <div className="mb-12">
+        <PackageLabel />
+        <PackageDescription />
+        <AdditionalDescription />
+
+        <SelectTypeOfPrivateSession
+          setPrivateSessionType={setPrivateSessionType}
+        />
+
+        <Controller
+          control={control}
+          name="package"
+          render={({ field, fieldState }) => (
+            <>
+              <PrivateSessionOfferings
+                privateSessionType={privateSessionType}
+                name="package"
+              />
+              {fieldState.error && (
+                <p className="text-danger-500 text-center mt-3">
+                  {fieldState.error.message}
+                </p>
+              )}
+            </>
+          )}
+        />
+      </div>
+      <CheckoutButton />{" "}
     </form>
   );
 };

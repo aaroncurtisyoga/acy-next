@@ -1,14 +1,17 @@
 "use client";
 
-import { FC } from "react";
-import SelectPackageForm from "@/app/(root)/private-sessions/(select-package)/_components/SelectPackageForm";
+import { FC, useEffect } from "react";
+import { useRouter } from "next/navigation";
 
-const PrivateSessions: FC = () => {
-  return (
-    <section>
-      <SelectPackageForm />
-    </section>
-  );
+const PrivateSessionsPage: FC = () => {
+  const router = useRouter();
+
+  // Redirect to the welcome page
+  useEffect(() => {
+    router.push("/private-sessions/welcome");
+  }, [router]);
+
+  return <div>Redirecting...</div>;
 };
 
-export default PrivateSessions;
+export default PrivateSessionsPage;

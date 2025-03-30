@@ -1,23 +1,47 @@
 import React, { FC } from "react";
-import { Check } from "lucide-react";
-import { CustomRadio } from "@/app/(root)/_components/FormInputs/CustomRadio";
-import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Radio } from "@heroui/react";
+import { Check } from "lucide-react";
+import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
 interface PurchaseCardProps {
   offering: OfferingType;
+  isSelected: boolean;
+  onChange: (value: string) => void;
 }
 
-const OfferingCard: FC<PurchaseCardProps> = ({ offering }) => {
+const OfferingCard: FC<PurchaseCardProps> = ({
+  offering,
+  isSelected,
+  onChange,
+}) => {
+  const handleCardClick = () => {
+    if (!isSelected) {
+      onChange(offering.package);
+    }
+  };
+
   return (
-    <Card className="w-[312px] pt-8 px-3 pb-7">
-      <CardHeader>
-        <CustomRadio
-          description={offering.description}
+    <Card
+      className="w-[312px] pt-8 px-3 pb-7 cursor-pointer hover:bg-gray-50 transition-colors"
+      onPress={handleCardClick}
+      data-selected={isSelected ? "true" : "false"}
+      style={{
+        borderColor: isSelected ? "var(--primary)" : "transparent",
+        borderWidth: "2px",
+      }}
+    >
+      <CardHeader className="flex flex-row justify-between items-start gap-2">
+        <div>
+          <h3 className="text-lg font-semibold">{offering.title}</h3>
+          <p className="text-sm text-gray-600">{offering.description}</p>
+        </div>
+        <Radio
           value={offering.package}
-        >
-          {offering.title}
-        </CustomRadio>
+          checked={isSelected}
+          onChange={() => onChange(offering.package)}
+          aria-label={offering.title}
+        />
       </CardHeader>
       <CardBody className={"pt-1 px-7"}>
         <p className={"text-4xl font-semibold"}>${offering.price}</p>
