@@ -5,6 +5,7 @@ import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
+import styles from "@/app/_components/Tiptap/index.module.css";
 import Toolbar from "@/app/_components/Tiptap/Toolbar";
 
 type TiptapProps = {
@@ -48,8 +49,7 @@ const Tiptap = ({
     content: initialContent,
     editorProps: {
       attributes: {
-        class:
-          "rounded-md border min-h-[200px] border-default-200 p-4 ProseMirror focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent prose max-w-none",
+        class: `${styles.tiptap} rounded-md border min-h-[200px] border-default-200 p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent prose max-w-none`,
       },
     },
     onUpdate({ editor }) {
@@ -62,15 +62,11 @@ const Tiptap = ({
   }
 
   return (
-    <div>
-      {description && (
-        <div className="text-sm text-foreground-500 mb-2">{description}</div>
-      )}
+    <div className={styles.editorContainer}>
+      {description && <div className={styles.description}>{description}</div>}
       <Toolbar editor={editor} />
       <EditorContent editor={editor} />
-      {errorMessage && (
-        <p className="text-tiny text-danger p-1">{errorMessage}</p>
-      )}
+      {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
     </div>
   );
 };

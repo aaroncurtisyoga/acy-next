@@ -1,0 +1,121 @@
+/*.tiptap {*/
+    /* Basic editor styles */
+/*}*/
+
+.tiptap :global(:first-child) {
+    margin-top: 0;
+}
+
+/* List styles */
+.tiptap :global(ul),
+.tiptap :global(ol) {
+    padding: 0 1rem;
+    margin: 1.25rem 1rem 1.25rem 0.4rem;
+}
+
+.tiptap :global(li p) {
+    margin-top: 0.25em;
+    margin-bottom: 0.25em;
+}
+
+/* Heading styles */
+.tiptap :global(h1),
+.tiptap :global(h2),
+.tiptap :global(h3),
+.tiptap :global(h4),
+.tiptap :global(h5),
+.tiptap :global(h6) {
+    line-height: 1.1;
+    margin-top: 2.5rem;
+    text-wrap: pretty;
+}
+
+.tiptap :global(h1),
+.tiptap :global(h2) {
+    margin-top: 3.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.tiptap :global(h1) {
+    font-size: 1.4rem;
+}
+
+.tiptap :global(h2) {
+    font-size: 1.2rem;
+}
+
+.tiptap :global(h3) {
+    font-size: 1.1rem;
+}
+
+.tiptap :global(h4),
+.tiptap :global(h5),
+.tiptap :global(h6) {
+    font-size: 1rem;
+}
+
+/* Code and preformatted text styles */
+.tiptap :global(code) {
+    background-color: rgba(157, 142, 208, 0.2); /* light purple fallback */
+    border-radius: 0.4rem;
+    color: #000;
+    font-size: 0.85rem;
+    padding: 0.25em 0.3em;
+}
+
+.tiptap :global(pre) {
+    background: #000;
+    border-radius: 0.5rem;
+    color: #fff;
+    font-family: 'JetBrainsMono', monospace, monospace;
+    margin: 1.5rem 0;
+    padding: 0.75rem 1rem;
+}
+
+.tiptap :global(pre code) {
+    background: none;
+    color: inherit;
+    font-size: 0.8rem;
+    padding: 0;
+}
+
+.tiptap :global(blockquote) {
+    border-left: 3px solid #d1d5db; /* gray-300 */
+    margin: 1.5rem 0;
+    padding-left: 1rem;
+}
+
+.tiptap :global(hr) {
+    border: none;
+    border-top: 1px solid #e5e7eb; /* gray-200 */
+    margin: 2rem 0;
+}
+
+/* Placeholder (at the top) */
+.tiptap :global(p.is-editor-empty:first-child::before) {
+    color: #9ca3af; /* gray-400 */
+    content: attr(data-placeholder);
+    float: left;
+    height: 0;
+    pointer-events: none;
+}
+
+/* Styles for the editor container */
+.editorContainer {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.description {
+    color: #6b7280; /* gray-500 */
+    font-size: 0.875rem;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+}
+
+.errorMessage {
+    color: #ef4444; /* red-500 */
+    font-size: 0.75rem;
+    padding: 0.25rem;
+}

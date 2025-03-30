@@ -23,14 +23,29 @@ export type Inputs = z.infer<
   typeof EventFormDetailsForInternallyHostedEventSchema
 >;
 
-interface BasicInfoProps {
+interface DetailsForInternallyHostedEventProps {
   event?: Event;
 }
-const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
+
+const DetailsForInternallyHostedEvent: FC<
+  DetailsForInternallyHostedEventProps
+> = ({ event }) => {
   const router = useRouter();
   const dispatch = useAppDispatch();
-  // todo: only select the items that I need here, not the whole form
-  const eventInitialValues = useAppSelector(selectFormValues);
+
+  // Only select the necessary form values to improve performance
+  const { price, maxAttendees, description, image } = useAppSelector(
+    (state) => {
+      const formValues = selectFormValues(state);
+      return {
+        price: formValues.price,
+        maxAttendees: formValues.maxAttendees,
+        description: formValues.description,
+        image: formValues.image,
+      };
+    },
+  );
+
   const {
     control,
     handleSubmit,
@@ -38,17 +53,22 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(EventFormDetailsForInternallyHostedEventSchema),
-    defaultValues: eventInitialValues,
+    defaultValues: {
+      price,
+      maxAttendees,
+      description,
+      image,
+    },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: Inputs) => {
     dispatch(setFormData(data));
     router.push("/admin/events/create/submit");
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className={"grid grid-cols-2 gap-5"}>
+      <div className="grid grid-cols-2 gap-5">
         <PriceInput
           control={control}
           isSubmitting={isSubmitting}
@@ -61,19 +81,16 @@ const DetailsForInternallyHostedEvent: FC<BasicInfoProps> = ({ event }) => {
         />
         <ImagePicker errors={errors} setValue={setValue} />
       </div>
-      <div className={"grid grid-cols-1 gap-5 mt-5"}>
+      <div className="grid grid-cols-1 gap-5 mt-5">
         <DescriptionRichTextEditor control={control} errors={errors} />
       </div>
       <div className="flex justify-between mt-5">
-        <Button type={"button"}>
-          <HeroUiLink
-            href={"/events/create"}
-            className={"text-default-foreground"}
-          >
+        <Button type="button">
+          <HeroUiLink href="/events/create" className="text-default-foreground">
             Previous
           </HeroUiLink>
         </Button>
-        <Button type={"submit"} color={"primary"}>
+        <Button type="submit" color="primary">
           Next
         </Button>
       </div>
