@@ -25,7 +25,6 @@ const TableEventManagement: FC = () => {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedEvent, setSelectedEvent] = useState(null);
-  // todo: consider creating a custom hook for this data fetching & pagination
   const [events, setEvents] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);

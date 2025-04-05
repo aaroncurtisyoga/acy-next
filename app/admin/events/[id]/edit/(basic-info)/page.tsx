@@ -1,43 +1,41 @@
 "use client";
 
-import React, { FC, useEffect, useState } from "react";
-import { useRouter, useParams } from "next/navigation";
-import { Event } from "@prisma/client";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
 import { getEventById } from "@/app/_lib/actions/event.actions";
-import { setFormData } from "@/app/_lib/redux/features/eventFormSlice";
-import { useAppDispatch } from "@/app/_lib/redux/hooks";
 import { handleError } from "@/app/_lib/utils";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import BasicInfo from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
 
-const UpdateEvent: FC = () => {
-  const [isEventLoaded, setIsEventLoaded] = useState(false);
+const EditBasicInfoPage = () => {
   const { id } = useParams<{ id: string }>();
   const router = useRouter();
-  const dispatch = useAppDispatch();
+  const [defaultValues, setDefaultValues] = useState<EventFormValues | null>(
+    null,
+  );
 
   useEffect(() => {
-    const fetchEvent = async () => {
+    const loadEvent = async () => {
       try {
-        const event: Event = await getEventById(id);
-        dispatch(setFormData(event));
-        setIsEventLoaded(true);
+        const event = await getEventById(id);
+        setDefaultValues(event);
       } catch (err) {
         handleError(err);
         router.push("/");
       }
     };
 
-    fetchEvent();
-  }, [dispatch, id, router]);
+    loadEvent();
+  }, [id, router]);
 
-  if (!isEventLoaded) return null;
+  if (!defaultValues) return null;
 
   return (
-    <section className={"wrapper"}>
-      <h1 className={"mb-5"}>Update Event</h1>
+    <EventFormWrapper mode="edit" defaultValues={defaultValues}>
       <BasicInfo />
-    </section>
+    </EventFormWrapper>
   );
 };
 
-export default UpdateEvent;
+export default EditBasicInfoPage;

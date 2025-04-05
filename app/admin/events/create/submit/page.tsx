@@ -4,28 +4,26 @@ import { FC, FormEvent } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { Link as HeroUiLink } from "@heroui/react";
+import { useFormContext } from "react-hook-form";
 import { createEvent } from "@/app/_lib/actions/event.actions";
-import {
-  selectFormValues,
-  resetFormData,
-} from "@/app/_lib/redux/features/eventFormSlice";
-import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
 import { handleError } from "@/app/_lib/utils";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
-const SubmitEvent: FC = () => {
+const CreateEventPage: FC = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const valuesFromRedux = useAppSelector(selectFormValues);
+  const { getValues, reset } = useFormContext<EventFormValues>();
 
   async function createNewEvent() {
+    const formValues = getValues();
+
     try {
       const newEvent = await createEvent({
-        event: valuesFromRedux,
+        event: formValues,
         path: "/events",
       });
 
       if (newEvent) {
-        dispatch(resetFormData());
+        reset(); // Clear form state
         router.push(`/`);
       }
     } catch (error) {
@@ -39,19 +37,19 @@ const SubmitEvent: FC = () => {
   };
 
   return (
-    <section className={"wrapper"}>
+    <section className="wrapper">
       <h1>Review Event</h1>
-      <form onSubmit={(e) => onSubmit(e)}>
+      <form onSubmit={onSubmit}>
         <div className="flex justify-between mt-5">
-          <Button type={"button"}>
+          <Button type="button">
             <HeroUiLink
-              href={"/events/details"}
-              className={"text-default-foreground"}
+              href="/events/create/details"
+              className="text-default-foreground"
             >
               Previous
             </HeroUiLink>
           </Button>
-          <Button type={"submit"} color={"primary"}>
+          <Button type="submit" color="primary">
             Create Event
           </Button>
         </div>
@@ -60,4 +58,4 @@ const SubmitEvent: FC = () => {
   );
 };
 
-export default SubmitEvent;
+export default CreateEventPage;

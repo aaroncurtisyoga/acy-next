@@ -1,25 +1,32 @@
 "use client";
 
-import { selectIsHostedExternally } from "@/app/_lib/redux/features/eventFormSlice";
-import { useAppSelector } from "@/app/_lib/redux/hooks";
+import { useFormContext, useWatch } from "react-hook-form";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import DetailsForExternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForExternallyHostedEvent";
 import DetailsForInternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-const CreateEvent = () => {
-  const isHostedExternally = useAppSelector(selectIsHostedExternally);
+const CreateDetailsPage = () => {
+  const { control } = useFormContext<EventFormValues>();
+  const isHostedExternally = useWatch({
+    control,
+    name: "isHostedExternally",
+  });
 
   return (
     <section className={"wrapper"}>
       <h1>Create Event</h1>
       <div className={"my-8"}>
-        {isHostedExternally ? (
-          <DetailsForExternallyHostedEvent />
-        ) : (
-          <DetailsForInternallyHostedEvent />
-        )}
+        <EventFormWrapper mode="create">
+          {isHostedExternally ? (
+            <DetailsForExternallyHostedEvent />
+          ) : (
+            <DetailsForInternallyHostedEvent />
+          )}
+        </EventFormWrapper>
       </div>
     </section>
   );
 };
 
-export default CreateEvent;
+export default CreateDetailsPage;

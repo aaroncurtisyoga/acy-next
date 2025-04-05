@@ -2,63 +2,25 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { Link as HeroUiLink } from "@heroui/react";
-import { Button } from "@heroui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Event } from "@prisma/client";
-import { useForm } from "react-hook-form";
-import * as z from "zod";
-import { EventFormDetailsForInternallyHostedEventSchema } from "@/app/_lib/schema";
+import { Button, Link as HeroUiLink } from "@heroui/react";
+import { useFormContext } from "react-hook-form";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
 import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
 import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
 import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
 
-export type Inputs = z.infer<
-  typeof EventFormDetailsForInternallyHostedEventSchema
->;
-
-interface DetailsForInternallyHostedEventProps {
-  event?: Event;
-}
-
-const DetailsForInternallyHostedEvent: FC<
-  DetailsForInternallyHostedEventProps
-> = ({ event }) => {
+const DetailsForInternallyHostedEvent: FC = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-
-  // Only select the necessary form values to improve performance
-  const { price, maxAttendees, description, image } = useAppSelector(
-    (state) => {
-      const formValues = selectFormValues(state);
-      return {
-        price: formValues.price,
-        maxAttendees: formValues.maxAttendees,
-        description: formValues.description,
-        image: formValues.image,
-      };
-    },
-  );
-
   const {
     control,
     handleSubmit,
     setValue,
     formState: { errors, isSubmitting },
-  } = useForm<Inputs>({
-    resolver: zodResolver(EventFormDetailsForInternallyHostedEventSchema),
-    defaultValues: {
-      price,
-      maxAttendees,
-      description,
-      image,
-    },
-  });
+  } = useFormContext<EventFormValues>();
 
-  const onSubmit = async (data: Inputs) => {
-    dispatch(setFormData(data));
-    router.push("/admin/events/create/submit");
+  const onSubmit = async () => {
+    router.push("/events/create/submit"); // dynamic if needed
   };
 
   return (
