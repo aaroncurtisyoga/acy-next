@@ -9,7 +9,7 @@ import { createEvent } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
-const CreateEventPage: FC = () => {
+const CreateEventFormSubmit: FC = () => {
   const router = useRouter();
   const { getValues, reset } = useFormContext<EventFormValues>();
 
@@ -58,4 +58,4 @@ const CreateEventPage: FC = () => {
   );
 };
 
-export default CreateEventPage;
+export default CreateEventFormSubmit;

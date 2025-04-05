@@ -6,27 +6,31 @@ import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventForm
 import DetailsForExternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForExternallyHostedEvent";
 import DetailsForInternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
 
-const CreateDetailsPage = () => {
+const DetailsStep = () => {
   const { control } = useFormContext<EventFormValues>();
   const isHostedExternally = useWatch({
     control,
     name: "isHostedExternally",
   });
 
+  return isHostedExternally ? (
+    <DetailsForExternallyHostedEvent />
+  ) : (
+    <DetailsForInternallyHostedEvent />
+  );
+};
+
+const CreateEventFormDetails = () => {
   return (
     <section className={"wrapper"}>
       <h1>Create Event</h1>
       <div className={"my-8"}>
         <EventFormWrapper mode="create">
-          {isHostedExternally ? (
-            <DetailsForExternallyHostedEvent />
-          ) : (
-            <DetailsForInternallyHostedEvent />
-          )}
+          <DetailsStep />
         </EventFormWrapper>
       </div>
     </section>
   );
 };
 
-export default CreateDetailsPage;
+export default CreateEventFormDetails;
