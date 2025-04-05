@@ -1,19 +1,19 @@
 import React, { FC } from "react";
 import { Input } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface TitleInputProps {
-  control: Control;
+  control: Control<EventFormValues>;
   isSubmitting: boolean;
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 const TitleInput: FC<TitleInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
-      name={"title"}
+      name={"title" satisfies keyof EventFormValues}
       render={({ field }) => (
         <Input
           isDisabled={isSubmitting}

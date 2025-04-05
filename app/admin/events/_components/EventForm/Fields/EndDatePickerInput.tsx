@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { DatePicker } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface EndDatePickerInputProps {
-  control: Control;
-  errors: FieldErrors<Inputs>;
+  control: Control<EventFormValues>;
+  errors: FieldErrors<EventFormValues>;
   isSubmitting: boolean;
 }
 
@@ -17,7 +17,7 @@ const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
   return (
     <Controller
       control={control}
-      name={"endDateTime"}
+      name={"endDateTime" satisfies keyof EventFormValues}
       render={({ field }) => (
         <div className={"w-full flex flex-col"}>
           <DatePicker

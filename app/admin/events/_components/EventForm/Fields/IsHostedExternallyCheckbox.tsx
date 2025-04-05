@@ -1,9 +1,10 @@
 import React, { FC } from "react";
 import { Checkbox } from "@heroui/react";
 import { Control, Controller } from "react-hook-form";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface IsHostedExternallyCheckboxProps {
-  control: Control;
+  control: Control<EventFormValues>;
   isSubmitting: boolean;
 }
 
@@ -14,7 +15,7 @@ const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
   return (
     <Controller
       control={control}
-      name={"isHostedExternally"}
+      name={"isHostedExternally" satisfies keyof EventFormValues}
       render={({ field }) => (
         <Checkbox
           isDisabled={isSubmitting}

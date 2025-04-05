@@ -1,12 +1,12 @@
 import { FC } from "react";
 import { Input } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface MaxAttendeesProps {
-  control: Control;
+  control: Control<EventFormValues>;
   isSubmitting: boolean;
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 const MaxAttendees: FC<MaxAttendeesProps> = ({
@@ -17,7 +17,7 @@ const MaxAttendees: FC<MaxAttendeesProps> = ({
   return (
     <Controller
       control={control}
-      name={"maxAttendees"}
+      name={"maxAttendees" satisfies keyof EventFormValues}
       render={({ field: { onChange, ...field } }) => (
         <Input
           isDisabled={isSubmitting}

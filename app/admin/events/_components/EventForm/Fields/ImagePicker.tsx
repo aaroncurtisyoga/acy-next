@@ -14,10 +14,10 @@ import {
 } from "@heroui/react";
 import { FieldErrors } from "react-hook-form";
 import { getImages } from "@/app/_lib/actions/blob.actions";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface ImagePickerProps {
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
   setValue: any;
 }
 

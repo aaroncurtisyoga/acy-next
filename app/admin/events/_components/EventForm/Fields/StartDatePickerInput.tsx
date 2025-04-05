@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { DatePicker } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface StartDatePickerInputProps {
-  control: Control;
-  errors: FieldErrors<Inputs>;
+  control: Control<EventFormValues>;
+  errors: FieldErrors<EventFormValues>;
   isSubmitting: boolean;
 }
 
@@ -17,7 +17,7 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
   return (
     <Controller
       control={control}
-      name={"startDateTime"}
+      name={"startDateTime" satisfies keyof EventFormValues}
       render={({ field }) => {
         return (
           <div className={"w-full flex flex-col"}>

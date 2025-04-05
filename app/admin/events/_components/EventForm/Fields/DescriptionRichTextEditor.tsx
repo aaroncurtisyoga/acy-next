@@ -1,11 +1,11 @@
 import React, { FC } from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import Tiptap from "@/app/_components/Tiptap";
-import { Inputs } from "../Steps/BasicInfo"; // Adjust path as needed
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface DescriptionRichTextEditorProps {
-  control: Control;
-  errors: FieldErrors<Inputs>;
+  control: Control<EventFormValues>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 const DescriptionRichTextEditor: FC<DescriptionRichTextEditorProps> = ({

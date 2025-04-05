@@ -5,12 +5,12 @@ import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { placeDetails } from "@/app/_lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/app/_lib/hooks/useAutocompleteSuggestions";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface LocationInputProps {
-  control: Control;
+  control: Control<EventFormValues>;
   setLocationValueInReactHookForm: any;
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 interface LocationSuggestion {
@@ -53,7 +53,7 @@ const LocationInput: FC<LocationInputProps> = ({
   return (
     <Controller
       control={control}
-      name={"location"}
+      name={"location" satisfies keyof EventFormValues}
       render={({ field }) => (
         <Autocomplete
           errorMessage={errors.location?.formattedAddress?.message}
