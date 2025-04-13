@@ -2,7 +2,8 @@
 
 import { FC, ReactNode } from "react";
 import { usePathname } from "next/navigation";
-import { ProgressStepper } from "./select-package/_components/ProgressStepper";
+import { WizardFormProvider } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
+import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
 interface PrivateSessionsLayoutProps {
   children: ReactNode;
@@ -24,10 +25,12 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
   const currentStep = getCurrentStep();
 
   return (
-    <div className="max-w-3xl mx-auto px-4 py-8">
-      <ProgressStepper currentStep={currentStep} totalSteps={3} />
-      {children}
-    </div>
+    <WizardFormProvider>
+      <div className="max-w-3xl mx-auto px-4 py-8">
+        <ProgressStepper currentStep={currentStep} totalSteps={3} />
+        {children}
+      </div>
+    </WizardFormProvider>
   );
 };
 
