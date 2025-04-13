@@ -1,24 +1,25 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
-import { ProgressStepper } from "../_components/ProgressStepper";
-import { useWizardForm } from "../_context/FormContext";
+import { SignIn, useAuth } from "@clerk/nextjs";
+import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 
 const WelcomePage: FC = () => {
   const router = useRouter();
   const { goToNextStep } = useWizardForm();
+  const { isSignedIn, isLoaded } = useAuth();
 
-  const handleContinue = () => {
-    goToNextStep();
-    router.push("/private-sessions/auth");
-  };
+  // Handle redirects after authentication
+  useEffect(() => {
+    if (isLoaded && isSignedIn) {
+      goToNextStep();
+      router.push("/private-sessions/select-package");
+    }
+  }, [isSignedIn, isLoaded, goToNextStep, router]);
 
   return (
-    <div className="max-w-3xl mx-auto px-4">
-      <ProgressStepper currentStep={1} totalSteps={4} />
-
+    <div className="max-w-3xl mx-auto">
       <div className="text-center max-w-xl mx-auto mb-10">
         <h1 className="text-4xl font-bold mb-6 tracking-tight text-primary-500">
           Train With Me
@@ -31,10 +32,10 @@ const WelcomePage: FC = () => {
 
         <p className="text-gray-600 mb-8">
           Private sessions allow me to connect with you on a personal level,
-          focusing on your unique needs. Whether we're working on specific
+          focusing on your unique needs. Whether we&#39;re working on specific
           postures, meditation, improving movement, or mentoring for teaching,
-          my goal is to share everything I've learned to help you achieve your
-          goals.
+          my goal is to share everything I&#39;ve learned to help you achieve
+          your goals.
         </p>
       </div>
 
@@ -74,16 +75,25 @@ const WelcomePage: FC = () => {
       </div>
 
       <div className="w-full max-w-[440px] mx-auto mt-10 mb-16">
-        <Button
-          type="button"
-          radius="sm"
-          className="text-base"
-          fullWidth={true}
-          color="primary"
-          onClick={handleContinue}
-        >
-          Continue to Sign In
-        </Button>
+        <div className="bg-white p-6 rounded-lg shadow-sm">
+          <h3 className="text-xl font-medium mb-4 text-center">
+            Sign In or Create Account
+          </h3>
+          {/* Embedded Clerk SignIn component */}
+          <SignIn
+            routing="path"
+            path="/private-sessions/welcome"
+            signUpUrl="/private-sessions/welcome"
+            // Falls back to this page, then handle redirect via useEffect
+            fallbackRedirectUrl="/private-sessions/welcome"
+            appearance={{
+              elements: {
+                rootBox: "w-full",
+                card: "w-full shadow-none p-0",
+              },
+            }}
+          />
+        </div>
       </div>
     </div>
   );

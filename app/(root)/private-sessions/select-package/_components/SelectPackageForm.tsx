@@ -5,18 +5,18 @@ import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { Controller, useForm } from "react-hook-form";
 import * as z from "zod";
-import { AdditionalDescription } from "@/app/(root)/private-sessions/(select-package)/_components/AdditionalDescription";
-import CheckoutButton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButton";
-import { PackageDescription } from "@/app/(root)/private-sessions/(select-package)/_components/PackageDescription";
-import { PackageLabel } from "@/app/(root)/private-sessions/(select-package)/_components/PackageLabel";
-import PrivateSessionOfferings from "@/app/(root)/private-sessions/(select-package)/_components/PrivateSessionOfferings";
-import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/(select-package)/_components/SelectTypeOfPrivateSession";
 import {
   ALL_OFFERINGS,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/_lib/constants";
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import { AdditionalDescription } from "@/app/(root)/private-sessions/select-package/_components/AdditionalDescription";
+import CheckoutButton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButton";
+import { PackageDescription } from "@/app/(root)/private-sessions/select-package/_components/PackageDescription";
+import { PackageLabel } from "@/app/(root)/private-sessions/select-package/_components/PackageLabel";
+import PrivateSessionOfferings from "@/app/(root)/private-sessions/select-package/_components/PrivateSessionOfferings";
+import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/select-package/_components/SelectTypeOfPrivateSession";
 import { checkoutOrder } from "@/app/_lib/actions/order.actions";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
 

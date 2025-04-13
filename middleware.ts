@@ -6,9 +6,17 @@ const isAuthenticatedRoute = createRouteMatcher([
   "/admin/(.*)",
   "/profile",
   "/settings",
+  "/private-sessions/select-package(.*)",
+  "/private-sessions/checkout(.*)",
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
+
+const isPublicRoute = createRouteMatcher([
+  "/",
+  "/private-sessions",
+  "/private-sessions/welcome",
+]);
 
 export default clerkMiddleware(async (auth, req) => {
   // Get the authentication object by awaiting it
@@ -24,10 +32,12 @@ export default clerkMiddleware(async (auth, req) => {
   }
 
   // Restrict authenticated routes to users that are signed in
-  if (isAuthenticatedRoute(req)) {
+  // Only apply authentication check if it's not a public route
+  if (isAuthenticatedRoute(req) && !isPublicRoute(req)) {
     if (!authObject.userId) {
       const url = req.nextUrl.clone();
-      url.pathname = "/sign-in";
+      url.pathname = "/private-sessions/welcome";
+      // Preserve the original URL to redirect back after sign-in
       url.searchParams.set("redirect_url", req.nextUrl.pathname);
       return NextResponse.redirect(url);
     }

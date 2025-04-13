@@ -11,9 +11,8 @@ export const ProgressStepper: FC<ProgressStepperProps> = ({
 }) => {
   const steps = [
     { id: 1, label: "Welcome" },
-    { id: 2, label: "Sign In" },
-    { id: 3, label: "Select Package" },
-    { id: 4, label: "Payment" },
+    { id: 2, label: "Select Package" },
+    { id: 3, label: "Payment" },
   ];
 
   return (

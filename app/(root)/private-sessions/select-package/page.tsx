@@ -3,7 +3,7 @@
 import { FC, useEffect } from "react";
 import { useRouter } from "next/navigation";
 
-const PrivateSessionsPage: FC = () => {
+const SelectPackagePage: FC = () => {
   const router = useRouter();
 
   // Redirect to the welcome page
@@ -14,4 +14,4 @@ const PrivateSessionsPage: FC = () => {
   return <div>Redirecting...</div>;
 };
 
-export default PrivateSessionsPage;
+export default SelectPackagePage;

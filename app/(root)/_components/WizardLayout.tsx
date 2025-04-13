@@ -2,8 +2,8 @@
 
 import React, { ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { ProgressStepper } from "@/app/(root)/private-sessions/(select-package)/_components/ProgressStepper";
-import { useWizardForm } from "@/app/(root)/private-sessions/_context/FormContext";
+import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
+import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
 const pathToStepMap = {
   "/private-sessions/welcome": 1,
@@ -29,7 +29,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <ProgressStepper />
+      <ProgressStepper currentStep={0} totalSteps={} />
       {children}
     </>
   );
