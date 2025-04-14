@@ -27,6 +27,9 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
   return (
     <WizardFormProvider>
       <div className="max-w-3xl mx-auto px-4 py-8">
+        <h1 className="text-4xl font-bold mb-6 tracking-tight text-primary-500 text-center">
+          Train With Me
+        </h1>
         <ProgressStepper currentStep={currentStep} totalSteps={3} />
         {children}
       </div>
