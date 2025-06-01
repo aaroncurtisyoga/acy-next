@@ -3,8 +3,8 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { unauthenticatedLinks } from "@/app/_lib/constants";
 import { NavbarContent, NavbarItem } from "@heroui/react";
+import { unauthenticatedLinks } from "@/app/_lib/constants";
 
 interface DesktopNavbarContentProps {
   children: ReactNode;

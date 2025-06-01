@@ -1,6 +1,5 @@
 import React, { FC } from "react";
 import { Card, CardBody, CardHeader } from "@heroui/card";
-import { Radio } from "@heroui/react";
 import { Check } from "lucide-react";
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
@@ -36,12 +35,14 @@ const OfferingCard: FC<PurchaseCardProps> = ({
           <h3 className="text-lg font-semibold">{offering.title}</h3>
           <p className="text-sm text-gray-600">{offering.description}</p>
         </div>
-        <Radio
-          value={offering.package}
-          checked={isSelected}
-          onChange={() => onChange(offering.package)}
-          aria-label={offering.title}
-        />
+        <div 
+          className={`w-5 h-5 rounded-full border-2 flex items-center justify-center cursor-pointer ${
+            isSelected ? 'border-blue-600 bg-blue-600' : 'border-gray-300'
+          }`}
+          onClick={() => onChange(offering.package)}
+        >
+          {isSelected && <div className="w-2 h-2 rounded-full bg-white" />}
+        </div>
       </CardHeader>
       <CardBody className={"pt-1 px-7"}>
         <p className={"text-4xl font-semibold"}>${offering.price}</p>

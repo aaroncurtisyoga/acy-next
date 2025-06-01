@@ -1,12 +1,12 @@
 "use client";
 
 import React, { FC } from "react";
+import { Tabs, Tab } from "@heroui/react";
 import {
   GROUP,
   INDIVIDUAL,
 } from "@/app/(root)/private-sessions/_lib/constants";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
-import { Tabs, Tab } from "@heroui/react";
 
 interface GroupSizeTabsProps {
   setPrivateSessionType: (value: SessionType) => void;

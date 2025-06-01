@@ -13,10 +13,11 @@ export default function NoEventsCard() {
         <div className="flex-shrink-0">
           <CalendarX className="w-10 h-10 text-primary-900" size={40} />
         </div>
-        <h3 className="italic text-left">
-          Nothing on the calendar right this moment. I'll be back with more
-          offerings soon!
-        </h3>
+        <h3 className="text-lg font-semibold mb-2">No Events Scheduled</h3>
+        <p className="text-gray-600">
+          There aren&apos;t any events scheduled at the moment. Check back soon for
+          upcoming yoga sessions and workshops!
+        </p>
       </CardHeader>
     </Card>
   );

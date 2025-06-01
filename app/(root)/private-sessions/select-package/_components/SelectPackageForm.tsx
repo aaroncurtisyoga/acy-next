@@ -1,9 +1,9 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
 import {
   ALL_OFFERINGS,
@@ -28,29 +28,15 @@ const SelectPackageForm: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
-  const {
-    handleSubmit,
-    control,
-    reset,
-    formState: { errors, isSubmitting },
-  } = useForm<Inputs>({
+  const methods = useForm<Inputs>({
     resolver: zodResolver(SelectPackageFormSchema),
     defaultValues: {
-      package: selectedPackageFromRedux ?? "",
+      package: "",
     },
   });
 
-  // Update form values if the Redux store changes
-  useEffect(() => {
-    if (selectedPackageFromRedux) {
-      reset({ package: selectedPackageFromRedux }); // Reset form with new value if updated in Redux
-    }
-  }, [selectedPackageFromRedux, reset]);
-
   const onSubmit = async (data) => {
     const selectedPackage = data.package;
-    dispatch(setSelectedPackage(data.package));
-    // todo: when this becomes a wizard form, move this into redux
     const packageDetails = getPackageDetails(selectedPackage, ALL_OFFERINGS);
 
     const order = {
@@ -65,41 +51,41 @@ const SelectPackageForm: FC = () => {
   };
 
   return (
-    <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        handleSubmit(onSubmit)(e);
-      }}
-    >
-      <div className="mb-12">
-        <PackageLabel />
-        <PackageDescription />
-        <AdditionalDescription />
+    <FormProvider {...methods}>
+      <form
+        onSubmit={(e) => {
+          e.preventDefault();
+          methods.handleSubmit(onSubmit)(e);
+        }}
+      >
+        <div className="mb-12">
+          <PackageDescription />
 
-        <SelectTypeOfPrivateSession
-          setPrivateSessionType={setPrivateSessionType}
-        />
+          <SelectTypeOfPrivateSession
+            setPrivateSessionType={setPrivateSessionType}
+          />
 
-        <Controller
-          control={control}
-          name="package"
-          render={({ field, fieldState }) => (
-            <>
-              <PrivateSessionOfferings
-                privateSessionType={privateSessionType}
-                name="package"
-              />
-              {fieldState.error && (
-                <p className="text-danger-500 text-center mt-3">
-                  {fieldState.error.message}
-                </p>
-              )}
-            </>
-          )}
-        />
-      </div>
-      <CheckoutButton />{" "}
-    </form>
+          <Controller
+            control={methods.control}
+            name="package"
+            render={({ fieldState }) => (
+              <>
+                <PrivateSessionOfferings
+                  privateSessionType={privateSessionType}
+                  name="package"
+                />
+                {fieldState.error && (
+                  <p className="text-danger-500 text-center mt-3">
+                    {fieldState.error.message}
+                  </p>
+                )}
+              </>
+            )}
+          />
+        </div>
+        <CheckoutButton />{" "}
+      </form>
+    </FormProvider>
   );
 };
 
