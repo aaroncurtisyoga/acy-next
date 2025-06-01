@@ -20,7 +20,7 @@ const WelcomePage: FC = () => {
   }, [isSignedIn, isLoaded, goToNextStep, router]);
 
   return (
-    <div className="max-w-3xl mx-auto flex justify-center items-center flex-col">
+    <div className="max-w-3xl mx-auto flex justify-center items-center flex-col px-4">
       <div className="text-center max-w-xl mx-auto mb-10">
         <p className="text-lg mb-6 max-w-[300px] mx-auto">
           {isSignedIn
@@ -37,10 +37,10 @@ const WelcomePage: FC = () => {
         fallbackRedirectUrl="/private-sessions/welcome"
         appearance={{
           elements: {
-            rootBox: "w-full max-w-md mx-auto",
-            card: "w-full shadow-none border-none p-0",
-            cardBox: "w-full shadow-none border-none bg-transparent",
-            card__main: "shadow-none border-none",
+            rootBox: "mx-auto",
+            card: "shadow-none border-none p-0",
+            cardBox: "shadow-none border-none bg-transparent",
+            card__main: "shadow-none border-none mx-auto",
             headerTitle: "hidden", // Hide the default "Sign in to Aaron Curtis Yoga" title
             headerSubtitle: "hidden", // Hide the default "Welcome back! Please sign in to continue" subtitle
             formFieldLabel: "text-gray-700 text-sm font-medium",
@@ -66,6 +66,9 @@ const WelcomePage: FC = () => {
             identityPreviewText: "font-normal",
             identityPreviewEditButton: "text-indigo-600",
             otpCodeFieldInput: "shadow-none",
+            socialButtonsBlockButton: "w-full",
+            socialButtonsBlockButtonArrow: "hidden",
+            socialButtonsBlockButtonText: "w-full text-center",
           },
           layout: {
             showOptionalFields: false,

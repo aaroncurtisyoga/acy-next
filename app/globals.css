@@ -81,3 +81,15 @@
 .cl-footerAction * {
   background-color: white;
 }
+
+/* Fix for Clerk main element width */
+.cl-main {
+  width: auto ;
+  max-width: 100% ;
+  padding: 0 1rem ;
+}
+
+.cl-card {
+  width: auto ;
+  max-width: 100% ;
+}
