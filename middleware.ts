@@ -22,6 +22,13 @@ export default clerkMiddleware(async (auth, req) => {
   // Get the authentication object by awaiting it
   const authObject = await auth();
 
+  // If user is signed in and tries to access welcome page, redirect to select-package
+  if (isPublicRoute(req) && req.nextUrl.pathname === "/private-sessions/welcome" && authObject.userId) {
+    const url = req.nextUrl.clone();
+    url.pathname = "/private-sessions/select-package";
+    return NextResponse.redirect(url);
+  }
+
   // Restrict admin routes to users that are signed in and have the admin role
   if (isAdminRoute(req)) {
     if (authObject.sessionClaims?.metadata?.role !== "admin") {
