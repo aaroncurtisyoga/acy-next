@@ -31,8 +31,7 @@ const WelcomePage: FC = () => {
 
       {/* Clerk SignIn component with custom appearance */}
       <SignIn
-        routing="path"
-        path="/private-sessions/welcome"
+        routing="hash"
         signUpUrl="/private-sessions/welcome"
         // Falls back to this page, then handle redirect via useEffect
         fallbackRedirectUrl="/private-sessions/welcome"

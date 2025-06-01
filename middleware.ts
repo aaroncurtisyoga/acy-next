@@ -15,7 +15,7 @@ const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
 const isPublicRoute = createRouteMatcher([
   "/",
   "/private-sessions",
-  "/private-sessions/welcome",
+  "/private-sessions/welcome(.*)",
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
