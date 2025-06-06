@@ -50,6 +50,8 @@ const Header: FC = () => {
           "relative",
           "h-full",
           "items-center",
+          // Remove bold from active state
+          "data-[active=true]:font-normal",
           // Active state styling
           "data-[active=true]:after:content-['']",
           "data-[active=true]:after:absolute",
