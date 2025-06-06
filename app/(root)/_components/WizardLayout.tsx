@@ -7,9 +7,10 @@ import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_c
 
 const pathToStepMap = {
   "/private-sessions/welcome": 1,
-  "/private-sessions/select-package": 2,
-  "/private-sessions/checkout": 3,
-  "/private-sessions/confirmation": 4,
+  "/private-sessions/sign-in": 2,
+  "/private-sessions/select-package": 3,
+  "/private-sessions/checkout": 4,
+  "/private-sessions/confirmation": 5,
 };
 
 interface WizardLayoutProps {
