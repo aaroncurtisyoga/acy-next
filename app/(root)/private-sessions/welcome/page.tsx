@@ -32,7 +32,7 @@ const WelcomePage: React.FC = () => {
           color="primary"
           size="lg"
           onPress={handleGetStarted}
-          className="text-lg px-8 py-6 group"
+          className="text-lg px-8 py-6 group [&[data-hover=true]]:opacity-100 [&[data-hover=true]]:bg-primary-500"
           endContent={
             <ArrowRight
               size={20}
