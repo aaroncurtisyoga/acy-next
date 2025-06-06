@@ -12,7 +12,22 @@
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "version:patch": "./scripts/version.sh patch",
     "version:minor": "./scripts/version.sh minor",
-    "version:major": "./scripts/version.sh major"
+    "version:major": "./scripts/version.sh major",
+    "prepare": "husky",
+    "check": "npm run lint && npx tsc --noEmit",
+    "check:fix": "npm run lint:fix && npx tsc --noEmit",
+    "pre-commit": "lint-staged",
+    "validate": "npm run check && npm run build"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "git add"
+    ],
+    "*.{js,jsx,ts,tsx,json,css,md}": [
+      "prettier --write",
+      "git add"
+    ]
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.12",
@@ -66,6 +81,8 @@
     "eslint": "^8.57.0",
     "eslint-config-next": "^15.1.0",
     "eslint-plugin-import": "^2.30.0",
+    "husky": "^9.1.7",
+    "lint-staged": "^15.5.2",
     "postcss": "^8.4.38",
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "0.5.14",

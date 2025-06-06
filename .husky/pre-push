@@ -1,0 +1,50 @@
+#!/usr/bin/env sh
+
+# Pre-push hook to run quality checks before pushing to remote
+# This provides an additional safety net beyond the pre-commit hook
+
+echo "🔍 Running pre-push quality checks..."
+
+# Check if we're pushing to main branch
+protected_branch='main'
+current_branch=$(git rev-parse --abbrev-ref HEAD)
+
+if [ "$current_branch" = "$protected_branch" ]; then
+    echo "🚨 Pushing to $protected_branch branch - running full quality checks..."
+    
+    # Run linting
+    echo "📝 Running ESLint..."
+    npm run lint
+    if [ $? -ne 0 ]; then
+        echo "❌ ESLint failed. Please fix linting errors before pushing."
+        exit 1
+    fi
+    
+    # Run TypeScript type checking
+    echo "🔧 Checking TypeScript types..."
+    npx tsc --noEmit
+    if [ $? -ne 0 ]; then
+        echo "❌ TypeScript type checking failed. Please fix type errors before pushing."
+        exit 1
+    fi
+    
+    # Try to build the project
+    echo "🏗️  Testing build..."
+    npm run build
+    if [ $? -ne 0 ]; then
+        echo "❌ Build failed. Please fix build errors before pushing."
+        exit 1
+    fi
+    
+    echo "✅ All quality checks passed! Proceeding with push to $protected_branch."
+else
+    echo "ℹ️  Pushing to $current_branch branch - running basic lint check..."
+    npm run lint
+    if [ $? -ne 0 ]; then
+        echo "❌ ESLint failed. Please fix linting errors before pushing."
+        exit 1
+    fi
+    echo "✅ Lint check passed!"
+fi
+
+echo "🚀 Pre-push checks complete!" 
