@@ -7,9 +7,8 @@ import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_c
 
 const pathToStepMap = {
   "/private-sessions/welcome": 1,
-  "/private-sessions/auth": 2,
-  "/private-sessions/select-package": 3,
-  "/private-sessions/payment": 4,
+  "/private-sessions/select-package": 2,
+  "/private-sessions/checkout": 3,
   "/private-sessions/confirmation": 4,
 };
 
@@ -19,17 +18,20 @@ interface WizardLayoutProps {
 
 export const WizardLayout: React.FC<WizardLayoutProps> = ({ children }) => {
   const pathname = usePathname();
-  const { goToStep } = useWizardForm();
+  const { currentStep, totalSteps, goToStep } = useWizardForm();
 
   useEffect(() => {
     // Update current step based on the current path
-    const currentStep = pathToStepMap[pathname] || 1;
-    goToStep(currentStep);
-  }, [pathname, goToStep]);
+    const stepFromPath =
+      pathToStepMap[pathname as keyof typeof pathToStepMap] || 2;
+    if (stepFromPath !== currentStep) {
+      goToStep(stepFromPath);
+    }
+  }, [pathname, currentStep, goToStep]);
 
   return (
     <>
-      <ProgressStepper currentStep={0} totalSteps={} />
+      <ProgressStepper currentStep={currentStep} totalSteps={totalSteps} />
       {children}
     </>
   );

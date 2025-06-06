@@ -19,7 +19,8 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
     if (pathname?.includes("/welcome")) return 1;
     if (pathname?.includes("/select-package")) return 2;
     if (pathname?.includes("/checkout")) return 3;
-    return 1; // Default to step 1
+    if (pathname?.includes("/confirmation")) return 4;
+    return 2; // Default to step 2 (package selection)
   };
 
   const currentStep = getCurrentStep();
@@ -30,7 +31,7 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
         <h1 className="text-4xl font-bold mb-6 tracking-tight text-primary-500 text-center">
           Train With Me
         </h1>
-        <ProgressStepper currentStep={currentStep} totalSteps={3} />
+        <ProgressStepper currentStep={currentStep} totalSteps={4} />
         {children}
       </div>
     </WizardFormProvider>

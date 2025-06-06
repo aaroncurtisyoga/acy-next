@@ -21,7 +21,7 @@ export async function POST(request: Request) {
   // Get the ID and type
   const stripeEventType = stripeEvent.type;
 
-  // CREATE
+  // CREATE - Handle both checkout sessions and payment intents
   if (stripeEventType === "checkout.session.completed") {
     const { id, amount_total, metadata } = stripeEvent.data.object;
 
@@ -41,6 +41,30 @@ export async function POST(request: Request) {
       handleError("Stripe Webhook Creating order", error);
       return NextResponse.json({
         message: "Error creating order",
+        error: error.message,
+      });
+    }
+  }
+
+  // Handle payment intent succeeded for embedded checkout
+  if (stripeEventType === "payment_intent.succeeded") {
+    const { id, amount, metadata } = stripeEvent.data.object;
+
+    const order = {
+      buyerId: metadata?.buyerId || "",
+      createdAt: new Date(),
+      stripeId: id,
+      totalAmount: amount ? (amount / 100).toString() : "0",
+      type: (metadata?.type as OrderType) || OrderType.PRIVATE_SESSION,
+    };
+
+    try {
+      const newOrder = await createOrder(order);
+      return NextResponse.json({ message: "OK", order: newOrder });
+    } catch (error) {
+      handleError("Stripe Webhook Creating order from payment intent", error);
+      return NextResponse.json({
+        message: "Error creating order from payment intent",
         error: error.message,
       });
     }

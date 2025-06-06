@@ -1,10 +1,10 @@
 import React, { FC, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { OrderType } from "@prisma/client";
-import { loadStripe } from "@stripe/stripe-js";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
+import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import {
   ALL_OFFERINGS,
   INDIVIDUAL,
@@ -17,17 +17,17 @@ import { PackageDescription } from "@/app/(root)/private-sessions/select-package
 import { PackageLabel } from "@/app/(root)/private-sessions/select-package/_components/PackageLabel";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/select-package/_components/PrivateSessionOfferings";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/select-package/_components/SelectTypeOfPrivateSession";
-import { checkoutOrder } from "@/app/_lib/actions/order.actions";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
 
-loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
-
 const SelectPackageForm: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
+  const { updateFormData, goToNextStep } = useWizardForm();
+  const router = useRouter();
   const [privateSessionType, setPrivateSessionType] =
     useState<SessionType>(INDIVIDUAL);
+
   const methods = useForm<Inputs>({
     resolver: zodResolver(SelectPackageFormSchema),
     defaultValues: {
@@ -35,19 +35,29 @@ const SelectPackageForm: FC = () => {
     },
   });
 
-  const onSubmit = async (data) => {
+  const onSubmit = async (data: Inputs) => {
     const selectedPackage = data.package;
     const packageDetails = getPackageDetails(selectedPackage, ALL_OFFERINGS);
 
-    const order = {
-      buyerId: user.publicMetadata.userId as string,
-      isFree: false,
-      type: OrderType.PRIVATE_SESSION,
-      name: packageDetails.package,
-      price: packageDetails.price,
-    };
+    if (!packageDetails) {
+      console.error("Package details not found");
+      return;
+    }
 
-    await checkoutOrder(order);
+    // Save form data to context
+    updateFormData({
+      sessionType: privateSessionType,
+      package: selectedPackage,
+      packageDetails: packageDetails,
+      customerInfo: {
+        email: user?.emailAddresses[0]?.emailAddress || "",
+        name: `${user?.firstName || ""} ${user?.lastName || ""}`.trim(),
+      },
+    });
+
+    // Navigate to checkout
+    goToNextStep();
+    router.push("/private-sessions/checkout");
   };
 
   return (
