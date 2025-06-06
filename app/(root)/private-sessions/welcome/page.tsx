@@ -31,9 +31,14 @@ const WelcomePage: React.FC = () => {
         <Button
           color="primary"
           size="lg"
-          endContent={<ArrowRight size={20} />}
           onPress={handleGetStarted}
-          className="text-lg px-8 py-6"
+          className="text-lg px-8 py-6 group"
+          endContent={
+            <ArrowRight
+              size={20}
+              className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+            />
+          }
         >
           Get Started
         </Button>
