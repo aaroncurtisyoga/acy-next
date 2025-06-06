@@ -9,7 +9,10 @@
     "vercel-build": "prisma migrate deploy && next build",
     "postinstall": "prisma generate",
     "lint": "next lint",
-    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix"
+    "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
+    "version:patch": "./scripts/version.sh patch",
+    "version:minor": "./scripts/version.sh minor",
+    "version:major": "./scripts/version.sh major"
   },
   "dependencies": {
     "@clerk/nextjs": "^6.12.12",

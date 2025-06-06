@@ -1,0 +1,191 @@
+name: Version and Release
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version bump type'
+        required: true
+        default: 'patch'
+        type: choice
+        options:
+          - patch
+          - minor
+          - major
+      skip_ci:
+        description: 'Skip CI checks'
+        required: false
+        default: false
+        type: boolean
+  push:
+    branches:
+      - main
+    paths-ignore:
+      - 'README.md'
+      - 'docs/**'
+      - '.github/**'
+      - '!.github/workflows/version.yml'
+
+jobs:
+  version:
+    runs-on: ubuntu-latest
+    if: |
+      github.event_name == 'workflow_dispatch' || 
+      (github.event_name == 'push' && 
+       contains(github.event.head_commit.message, '[version]'))
+    
+    permissions:
+      contents: write
+      pull-requests: write
+      
+    outputs:
+      new_version: ${{ steps.version.outputs.new_version }}
+      version_changed: ${{ steps.version.outputs.version_changed }}
+      changelog: ${{ steps.changelog.outputs.changelog }}
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Configure Git
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+
+      - name: Determine version bump type
+        id: bump_type
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            echo "type=${{ github.event.inputs.version_type }}" >> $GITHUB_OUTPUT
+          else
+            # Auto-detect from commit message
+            commit_msg="${{ github.event.head_commit.message }}"
+            if [[ $commit_msg == *"[major]"* ]]; then
+              echo "type=major" >> $GITHUB_OUTPUT
+            elif [[ $commit_msg == *"[minor]"* ]]; then
+              echo "type=minor" >> $GITHUB_OUTPUT
+            else
+              echo "type=patch" >> $GITHUB_OUTPUT
+            fi
+          fi
+
+      - name: Get current version
+        id: current_version
+        run: |
+          current_version=$(node -p "require('./package.json').version")
+          echo "version=$current_version" >> $GITHUB_OUTPUT
+
+      - name: Bump version
+        id: version
+        run: |
+          bump_type="${{ steps.bump_type.outputs.type }}"
+          current_version="${{ steps.current_version.outputs.version }}"
+          
+          # Parse current version
+          IFS='.' read -ra VERSION_PARTS <<< "$current_version"
+          major=${VERSION_PARTS[0]}
+          minor=${VERSION_PARTS[1]}
+          patch=${VERSION_PARTS[2]}
+          
+          # Bump version based on type
+          case $bump_type in
+            major)
+              major=$((major + 1))
+              minor=0
+              patch=0
+              ;;
+            minor)
+              minor=$((minor + 1))
+              patch=0
+              ;;
+            patch)
+              patch=$((patch + 1))
+              ;;
+          esac
+          
+          new_version="$major.$minor.$patch"
+          echo "new_version=$new_version" >> $GITHUB_OUTPUT
+          echo "version_changed=true" >> $GITHUB_OUTPUT
+          
+          # Update package.json
+          npm version $new_version --no-git-tag-version
+          
+          echo "Version bumped from $current_version to $new_version ($bump_type)"
+
+      - name: Commit version bump
+        if: steps.version.outputs.version_changed == 'true'
+        run: |
+          git add package.json package-lock.json
+          git commit -m "chore: bump version to ${{ steps.version.outputs.new_version }} [skip ci]"
+
+      - name: Create and push tag
+        if: steps.version.outputs.version_changed == 'true'
+        run: |
+          git tag "v${{ steps.version.outputs.new_version }}"
+          git push origin main
+          git push origin "v${{ steps.version.outputs.new_version }}"
+
+      - name: Generate changelog
+        if: steps.version.outputs.version_changed == 'true'
+        id: changelog
+        run: |
+          # Get commits since last tag
+          last_tag=$(git describe --tags --abbrev=0 HEAD^ 2>/dev/null || echo "")
+          
+          if [ -z "$last_tag" ]; then
+            commits=$(git log --pretty=format:"- %s (%h)" --reverse)
+          else
+            commits=$(git log $last_tag..HEAD --pretty=format:"- %s (%h)" --reverse)
+          fi
+          
+          # Remove the version bump commit from changelog
+          changelog=$(echo "$commits" | grep -v "chore: bump version" | head -20)
+          
+          if [ -z "$changelog" ]; then
+            changelog="- Initial release"
+          fi
+          
+          echo "changelog<<EOF" >> $GITHUB_OUTPUT
+          echo "$changelog" >> $GITHUB_OUTPUT
+          echo "EOF" >> $GITHUB_OUTPUT
+
+  release:
+    needs: version
+    runs-on: ubuntu-latest
+    if: needs.version.outputs.version_changed == 'true'
+    
+    permissions:
+      contents: write
+      
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ needs.version.outputs.new_version }}
+          name: Release v${{ needs.version.outputs.new_version }}
+          body: |
+            ## Changes in v${{ needs.version.outputs.new_version }}
+            
+            ${{ needs.version.outputs.changelog || 'No changes documented' }}
+            
+            ---
+            
+            **What's Changed**: See the [full changelog](https://github.com/${{ github.repository }}/compare/v${{ needs.version.outputs.previous_version }}...v${{ needs.version.outputs.new_version }})
+          draft: false
+          prerelease: false
+          generate_release_notes: true 
