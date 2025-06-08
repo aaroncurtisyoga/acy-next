@@ -16,7 +16,6 @@ import Location from "@/app/(root)/events/[id]/_components/Location";
 import RefundPolicy from "@/app/(root)/events/[id]/_components/RefundPolicy";
 import Subheading from "@/app/(root)/events/[id]/_components/Subheadline";
 import { getEventById } from "@/app/_lib/actions/event.actions";
-import { SearchParamProps } from "@/app/_lib/types";
 import { handleError } from "@/app/_lib/utils";
 
 type Event = PrismaEvent & {
@@ -24,7 +23,13 @@ type Event = PrismaEvent & {
   attendees: (EventUser & { user: User })[];
   location: PrismaLocation;
 };
-const EventPage: FC<SearchParamProps> = async ({ params: { id } }) => {
+
+interface EventPageProps {
+  params: Promise<{ id: string }>;
+}
+
+const EventPage: FC<EventPageProps> = async ({ params }) => {
+  const { id } = await params;
   let event: Event | null = null;
 
   try {
