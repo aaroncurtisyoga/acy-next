@@ -41,12 +41,15 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
               <div className="p-2 rounded-lg bg-primary-50 text-primary-600">
                 <Calendar size={24} />
               </div>
-              <h1 className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}>
+              <h1
+                className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
+              >
                 Practice.
               </h1>
             </div>
             <p className="text-lg text-foreground-600 leading-relaxed">
-              Join me for upcoming yoga sessions, workshops, and mindful movement experiences.
+              Join me for upcoming yoga sessions, workshops, and mindful
+              movement experiences.
             </p>
           </div>
 
@@ -57,7 +60,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
                 <div className="flex items-center gap-2">
                   <div className="w-2 h-2 rounded-full bg-primary-500"></div>
                   <p className="font-semibold text-foreground-800">
-                    {data.length} upcoming event{data.length !== 1 ? 's' : ''}
+                    {data.length} upcoming event{data.length !== 1 ? "s" : ""}
                   </p>
                   {hasFiltersApplied && (
                     <div className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
@@ -94,7 +97,8 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
               No Events Scheduled
             </h3>
             <p className="text-foreground-600 max-w-md leading-relaxed">
-              There aren't any events scheduled at the moment. Check back soon for upcoming yoga sessions and workshops!
+              There aren&apos;t any events scheduled at the moment. Check back
+              soon for upcoming yoga sessions and workshops!
             </p>
             {hasFiltersApplied && (
               <>
