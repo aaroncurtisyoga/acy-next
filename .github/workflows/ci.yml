@@ -1,0 +1,54 @@
+name: CI Quality Checks
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  quality-checks:
+    name: Code Quality Checks
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Generate Prisma client
+        run: npx prisma generate
+
+      - name: Run ESLint
+        run: npm run lint
+
+      - name: Check TypeScript types
+        run: npx tsc --noEmit
+
+      - name: Check for uncommitted changes
+        run: |
+          # Exclude build artifacts and generated files that shouldn't be committed
+          changes=$(git status --porcelain | grep -v -E '(\.tsbuildinfo|\.next/|node_modules/|\.vercel/)' || true)
+          if [ -n "$changes" ]; then
+            echo "❌ Uncommitted changes detected:"
+            echo "$changes"
+            echo ""
+            echo "Please run the following commands locally and commit the changes:"
+            echo "  npm run lint:fix"
+            echo "  npx prisma generate"
+            exit 1
+          else
+            echo "✅ No uncommitted changes detected"
+          fi
+
+# Todo: After adding tests, add a job to run them. Note, the env vars will need to be added to the GitHub secrets. 
+  

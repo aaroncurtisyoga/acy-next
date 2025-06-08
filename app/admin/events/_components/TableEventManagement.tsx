@@ -11,7 +11,8 @@ import {
   TableRow,
   Tooltip,
   useDisclosure,
-} from "@nextui-org/react";
+  addToast,
+} from "@heroui/react";
 import { Eye, Pencil, Trash2 } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
@@ -24,7 +25,6 @@ const TableEventManagement: FC = () => {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedEvent, setSelectedEvent] = useState(null);
-  // todo: consider creating a custom hook for this data fetching & pagination
   const [events, setEvents] = useState([]);
   const [totalPages, setTotalPages] = useState(0);
   const [page, setPage] = useState(1);
@@ -44,6 +44,13 @@ const TableEventManagement: FC = () => {
         setTotalPages(totalPages);
       } catch (error) {
         handleError("Failed to fetch events", error);
+        addToast({
+          title: "Error",
+          description: "Failed to fetch events. Please try again.",
+          color: "danger",
+          timeout: 5000,
+          shouldShowTimeoutProgress: true,
+        });
       } finally {
         setLoading(false);
       }
@@ -52,12 +59,34 @@ const TableEventManagement: FC = () => {
   }, [page, searchText, category]);
 
   const handleDeleteEvent = async () => {
-    const response = await deleteEvent(selectedEvent.id);
-    if (response.success) {
-      onOpenChange();
-      setEvents(events.filter((event) => event.id !== selectedEvent.id));
-    } else {
-      //   Todo: Toast notification saying there was an error or put in modal
+    try {
+      const response = await deleteEvent(selectedEvent.id);
+      if (response.success) {
+        onOpenChange();
+        setEvents(events.filter((event) => event.id !== selectedEvent.id));
+
+        // Show success toast
+        addToast({
+          title: "Success",
+          description: "Event deleted successfully",
+          color: "success",
+          timeout: 3000,
+          shouldShowTimeoutProgress: true,
+        });
+      } else {
+        throw new Error("Failed to delete event");
+      }
+    } catch (error) {
+      handleError("Failed to delete event", error);
+
+      // Show error toast
+      addToast({
+        title: "Error",
+        description: "Failed to delete event. Please try again.",
+        color: "danger",
+        timeout: 5000,
+        shouldShowTimeoutProgress: true,
+      });
     }
   };
 
@@ -69,7 +98,7 @@ const TableEventManagement: FC = () => {
     return (
       <TableEmpty
         columns={TableEventManagementColumns}
-        message={"No" + " events have been created yet"}
+        message={"No events have been created yet"}
       />
     );
   }

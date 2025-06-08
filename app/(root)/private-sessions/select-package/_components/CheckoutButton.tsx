@@ -2,8 +2,8 @@
 
 import React, { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@nextui-org/react";
-import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/(select-package)/_components/CheckoutButtonSkeleton";
+import { Button } from "@heroui/react";
+import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 
 const CheckoutButton: FC = () => {
   const { isLoaded: isUserLoaded } = useUser();

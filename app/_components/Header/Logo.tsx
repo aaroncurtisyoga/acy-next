@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { NavbarBrand } from "@nextui-org/react";
+import { NavbarBrand } from "@heroui/react";
 import { merriweather } from "@/app/fonts";
 
 interface LogoProps {

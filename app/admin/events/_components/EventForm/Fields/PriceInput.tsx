@@ -1,19 +1,19 @@
 import React, { FC } from "react";
-import { Input } from "@nextui-org/react";
+import { Input } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface PriceInputProps {
-  control: Control;
+  control: Control<EventFormValues>;
   isSubmitting: boolean;
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
   return (
     <Controller
       control={control}
-      name={"price"}
+      name={"price" satisfies keyof EventFormValues}
       render={({ field }) => (
         <Input
           isDisabled={isSubmitting}
@@ -30,6 +30,7 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
           type={"number"}
           variant="bordered"
           {...field}
+          value={field.value?.toString() || ""}
         />
       )}
     />

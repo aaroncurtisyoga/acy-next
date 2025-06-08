@@ -1,6 +1,6 @@
 import { FC } from "react";
 import Link from "next/link";
-import { Button } from "@nextui-org/react";
+import { Button } from "@heroui/react";
 import { CirclePlus } from "lucide-react";
 
 const ButtonNewEvent: FC = () => {

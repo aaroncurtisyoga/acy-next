@@ -8,7 +8,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Order, User, Event } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 

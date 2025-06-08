@@ -6,10 +6,10 @@ import { usePathname, useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
 import {
   NavbarContent,
-  NavbarMenuToggle,
   NavbarMenu,
   NavbarMenuItem,
-} from "@nextui-org/react";
+  NavbarMenuToggle,
+} from "@heroui/react";
 import { Menu } from "lucide-react";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 

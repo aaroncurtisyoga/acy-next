@@ -1,69 +1,105 @@
 "use client";
 
-import { FC } from "react";
-import { redirect, useRouter } from "next/navigation";
-import { Link as NextUiLink } from "@nextui-org/link";
-import { Button } from "@nextui-org/react";
-import { updateEvent } from "@/app/_lib/actions/event.actions";
-import {
-  selectFormValues,
-  resetFormData,
-} from "@/app/_lib/redux/features/eventFormSlice";
-import { useAppDispatch, useAppSelector } from "@/app/_lib/redux/hooks";
+import { useEffect, useState, FormEvent } from "react";
+import { useParams, useRouter } from "next/navigation";
+import { Button, Link as HeroUiLink } from "@heroui/react";
+import { useFormContext } from "react-hook-form";
+import { updateEvent, getEventById } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 
-const SubmitEvent: FC = () => {
+const SubmitStep = () => {
   const router = useRouter();
-  const dispatch = useAppDispatch();
-  const valuesFromRedux = useAppSelector(selectFormValues);
+  const { id } = useParams<{ id: string }>();
+  const { getValues, reset } = useFormContext<EventFormValues>();
 
-  /*
-  async function updateExistingEvent() {
+  const onSubmit = async (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    const values = getValues();
+
     try {
-      const updatedEvent = await updateEvent({
-        // todo: check and see if ID is being saved the right way
-        event: { ...valuesFromRedux, _id: valuesFromRedux.id },
-        path: `/events/${valuesFromRedux.id}`,
+      const updated = await updateEvent({
+        event: { ...values, id }, // assuming your backend expects `id`
+        path: `/events/${id}`,
       });
 
-      if (updatedEvent) {
-        dispatch(resetFormData());
-        redirect(`/events/${updatedEvent._id}`);
+      if (updated) {
+        reset();
+        router.push(`/events/${id}`);
       }
     } catch (error) {
       handleError(error);
     }
-  }
-
-  const onSubmit = async (eventType) => {
-    if (event._id) {
-      await updateExistingEvent(values);
-    } else {
-      redirect("/");
-    }
   };
-*/
 
   return (
-    <section className={"wrapper"}>
+    <section className="wrapper">
       <h1>Review Event</h1>
-      {/* <form onSubmit={() => onSubmit(eventType)}>
+      <form onSubmit={onSubmit}>
         <div className="flex justify-between mt-5">
-          <Button type={"button"}>
-            <NextUiLink
-              href={"/events/details"}
-              className={"text-default-foreground"}
+          <Button type="button">
+            <HeroUiLink
+              href={`/events/${id}/edit/details`}
+              className="text-default-foreground"
             >
               Previous
-            </NextUiLink>
+            </HeroUiLink>
           </Button>
-          <Button type={"submit"}>
-            {eventType === "Create" ? "Create" : "Update"}
+          <Button type="submit" color="primary">
+            Update Event
           </Button>
         </div>
-      </form>*/}
+      </form>
     </section>
   );
 };
 
-export default SubmitEvent;
+const EditSubmitPage = () => {
+  const { id } = useParams<{ id: string }>();
+  const router = useRouter();
+  const [defaultValues, setDefaultValues] = useState<EventFormValues | null>(
+    null,
+  );
+
+  useEffect(() => {
+    const loadEvent = async () => {
+      try {
+        const event = await getEventById(id);
+        // Transform database event to form values
+        const formValues: EventFormValues = {
+          ...event,
+          category:
+            typeof event.category === "object"
+              ? event.category.id
+              : event.category,
+          location: event.location
+            ? {
+                formattedAddress: event.location.formattedAddress,
+                lat: event.location.lat,
+                lng: event.location.lng,
+                name: event.location.name,
+                placeId: event.location.placeId,
+              }
+            : undefined,
+        };
+        setDefaultValues(formValues);
+      } catch (err) {
+        handleError(err);
+        router.push("/");
+      }
+    };
+
+    loadEvent();
+  }, [id, router]);
+
+  if (!defaultValues) return null;
+
+  return (
+    <EventFormWrapper mode="edit" defaultValues={defaultValues}>
+      <SubmitStep />
+    </EventFormWrapper>
+  );
+};
+
+export default EditSubmitPage;

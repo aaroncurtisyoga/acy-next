@@ -60,3 +60,36 @@
 
 
 }
+
+/* Clerk Auth */
+.cl-footer,
+.cl-footerAction,
+.cl-footerAction__signIn {
+  background: white none;
+}
+
+.cl-footer [class*="cl-internal"],
+.cl-footerAction [class*="cl-internal"] {
+  background: white none;
+}
+
+.cl-footer div[class*="cl-internal"] div[class*="cl-internal"] {
+  background-color: white;
+}
+
+.cl-footer *,
+.cl-footerAction * {
+  background-color: white;
+}
+
+/* Fix for Clerk main element width */
+.cl-main {
+  width: auto ;
+  max-width: 100% ;
+  padding: 0 1rem ;
+}
+
+.cl-card {
+  width: auto ;
+  max-width: 100% ;
+}

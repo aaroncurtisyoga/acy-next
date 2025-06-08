@@ -1,14 +1,14 @@
 import React, { FC, useEffect, useState } from "react";
-import { Select, SelectItem } from "@nextui-org/react";
+import { Select, SelectItem } from "@heroui/react";
 import { Category } from "@prisma/client";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface CategoryDropdownProps {
-  control: Control;
+  control: Control<EventFormValues>;
   isSubmitting: boolean;
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 const CategoryDropdown: FC<CategoryDropdownProps> = ({

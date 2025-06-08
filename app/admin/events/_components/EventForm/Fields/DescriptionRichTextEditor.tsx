@@ -1,11 +1,11 @@
-import { FC } from "react";
-import { Control, Controller, FieldErrors } from "react-hook-form";
+import React, { FC } from "react";
+import { Controller, Control, FieldErrors } from "react-hook-form";
 import Tiptap from "@/app/_components/Tiptap";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface DescriptionRichTextEditorProps {
-  control: Control;
-  errors: FieldErrors<Inputs>;
+  control: Control<EventFormValues>;
+  errors: FieldErrors<EventFormValues>;
 }
 
 const DescriptionRichTextEditor: FC<DescriptionRichTextEditorProps> = ({
@@ -18,9 +18,11 @@ const DescriptionRichTextEditor: FC<DescriptionRichTextEditorProps> = ({
       name="description"
       render={({ field }) => (
         <Tiptap
-          onChange={(e) => field.onChange(e)}
-          description={field.name}
+          description="Description"
+          placeholder="Enter event description..."
           errorMessage={errors.description?.message}
+          onChange={field.onChange}
+          initialContent={field.value || ""}
         />
       )}
     />

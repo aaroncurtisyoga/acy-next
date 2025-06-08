@@ -1,8 +1,8 @@
 "use client";
 
 import { FC } from "react";
+import { Button, Input } from "@heroui/react";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Button, Input } from "@nextui-org/react";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
 import { createCategory } from "@/app/_lib/actions/category.actions";

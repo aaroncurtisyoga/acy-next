@@ -20,7 +20,7 @@ export const unauthenticatedLinks = [
 ];
 
 export const adminLinks = [
-  { name: "Admin", href: "/admin", testId: "admin-link" },
+  { name: "Admin", href: "/admin/events", testId: "admin-link" },
 ];
 
 export const authenticatedLinks = [

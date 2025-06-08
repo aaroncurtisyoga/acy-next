@@ -1,16 +1,21 @@
 "use client";
 
 import React, { FC } from "react";
-import { Autocomplete, AutocompleteItem } from "@nextui-org/react";
+import { Autocomplete, AutocompleteItem } from "@heroui/react";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { placeDetails } from "@/app/_lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/app/_lib/hooks/useAutocompleteSuggestions";
-import { Inputs } from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
+import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface LocationInputProps {
-  control: Control;
+  control: Control<EventFormValues>;
   setLocationValueInReactHookForm: any;
-  errors: FieldErrors<Inputs>;
+  errors: FieldErrors<EventFormValues>;
+}
+
+interface LocationSuggestion {
+  place_id: string;
+  description: string;
 }
 
 const LocationInput: FC<LocationInputProps> = ({
@@ -20,7 +25,7 @@ const LocationInput: FC<LocationInputProps> = ({
 }) => {
   const { setSearchValue, suggestions } = useAutocompleteSuggestions();
 
-  const handleSelectLocation = async (placeId: any) => {
+  const handleSelectLocation = async (placeId: string) => {
     await placeDetails(placeId).then((place) => {
       setLocationValueInReactHookForm({
         formattedAddress: place.formatted_address,
@@ -36,25 +41,37 @@ const LocationInput: FC<LocationInputProps> = ({
     setSearchValue(value);
   };
 
+  // Create a mapping of keys to place_ids for lookup
+  const placeIdMap = React.useMemo(() => {
+    const map: Record<string, string> = {};
+    suggestions?.forEach((location: LocationSuggestion) => {
+      map[location.place_id] = location.place_id;
+    });
+    return map;
+  }, [suggestions]);
+
   return (
     <Controller
       control={control}
-      name={"location"}
+      name={"location" satisfies keyof EventFormValues}
       render={({ field }) => (
         <Autocomplete
-          errorMessage={errors.location?.formattedAddress?.message}
-          isInvalid={!!errors.location?.formattedAddress}
+          errorMessage={errors.location?.message}
+          isInvalid={!!errors.location}
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}
           onInputChange={onInputChange}
-          onSelectionChange={(value) => handleSelectLocation(value)}
+          onSelectionChange={(key) => {
+            // Convert the key to a string and use it to look up the place_id
+            const placeId = placeIdMap[key.toString()];
+            if (placeId) {
+              handleSelectLocation(placeId);
+            }
+          }}
         >
-          {suggestions?.map((location) => (
-            <AutocompleteItem
-              value={location.description}
-              key={location.place_id}
-            >
+          {suggestions?.map((location: LocationSuggestion) => (
+            <AutocompleteItem key={location.place_id} id={location.place_id}>
               {location.description}
             </AutocompleteItem>
           ))}

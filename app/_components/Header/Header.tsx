@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { useUser } from "@clerk/nextjs";
-import { Navbar } from "@nextui-org/react";
+import { Navbar } from "@heroui/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
 import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
@@ -50,6 +50,8 @@ const Header: FC = () => {
           "relative",
           "h-full",
           "items-center",
+          // Remove bold from active state
+          "data-[active=true]:font-normal",
           // Active state styling
           "data-[active=true]:after:content-['']",
           "data-[active=true]:after:absolute",

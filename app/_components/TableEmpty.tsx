@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Table, TableBody, TableColumn, TableHeader } from "@nextui-org/react";
+import { Table, TableBody, TableColumn, TableHeader } from "@heroui/react";
 
 interface EmptyTableProps {
   columns: Array<string>;

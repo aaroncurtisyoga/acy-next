@@ -10,7 +10,7 @@ import {
   TableHeader,
   TableRow,
   useDisclosure,
-} from "@nextui-org/react";
+} from "@heroui/react";
 import { Category } from "@prisma/client";
 import BasicModal from "@/app/_components/BasicModal";
 import { deleteCategory } from "@/app/_lib/actions/category.actions";

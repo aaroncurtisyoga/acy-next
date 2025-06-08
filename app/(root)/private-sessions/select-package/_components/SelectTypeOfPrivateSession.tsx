@@ -1,7 +1,7 @@
 "use client";
 
 import React, { FC } from "react";
-import { Tab, Tabs } from "@nextui-org/tabs";
+import { Tabs, Tab } from "@heroui/react";
 import {
   GROUP,
   INDIVIDUAL,

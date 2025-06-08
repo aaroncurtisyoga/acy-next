@@ -1,8 +1,13 @@
 import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
 import UpcomingEvents from "@/app/(root)/_components/UpcomingEvents";
-import { SearchParamProps } from "@/app/_lib/types";
 
-const EventsPage = async ({ searchParams }: SearchParamProps) => {
+interface EventsPageProps {
+  searchParams: Promise<any>;
+}
+
+const EventsPage = async ({ searchParams }: EventsPageProps) => {
+  const resolvedParams = await searchParams;
+
   return (
     <section
       className={
@@ -13,7 +18,7 @@ const EventsPage = async ({ searchParams }: SearchParamProps) => {
       <div className={"relative"}>
         <ImageResponsiveHandstand />
       </div>
-      <UpcomingEvents searchParams={searchParams} />
+      <UpcomingEvents searchParams={resolvedParams} />
     </section>
   );
 };
