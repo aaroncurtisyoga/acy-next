@@ -8,8 +8,9 @@ import { useFormContext } from "react-hook-form";
 import { createEvent } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 
-const CreateEventFormSubmit: FC = () => {
+const SubmitStep: FC = () => {
   const router = useRouter();
   const { getValues, reset } = useFormContext<EventFormValues>();
 
@@ -55,6 +56,14 @@ const CreateEventFormSubmit: FC = () => {
         </div>
       </form>
     </section>
+  );
+};
+
+const CreateEventFormSubmit: FC = () => {
+  return (
+    <EventFormWrapper mode="create">
+      <SubmitStep />
+    </EventFormWrapper>
   );
 };
 

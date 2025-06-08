@@ -1,7 +1,11 @@
 import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
 import UpcomingEvents from "@/app/(root)/_components/UpcomingEvents";
 
-const EventsPage = async ({ searchParams }) => {
+interface EventsPageProps {
+  searchParams: Promise<any>;
+}
+
+const EventsPage = async ({ searchParams }: EventsPageProps) => {
   const resolvedParams = await searchParams;
 
   return (
