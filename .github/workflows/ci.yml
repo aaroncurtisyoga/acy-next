@@ -36,9 +36,11 @@ jobs:
 
       - name: Check for uncommitted changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          # Exclude build artifacts and generated files that shouldn't be committed
+          changes=$(git status --porcelain | grep -v -E '(\.tsbuildinfo|\.next/|node_modules/|\.vercel/)' || true)
+          if [ -n "$changes" ]; then
             echo "❌ Uncommitted changes detected:"
-            git status --short
+            echo "$changes"
             echo ""
             echo "Please run the following commands locally and commit the changes:"
             echo "  npm run lint:fix"
