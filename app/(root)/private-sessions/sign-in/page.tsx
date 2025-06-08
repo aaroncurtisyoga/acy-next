@@ -2,20 +2,67 @@
 
 import React, { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { SignIn, useAuth } from "@clerk/nextjs";
+import { SignIn, useAuth, useUser, SignOutButton } from "@clerk/nextjs";
+import { Button } from "@heroui/react";
+import { ArrowRight, User } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 
 const SignInPage: React.FC = () => {
   const { isSignedIn } = useAuth();
+  const { user } = useUser();
   const { goToNextStep } = useWizardForm();
   const router = useRouter();
 
-  useEffect(() => {
-    if (isSignedIn) {
-      goToNextStep();
-      router.push("/private-sessions/select-package");
-    }
-  }, [isSignedIn, goToNextStep, router]);
+  const handleContinue = () => {
+    goToNextStep();
+    router.push("/private-sessions/select-package");
+  };
+
+  if (isSignedIn && user) {
+    return (
+      <div className="max-w-md mx-auto p-6">
+        <div className="text-center mb-8">
+          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <User className="w-8 h-8 text-primary-600" />
+          </div>
+          <h2 className="text-2xl font-bold mb-4">Welcome back!</h2>
+          <p className="text-gray-600 mb-6">
+            Continue as <strong>{user.emailAddresses[0]?.emailAddress}</strong>
+          </p>
+        </div>
+
+        <div className="space-y-4">
+          <Button
+            color="primary"
+            size="lg"
+            fullWidth
+            onPress={handleContinue}
+            className="group"
+            endContent={
+              <ArrowRight
+                size={18}
+                className="transition-transform duration-300 ease-out group-hover:translate-x-1"
+              />
+            }
+          >
+            Continue
+          </Button>
+
+          <div className="text-center">
+            <SignOutButton redirectUrl="/private-sessions/sign-in">
+              <Button
+                variant="light"
+                size="sm"
+                className="text-gray-500 hover:text-gray-700"
+              >
+                Sign in with a different account
+              </Button>
+            </SignOutButton>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto p-6">

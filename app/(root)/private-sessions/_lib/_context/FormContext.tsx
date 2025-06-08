@@ -43,7 +43,7 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
   const [formData, setFormData] = useState<PrivateSessionFormData>({});
   const { isSignedIn } = useAuth();
 
-  const totalSteps = 5; // Welcome -> Sign In -> Package Selection -> Checkout -> Confirmation
+  const totalSteps = 3; // Sign In -> Package Selection -> Checkout (Welcome & Confirmation don't count)
 
   const goToNextStep = () =>
     setCurrentStep((prev) => Math.min(totalSteps, prev + 1));
