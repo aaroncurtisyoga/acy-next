@@ -56,8 +56,8 @@ const LocationInput: FC<LocationInputProps> = ({
       name={"location" satisfies keyof EventFormValues}
       render={({ field }) => (
         <Autocomplete
-          errorMessage={errors.location?.formattedAddress?.message}
-          isInvalid={!!errors.location?.formattedAddress}
+          errorMessage={errors.location?.message}
+          isInvalid={!!errors.location}
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}

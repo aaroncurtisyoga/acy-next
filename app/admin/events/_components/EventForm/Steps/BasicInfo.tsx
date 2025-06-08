@@ -62,7 +62,13 @@ const BasicInfo: FC = () => {
     }
 
     if (currentValues.location?.formattedAddress) {
-      setLocationValueInReactHookForm(currentValues.location);
+      setLocationValueInReactHookForm({
+        formattedAddress: currentValues.location.formattedAddress,
+        lat: currentValues.location.lat || 0,
+        lng: currentValues.location.lng || 0,
+        name: currentValues.location.name || "",
+        placeId: currentValues.location.placeId || "",
+      });
     }
   }, [currentValues, setLocationValueInReactHookForm, setValue]);
 

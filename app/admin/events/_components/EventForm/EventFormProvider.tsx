@@ -6,16 +6,24 @@ import { useForm, FormProvider } from "react-hook-form";
 
 export type EventFormValues = {
   // add all fields here, from all steps
+  id?: string;
   title?: string;
-  location?: any;
+  location?: {
+    formattedAddress?: string;
+    lat?: number;
+    lng?: number;
+    name?: string;
+    placeId?: string;
+  };
   startDateTime?: any;
   endDateTime?: any;
   category?: string;
   isHostedExternally?: boolean;
   description?: string;
   image?: string;
+  imageUrl?: string;
   maxAttendees?: number;
-  price?: number;
+  price?: string;
   externalRegistrationUrl?: string;
 };
 

@@ -30,6 +30,7 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
           type={"number"}
           variant="bordered"
           {...field}
+          value={field.value?.toString() || ""}
         />
       )}
     />

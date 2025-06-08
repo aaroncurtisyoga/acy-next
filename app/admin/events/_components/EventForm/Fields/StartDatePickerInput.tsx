@@ -22,7 +22,7 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
         return (
           <div className={"w-full flex flex-col"}>
             <DatePicker
-              errorMessage={errors.startDateTime?.message}
+              errorMessage={errors.startDateTime?.message as string}
               isDisabled={isSubmitting}
               isInvalid={!!errors.startDateTime}
               hideTimeZone

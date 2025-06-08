@@ -24,7 +24,7 @@ const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
             isDisabled={isSubmitting}
             hideTimeZone
             isInvalid={!!errors.endDateTime}
-            errorMessage={errors.endDateTime?.message}
+            errorMessage={errors.endDateTime?.message as string}
             onChange={field.onChange}
             variant={"bordered"}
             label={"End Date/Time"}

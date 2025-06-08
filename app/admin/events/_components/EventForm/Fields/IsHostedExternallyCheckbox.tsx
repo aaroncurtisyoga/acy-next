@@ -16,12 +16,12 @@ const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
     <Controller
       control={control}
       name={"isHostedExternally" satisfies keyof EventFormValues}
-      render={({ field }) => (
+      render={({ field: { value, onChange, ...field } }) => (
         <Checkbox
           isDisabled={isSubmitting}
           size={"lg"}
-          onChange={field.onChange}
-          isSelected={field.value}
+          onChange={onChange}
+          isSelected={value}
           {...field}
         >
           People sign up on a different app

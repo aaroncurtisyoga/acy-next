@@ -28,6 +28,7 @@ const MaxAttendees: FC<MaxAttendeesProps> = ({
           type={"number"}
           variant="bordered"
           {...field}
+          value={field.value?.toString() || ""}
         />
       )}
     />

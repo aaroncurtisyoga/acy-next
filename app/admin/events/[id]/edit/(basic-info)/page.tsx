@@ -19,7 +19,24 @@ const EditBasicInfoPage = () => {
     const loadEvent = async () => {
       try {
         const event = await getEventById(id);
-        setDefaultValues(event);
+        // Transform database event to form values
+        const formValues: EventFormValues = {
+          ...event,
+          category:
+            typeof event.category === "object"
+              ? event.category.id
+              : event.category,
+          location: event.location
+            ? {
+                formattedAddress: event.location.formattedAddress,
+                lat: event.location.lat,
+                lng: event.location.lng,
+                name: event.location.name,
+                placeId: event.location.placeId,
+              }
+            : undefined,
+        };
+        setDefaultValues(formValues);
       } catch (err) {
         handleError(err);
         router.push("/");
