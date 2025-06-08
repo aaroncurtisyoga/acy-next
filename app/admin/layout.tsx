@@ -1,7 +1,6 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { usePathname } from "next/navigation";
 import SidebarMenu from "@/app/admin/_components/SidebarMenu";
 
 interface AdminLayoutProps {
@@ -9,11 +8,6 @@ interface AdminLayoutProps {
 }
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
-  const pathname = usePathname();
-
-  // Debugging helper - log the current pathname
-  console.log("Current pathname in admin layout:", pathname);
-
   return (
     <div className="flex flex-col md:flex-row min-h-screen">
       {/* Sidebar */}

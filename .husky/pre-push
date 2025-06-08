@@ -2,6 +2,7 @@
 
 # Pre-push hook to run quality checks before pushing to remote
 # This provides an additional safety net beyond the pre-commit hook
+# Note: Build checks are handled by Vercel deployment, which has access to environment variables
 
 echo "🔍 Running pre-push quality checks..."
 
@@ -28,15 +29,8 @@ if [ "$current_branch" = "$protected_branch" ]; then
         exit 1
     fi
     
-    # Try to build the project
-    echo "🏗️  Testing build..."
-    npm run build
-    if [ $? -ne 0 ]; then
-        echo "❌ Build failed. Please fix build errors before pushing."
-        exit 1
-    fi
-    
     echo "✅ All quality checks passed! Proceeding with push to $protected_branch."
+    echo "ℹ️  Build validation will be handled by Vercel deployment."
 else
     echo "ℹ️  Pushing to $current_branch branch - running basic lint check..."
     npm run lint
