@@ -18,6 +18,9 @@ e2e/playwright/.cache/
 # production
 /build
 
+# typescript
+*.tsbuildinfo
+
 # misc
 .DS_Store
 
