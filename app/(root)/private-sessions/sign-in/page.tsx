@@ -20,8 +20,13 @@ const SignInPage: React.FC = () => {
 
   if (isSignedIn && user) {
     return (
-      <div className="max-w-md mx-auto p-6">
+      <div className="max-w-md mx-auto p-6 mt-[60px]">
         <div className="text-center mb-8">
+          <div className="mb-4">
+            <span className="text-sm font-medium text-gray-600">
+              STEP <b>2</b> OF <b>4</b>
+            </span>
+          </div>
           <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-primary-600" />
           </div>
@@ -65,8 +70,13 @@ const SignInPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="max-w-md mx-auto p-6 mt-[60px]">
       <div className="text-center mb-8">
+        <div className="mb-4">
+          <span className="text-sm font-medium text-gray-600">
+            STEP <b>2</b> OF <b>4</b>
+          </span>
+        </div>
         <h2 className="text-2xl font-bold mb-4">Sign In to Continue</h2>
         <p className="text-gray-600">
           Please sign in to book your private yoga sessions with Aaron.

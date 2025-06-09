@@ -11,10 +11,8 @@ import {
 } from "@/app/(root)/private-sessions/_lib/constants";
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
-import { AdditionalDescription } from "@/app/(root)/private-sessions/select-package/_components/AdditionalDescription";
 import CheckoutButton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButton";
 import { PackageDescription } from "@/app/(root)/private-sessions/select-package/_components/PackageDescription";
-import { PackageLabel } from "@/app/(root)/private-sessions/select-package/_components/PackageLabel";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/select-package/_components/PrivateSessionOfferings";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/select-package/_components/SelectTypeOfPrivateSession";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
