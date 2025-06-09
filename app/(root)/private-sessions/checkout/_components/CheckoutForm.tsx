@@ -86,6 +86,7 @@ const CheckoutForm: React.FC = () => {
           startContent={
             isLoading ? <Loader2 className="animate-spin" size={16} /> : null
           }
+          className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
         >
           {isLoading ? "Processing..." : "Complete Payment"}
         </Button>
