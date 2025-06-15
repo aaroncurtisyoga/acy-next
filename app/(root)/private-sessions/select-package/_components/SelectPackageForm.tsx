@@ -12,7 +12,6 @@ import {
 import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import CheckoutButton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButton";
-import { PackageDescription } from "@/app/(root)/private-sessions/select-package/_components/PackageDescription";
 import PrivateSessionOfferings from "@/app/(root)/private-sessions/select-package/_components/PrivateSessionOfferings";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/select-package/_components/SelectTypeOfPrivateSession";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
@@ -66,9 +65,16 @@ const SelectPackageForm: FC = () => {
           methods.handleSubmit(onSubmit)(e);
         }}
       >
+        {/* Step Header */}
+        <div className="text-center mb-8">
+          <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
+            Select your package.
+          </h1>
+          <p className="text-gray-600">
+            Choose the type and package that best fits your needs.
+          </p>
+        </div>
         <div className="mb-12">
-          <PackageDescription />
-
           <SelectTypeOfPrivateSession
             setPrivateSessionType={setPrivateSessionType}
           />

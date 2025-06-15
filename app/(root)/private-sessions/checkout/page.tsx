@@ -118,16 +118,15 @@ const CheckoutPage: React.FC = () => {
         <Button
           variant="light"
           startContent={<ArrowLeft size={16} />}
-          onPress={goToPreviousStep}
+          onPress={() => {
+            goToPreviousStep();
+            router.push("/private-sessions/select-package");
+          }}
           className="mb-4"
         >
           Back to Package Selection
         </Button>
-        <div className="mb-4">
-          <span className="text-sm font-medium text-gray-600">
-            STEP <b>3</b> OF <b>4</b>
-          </span>
-        </div>
+
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
           Complete your payment.
         </h1>
@@ -146,17 +145,6 @@ const CheckoutPage: React.FC = () => {
         <div className="order-1 md:order-2">
           <OrderSummary />
         </div>
-      </div>
-
-      <div className="mt-6">
-        <Button
-          color="primary"
-          size="lg"
-          className="w-full max-w-[320px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
-          onPress={() => {}}
-        >
-          Complete Purchase
-        </Button>
       </div>
     </div>
   );

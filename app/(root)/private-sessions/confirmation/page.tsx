@@ -34,11 +34,6 @@ const ConfirmationPage: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6 text-center">
       {/* Success Icon */}
       <div className="mb-8">
-        <div className="mb-4">
-          <span className="text-sm font-medium text-gray-600">
-            STEP <b>4</b> OF <b>4</b>
-          </span>
-        </div>
         <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
           <CheckCircle className="w-12 h-12 text-green-600" />
         </div>

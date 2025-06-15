@@ -19,11 +19,6 @@ const WelcomePage: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6 mt-[60px]">
       {/* Step Header */}
       <div className="text-center mb-12">
-        <div className="mb-4">
-          <span className="text-sm font-medium text-gray-600">
-            STEP <b>1</b> OF <b>4</b>
-          </span>
-        </div>
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
           Choose your
           <br />
