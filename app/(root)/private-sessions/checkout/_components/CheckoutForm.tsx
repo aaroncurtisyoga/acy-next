@@ -8,7 +8,7 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 
 const CheckoutForm: React.FC = () => {

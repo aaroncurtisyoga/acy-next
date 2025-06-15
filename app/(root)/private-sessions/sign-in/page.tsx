@@ -37,13 +37,7 @@ const SignInPage: React.FC = () => {
             size="lg"
             fullWidth
             onPress={handleContinue}
-            className="group"
-            endContent={
-              <ArrowRight
-                size={18}
-                className="transition-transform duration-300 ease-out group-hover:translate-x-1"
-              />
-            }
+            className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
           >
             Continue
           </Button>
@@ -53,7 +47,7 @@ const SignInPage: React.FC = () => {
               <Button
                 variant="light"
                 size="sm"
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 underline underline-offset-2 hover:underline-offset-4 transition-all duration-200"
               >
                 Sign in with a different account
               </Button>

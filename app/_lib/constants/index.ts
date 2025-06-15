@@ -13,6 +13,11 @@ import { TravelOption } from "@/app/_lib/types";
 
 export const unauthenticatedLinks = [
   {
+    name: "About",
+    href: "/about",
+    testId: "about-link",
+  },
+  {
     name: "Private Sessions",
     href: "/private-sessions",
     testId: "private-sessions-link",
