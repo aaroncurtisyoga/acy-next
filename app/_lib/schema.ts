@@ -58,5 +58,8 @@ export const CategoryFormSchema = z.object({
 });
 
 export const SelectPackageFormSchema = z.object({
-  package: z.string().trim().min(1, "Please select a package"), // Required
+  sessionCount: z
+    .number()
+    .min(1, "Please select at least 1 session")
+    .max(20, "Maximum 20 sessions allowed"),
 });

@@ -1,0 +1,128 @@
+"use client";
+
+import React, { FC } from "react";
+import { Button, Card, CardBody } from "@heroui/react";
+import { Minus, Plus } from "lucide-react";
+import { useController, useFormContext } from "react-hook-form";
+import {
+  MIN_SESSIONS,
+  MAX_SESSIONS,
+  POPULAR_SESSION_COUNTS,
+} from "@/app/(root)/private-sessions/_lib/constants";
+import {
+  calculateSessionPricing,
+  getNextDiscountTier,
+} from "@/app/(root)/private-sessions/_lib/helpers";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+
+interface SessionCountSelectorProps {
+  sessionType: SessionType;
+  name: string;
+}
+
+const SessionCountSelector: FC<SessionCountSelectorProps> = ({
+  sessionType,
+  name,
+}) => {
+  const { control } = useFormContext();
+  const { field } = useController({ name, control });
+
+  const sessionCount = field.value || 1;
+  const pricing = calculateSessionPricing(sessionType, sessionCount);
+  const nextTier = getNextDiscountTier(sessionType, sessionCount);
+
+  const increment = () => {
+    if (sessionCount < MAX_SESSIONS) {
+      field.onChange(sessionCount + 1);
+    }
+  };
+
+  const decrement = () => {
+    if (sessionCount > MIN_SESSIONS) {
+      field.onChange(sessionCount - 1);
+    }
+  };
+
+  const setCount = (count: number) => {
+    field.onChange(count);
+  };
+
+  return (
+    <div className="max-w-md mx-auto space-y-6">
+      {/* Popular Suggestions */}
+      <div>
+        <p className="text-sm text-gray-600 mb-3 text-center">
+          Popular choices:
+        </p>
+        <div className="flex gap-2 justify-center">
+          {POPULAR_SESSION_COUNTS.map((count) => (
+            <Button
+              key={count}
+              variant={sessionCount === count ? "solid" : "bordered"}
+              color={sessionCount === count ? "primary" : "default"}
+              size="sm"
+              onPress={() => setCount(count)}
+              className="min-w-12"
+            >
+              {count}
+            </Button>
+          ))}
+        </div>
+      </div>
+
+      {/* Custom Counter */}
+      <Card>
+        <CardBody className="p-6">
+          <div className="flex items-center justify-center gap-4 mb-4">
+            <Button
+              isIconOnly
+              variant="bordered"
+              onPress={decrement}
+              isDisabled={sessionCount <= MIN_SESSIONS}
+            >
+              <Minus size={16} />
+            </Button>
+
+            <div className="text-center min-w-[100px]">
+              <div className="text-3xl font-bold">{sessionCount}</div>
+              <div className="text-sm text-gray-600">
+                session{sessionCount !== 1 ? "s" : ""}
+              </div>
+            </div>
+
+            <Button
+              isIconOnly
+              variant="bordered"
+              onPress={increment}
+              isDisabled={sessionCount >= MAX_SESSIONS}
+            >
+              <Plus size={16} />
+            </Button>
+          </div>
+
+          {/* Pricing Display */}
+          <div className="text-center border-t pt-4">
+            <div className="text-2xl font-bold">${pricing.totalPrice}</div>
+            <div className="text-sm text-gray-600">
+              ${pricing.pricePerSession}/session
+            </div>
+
+            {pricing.discount && (
+              <div className="text-green-600 text-sm font-medium mt-1">
+                {pricing.discount.label} • Save ${pricing.discount.amount}
+              </div>
+            )}
+
+            {nextTier && (
+              <div className="text-blue-600 text-xs mt-2">
+                Book {nextTier.minSessions}+ sessions to get {nextTier.label}
+              </div>
+            )}
+          </div>
+        </CardBody>
+      </Card>
+    </div>
+  );
+};
+
+export default SessionCountSelector;

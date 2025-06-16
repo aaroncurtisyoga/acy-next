@@ -26,15 +26,39 @@ const CheckoutPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
+      // Support both new and legacy data structures
+      const sessionPurchase = formData.sessionPurchase;
+      const packageDetails = formData.packageDetails;
+
+      let amount: number;
+      let packageName: string;
+      let sessionCount: number | undefined;
+      let pricePerSession: number | undefined;
+
+      if (sessionPurchase) {
+        amount = sessionPurchase.totalPrice;
+        packageName = `${sessionPurchase.sessionCount} ${sessionPurchase.sessionType} Sessions`;
+        sessionCount = sessionPurchase.sessionCount;
+        pricePerSession = sessionPurchase.pricePerSession;
+      } else if (packageDetails) {
+        // Legacy support
+        amount = parseFloat(packageDetails.price);
+        packageName = packageDetails.package;
+      } else {
+        throw new Error("No session or package data found");
+      }
+
       const response = await fetch("/api/create-payment-intent", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          amount: parseFloat(formData.packageDetails!.price),
-          packageName: formData.packageDetails!.package,
+          amount,
+          packageName,
           sessionType: formData.sessionType,
+          sessionCount,
+          pricePerSession,
         }),
       });
 
@@ -53,9 +77,9 @@ const CheckoutPage: React.FC = () => {
     }
   }, [formData]);
 
-  // Redirect if no package selected
+  // Redirect if no package or session data selected
   useEffect(() => {
-    if (!formData.packageDetails) {
+    if (!formData.sessionPurchase && !formData.packageDetails) {
       router.push("/private-sessions/select-package");
       return;
     }
@@ -124,7 +148,7 @@ const CheckoutPage: React.FC = () => {
           }}
           className="mb-4"
         >
-          Back to Package Selection
+          Back to Session Selection
         </Button>
 
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">

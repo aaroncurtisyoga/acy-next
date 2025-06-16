@@ -5,15 +5,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, useForm, FormProvider } from "react-hook-form";
 import * as z from "zod";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
-import {
-  ALL_OFFERINGS,
-  INDIVIDUAL,
-} from "@/app/(root)/private-sessions/_lib/constants";
-import { getPackageDetails } from "@/app/(root)/private-sessions/_lib/helpers";
+import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
+import { calculateSessionPricing } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 import CheckoutButton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButton";
-import PrivateSessionOfferings from "@/app/(root)/private-sessions/select-package/_components/PrivateSessionOfferings";
 import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/select-package/_components/SelectTypeOfPrivateSession";
+import SessionCountSelector from "@/app/(root)/private-sessions/select-package/_components/SessionCountSelector";
 import { SelectPackageFormSchema } from "@/app/_lib/schema";
 
 export type Inputs = z.infer<typeof SelectPackageFormSchema>;
@@ -28,24 +25,21 @@ const SelectPackageForm: FC = () => {
   const methods = useForm<Inputs>({
     resolver: zodResolver(SelectPackageFormSchema),
     defaultValues: {
-      package: "",
+      sessionCount: 3,
     },
   });
 
   const onSubmit = async (data: Inputs) => {
-    const selectedPackage = data.package;
-    const packageDetails = getPackageDetails(selectedPackage, ALL_OFFERINGS);
-
-    if (!packageDetails) {
-      console.error("Package details not found");
-      return;
-    }
+    const sessionPurchase = calculateSessionPricing(
+      privateSessionType,
+      data.sessionCount,
+    );
 
     // Save form data to context
     updateFormData({
       sessionType: privateSessionType,
-      package: selectedPackage,
-      packageDetails: packageDetails,
+      sessionCount: data.sessionCount,
+      sessionPurchase: sessionPurchase,
       customerInfo: {
         email: user?.emailAddresses[0]?.emailAddress || "",
         name: `${user?.firstName || ""} ${user?.lastName || ""}`.trim(),
@@ -68,10 +62,11 @@ const SelectPackageForm: FC = () => {
         {/* Step Header */}
         <div className="text-center mb-8">
           <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
-            Select your package.
+            Select your sessions.
           </h1>
           <p className="text-gray-600">
-            Choose the type and package that best fits your needs.
+            Choose the session type and number of sessions that best fits your
+            needs.
           </p>
         </div>
         <div className="mb-12">
@@ -81,12 +76,12 @@ const SelectPackageForm: FC = () => {
 
           <Controller
             control={methods.control}
-            name="package"
+            name="sessionCount"
             render={({ fieldState }) => (
               <>
-                <PrivateSessionOfferings
-                  privateSessionType={privateSessionType}
-                  name="package"
+                <SessionCountSelector
+                  sessionType={privateSessionType}
+                  name="sessionCount"
                 />
                 {fieldState.error && (
                   <p className="text-danger-500 text-center mt-3">

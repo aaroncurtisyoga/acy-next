@@ -2,17 +2,20 @@
 
 import { createContext, useContext, useState, ReactNode, FC } from "react";
 import { useAuth } from "@clerk/nextjs";
+import { SessionPurchase, SessionType } from "../types";
 
 interface PrivateSessionFormData {
-  sessionType?: "Individual" | "Group";
-  package?: string;
+  sessionType?: SessionType;
+  sessionCount?: number;
+  sessionPurchase?: SessionPurchase;
+  package?: string; // Legacy support
   packageDetails?: {
     title: string;
     price: string;
     description: string;
     features: string[];
     package: string;
-  };
+  }; // Legacy support
   customerInfo?: {
     email: string;
     name: string;
