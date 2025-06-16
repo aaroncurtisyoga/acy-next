@@ -32,9 +32,7 @@ const WelcomePage: React.FC = () => {
           <div className="flex flex-col gap-4 w-full items-center">
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <CheckCircle className="w-6 h-6 text-primary-500 flex-shrink-0" />
-              <span className="text-gray-700">
-                Personalized 1-on-1 training
-              </span>
+              <span className="text-gray-700">Customized training</span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <CheckCircle className="w-6 h-6 text-primary-500 flex-shrink-0" />
