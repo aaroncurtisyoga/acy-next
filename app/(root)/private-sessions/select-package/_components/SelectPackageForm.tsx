@@ -1,45 +1,161 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import { useUser } from "@clerk/nextjs";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { Controller, useForm, FormProvider } from "react-hook-form";
-import * as z from "zod";
+import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
+import { Button, Card, CardBody, Chip } from "@heroui/react";
+import { Check } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
-import { INDIVIDUAL } from "@/app/(root)/private-sessions/_lib/constants";
-import { calculateSessionPricing } from "@/app/(root)/private-sessions/_lib/helpers";
-import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
-import CheckoutButton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButton";
-import SelectTypeOfPrivateSession from "@/app/(root)/private-sessions/select-package/_components/SelectTypeOfPrivateSession";
-import SessionCountSelector from "@/app/(root)/private-sessions/select-package/_components/SessionCountSelector";
-import { SelectPackageFormSchema } from "@/app/_lib/schema";
+import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 
-export type Inputs = z.infer<typeof SelectPackageFormSchema>;
+// Package data structure
+const packages = {
+  individual: [
+    {
+      id: "starter",
+      name: "Starter",
+      sessions: 3,
+      price: 450,
+      perSession: 150,
+      description: "Perfect for trying out personalized yoga",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Build foundational practice",
+        "Flexible scheduling",
+      ],
+      popular: false,
+    },
+    {
+      id: "growth",
+      name: "Growth",
+      sessions: 6,
+      price: 810,
+      perSession: 135,
+      originalPrice: 900,
+      savings: 90,
+      description: "Develop a consistent practice",
+      benefits: [
+        "10% discount on sessions",
+        "Deeper technique refinement",
+        "Noticeable progress",
+        "Priority booking",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
+      name: "Transformation",
+      sessions: 10,
+      price: 1200,
+      perSession: 120,
+      originalPrice: 1500,
+      savings: 300,
+      description: "Commit to real change",
+      benefits: [
+        "20% discount on sessions",
+        "Comprehensive program design",
+        "Major breakthroughs",
+        "VIP support between sessions",
+      ],
+      popular: false,
+    },
+  ],
+  group: [
+    {
+      id: "starter",
+      name: "Starter",
+      sessions: 3,
+      price: 540,
+      perSession: 180,
+      description: "Perfect for trying out personalized yoga",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Build foundational practice",
+        "Flexible scheduling",
+      ],
+      popular: false,
+    },
+    {
+      id: "growth",
+      name: "Growth",
+      sessions: 6,
+      price: 972,
+      perSession: 162,
+      originalPrice: 1080,
+      savings: 108,
+      description: "Develop a consistent practice",
+      benefits: [
+        "10% discount on sessions",
+        "Deeper technique refinement",
+        "Noticeable progress",
+        "Priority booking",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
+      name: "Transformation",
+      sessions: 10,
+      price: 1440,
+      perSession: 144,
+      originalPrice: 1800,
+      savings: 360,
+      description: "Commit to real change",
+      benefits: [
+        "20% discount on sessions",
+        "Comprehensive program design",
+        "Major breakthroughs",
+        "VIP support between sessions",
+      ],
+      popular: false,
+    },
+  ],
+};
 
 const SelectPackageForm: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
   const { updateFormData, goToNextStep } = useWizardForm();
   const router = useRouter();
-  const [privateSessionType, setPrivateSessionType] =
-    useState<SessionType>(INDIVIDUAL);
+  const [sessionType, setSessionType] = useState<"individual" | "group">(
+    "individual",
+  );
+  const [selectedPackage, setSelectedPackage] = useState("starter");
 
-  const methods = useForm<Inputs>({
-    resolver: zodResolver(SelectPackageFormSchema),
-    defaultValues: {
-      sessionCount: 3,
-    },
-  });
-
-  const onSubmit = async (data: Inputs) => {
-    const sessionPurchase = calculateSessionPricing(
-      privateSessionType,
-      data.sessionCount,
+  const onSubmit = async () => {
+    const selectedPkg = packages[sessionType].find(
+      (p) => p.id === selectedPackage,
     );
+
+    if (!selectedPkg) return;
 
     // Save form data to context
     updateFormData({
-      sessionType: privateSessionType,
-      sessionCount: data.sessionCount,
-      sessionPurchase: sessionPurchase,
+      sessionType: sessionType === "individual" ? "Individual" : "Group",
+      sessionCount: selectedPkg.sessions,
+      packageDetails: {
+        package: selectedPkg.name,
+        title: `${selectedPkg.sessions} ${sessionType} sessions`,
+        price: selectedPkg.price.toString(),
+        description: selectedPkg.description,
+        features: selectedPkg.benefits,
+      },
+      sessionPurchase: {
+        sessionType: sessionType === "individual" ? "Individual" : "Group",
+        sessionCount: selectedPkg.sessions,
+        pricePerSession: selectedPkg.perSession,
+        totalPrice: selectedPkg.price,
+        ...(selectedPkg.savings && {
+          discount: {
+            percentage: Math.round(
+              (selectedPkg.savings /
+                (selectedPkg.originalPrice || selectedPkg.price)) *
+                100,
+            ),
+            amount: selectedPkg.savings,
+            label: `Save $${selectedPkg.savings}`,
+          },
+        }),
+      },
       customerInfo: {
         email: user?.emailAddresses[0]?.emailAddress || "",
         name: `${user?.firstName || ""} ${user?.lastName || ""}`.trim(),
@@ -51,50 +167,148 @@ const SelectPackageForm: FC = () => {
     router.push("/private-sessions/checkout");
   };
 
-  return (
-    <FormProvider {...methods}>
-      <form
-        onSubmit={(e) => {
-          e.preventDefault();
-          methods.handleSubmit(onSubmit)(e);
-        }}
-      >
-        {/* Step Header */}
-        <div className="text-center mb-8">
-          <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
-            Select your sessions.
-          </h1>
-          <p className="text-gray-600">
-            Choose the session type and number of sessions that best fits your
-            needs.
-          </p>
-        </div>
-        <div className="mb-12">
-          <SelectTypeOfPrivateSession
-            setPrivateSessionType={setPrivateSessionType}
-          />
+  const currentPackages = packages[sessionType];
+  const selectedPkg = currentPackages.find((p) => p.id === selectedPackage);
 
-          <Controller
-            control={methods.control}
-            name="sessionCount"
-            render={({ fieldState }) => (
-              <>
-                <SessionCountSelector
-                  sessionType={privateSessionType}
-                  name="sessionCount"
-                />
-                {fieldState.error && (
-                  <p className="text-danger-500 text-center mt-3">
-                    {fieldState.error.message}
-                  </p>
-                )}
-              </>
-            )}
-          />
+  return (
+    <div>
+      {/* Header */}
+      <div className="text-center mb-8">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
+          Select your package.
+        </h1>
+        <p className="text-gray-600">
+          Choose the package that best fits your yoga journey.
+        </p>
+      </div>
+
+      {/* Session Type Toggle */}
+      <div className="flex justify-center mb-8">
+        <div className="bg-gray-100 p-1 rounded-lg">
+          <Button
+            variant={sessionType === "individual" ? "solid" : "light"}
+            color={sessionType === "individual" ? "primary" : "default"}
+            className="min-w-[120px]"
+            onPress={() => setSessionType("individual")}
+          >
+            Individual
+          </Button>
+          <Button
+            variant={sessionType === "group" ? "solid" : "light"}
+            color={sessionType === "group" ? "primary" : "default"}
+            className="min-w-[120px]"
+            onPress={() => setSessionType("group")}
+          >
+            Group
+          </Button>
         </div>
-        <CheckoutButton />{" "}
-      </form>
-    </FormProvider>
+      </div>
+
+      {/* Package Cards Grid */}
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+        {currentPackages.map((pkg) => (
+          <Card
+            key={pkg.id}
+            isPressable
+            className={`relative transition-all duration-200 ${
+              selectedPackage === pkg.id
+                ? "ring-2 ring-primary shadow-lg"
+                : "hover:shadow-md border border-gray-200"
+            } bg-white`}
+            onPress={() => setSelectedPackage(pkg.id)}
+          >
+            {pkg.popular && (
+              <Chip
+                color="primary"
+                variant="solid"
+                className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10 shadow-md"
+              >
+                {pkg.badge}
+              </Chip>
+            )}
+            <CardBody className={`p-6 ${pkg.popular ? "pt-8" : ""}`}>
+              <div className="text-center mb-6">
+                <h3 className="text-xl font-bold mb-2 text-gray-900">
+                  {pkg.name}
+                </h3>
+                <p className="text-gray-600 text-sm mb-6">{pkg.description}</p>
+
+                <div className="mb-4">
+                  <div className="text-4xl font-bold text-gray-900 mb-1">
+                    ${pkg.price}
+                  </div>
+                  <div className="text-sm text-gray-600">
+                    ${pkg.perSession}/session
+                    {sessionType === "group" && (
+                      <div className="text-xs text-gray-500 mt-1">
+                        (per group, not per person)
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div className="bg-gray-50 rounded-lg px-4 py-2 mb-6">
+                  <span className="text-lg font-semibold text-gray-900">
+                    {pkg.sessions} sessions
+                  </span>
+                </div>
+              </div>
+
+              {/* Benefits */}
+              <div className="space-y-3">
+                {pkg.benefits.map((benefit, index) => (
+                  <div key={index} className="flex items-center gap-3 text-sm">
+                    <div className="flex-shrink-0">
+                      <Check size={16} className="text-green-600" />
+                    </div>
+                    <span className="text-gray-700 leading-relaxed">
+                      {benefit}
+                    </span>
+                  </div>
+                ))}
+              </div>
+            </CardBody>
+          </Card>
+        ))}
+      </div>
+
+      {/* Checkout Button */}
+      <div className="flex flex-col items-center gap-4">
+        {!isUserLoaded ? (
+          <CheckoutButtonSkeleton />
+        ) : (
+          <>
+            <SignedOut>
+              <SignInButton>
+                <Button color="primary" size="lg" className="w-full max-w-md">
+                  Sign In to Purchase
+                </Button>
+              </SignInButton>
+            </SignedOut>
+            <SignedIn>
+              <Button
+                color="primary"
+                size="lg"
+                className="w-full max-w-md"
+                onPress={onSubmit}
+              >
+                Continue to Checkout
+              </Button>
+            </SignedIn>
+          </>
+        )}
+
+        {/* See all options link */}
+        <Button
+          variant="light"
+          color="default"
+          size="sm"
+          className="text-gray-600"
+        >
+          See all options
+        </Button>
+      </div>
+    </div>
   );
 };
 

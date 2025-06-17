@@ -58,8 +58,6 @@ export const CategoryFormSchema = z.object({
 });
 
 export const SelectPackageFormSchema = z.object({
-  sessionCount: z
-    .number()
-    .min(1, "Please select at least 1 session")
-    .max(20, "Maximum 20 sessions allowed"),
+  // Package selection is now handled directly in component state
+  // No form validation needed for the new package-based approach
 });
