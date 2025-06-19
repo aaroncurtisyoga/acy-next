@@ -13,8 +13,59 @@ const packages = {
       id: "starter",
       name: "Starter",
       sessions: 3,
-      price: 450,
-      perSession: 150,
+      price: 405,
+      perSession: 135,
+      description: "Perfect for trying out personalized yoga",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Build foundational practice",
+        "Flexible scheduling",
+      ],
+      popular: false,
+    },
+    {
+      id: "growth",
+      name: "Growth",
+      sessions: 6,
+      price: 720,
+      perSession: 120,
+      originalPrice: 810,
+      savings: 90,
+      description: "Develop a consistent practice",
+      benefits: [
+        "11% discount on sessions",
+        "Deeper technique refinement",
+        "Noticeable progress",
+        "Priority booking",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
+      name: "Transformation",
+      sessions: 10,
+      price: 1050,
+      perSession: 105,
+      originalPrice: 1350,
+      savings: 300,
+      description: "Commit to real change",
+      benefits: [
+        "22% discount on sessions",
+        "Comprehensive program design",
+        "Major breakthroughs",
+        "VIP support between sessions",
+      ],
+      popular: false,
+    },
+  ],
+  group: [
+    {
+      id: "starter",
+      name: "Starter",
+      sessions: 3,
+      price: 465,
+      perSession: 155,
       description: "Perfect for trying out personalized yoga",
       benefits: [
         "Get familiar with Aaron's teaching style",
@@ -29,11 +80,11 @@ const packages = {
       sessions: 6,
       price: 810,
       perSession: 135,
-      originalPrice: 900,
-      savings: 90,
+      originalPrice: 930,
+      savings: 120,
       description: "Develop a consistent practice",
       benefits: [
-        "10% discount on sessions",
+        "13% discount on sessions",
         "Deeper technique refinement",
         "Noticeable progress",
         "Priority booking",
@@ -47,62 +98,11 @@ const packages = {
       sessions: 10,
       price: 1200,
       perSession: 120,
-      originalPrice: 1500,
-      savings: 300,
+      originalPrice: 1550,
+      savings: 350,
       description: "Commit to real change",
       benefits: [
-        "20% discount on sessions",
-        "Comprehensive program design",
-        "Major breakthroughs",
-        "VIP support between sessions",
-      ],
-      popular: false,
-    },
-  ],
-  group: [
-    {
-      id: "starter",
-      name: "Starter",
-      sessions: 3,
-      price: 540,
-      perSession: 180,
-      description: "Perfect for trying out personalized yoga",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Build foundational practice",
-        "Flexible scheduling",
-      ],
-      popular: false,
-    },
-    {
-      id: "growth",
-      name: "Growth",
-      sessions: 6,
-      price: 972,
-      perSession: 162,
-      originalPrice: 1080,
-      savings: 108,
-      description: "Develop a consistent practice",
-      benefits: [
-        "10% discount on sessions",
-        "Deeper technique refinement",
-        "Noticeable progress",
-        "Priority booking",
-      ],
-      popular: true,
-      badge: "Most Popular",
-    },
-    {
-      id: "transformation",
-      name: "Transformation",
-      sessions: 10,
-      price: 1440,
-      perSession: 144,
-      originalPrice: 1800,
-      savings: 360,
-      description: "Commit to real change",
-      benefits: [
-        "20% discount on sessions",
+        "23% discount on sessions",
         "Comprehensive program design",
         "Major breakthroughs",
         "VIP support between sessions",
@@ -220,15 +220,22 @@ const SelectPackageForm: FC = () => {
             >
               <CardBody className="p-6">
                 <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold mb-2 text-gray-900">
+                  <h3 className="text-xl font-bold mb-1 text-gray-900">
                     {pkg.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-6 min-h-[2.5rem] flex items-center justify-center">
+                  <p className="text-gray-600 text-sm mb-[0.8rem] min-h-[2.5rem] flex items-start justify-center">
                     {pkg.description}
                   </p>
 
                   <div className="mb-4">
                     <div className="text-4xl font-bold text-gray-900 mb-1">
+                      {pkg.sessions}
+                    </div>
+                    <div className="text-lg text-gray-600">sessions</div>
+                  </div>
+
+                  <div className="bg-gray-50 rounded-lg px-4 py-2 mb-6">
+                    <div className="text-lg font-semibold text-gray-900">
                       ${pkg.price}
                     </div>
                     <div className="text-sm text-gray-600">
@@ -239,12 +246,6 @@ const SelectPackageForm: FC = () => {
                         </div>
                       )}
                     </div>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-lg px-4 py-2 mb-6">
-                    <span className="text-lg font-semibold text-gray-900">
-                      {pkg.sessions} sessions
-                    </span>
                   </div>
                 </div>
 
