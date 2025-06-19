@@ -119,7 +119,7 @@ const SelectPackageForm: FC = () => {
   const [sessionType, setSessionType] = useState<"individual" | "group">(
     "individual",
   );
-  const [selectedPackage, setSelectedPackage] = useState("starter");
+  const [selectedPackage, setSelectedPackage] = useState("growth");
 
   const onSubmit = async () => {
     const selectedPkg = packages[sessionType].find(
@@ -213,7 +213,7 @@ const SelectPackageForm: FC = () => {
             className={`relative transition-all duration-200 ${
               selectedPackage === pkg.id
                 ? "ring-2 ring-primary shadow-lg"
-                : "hover:shadow-md border border-gray-200"
+                : "hover:ring-2 hover:ring-primary/50 hover:shadow-md border border-gray-200"
             } bg-white`}
             onPress={() => setSelectedPackage(pkg.id)}
           >
