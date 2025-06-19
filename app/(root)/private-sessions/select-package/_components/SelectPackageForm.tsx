@@ -217,16 +217,7 @@ const SelectPackageForm: FC = () => {
             } bg-white`}
             onPress={() => setSelectedPackage(pkg.id)}
           >
-            {pkg.popular && (
-              <Chip
-                color="primary"
-                variant="solid"
-                className="absolute -top-3 left-1/2 transform -translate-x-1/2 z-10 shadow-md"
-              >
-                {pkg.badge}
-              </Chip>
-            )}
-            <CardBody className={`p-6 ${pkg.popular ? "pt-8" : ""}`}>
+            <CardBody className="p-6">
               <div className="text-center mb-6">
                 <h3 className="text-xl font-bold mb-2 text-gray-900">
                   {pkg.name}
