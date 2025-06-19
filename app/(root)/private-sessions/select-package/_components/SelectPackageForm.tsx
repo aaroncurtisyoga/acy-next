@@ -223,7 +223,7 @@ const SelectPackageForm: FC = () => {
                   <h3 className="text-xl font-bold mb-2 text-gray-900">
                     {pkg.name}
                   </h3>
-                  <p className="text-gray-600 text-sm mb-6">
+                  <p className="text-gray-600 text-sm mb-6 min-h-[2.5rem] flex items-center justify-center">
                     {pkg.description}
                   </p>
 
