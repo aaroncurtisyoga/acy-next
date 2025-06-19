@@ -252,14 +252,11 @@ const SelectPackageForm: FC = () => {
                 {/* Benefits */}
                 <div className="space-y-3">
                   {pkg.benefits.map((benefit, index) => (
-                    <div
-                      key={index}
-                      className="flex items-center gap-3 text-sm"
-                    >
+                    <div key={index} className="flex items-start gap-3 text-sm">
                       <div className="flex-shrink-0">
                         <Check size={16} className="text-green-600" />
                       </div>
-                      <span className="text-gray-700 leading-relaxed">
+                      <span className="text-gray-700 leading-none">
                         {benefit}
                       </span>
                     </div>
