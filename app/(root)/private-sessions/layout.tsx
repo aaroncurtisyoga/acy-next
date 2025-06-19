@@ -31,7 +31,7 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
 
   return (
     <WizardFormProvider>
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="w-full mx-auto px-4 py-8">
         {showStepper && (
           <div className={currentStep <= 2 ? "mt-[60px]" : ""}>
             <ProgressStepper currentStep={currentStep} totalSteps={4} />

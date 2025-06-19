@@ -101,7 +101,7 @@ const CheckoutPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="w-full mx-auto p-6">
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -121,7 +121,7 @@ const CheckoutPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="max-w-4xl mx-auto p-6">
+      <div className="w-full mx-auto p-6">
         <div className="text-center py-12">
           <div className="text-red-600 text-lg mb-4">{error}</div>
           <Button color="primary" onPress={() => createPaymentIntent()}>
@@ -137,7 +137,7 @@ const CheckoutPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-4xl mx-auto p-6">
+    <div className="w-full mx-auto p-6">
       <div className="mb-6">
         <Button
           variant="light"
