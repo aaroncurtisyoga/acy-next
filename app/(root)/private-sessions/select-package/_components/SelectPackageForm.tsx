@@ -184,7 +184,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Session Type Toggle */}
-        <div className="flex justify-center mb-8">
+        <div className="flex justify-center mb-0">
           <div className="bg-gray-100 p-1 rounded-lg">
             <Button
               variant={sessionType === "individual" ? "solid" : "light"}
@@ -206,7 +206,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Package Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-8">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12">
           {currentPackages.map((pkg) => (
             <Card
               key={pkg.id}
@@ -215,10 +215,10 @@ const SelectPackageForm: FC = () => {
                 selectedPackage === pkg.id
                   ? "ring-2 ring-primary shadow-lg"
                   : "hover:ring-2 hover:ring-primary/50 hover:shadow-md border border-gray-200"
-              } bg-white`}
+              } bg-white ${pkg.popular ? "md:-my-6 md:py-6" : ""}`}
               onPress={() => setSelectedPackage(pkg.id)}
             >
-              <CardBody className="p-6">
+              <CardBody className={pkg.popular ? "px-6 py-8" : "p-6"}>
                 <div className="text-center mb-6">
                   <h3 className="text-xl font-bold mb-1 text-gray-900">
                     {pkg.name}
