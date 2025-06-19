@@ -15,7 +15,7 @@ const packages = {
       sessions: 3,
       price: 405,
       perSession: 135,
-      description: "Perfect for trying out personalized yoga",
+      description: "Try out personalized yoga",
       benefits: [
         "Get familiar with Aaron's teaching style",
         "Build foundational practice",
@@ -66,7 +66,7 @@ const packages = {
       sessions: 3,
       price: 465,
       perSession: 155,
-      description: "Perfect for trying out personalized yoga",
+      description: "Try out personalized yoga",
       benefits: [
         "Get familiar with Aaron's teaching style",
         "Build foundational practice",
