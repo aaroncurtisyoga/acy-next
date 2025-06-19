@@ -11,20 +11,36 @@ const packages = {
   individual: [
     {
       id: "starter",
-      name: "Starter",
-      sessions: 3,
-      price: 405,
+      name: "Single Session",
+      sessions: 1,
+      price: 135,
       perSession: 135,
       description: "Try out personalized yoga",
       benefits: [
         "Get familiar with Aaron's teaching style",
-        "Build foundational practice",
+        "Experience personalized approach",
         "Flexible scheduling",
       ],
       popular: false,
     },
     {
       id: "growth",
+      name: "Foundation",
+      sessions: 3,
+      price: 405,
+      perSession: 135,
+      description: "Build your practice foundation",
+      benefits: [
+        "Develop consistent routine",
+        "Learn fundamental techniques",
+        "Progress tracking",
+        "Priority booking",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
       name: "Growth",
       sessions: 6,
       price: 720,
@@ -34,26 +50,8 @@ const packages = {
       description: "Develop a consistent practice",
       benefits: [
         "11% discount on sessions",
-        "Deeper technique refinement",
+        "Comprehensive technique refinement",
         "Noticeable progress",
-        "Priority booking",
-      ],
-      popular: true,
-      badge: "Most Popular",
-    },
-    {
-      id: "transformation",
-      name: "Transformation",
-      sessions: 10,
-      price: 1050,
-      perSession: 105,
-      originalPrice: 1350,
-      savings: 300,
-      description: "Commit to real change",
-      benefits: [
-        "22% discount on sessions",
-        "Comprehensive program design",
-        "Major breakthroughs",
         "VIP support between sessions",
       ],
       popular: false,
@@ -62,20 +60,36 @@ const packages = {
   group: [
     {
       id: "starter",
-      name: "Starter",
-      sessions: 3,
-      price: 465,
+      name: "Single Session",
+      sessions: 1,
+      price: 155,
       perSession: 155,
       description: "Try out personalized yoga",
       benefits: [
         "Get familiar with Aaron's teaching style",
-        "Build foundational practice",
+        "Experience personalized approach",
         "Flexible scheduling",
       ],
       popular: false,
     },
     {
       id: "growth",
+      name: "Foundation",
+      sessions: 3,
+      price: 465,
+      perSession: 155,
+      description: "Build your practice foundation",
+      benefits: [
+        "Develop consistent routine",
+        "Learn fundamental techniques",
+        "Progress tracking",
+        "Priority booking",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
       name: "Growth",
       sessions: 6,
       price: 810,
@@ -85,26 +99,8 @@ const packages = {
       description: "Develop a consistent practice",
       benefits: [
         "13% discount on sessions",
-        "Deeper technique refinement",
+        "Comprehensive technique refinement",
         "Noticeable progress",
-        "Priority booking",
-      ],
-      popular: true,
-      badge: "Most Popular",
-    },
-    {
-      id: "transformation",
-      name: "Transformation",
-      sessions: 10,
-      price: 1200,
-      perSession: 120,
-      originalPrice: 1550,
-      savings: 350,
-      description: "Commit to real change",
-      benefits: [
-        "23% discount on sessions",
-        "Comprehensive program design",
-        "Major breakthroughs",
         "VIP support between sessions",
       ],
       popular: false,
@@ -292,16 +288,6 @@ const SelectPackageForm: FC = () => {
               </SignedIn>
             </>
           )}
-
-          {/* See all options link */}
-          <Button
-            variant="light"
-            color="default"
-            size="sm"
-            className="text-gray-600"
-          >
-            See all options
-          </Button>
         </div>
       </div>
     </div>
