@@ -217,7 +217,7 @@ const SelectPackageForm: FC = () => {
               {/* Selection indicator */}
               {selectedPackage === pkg.id && (
                 <div className="absolute top-4 right-4 z-10">
-                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center border-2 border-primary">
+                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
                     <Check size={16} className="text-primary" />
                   </div>
                 </div>
