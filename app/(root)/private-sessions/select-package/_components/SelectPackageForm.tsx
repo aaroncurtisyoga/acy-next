@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Button, Card, CardBody, Chip } from "@heroui/react";
-import { Check } from "lucide-react";
+import { Check, CheckCircle } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 
@@ -202,26 +202,37 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Package Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12 items-stretch">
           {currentPackages.map((pkg) => (
             <Card
               key={pkg.id}
               isPressable
               className={`relative transition-all duration-200 ${
-                selectedPackage === pkg.id
-                  ? "ring-2 ring-primary shadow-lg"
-                  : "hover:ring-2 hover:ring-primary/50 hover:shadow-md border border-gray-200"
-              } bg-white ${pkg.popular ? "md:-my-6 md:py-6" : ""}`}
+                pkg.popular
+                  ? "border-2 border-primary"
+                  : "border-2 border-primary/30"
+              } bg-white hover:border-primary/50`}
               onPress={() => setSelectedPackage(pkg.id)}
             >
-              <CardBody className={pkg.popular ? "px-6 py-8" : "p-6"}>
-                <div className="text-center mb-6">
-                  <h3 className="text-xl font-bold mb-1 text-gray-900">
-                    {pkg.name}
-                  </h3>
-                  <p className="text-gray-600 text-sm mb-[0.8rem] min-h-[2.5rem] flex items-start justify-center">
-                    {pkg.description}
-                  </p>
+              {/* Selection indicator */}
+              {selectedPackage === pkg.id && (
+                <div className="absolute top-4 right-4 z-10">
+                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center border-2 border-primary">
+                    <Check size={16} className="text-primary" />
+                  </div>
+                </div>
+              )}
+
+              <CardBody className="pt-2 px-1 pb-2">
+                <div className="text-center mb-3">
+                  <div className="bg-gradient-to-r from-primary to-purple-600 mx-2 px-1 py-3 rounded-lg mb-2">
+                    <h3 className="text-xl font-bold mb-1 text-white">
+                      {pkg.name}
+                    </h3>
+                    <p className="text-white/90 text-sm flex items-start justify-center">
+                      {pkg.description}
+                    </p>
+                  </div>
 
                   <div className="mb-4">
                     <div className="text-4xl font-bold text-gray-900 mb-1">
