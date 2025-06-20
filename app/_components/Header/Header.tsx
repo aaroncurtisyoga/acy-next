@@ -44,15 +44,18 @@ const Header: FC = () => {
       isMenuOpen={isMenuOpen}
       isBordered
       maxWidth="2xl"
+      className="bg-gradient-to-r from-slate-50 to-blue-50/30 shadow-sm static"
       classNames={{
+        base: "static",
+        wrapper: "px-6 py-4",
         item: [
           "flex",
           "relative",
           "h-full",
           "items-center",
-          // Remove bold from active state
+          "px-3",
           "data-[active=true]:font-normal",
-          // Active state styling
+          "data-[active=true]:text-blue-700",
           "data-[active=true]:after:content-['']",
           "data-[active=true]:after:absolute",
           "data-[active=true]:after:bottom-0",
@@ -60,8 +63,8 @@ const Header: FC = () => {
           "data-[active=true]:after:right-0",
           "data-[active=true]:after:h-[3px]",
           "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-primary",
-          // Hover state styling
+          "data-[active=true]:after:bg-blue-600",
+          "hover:text-blue-600",
           "hover:after:content-['']",
           "hover:after:absolute",
           "hover:after:bottom-0",
@@ -69,10 +72,11 @@ const Header: FC = () => {
           "hover:after:right-0",
           "hover:after:h-[3px]",
           "hover:after:rounded-[2px]",
-          "hover:after:bg-primary",
-          // Transition
+          "hover:after:bg-blue-500",
           "after:transition-all",
-          "after:duration-200",
+          "after:duration-300",
+          "transition-colors",
+          "duration-300",
         ],
       }}
     >

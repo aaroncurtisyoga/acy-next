@@ -12,10 +12,11 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     }
 
-    const { amount, packageName, sessionType } = await request.json();
+    const { amount, packageName, sessionType, sessionCount, pricePerSession } =
+      await request.json();
 
     // Validate required fields
-    if (!amount || !packageName || !sessionType) {
+    if (!amount || !sessionType) {
       return NextResponse.json(
         { error: "Missing required fields" },
         { status: 400 },
@@ -28,8 +29,11 @@ export async function POST(request: NextRequest) {
       currency: "usd",
       metadata: {
         buyerId: sessionClaims.metadata.userId,
-        packageName,
+        packageName:
+          packageName || `${sessionCount || 1} ${sessionType} Sessions`,
         sessionType,
+        sessionCount: sessionCount?.toString() || "1",
+        pricePerSession: pricePerSession?.toString() || amount.toString(),
         type: "PRIVATE_SESSION",
       },
       automatic_payment_methods: {

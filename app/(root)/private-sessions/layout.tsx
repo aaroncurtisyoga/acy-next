@@ -14,32 +14,28 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
 }) => {
   const pathname = usePathname();
 
-  // Determine current step based on the URL path (only for the 3-step flow)
+  // Determine current step based on the URL path (4-step flow)
   const getCurrentStep = () => {
-    if (pathname?.includes("/sign-in")) return 1;
-    if (pathname?.includes("/select-package")) return 2;
-    if (pathname?.includes("/checkout")) return 3;
-    return 1; // Default to step 1 (sign-in)
+    if (pathname?.includes("/welcome")) return 1;
+    if (pathname?.includes("/sign-in")) return 2;
+    if (pathname?.includes("/select-package")) return 3;
+    if (pathname?.includes("/checkout")) return 4;
+    if (pathname?.includes("/confirmation")) return 4; // Confirmation shows step 4 completed
+    return 1; // Default to step 1 (welcome)
   };
 
   const currentStep = getCurrentStep();
 
-  // Show stepper only for the 3-step purchase flow (not welcome or confirmation)
-  const showStepper =
-    pathname?.includes("/sign-in") ||
-    pathname?.includes("/select-package") ||
-    pathname?.includes("/checkout");
+  // Show stepper for all steps except confirmation (which shows its own step indicator)
+  const showStepper = !pathname?.includes("/confirmation");
 
   return (
     <WizardFormProvider>
-      <div className="max-w-3xl mx-auto px-4 py-8">
+      <div className="w-full mx-auto px-4 py-8">
         {showStepper && (
-          <>
-            <h1 className="text-4xl font-bold mb-6 tracking-tight text-primary-500 text-center">
-              Train With Me
-            </h1>
-            <ProgressStepper currentStep={currentStep} totalSteps={3} />
-          </>
+          <div className={currentStep <= 2 ? "mt-[60px]" : ""}>
+            <ProgressStepper currentStep={currentStep} totalSteps={4} />
+          </div>
         )}
         {children}
       </div>
