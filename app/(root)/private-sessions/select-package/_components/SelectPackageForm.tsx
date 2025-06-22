@@ -218,7 +218,7 @@ const SelectPackageForm: FC = () => {
                       key={pkg.id}
                       className={`border-2 rounded-lg transition-all duration-200 cursor-pointer ${
                         selectedPackage === pkg.id
-                          ? "border-primary bg-primary/5"
+                          ? "border-primary"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                       onClick={() => setSelectedPackage(pkg.id)}
@@ -278,7 +278,7 @@ const SelectPackageForm: FC = () => {
                       key={pkg.id}
                       className={`border-2 rounded-lg transition-all duration-200 cursor-pointer ${
                         selectedPackage === pkg.id
-                          ? "border-primary bg-primary/5"
+                          ? "border-primary"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                       onClick={() => setSelectedPackage(pkg.id)}
