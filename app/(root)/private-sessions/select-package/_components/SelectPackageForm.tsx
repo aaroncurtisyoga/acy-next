@@ -208,11 +208,11 @@ const SelectPackageForm: FC = () => {
             const getPackageGradient = (packageIndex: number) => {
               switch (packageIndex) {
                 case 0:
-                  return "bg-gradient-to-r from-blue-800 to-blue-600";
+                  return "bg-gradient-to-r from-slate-700 to-slate-500";
                 case 1:
-                  return "bg-gradient-to-r from-purple-700 to-purple-500";
+                  return "bg-gradient-to-r from-emerald-700 to-emerald-500";
                 case 2:
-                  return "bg-gradient-to-r from-teal-700 to-teal-500";
+                  return "bg-gradient-to-r from-amber-700 to-amber-500";
                 default:
                   return "bg-gradient-to-r from-primary to-purple-600";
               }
@@ -251,17 +251,19 @@ const SelectPackageForm: FC = () => {
                           </div>
                         </div>
 
-                        {/* Radio Button */}
+                        {/* Custom Radio Button */}
                         <div className="flex justify-center mb-4">
-                          <input
-                            type="radio"
-                            id={`package-mobile-${pkg.id}`}
-                            name="package-selection"
-                            value={pkg.id}
-                            checked={selectedPackage === pkg.id}
-                            onChange={() => setSelectedPackage(pkg.id)}
-                            className="w-5 h-5 text-primary focus:ring-primary border-gray-300"
-                          />
+                          <div
+                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                              selectedPackage === pkg.id
+                                ? "bg-white border-primary"
+                                : "bg-white border-gray-300"
+                            }`}
+                          >
+                            {selectedPackage === pkg.id && (
+                              <Check size={14} className="text-primary" />
+                            )}
+                          </div>
                         </div>
 
                         {/* Benefits */}
@@ -297,11 +299,11 @@ const SelectPackageForm: FC = () => {
                       onClick={() => setSelectedPackage(pkg.id)}
                     >
                       <div className="p-6">
-                        {/* Header with Radio Button */}
-                        <div className="flex items-center justify-between mb-4">
-                          <div
-                            className={`${getPackageGradient(index)} px-3 py-2 rounded-lg`}
-                          >
+                        {/* Header with Custom Radio Button */}
+                        <div
+                          className={`${getPackageGradient(index)} p-4 rounded-lg mb-4 flex items-center justify-between`}
+                        >
+                          <div>
                             <h3 className="text-sm font-semibold text-white">
                               {pkg.name}
                             </h3>
@@ -309,15 +311,17 @@ const SelectPackageForm: FC = () => {
                               {pkg.description}
                             </p>
                           </div>
-                          <input
-                            type="radio"
-                            id={`package-desktop-${pkg.id}`}
-                            name="package-selection"
-                            value={pkg.id}
-                            checked={selectedPackage === pkg.id}
-                            onChange={() => setSelectedPackage(pkg.id)}
-                            className="w-5 h-5 text-primary focus:ring-primary border-gray-300"
-                          />
+                          <div
+                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
+                              selectedPackage === pkg.id
+                                ? "bg-white border-white"
+                                : "bg-white/20 border-white/50"
+                            }`}
+                          >
+                            {selectedPackage === pkg.id && (
+                              <Check size={14} className="text-primary" />
+                            )}
+                          </div>
                         </div>
 
                         {/* Netflix-style Feature List */}
