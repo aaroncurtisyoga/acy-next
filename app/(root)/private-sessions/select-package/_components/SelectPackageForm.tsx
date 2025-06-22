@@ -180,7 +180,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Session Type Toggle */}
-        <div className="flex justify-center mb-0">
+        <div className="flex justify-center mb-8">
           <div className="bg-gray-100 p-1 rounded-lg">
             <Button
               variant={sessionType === "individual" ? "solid" : "light"}
@@ -201,77 +201,185 @@ const SelectPackageForm: FC = () => {
           </div>
         </div>
 
-        {/* Package Cards Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 my-12 items-stretch">
-          {currentPackages.map((pkg) => (
-            <Card
-              key={pkg.id}
-              isPressable
-              className={`relative transition-all duration-200 ${
-                pkg.popular
-                  ? "border-2 border-primary"
-                  : "border-2 border-primary/30"
-              } bg-white hover:border-primary/50`}
-              onPress={() => setSelectedPackage(pkg.id)}
-            >
-              {/* Selection indicator */}
-              {selectedPackage === pkg.id && (
-                <div className="absolute top-4 right-4 z-10">
-                  <div className="w-6 h-6 bg-white rounded-full flex items-center justify-center">
-                    <Check size={16} className="text-primary" />
-                  </div>
-                </div>
-              )}
+        {/* Package Selection */}
+        <div className="my-12">
+          {/* Define unique gradients for each package */}
+          {(() => {
+            const getPackageGradient = (packageIndex: number) => {
+              switch (packageIndex) {
+                case 0:
+                  return "bg-gradient-to-r from-blue-800 to-blue-600";
+                case 1:
+                  return "bg-gradient-to-r from-purple-700 to-purple-500";
+                case 2:
+                  return "bg-gradient-to-r from-teal-700 to-teal-500";
+                default:
+                  return "bg-gradient-to-r from-primary to-purple-600";
+              }
+            };
 
-              <CardBody className="pt-2 px-1 pb-2">
-                <div className="text-center mb-3">
-                  <div className="bg-gradient-to-r from-primary to-purple-600 mx-2 px-1 py-3 rounded-lg mb-2">
-                    <h3 className="text-xl font-bold mb-1 text-white">
-                      {pkg.name}
-                    </h3>
-                    <p className="text-white/90 text-sm flex items-start justify-center">
-                      {pkg.description}
-                    </p>
-                  </div>
-
-                  <div className="mb-4">
-                    <div className="text-4xl font-bold text-gray-900 mb-1">
-                      {pkg.sessions}
-                    </div>
-                    <div className="text-lg text-gray-600">sessions</div>
-                  </div>
-
-                  <div className="bg-gray-50 rounded-lg px-4 py-2 mb-6">
-                    <div className="text-lg font-semibold text-gray-900">
-                      ${pkg.price}
-                    </div>
-                    <div className="text-sm text-gray-600">
-                      ${pkg.perSession}/session
-                      {sessionType === "group" && (
-                        <div className="text-xs text-gray-500 mt-1">
-                          (per group, not per person)
+            return (
+              <>
+                {/* Mobile: Stacked Cards */}
+                <div className="block md:hidden space-y-4">
+                  {currentPackages.map((pkg, index) => (
+                    <div
+                      key={pkg.id}
+                      className={`border-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                        selectedPackage === pkg.id
+                          ? "border-primary bg-primary/5"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      onClick={() => setSelectedPackage(pkg.id)}
+                    >
+                      <div className="p-4">
+                        {/* Header */}
+                        <div
+                          className={`${getPackageGradient(index)} p-4 rounded-lg text-white text-center mb-4`}
+                        >
+                          <h3 className="text-lg font-semibold mb-1">
+                            {pkg.name}
+                          </h3>
+                          <p className="text-white/90 text-sm">
+                            {pkg.description}
+                          </p>
+                          <div className="mt-3 text-xl font-bold">
+                            ${pkg.price}
+                          </div>
+                          <div className="text-white/90 text-sm">
+                            ${pkg.perSession}/session
+                          </div>
                         </div>
-                      )}
-                    </div>
-                  </div>
-                </div>
 
-                {/* Benefits */}
-                <div className="space-y-3">
-                  {pkg.benefits.map((benefit, index) => (
-                    <div key={index} className="flex items-start gap-3 text-sm">
-                      <div className="flex-shrink-0">
-                        <Check size={16} className="text-green-600" />
+                        {/* Radio Button */}
+                        <div className="flex justify-center mb-4">
+                          <input
+                            type="radio"
+                            id={`package-mobile-${pkg.id}`}
+                            name="package-selection"
+                            value={pkg.id}
+                            checked={selectedPackage === pkg.id}
+                            onChange={() => setSelectedPackage(pkg.id)}
+                            className="w-5 h-5 text-primary focus:ring-primary border-gray-300"
+                          />
+                        </div>
+
+                        {/* Benefits */}
+                        <div className="space-y-2">
+                          {pkg.benefits.map((benefit, benefitIndex) => (
+                            <div
+                              key={benefitIndex}
+                              className="flex items-center gap-2 text-sm"
+                            >
+                              <CheckCircle
+                                size={14}
+                                className="text-green-600 flex-shrink-0"
+                              />
+                              <span className="text-gray-700">{benefit}</span>
+                            </div>
+                          ))}
+                        </div>
                       </div>
-                      <span className="text-gray-700 leading-none">
-                        {benefit}
-                      </span>
                     </div>
                   ))}
                 </div>
-              </CardBody>
-            </Card>
-          ))}
+
+                {/* Desktop: Netflix-style Side by Side */}
+                <div className="hidden md:grid md:grid-cols-3 gap-6">
+                  {currentPackages.map((pkg, index) => (
+                    <div
+                      key={pkg.id}
+                      className={`border-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                        selectedPackage === pkg.id
+                          ? "border-primary bg-primary/5"
+                          : "border-gray-200 hover:border-gray-300"
+                      }`}
+                      onClick={() => setSelectedPackage(pkg.id)}
+                    >
+                      <div className="p-6">
+                        {/* Header with Radio Button */}
+                        <div className="flex items-center justify-between mb-4">
+                          <div
+                            className={`${getPackageGradient(index)} px-3 py-2 rounded-lg`}
+                          >
+                            <h3 className="text-sm font-semibold text-white">
+                              {pkg.name}
+                            </h3>
+                            <p className="text-white/90 text-xs">
+                              {pkg.description}
+                            </p>
+                          </div>
+                          <input
+                            type="radio"
+                            id={`package-desktop-${pkg.id}`}
+                            name="package-selection"
+                            value={pkg.id}
+                            checked={selectedPackage === pkg.id}
+                            onChange={() => setSelectedPackage(pkg.id)}
+                            className="w-5 h-5 text-primary focus:ring-primary border-gray-300"
+                          />
+                        </div>
+
+                        {/* Netflix-style Feature List */}
+                        <ul role="tabpanel" className="space-y-0">
+                          <li className="py-3 border-b border-gray-200">
+                            <div className="space-y-1">
+                              <div className="text-xs text-gray-600">
+                                Total Price
+                              </div>
+                              <div className="text-lg font-bold text-gray-900">
+                                ${pkg.price}
+                              </div>
+                              <div className="text-sm text-gray-600">
+                                ${pkg.perSession}/session
+                              </div>
+                            </div>
+                          </li>
+                          <li className="py-3 border-b border-gray-200">
+                            <div className="space-y-1">
+                              <div className="text-xs text-gray-600">
+                                Number of Sessions
+                              </div>
+                              <div className="text-sm font-medium text-gray-900">
+                                {pkg.sessions}
+                              </div>
+                            </div>
+                          </li>
+                          {pkg.savings && (
+                            <li className="py-3 border-b border-gray-200">
+                              <div className="space-y-1">
+                                <div className="text-xs text-gray-600">
+                                  You Save
+                                </div>
+                                <div className="text-sm font-medium text-green-600">
+                                  ${pkg.savings}
+                                </div>
+                              </div>
+                            </li>
+                          )}
+                          {pkg.benefits.map((benefit, benefitIndex) => (
+                            <li
+                              key={benefitIndex}
+                              className="py-3 border-b border-gray-200 last:border-b-0"
+                            >
+                              <div className="space-y-1">
+                                <div className="text-xs text-gray-600">
+                                  Benefit {benefitIndex + 1}
+                                </div>
+                                <div className="text-sm text-gray-900">
+                                  {benefit}
+                                </div>
+                              </div>
+                            </li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              </>
+            );
+          })()}
         </div>
 
         {/* Checkout Button */}
