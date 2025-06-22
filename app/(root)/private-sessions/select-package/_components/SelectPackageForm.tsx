@@ -205,17 +205,8 @@ const SelectPackageForm: FC = () => {
         <div className="my-12">
           {/* Define unique gradients for each package */}
           {(() => {
-            const getPackageGradient = (packageIndex: number) => {
-              switch (packageIndex) {
-                case 0:
-                  return "bg-gradient-to-r from-slate-700 to-slate-500";
-                case 1:
-                  return "bg-gradient-to-r from-emerald-700 to-emerald-500";
-                case 2:
-                  return "bg-gradient-to-r from-amber-700 to-amber-500";
-                default:
-                  return "bg-gradient-to-r from-primary to-purple-600";
-              }
+            const getPackageGradient = () => {
+              return "bg-gradient-to-r from-slate-700 to-slate-500";
             };
 
             return (
@@ -235,7 +226,7 @@ const SelectPackageForm: FC = () => {
                       <div className="p-4">
                         {/* Header */}
                         <div
-                          className={`${getPackageGradient(index)} p-4 rounded-lg text-white text-center mb-4`}
+                          className={`${getPackageGradient()} p-4 rounded-lg text-white text-center mb-4`}
                         >
                           <h3 className="text-lg font-semibold mb-1">
                             {pkg.name}
@@ -253,17 +244,11 @@ const SelectPackageForm: FC = () => {
 
                         {/* Custom Radio Button */}
                         <div className="flex justify-center mb-4">
-                          <div
-                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-                              selectedPackage === pkg.id
-                                ? "bg-white border-primary"
-                                : "bg-white border-gray-300"
-                            }`}
-                          >
-                            {selectedPackage === pkg.id && (
+                          {selectedPackage === pkg.id && (
+                            <div className="w-6 h-6 rounded-full border-2 bg-white border-primary flex items-center justify-center transition-all duration-200">
                               <Check size={14} className="text-primary" />
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Benefits */}
@@ -301,7 +286,7 @@ const SelectPackageForm: FC = () => {
                       <div className="p-6">
                         {/* Header with Custom Radio Button */}
                         <div
-                          className={`${getPackageGradient(index)} p-4 rounded-lg mb-4 flex items-center justify-between`}
+                          className={`${getPackageGradient()} p-4 rounded-lg mb-4 flex items-center justify-between`}
                         >
                           <div>
                             <h3 className="text-sm font-semibold text-white">
@@ -311,17 +296,11 @@ const SelectPackageForm: FC = () => {
                               {pkg.description}
                             </p>
                           </div>
-                          <div
-                            className={`w-6 h-6 rounded-full border-2 flex items-center justify-center transition-all duration-200 ${
-                              selectedPackage === pkg.id
-                                ? "bg-white border-white"
-                                : "bg-white/20 border-white/50"
-                            }`}
-                          >
-                            {selectedPackage === pkg.id && (
+                          {selectedPackage === pkg.id && (
+                            <div className="w-6 h-6 rounded-full border-2 bg-white border-white flex items-center justify-center transition-all duration-200">
                               <Check size={14} className="text-primary" />
-                            )}
-                          </div>
+                            </div>
+                          )}
                         </div>
 
                         {/* Netflix-style Feature List */}
