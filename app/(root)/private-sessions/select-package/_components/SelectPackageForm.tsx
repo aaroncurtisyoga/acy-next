@@ -141,7 +141,7 @@ const SelectPackageForm: FC = () => {
     <div className="max-w-4xl mx-auto">
       <div>
         {/* Header */}
-        <div className="text-center mb-8">
+        <div className="text-left mb-8">
           <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
             Select your package.
           </h1>
@@ -187,7 +187,7 @@ const SelectPackageForm: FC = () => {
                   {currentPackages.map((pkg, index) => (
                     <div
                       key={pkg.id}
-                      className={`border-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                      className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer ${
                         selectedPackage === pkg.id
                           ? "border-primary"
                           : "border-gray-200 hover:border-gray-300"
@@ -197,7 +197,7 @@ const SelectPackageForm: FC = () => {
                       <div className="p-4">
                         {/* Header */}
                         <div
-                          className={`${getPackageGradient()} p-4 rounded-lg text-white text-center mb-4`}
+                          className={`${getPackageGradient()} p-4 rounded-[12px] text-white text-center mb-4`}
                         >
                           <h3 className="text-lg font-semibold mb-1">
                             {pkg.name}
@@ -245,21 +245,21 @@ const SelectPackageForm: FC = () => {
                 </div>
 
                 {/* Desktop: Netflix-style Side by Side */}
-                <div className="hidden md:grid md:grid-cols-3 gap-6">
+                <div className="hidden md:grid md:grid-cols-3 gap-3">
                   {currentPackages.map((pkg, index) => (
                     <div
                       key={pkg.id}
-                      className={`border-2 rounded-lg transition-all duration-200 cursor-pointer ${
+                      className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer ${
                         selectedPackage === pkg.id
                           ? "border-primary"
                           : "border-gray-200 hover:border-gray-300"
                       }`}
                       onClick={() => setSelectedPackage(pkg.id)}
                     >
-                      <div className="p-6">
+                      <div className="pt-2 pb-4 px-2">
                         {/* Header with Custom Radio Button */}
                         <div
-                          className={`${getPackageGradient()} p-4 rounded-lg mb-4 flex items-center justify-between`}
+                          className={`${getPackageGradient()} p-4 rounded-[12px] mb-4 flex items-center justify-between`}
                         >
                           <div>
                             <h3 className="text-sm font-semibold text-white">
