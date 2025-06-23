@@ -188,7 +188,7 @@ const SelectPackageForm: FC = () => {
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {
-              return "bg-gradient-to-r from-slate-800 to-slate-600";
+              return "bg-slate-50";
             };
 
             return (
@@ -208,20 +208,20 @@ const SelectPackageForm: FC = () => {
                       <div className="p-4">
                         {/* Header */}
                         <div
-                          className={`${getPackageGradient()} p-4 rounded-[12px] text-white text-center mb-4`}
+                          className={`${getPackageGradient()} p-4 rounded-[12px] text-slate-800 text-center mb-4`}
                         >
                           <h3 className="text-lg font-semibold mb-1">
                             {pkg.name}
                           </h3>
-                          <p className="text-white/90 text-sm">
+                          <p className="text-slate-600 text-sm">
                             {pkg.description}
                           </p>
                           <div className="mt-3">
                             <span className="text-xl font-bold">
                               ${pkg.price}
                             </span>
-                            <span className="text-sm text-white/70 ml-2">
-                              (${pkg.perSession}/session)
+                            <span className="text-xs text-slate-500 ml-2">
+                              (${pkg.perSession} per session)
                             </span>
                           </div>
                         </div>
@@ -273,10 +273,10 @@ const SelectPackageForm: FC = () => {
                           className={`${getPackageGradient()} p-4 rounded-[12px] mb-4 flex items-center justify-between`}
                         >
                           <div>
-                            <h3 className="text-sm font-semibold text-white">
+                            <h3 className="text-sm font-semibold text-slate-800">
                               {pkg.name}
                             </h3>
-                            <p className="text-white/90 text-xs">
+                            <p className="text-slate-600 text-xs">
                               {pkg.description}
                             </p>
                           </div>
@@ -298,8 +298,8 @@ const SelectPackageForm: FC = () => {
                                 <span className="text-lg font-bold text-gray-900">
                                   ${pkg.price}
                                 </span>
-                                <span className="text-sm text-gray-500 ml-2">
-                                  (${pkg.perSession}/session)
+                                <span className="text-xs text-gray-500 ml-2">
+                                  (${pkg.perSession} per session)
                                 </span>
                               </div>
                             </div>
