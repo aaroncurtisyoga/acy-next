@@ -16,11 +16,7 @@ const packages = {
       price: 135,
       perSession: 135,
       description: "Try out personalized yoga",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Experience personalized approach",
-        "Flexible scheduling",
-      ],
+      benefits: ["Get familiar with Aaron's teaching style"],
       popular: false,
     },
     {
@@ -31,10 +27,8 @@ const packages = {
       perSession: 135,
       description: "Build your practice foundation",
       benefits: [
-        "Develop consistent routine",
-        "Learn fundamental techniques",
-        "Progress tracking",
-        "Priority booking",
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
       ],
       popular: true,
       badge: "Most Popular",
@@ -45,14 +39,11 @@ const packages = {
       sessions: 6,
       price: 720,
       perSession: 120,
-      originalPrice: 810,
-      savings: 90,
       description: "Develop a consistent practice",
       benefits: [
-        "11% discount on sessions",
-        "Comprehensive technique refinement",
-        "Noticeable progress",
-        "VIP support between sessions",
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
+        "Flexible scheduling",
       ],
       popular: false,
     },
@@ -65,11 +56,7 @@ const packages = {
       price: 155,
       perSession: 155,
       description: "Try out personalized yoga",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Experience personalized approach",
-        "Flexible scheduling",
-      ],
+      benefits: ["Get familiar with Aaron's teaching style"],
       popular: false,
     },
     {
@@ -80,10 +67,8 @@ const packages = {
       perSession: 155,
       description: "Build your practice foundation",
       benefits: [
-        "Develop consistent routine",
-        "Learn fundamental techniques",
-        "Progress tracking",
-        "Priority booking",
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
       ],
       popular: true,
       badge: "Most Popular",
@@ -94,14 +79,11 @@ const packages = {
       sessions: 6,
       price: 810,
       perSession: 135,
-      originalPrice: 930,
-      savings: 120,
       description: "Develop a consistent practice",
       benefits: [
-        "13% discount on sessions",
-        "Comprehensive technique refinement",
-        "Noticeable progress",
-        "VIP support between sessions",
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
+        "Flexible scheduling",
       ],
       popular: false,
     },
@@ -140,17 +122,6 @@ const SelectPackageForm: FC = () => {
         sessionCount: selectedPkg.sessions,
         pricePerSession: selectedPkg.perSession,
         totalPrice: selectedPkg.price,
-        ...(selectedPkg.savings && {
-          discount: {
-            percentage: Math.round(
-              (selectedPkg.savings /
-                (selectedPkg.originalPrice || selectedPkg.price)) *
-                100,
-            ),
-            amount: selectedPkg.savings,
-            label: `Save $${selectedPkg.savings}`,
-          },
-        }),
       },
       customerInfo: {
         email: user?.emailAddresses[0]?.emailAddress || "",
@@ -234,11 +205,13 @@ const SelectPackageForm: FC = () => {
                           <p className="text-white/90 text-sm">
                             {pkg.description}
                           </p>
-                          <div className="mt-3 text-xl font-bold">
-                            ${pkg.price}
-                          </div>
-                          <div className="text-white/90 text-sm">
-                            ${pkg.perSession}/session
+                          <div className="mt-3">
+                            <span className="text-xl font-bold">
+                              ${pkg.price}
+                            </span>
+                            <span className="text-sm text-white/70 ml-2">
+                              (${pkg.perSession}/session)
+                            </span>
                           </div>
                         </div>
 
@@ -310,11 +283,13 @@ const SelectPackageForm: FC = () => {
                               <div className="text-xs text-gray-600">
                                 Total Price
                               </div>
-                              <div className="text-lg font-bold text-gray-900">
-                                ${pkg.price}
-                              </div>
-                              <div className="text-sm text-gray-600">
-                                ${pkg.perSession}/session
+                              <div>
+                                <span className="text-lg font-bold text-gray-900">
+                                  ${pkg.price}
+                                </span>
+                                <span className="text-sm text-gray-500 ml-2">
+                                  (${pkg.perSession}/session)
+                                </span>
                               </div>
                             </div>
                           </li>
@@ -328,18 +303,7 @@ const SelectPackageForm: FC = () => {
                               </div>
                             </div>
                           </li>
-                          {pkg.savings && (
-                            <li className="py-3 border-b border-gray-200">
-                              <div className="space-y-1">
-                                <div className="text-xs text-gray-600">
-                                  You Save
-                                </div>
-                                <div className="text-sm font-medium text-green-600">
-                                  ${pkg.savings}
-                                </div>
-                              </div>
-                            </li>
-                          )}
+
                           {pkg.benefits.map((benefit, benefitIndex) => (
                             <li
                               key={benefitIndex}
