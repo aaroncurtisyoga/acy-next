@@ -44,7 +44,7 @@ const Header: FC = () => {
       isMenuOpen={isMenuOpen}
       isBordered
       maxWidth="2xl"
-      className="bg-gradient-to-r from-slate-50 to-blue-50/30 shadow-sm static"
+      className="bg-white shadow-sm static"
       classNames={{
         base: "static",
         wrapper: "px-6 py-4",
@@ -56,11 +56,11 @@ const Header: FC = () => {
           "px-3",
           "py-2",
           "rounded-lg",
-          "data-[active=true]:text-blue-700",
-          "data-[active=true]:bg-blue-100/70",
+          "data-[active=true]:text-slate-800",
+          "data-[active=true]:bg-slate-100",
           "data-[active=true]:font-normal",
-          "hover:text-blue-600",
-          "hover:bg-blue-50/50",
+          "hover:text-slate-700",
+          "hover:bg-slate-50",
           "transition-all",
           "duration-200",
         ],

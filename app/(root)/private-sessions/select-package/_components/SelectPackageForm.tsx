@@ -1,8 +1,8 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button, Card, CardBody, Chip } from "@heroui/react";
-import { Check, CheckCircle } from "lucide-react";
+import { Button, Card, CardBody, Chip, Tooltip } from "@heroui/react";
+import { Check, CheckCircle, User, Users } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 
@@ -140,35 +140,46 @@ const SelectPackageForm: FC = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div>
-        {/* Header */}
-        <div className="text-left mb-8">
-          <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
-            Select your package.
-          </h1>
-          <p className="text-gray-600">
-            Choose the package that best fits your yoga journey.
-          </p>
-        </div>
+        {/* Header and Session Type Selection */}
+        <div className="mb-6">
+          {/* Header */}
+          <div className="text-left mb-4">
+            <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
+              Select your package.
+            </h1>
+            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
+              <p className="text-gray-600 mb-3 sm:mb-0">
+                Choose the package that best fits your yoga journey.
+              </p>
 
-        {/* Session Type Toggle */}
-        <div className="flex justify-center mb-8">
-          <div className="bg-gray-100 p-1 rounded-lg">
-            <Button
-              variant={sessionType === "individual" ? "solid" : "light"}
-              color={sessionType === "individual" ? "primary" : "default"}
-              className="min-w-[120px]"
-              onPress={() => setSessionType("individual")}
-            >
-              Individual
-            </Button>
-            <Button
-              variant={sessionType === "group" ? "solid" : "light"}
-              color={sessionType === "group" ? "primary" : "default"}
-              className="min-w-[120px]"
-              onPress={() => setSessionType("group")}
-            >
-              Group
-            </Button>
+              {/* Session Type Icons */}
+              <div className="flex gap-1.5">
+                <Tooltip content="Individual Sessions" placement="bottom">
+                  <button
+                    onClick={() => setSessionType("individual")}
+                    className={`p-2 rounded-lg transition-all duration-200 ${
+                      sessionType === "individual"
+                        ? "bg-slate-800 text-white shadow-sm"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                    }`}
+                  >
+                    <User size={14} />
+                  </button>
+                </Tooltip>
+                <Tooltip content="Group Sessions" placement="bottom">
+                  <button
+                    onClick={() => setSessionType("group")}
+                    className={`p-2 rounded-lg transition-all duration-200 ${
+                      sessionType === "group"
+                        ? "bg-slate-800 text-white shadow-sm"
+                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                    }`}
+                  >
+                    <Users size={14} />
+                  </button>
+                </Tooltip>
+              </div>
+            </div>
           </div>
         </div>
 
@@ -177,7 +188,7 @@ const SelectPackageForm: FC = () => {
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {
-              return "bg-gradient-to-r from-slate-700 to-slate-500";
+              return "bg-gradient-to-r from-slate-800 to-slate-600";
             };
 
             return (
