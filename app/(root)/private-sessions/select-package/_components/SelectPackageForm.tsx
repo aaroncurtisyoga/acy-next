@@ -67,7 +67,7 @@ const SelectPackageForm: FC = () => {
         <div className="mb-6">
           {/* Header */}
           <div className="text-left mb-4">
-            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center mb-2">
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center">
               <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
                 Select your package.
               </h1>
@@ -106,10 +106,6 @@ const SelectPackageForm: FC = () => {
                 </Tooltip>
               </div>
             </div>
-
-            <p className="text-gray-600">
-              Choose the package that best fits your yoga journey.
-            </p>
           </div>
         </div>
 
