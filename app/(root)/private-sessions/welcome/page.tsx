@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { CheckCircle } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
+import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
 const WelcomePage: React.FC = () => {
   const { goToNextStep } = useWizardForm();
@@ -17,6 +18,11 @@ const WelcomePage: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
+      {/* Progress Stepper - Centered to match content */}
+      <div className="text-center mt-[60px] mb-8">
+        <ProgressStepper currentStep={1} totalSteps={4} />
+      </div>
+
       {/* Step Header */}
       <div className="text-center mb-12">
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">

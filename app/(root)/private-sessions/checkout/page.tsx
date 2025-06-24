@@ -7,8 +7,9 @@ import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { ArrowLeft } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
-import CheckoutForm from "./_components/CheckoutForm";
-import OrderSummary from "./_components/OrderSummary";
+import CheckoutForm from "@/app/(root)/private-sessions/checkout/_components/CheckoutForm";
+import OrderSummary from "@/app/(root)/private-sessions/checkout/_components/OrderSummary";
+import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -102,6 +103,11 @@ const CheckoutPage: React.FC = () => {
   if (loading) {
     return (
       <div className="w-full mx-auto p-6">
+        {/* Progress Stepper - Left-aligned to match content */}
+        <div className="text-left mb-6">
+          <ProgressStepper currentStep={4} totalSteps={4} />
+        </div>
+
         <div className="animate-pulse">
           <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
           <div className="grid md:grid-cols-2 gap-8">
@@ -122,6 +128,11 @@ const CheckoutPage: React.FC = () => {
   if (error) {
     return (
       <div className="w-full mx-auto p-6">
+        {/* Progress Stepper - Left-aligned to match content */}
+        <div className="text-left mb-6">
+          <ProgressStepper currentStep={4} totalSteps={4} />
+        </div>
+
         <div className="text-center py-12">
           <div className="text-red-600 text-lg mb-4">{error}</div>
           <Button color="primary" onPress={() => createPaymentIntent()}>
@@ -138,6 +149,11 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="w-full mx-auto p-6">
+      {/* Progress Stepper - Left-aligned to match content */}
+      <div className="text-left mb-6">
+        <ProgressStepper currentStep={4} totalSteps={4} />
+      </div>
+
       <div className="mb-6">
         <Button
           variant="light"

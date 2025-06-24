@@ -1,10 +1,11 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button, Card, CardBody, Chip, Tooltip } from "@heroui/react";
+import { Button, Tooltip } from "@heroui/react";
 import { Check, CheckCircle, User, Users } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
+import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
 // Package data structure
 const packages = {
@@ -140,6 +141,11 @@ const SelectPackageForm: FC = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div>
+        {/* Progress Stepper - Left-aligned to match content */}
+        <div className="text-left mb-6">
+          <ProgressStepper currentStep={3} totalSteps={4} />
+        </div>
+
         {/* Header and Session Type Selection */}
         <div className="mb-6">
           {/* Header */}
