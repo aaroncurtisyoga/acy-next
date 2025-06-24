@@ -6,90 +6,7 @@ import { Check, CheckCircle, User, Users } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
-
-// Package data structure
-const packages = {
-  individual: [
-    {
-      id: "starter",
-      name: "Single Session",
-      sessions: 1,
-      price: 135,
-      perSession: 135,
-      description: "Try out personalized yoga",
-      benefits: ["Get familiar with Aaron's teaching style"],
-      popular: false,
-    },
-    {
-      id: "growth",
-      name: "Foundation",
-      sessions: 3,
-      price: 405,
-      perSession: 135,
-      description: "Build your practice foundation",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Experience personalized approach",
-      ],
-      popular: true,
-      badge: "Most Popular",
-    },
-    {
-      id: "transformation",
-      name: "Growth",
-      sessions: 6,
-      price: 720,
-      perSession: 120,
-      description: "Develop a consistent practice",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Experience personalized approach",
-        "Flexible scheduling",
-      ],
-      popular: false,
-    },
-  ],
-  group: [
-    {
-      id: "starter",
-      name: "Single Session",
-      sessions: 1,
-      price: 155,
-      perSession: 155,
-      description: "Try out personalized yoga",
-      benefits: ["Get familiar with Aaron's teaching style"],
-      popular: false,
-    },
-    {
-      id: "growth",
-      name: "Foundation",
-      sessions: 3,
-      price: 465,
-      perSession: 155,
-      description: "Build your practice foundation",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Experience personalized approach",
-      ],
-      popular: true,
-      badge: "Most Popular",
-    },
-    {
-      id: "transformation",
-      name: "Growth",
-      sessions: 6,
-      price: 810,
-      perSession: 135,
-      description: "Develop a consistent practice",
-      benefits: [
-        "Get familiar with Aaron's teaching style",
-        "Experience personalized approach",
-        "Flexible scheduling",
-      ],
-      popular: false,
-    },
-  ],
-};
+import { packages } from "@/app/(root)/private-sessions/select-package/_lib/packages";
 
 const SelectPackageForm: FC = () => {
   const { user, isLoaded: isUserLoaded } = useUser();
@@ -150,42 +67,49 @@ const SelectPackageForm: FC = () => {
         <div className="mb-6">
           {/* Header */}
           <div className="text-left mb-4">
-            <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
-              Select your package.
-            </h1>
-            <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between">
-              <p className="text-gray-600 mb-3 sm:mb-0">
-                Choose the package that best fits your yoga journey.
-              </p>
+            <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center mb-2">
+              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
+                Select your package.
+              </h1>
 
-              {/* Session Type Icons */}
-              <div className="flex gap-1.5">
+              {/* Session Type Toggle - Moved to headline level */}
+              <div className="flex gap-1 mt-2 sm:mt-0">
                 <Tooltip content="Individual Sessions" placement="bottom">
                   <button
                     onClick={() => setSessionType("individual")}
-                    className={`p-2 rounded-lg transition-all duration-200 ${
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                       sessionType === "individual"
-                        ? "bg-slate-800 text-white shadow-sm"
+                        ? "bg-slate-300 text-slate-900 shadow-sm"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
                     }`}
                   >
-                    <User size={14} />
+                    <div className="flex items-center gap-1.5">
+                      <User size={14} />
+                      <span>Individual</span>
+                    </div>
                   </button>
                 </Tooltip>
                 <Tooltip content="Group Sessions" placement="bottom">
                   <button
                     onClick={() => setSessionType("group")}
-                    className={`p-2 rounded-lg transition-all duration-200 ${
+                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                       sessionType === "group"
-                        ? "bg-slate-800 text-white shadow-sm"
+                        ? "bg-slate-300 text-slate-900 shadow-sm"
                         : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
                     }`}
                   >
-                    <Users size={14} />
+                    <div className="flex items-center gap-1.5">
+                      <Users size={14} />
+                      <span>Group</span>
+                    </div>
                   </button>
                 </Tooltip>
               </div>
             </div>
+
+            <p className="text-gray-600">
+              Choose the package that best fits your yoga journey.
+            </p>
           </div>
         </div>
 
