@@ -155,8 +155,8 @@ const SelectPackageForm: FC = () => {
                         {/* Custom Radio Button */}
                         <div className="flex justify-center mb-4">
                           {selectedPackage === pkg.id && (
-                            <div className="w-6 h-6 rounded-full border-2 bg-white border-primary flex items-center justify-center transition-all duration-200">
-                              <Check size={14} className="text-primary" />
+                            <div className="w-7 h-7 rounded-full bg-primary border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
+                              <Check size={16} className="text-white" />
                             </div>
                           )}
                         </div>
@@ -207,8 +207,8 @@ const SelectPackageForm: FC = () => {
                             </p>
                           </div>
                           {selectedPackage === pkg.id && (
-                            <div className="w-6 h-6 rounded-full border-2 bg-white border-white flex items-center justify-center transition-all duration-200">
-                              <Check size={14} className="text-primary" />
+                            <div className="w-7 h-7 rounded-full bg-primary border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
+                              <Check size={16} className="text-white" />
                             </div>
                           )}
                         </div>
