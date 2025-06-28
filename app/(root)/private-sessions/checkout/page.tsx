@@ -102,7 +102,7 @@ const CheckoutPage: React.FC = () => {
 
   if (loading) {
     return (
-      <div className="w-full mx-auto p-6">
+      <div className="wrapper-width py-6">
         {/* Progress Stepper - Left-aligned to match content */}
         <div className="text-left mb-6">
           <ProgressStepper currentStep={4} totalSteps={4} />
@@ -127,7 +127,7 @@ const CheckoutPage: React.FC = () => {
 
   if (error) {
     return (
-      <div className="w-full mx-auto p-6">
+      <div className="wrapper-width py-6">
         {/* Progress Stepper - Left-aligned to match content */}
         <div className="text-left mb-6">
           <ProgressStepper currentStep={4} totalSteps={4} />
@@ -148,7 +148,7 @@ const CheckoutPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full mx-auto p-6">
+    <div className="wrapper-width py-6">
       {/* Progress Stepper - Left-aligned to match content */}
       <div className="text-left mb-6">
         <ProgressStepper currentStep={4} totalSteps={4} />

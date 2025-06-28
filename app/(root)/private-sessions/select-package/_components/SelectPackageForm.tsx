@@ -110,7 +110,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Package Selection */}
-        <div className="my-12">
+        <div className="mt-12 mb-9">
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {
