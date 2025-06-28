@@ -60,7 +60,7 @@ const OrderSummary: React.FC = () => {
   return (
     <div className="space-y-6">
       {/* Package Details */}
-      <Card>
+      <Card className="bg-white rounded-lg border">
         <CardHeader className="pb-2">
           <h3 className="text-lg font-semibold">Order Summary</h3>
         </CardHeader>
@@ -108,7 +108,7 @@ const OrderSummary: React.FC = () => {
       </Card>
 
       {/* Price Breakdown */}
-      <Card>
+      <Card className="bg-white rounded-lg border">
         <CardBody>
           <div className="space-y-3">
             <div className="flex items-center justify-between">
@@ -127,18 +127,6 @@ const OrderSummary: React.FC = () => {
           </div>
         </CardBody>
       </Card>
-
-      {/* Security Notice */}
-      <div className="text-center">
-        <div className="bg-green-50 border border-green-200 rounded-lg p-4">
-          <p className="text-sm text-green-800 font-medium">
-            ✅ 30-day money-back guarantee
-          </p>
-          <p className="text-xs text-green-600 mt-1">
-            Not satisfied? Get a full refund within 30 days.
-          </p>
-        </div>
-      </div>
     </div>
   );
 };

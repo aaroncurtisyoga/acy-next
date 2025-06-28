@@ -100,30 +100,7 @@ const CheckoutPage: React.FC = () => {
     appearance,
   };
 
-  if (loading) {
-    return (
-      <div className="wrapper-width py-6">
-        {/* Progress Stepper - Left-aligned to match content */}
-        <div className="text-left mb-6">
-          <ProgressStepper currentStep={4} totalSteps={4} />
-        </div>
-
-        <div className="animate-pulse">
-          <div className="h-8 bg-gray-200 rounded w-1/3 mb-6"></div>
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <div className="h-6 bg-gray-200 rounded"></div>
-              <div className="h-32 bg-gray-200 rounded"></div>
-            </div>
-            <div className="space-y-4">
-              <div className="h-6 bg-gray-200 rounded"></div>
-              <div className="h-24 bg-gray-200 rounded"></div>
-            </div>
-          </div>
-        </div>
-      </div>
-    );
-  }
+  // Let Clerk and Stripe handle their own loading states
 
   if (error) {
     return (
@@ -143,10 +120,6 @@ const CheckoutPage: React.FC = () => {
     );
   }
 
-  if (!clientSecret) {
-    return null;
-  }
-
   return (
     <div className="wrapper-width py-6">
       {/* Progress Stepper - Left-aligned to match content */}
@@ -163,6 +136,7 @@ const CheckoutPage: React.FC = () => {
             router.push("/private-sessions/select-package");
           }}
           className="mb-4"
+          isDisabled={loading}
         >
           Back to Session Selection
         </Button>
@@ -176,9 +150,11 @@ const CheckoutPage: React.FC = () => {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Payment Form */}
         <div className="order-2 md:order-1">
-          <Elements options={options} stripe={stripePromise}>
-            <CheckoutForm />
-          </Elements>
+          {clientSecret && (
+            <Elements options={options} stripe={stripePromise}>
+              <CheckoutForm />
+            </Elements>
+          )}
         </div>
 
         {/* Order Summary */}

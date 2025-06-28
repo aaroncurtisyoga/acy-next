@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button, Tooltip } from "@heroui/react";
+import { Button } from "@heroui/react";
 import { Check, CheckCircle, User, Users } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
@@ -74,36 +74,32 @@ const SelectPackageForm: FC = () => {
 
               {/* Session Type Toggle - Moved to headline level */}
               <div className="flex gap-1 mt-2 sm:mt-0">
-                <Tooltip content="Individual Sessions" placement="bottom">
-                  <button
-                    onClick={() => setSessionType("individual")}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                      sessionType === "individual"
-                        ? "bg-slate-300 text-slate-900 shadow-sm"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                    }`}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <User size={14} />
-                      <span>Individual</span>
-                    </div>
-                  </button>
-                </Tooltip>
-                <Tooltip content="Group Sessions" placement="bottom">
-                  <button
-                    onClick={() => setSessionType("group")}
-                    className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
-                      sessionType === "group"
-                        ? "bg-slate-300 text-slate-900 shadow-sm"
-                        : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
-                    }`}
-                  >
-                    <div className="flex items-center gap-1.5">
-                      <Users size={14} />
-                      <span>Group</span>
-                    </div>
-                  </button>
-                </Tooltip>
+                <button
+                  onClick={() => setSessionType("individual")}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                    sessionType === "individual"
+                      ? "bg-slate-300 text-slate-900 shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <User size={14} />
+                    <span>Individual</span>
+                  </div>
+                </button>
+                <button
+                  onClick={() => setSessionType("group")}
+                  className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
+                    sessionType === "group"
+                      ? "bg-slate-300 text-slate-900 shadow-sm"
+                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                  }`}
+                >
+                  <div className="flex items-center gap-1.5">
+                    <Users size={14} />
+                    <span>Group</span>
+                  </div>
+                </button>
               </div>
             </div>
           </div>
