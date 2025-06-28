@@ -114,7 +114,7 @@ const SelectPackageForm: FC = () => {
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {
-              return "bg-slate-50";
+              return "bg-slate-100";
             };
 
             return (

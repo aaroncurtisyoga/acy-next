@@ -111,7 +111,7 @@ const Footer = () => {
               </HeroUiLink>
             </p>
             <p className="text-slate-600">
-              Made with ♡ by{" "}
+              Made with{" "}
               <HeroUiLink
                 data-testid="footer-github-link"
                 className="text-blue-700 hover:text-blue-600 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 font-medium"
@@ -121,7 +121,7 @@ const Footer = () => {
                 target="_blank"
                 underline="hover"
               >
-                Aaron
+                ♡{" "}
               </HeroUiLink>
             </p>
           </div>

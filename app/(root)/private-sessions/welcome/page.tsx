@@ -34,7 +34,7 @@ const WelcomePage: React.FC = () => {
 
       {/* Benefits List */}
       <div className="mb-12">
-        <div className="flex flex-col items-center justify-center gap-6 max-w-md mx-auto">
+        <div className="flex flex-col items-center justify-center gap-8 max-w-md mx-auto">
           <div className="flex flex-col gap-4 w-full items-center">
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <CheckCircle className="w-6 h-6 text-primary-500 flex-shrink-0" />
