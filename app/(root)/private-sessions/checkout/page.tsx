@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
-import { ArrowLeft } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutForm from "@/app/(root)/private-sessions/checkout/_components/CheckoutForm";
 import OrderSummary from "@/app/(root)/private-sessions/checkout/_components/OrderSummary";
@@ -16,7 +15,7 @@ const stripePromise = loadStripe(
 );
 
 const CheckoutPage: React.FC = () => {
-  const { formData, goToPreviousStep } = useWizardForm();
+  const { formData } = useWizardForm();
   const [clientSecret, setClientSecret] = useState("");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -128,19 +127,6 @@ const CheckoutPage: React.FC = () => {
       </div>
 
       <div className="mb-8">
-        <Button
-          variant="light"
-          startContent={<ArrowLeft size={16} />}
-          onPress={() => {
-            goToPreviousStep();
-            router.push("/private-sessions/select-package");
-          }}
-          className="mb-4"
-          isDisabled={loading}
-        >
-          Back to Session Selection
-        </Button>
-
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
           Complete your payment.
         </h1>
