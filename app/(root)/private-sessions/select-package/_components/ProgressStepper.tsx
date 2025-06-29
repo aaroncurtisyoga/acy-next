@@ -10,7 +10,7 @@ export const ProgressStepper: FC<ProgressStepperProps> = ({
   totalSteps,
 }) => {
   return (
-    <div className="mb-4">
+    <div>
       <p className="text-sm font-medium text-gray-500">
         STEP <span className="font-bold">{currentStep}</span> OF{" "}
         <span className="font-bold">{totalSteps}</span>

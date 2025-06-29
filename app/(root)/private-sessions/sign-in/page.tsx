@@ -23,7 +23,7 @@ const SignInPage: React.FC = () => {
     return (
       <div className="max-w-md mx-auto">
         {/* Progress Stepper - Centered to match content */}
-        <div className="mt-[60px] mb-8 text-center">
+        <div className="mt-[60px] mb-6 text-center">
           <ProgressStepper currentStep={2} totalSteps={4} />
         </div>
 
@@ -67,7 +67,7 @@ const SignInPage: React.FC = () => {
   return (
     <div className="max-w-md mx-auto">
       {/* Progress Stepper - Centered to match content */}
-      <div className="mt-[60px] mb-8 text-center">
+      <div className="mt-[60px] mb-6 text-center">
         <ProgressStepper currentStep={2} totalSteps={4} />
       </div>
 
