@@ -24,7 +24,7 @@ const WelcomePage: React.FC = () => {
       </div>
 
       {/* Step Header */}
-      <div className="text-center mb-12">
+      <div className="text-center mb-8">
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
           Choose your
           <br />

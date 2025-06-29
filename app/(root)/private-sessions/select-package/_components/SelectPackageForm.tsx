@@ -64,9 +64,9 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Header and Session Type Selection */}
-        <div className="mb-6">
+        <div className="mb-8">
           {/* Header */}
-          <div className="text-left mb-4">
+          <div className="text-left">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center">
               <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
                 Select your package.
@@ -106,7 +106,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Package Selection */}
-        <div className="mt-12 mb-9">
+        <div className="mb-9">
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {

@@ -127,7 +127,7 @@ const CheckoutPage: React.FC = () => {
         <ProgressStepper currentStep={4} totalSteps={4} />
       </div>
 
-      <div className="mb-6">
+      <div className="mb-8">
         <Button
           variant="light"
           startContent={<ArrowLeft size={16} />}
