@@ -1,6 +1,14 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, FC } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  FC,
+  useEffect,
+} from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { SessionPurchase, SessionType } from "../types";
 
@@ -45,8 +53,64 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
   const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<PrivateSessionFormData>({});
   const { isSignedIn } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const totalSteps = 4; // Welcome -> Package Selection -> Checkout -> Confirmation
+  const totalSteps = 4; // Welcome -> Sign-in -> Package Selection -> Checkout
+
+  // Map routes to steps
+  const stepRoutes = {
+    "/private-sessions/welcome": 1,
+    "/private-sessions/sign-in": 2,
+    "/private-sessions/select-package": 3,
+    "/private-sessions/checkout": 4,
+    "/private-sessions/confirmation": 5,
+  };
+
+  // Update current step based on pathname
+  useEffect(() => {
+    const step = stepRoutes[pathname as keyof typeof stepRoutes];
+    if (step) {
+      setCurrentStep(step);
+    }
+  }, [pathname]);
+
+  // Handle browser back button to ensure sequential navigation
+  useEffect(() => {
+    const handlePopState = () => {
+      const currentRouteStep = stepRoutes[pathname as keyof typeof stepRoutes];
+      if (currentRouteStep) {
+        // Store the step we're coming from
+        const fromStep = currentRouteStep;
+
+        // Check after a small delay what step we actually navigated to
+        setTimeout(() => {
+          const actualStep =
+            stepRoutes[window.location.pathname as keyof typeof stepRoutes];
+
+          // If we didn't go to the sequential previous step, redirect there
+          if (fromStep > 1 && actualStep && actualStep !== fromStep - 1) {
+            const stepToRoute = {
+              1: "/private-sessions/welcome",
+              2: "/private-sessions/sign-in",
+              3: "/private-sessions/select-package",
+              4: "/private-sessions/checkout",
+              5: "/private-sessions/confirmation",
+            };
+
+            const correctRoute =
+              stepToRoute[(fromStep - 1) as keyof typeof stepToRoute];
+            if (correctRoute) {
+              router.replace(correctRoute);
+            }
+          }
+        }, 0);
+      }
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => window.removeEventListener("popstate", handlePopState);
+  }, [pathname, router]);
 
   const goToNextStep = () =>
     setCurrentStep((prev) => Math.min(totalSteps, prev + 1));
