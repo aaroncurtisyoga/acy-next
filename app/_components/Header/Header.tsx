@@ -44,35 +44,25 @@ const Header: FC = () => {
       isMenuOpen={isMenuOpen}
       isBordered
       maxWidth="2xl"
+      className="bg-white shadow-sm static"
       classNames={{
+        base: "static",
+        wrapper: "px-6 py-4",
         item: [
           "flex",
           "relative",
           "h-full",
           "items-center",
-          // Remove bold from active state
+          "px-3",
+          "py-2",
+          "rounded-lg",
+          "data-[active=true]:text-slate-800",
+          "data-[active=true]:bg-slate-100",
           "data-[active=true]:font-normal",
-          // Active state styling
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[3px]",
-          "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-primary",
-          // Hover state styling
-          "hover:after:content-['']",
-          "hover:after:absolute",
-          "hover:after:bottom-0",
-          "hover:after:left-0",
-          "hover:after:right-0",
-          "hover:after:h-[3px]",
-          "hover:after:rounded-[2px]",
-          "hover:after:bg-primary",
-          // Transition
-          "after:transition-all",
-          "after:duration-200",
+          "hover:text-slate-700",
+          "hover:bg-slate-50",
+          "transition-all",
+          "duration-200",
         ],
       }}
     >

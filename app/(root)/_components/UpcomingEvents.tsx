@@ -88,7 +88,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         </>
       ) : (
         // Empty State - No header, just the card
-        <Card className="flex-1 shadow-sm border border-divider">
+        <Card className="flex-1 shadow-none border-none">
           <CardBody className="flex flex-col items-center justify-center text-center py-12 px-6">
             <div className="p-4 rounded-full bg-primary-50 text-primary-300 mb-4">
               <Calendar size={48} />

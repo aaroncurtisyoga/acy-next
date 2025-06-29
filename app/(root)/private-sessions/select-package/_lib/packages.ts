@@ -1,0 +1,86 @@
+// Package data structure for private sessions
+export const packages = {
+  individual: [
+    {
+      id: "starter",
+      name: "Single Session",
+      sessions: 1,
+      price: 135,
+      perSession: 135,
+      description: "Try out personalized yoga",
+      benefits: ["Get familiar with Aaron's teaching style"],
+      popular: false,
+    },
+    {
+      id: "growth",
+      name: "Foundation",
+      sessions: 3,
+      price: 405,
+      perSession: 135,
+      description: "Build your practice foundation",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
+      name: "Growth",
+      sessions: 6,
+      price: 720,
+      perSession: 120,
+      description: "Develop a consistent practice",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
+        "Flexible scheduling",
+      ],
+      popular: false,
+    },
+  ],
+  group: [
+    {
+      id: "starter",
+      name: "Single Session",
+      sessions: 1,
+      price: 155,
+      perSession: 155,
+      description: "Try out personalized yoga",
+      benefits: ["Get familiar with Aaron's teaching style"],
+      popular: false,
+    },
+    {
+      id: "growth",
+      name: "Foundation",
+      sessions: 3,
+      price: 465,
+      perSession: 155,
+      description: "Build your practice foundation",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
+      ],
+      popular: true,
+      badge: "Most Popular",
+    },
+    {
+      id: "transformation",
+      name: "Growth",
+      sessions: 6,
+      price: 810,
+      perSession: 135,
+      description: "Develop a consistent practice",
+      benefits: [
+        "Get familiar with Aaron's teaching style",
+        "Experience personalized approach",
+        "Flexible scheduling",
+      ],
+      popular: false,
+    },
+  ],
+};
+
+export type PackageType = (typeof packages.individual)[0];
+export type SessionType = "individual" | "group";

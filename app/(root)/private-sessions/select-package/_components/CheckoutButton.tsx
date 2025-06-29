@@ -16,18 +16,23 @@ const CheckoutButton: FC = () => {
     <div className={"w-full max-w-[440px] mx-auto mt-1 mb-40"}>
       <SignedOut>
         <SignInButton>
-          <Button type="button" fullWidth={true} color={"primary"}>
+          <Button
+            type="button"
+            fullWidth={true}
+            color="primary"
+            className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+          >
             Sign In to Purchase
           </Button>
         </SignInButton>
       </SignedOut>
       <SignedIn>
         <Button
-          type={"submit"}
-          radius={"sm"}
-          className={"text-base"}
+          type="submit"
+          radius="sm"
+          className="text-base font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
           fullWidth={true}
-          color={"primary"}
+          color="primary"
         >
           Purchase
         </Button>

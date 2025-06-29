@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useEffect } from "react";
+import React from "react";
 import { useRouter } from "next/navigation";
 import { SignIn, useAuth, useUser, SignOutButton } from "@clerk/nextjs";
 import { Button } from "@heroui/react";
-import { ArrowRight, User } from "lucide-react";
+import { User } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
+import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
 const SignInPage: React.FC = () => {
   const { isSignedIn } = useAuth();
@@ -20,7 +21,12 @@ const SignInPage: React.FC = () => {
 
   if (isSignedIn && user) {
     return (
-      <div className="max-w-md mx-auto p-6">
+      <div className="max-w-md mx-auto">
+        {/* Progress Stepper - Centered to match content */}
+        <div className="mt-[60px] mb-6 text-center">
+          <ProgressStepper currentStep={2} totalSteps={4} />
+        </div>
+
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-primary-600" />
@@ -37,13 +43,7 @@ const SignInPage: React.FC = () => {
             size="lg"
             fullWidth
             onPress={handleContinue}
-            className="group"
-            endContent={
-              <ArrowRight
-                size={18}
-                className="transition-transform duration-300 ease-out group-hover:translate-x-1"
-              />
-            }
+            className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
           >
             Continue
           </Button>
@@ -53,7 +53,7 @@ const SignInPage: React.FC = () => {
               <Button
                 variant="light"
                 size="sm"
-                className="text-gray-500 hover:text-gray-700"
+                className="text-gray-500 hover:text-gray-700 underline underline-offset-2 hover:underline-offset-4 transition-all duration-200"
               >
                 Sign in with a different account
               </Button>
@@ -65,7 +65,12 @@ const SignInPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto p-6">
+    <div className="max-w-md mx-auto">
+      {/* Progress Stepper - Centered to match content */}
+      <div className="mt-[60px] mb-6 text-center">
+        <ProgressStepper currentStep={2} totalSteps={4} />
+      </div>
+
       <div className="text-center mb-8">
         <h2 className="text-2xl font-bold mb-4">Sign In to Continue</h2>
         <p className="text-gray-600">

@@ -1,84 +1,31 @@
-import {
-  OfferingType,
-  SessionType,
-} from "@/app/(root)/private-sessions/_lib/types";
+import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
 
-export const INDIVIDUAL_OFFERINGS: OfferingType[] = [
-  /* {
-    title: "0 Session",
-    price: "1",
-    description: "Test hour of training",
-    features: [
-      "test Personalized programming",
-      "test Virtual or In Person",
-      "test Breathwork",
-      "test Meditation",
+export const SESSION_PRICING = {
+  Individual: {
+    basePrice: 120, // per session
+    discounts: [
+      { minSessions: 3, discount: 0.05, label: "5% off" }, // $114/session
+      { minSessions: 5, discount: 0.12, label: "12% off" }, // $105.60/session
+      { minSessions: 8, discount: 0.18, label: "18% off" }, // $98.40/session
+      { minSessions: 12, discount: 0.25, label: "25% off" }, // $90/session
+      { minSessions: 20, discount: 0.3, label: "30% off" }, // $84/session
     ],
-    package: "test - Individual - 1 Session",
-  },*/
-  {
-    title: "1 Session",
-    price: "115",
-    description: "1 hour of training",
-    features: [
-      "Personalized programming",
-      "Virtual or In Person",
-      "Breathwork",
-      "Meditation",
-    ],
-    package: "Individual - 1 Session",
   },
-  {
-    title: "4 Sessions",
-    price: "395",
-    description: "4 hours of training",
-    features: [
-      "Personalized programming",
-      "Virtual or In Person",
-      "Breathwork",
-      "Meditation",
-      "Async Q & A",
-      "Video Support",
+  Group: {
+    basePrice: 80, // per session per person
+    discounts: [
+      { minSessions: 3, discount: 0.05, label: "5% off" }, // $76/session
+      { minSessions: 5, discount: 0.12, label: "12% off" }, // $70.40/session
+      { minSessions: 8, discount: 0.18, label: "18% off" }, // $65.60/session
+      { minSessions: 12, discount: 0.25, label: "25% off" }, // $60/session
+      { minSessions: 20, discount: 0.3, label: "30% off" }, // $56/session
     ],
-    package: "Individual - 4 Sessions",
   },
-];
+};
 
-export const GROUP_OFFERINGS: OfferingType[] = [
-  {
-    title: "1 Session",
-    price: "200",
-    description: "1 hour of training",
-    features: [
-      "Unique programming for your group",
-      "Virtual or In Person",
-      "Breathwork",
-      "Meditation",
-    ],
-    package: "Group - 1 Session",
-  },
-  {
-    title: "4 Sessions",
-    price: "700",
-    description: "4 hours of training",
-    features: [
-      "Unique programming for your group",
-      "Virtual or In Person",
-      "Breathwork",
-      "Meditation",
-      "Async Q & A",
-      "Video Support",
-      "Sound Bath",
-    ],
-    package: "Group - 4 Sessions",
-  },
-];
-
-export const ALL_OFFERINGS: OfferingType[] = [
-  ...INDIVIDUAL_OFFERINGS,
-  ...GROUP_OFFERINGS,
-];
+export const MIN_SESSIONS = 1;
+export const MAX_SESSIONS = 20;
+export const POPULAR_SESSION_COUNTS = [3, 5, 8, 12];
 
 export const INDIVIDUAL: SessionType = "Individual";
-
 export const GROUP: SessionType = "Group";

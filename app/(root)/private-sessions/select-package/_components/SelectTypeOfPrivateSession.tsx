@@ -20,10 +20,11 @@ const SelectTypeOfPrivateSession: FC<GroupSizeTabsProps> = ({
       color="primary"
       aria-label="Tabs colors"
       radius="md"
-      size={"lg"}
-      className={"mb-6 mx-auto max-w-xl"}
+      size="lg"
+      className="mb-6 mx-auto flex justify-center"
       classNames={{
         tab: "font-sm min-w-[120px]",
+        tabList: "justify-center",
       }}
       onSelectionChange={(key: SessionType) => {
         setPrivateSessionType(key);
