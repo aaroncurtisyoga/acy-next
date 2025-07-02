@@ -7,6 +7,7 @@ import {
   ReactNode,
   FC,
   useEffect,
+  useMemo,
 } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
@@ -58,14 +59,17 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
 
   const totalSteps = 4; // Welcome -> Sign-in -> Package Selection -> Checkout
 
-  // Map routes to steps
-  const stepRoutes = {
-    "/private-sessions/welcome": 1,
-    "/private-sessions/sign-in": 2,
-    "/private-sessions/select-package": 3,
-    "/private-sessions/checkout": 4,
-    "/private-sessions/confirmation": 5,
-  };
+  // Map routes to steps - memoized to prevent useEffect dependency issues
+  const stepRoutes = useMemo(
+    () => ({
+      "/private-sessions/welcome": 1,
+      "/private-sessions/sign-in": 2,
+      "/private-sessions/select-package": 3,
+      "/private-sessions/checkout": 4,
+      "/private-sessions/confirmation": 5,
+    }),
+    [],
+  );
 
   // Update current step based on pathname
   useEffect(() => {
@@ -73,7 +77,7 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
     if (step) {
       setCurrentStep(step);
     }
-  }, [pathname]);
+  }, [pathname, stepRoutes]);
 
   // Handle browser back button to ensure sequential navigation
   useEffect(() => {
@@ -110,7 +114,7 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
 
     window.addEventListener("popstate", handlePopState);
     return () => window.removeEventListener("popstate", handlePopState);
-  }, [pathname, router]);
+  }, [pathname, router, stepRoutes]);
 
   const goToNextStep = () =>
     setCurrentStep((prev) => Math.min(totalSteps, prev + 1));

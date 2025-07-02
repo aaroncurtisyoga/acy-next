@@ -1,8 +1,6 @@
 import Link from "next/link";
-import { Link as HeroUiLink } from "@heroui/react";
 import { AudioLines, Instagram, Youtube } from "lucide-react";
 import NewsletterForm from "@/app/_components/NewsletterForm";
-import { instructorEmailAddress } from "@/app/_lib/constants";
 
 const Footer = () => {
   return (
@@ -24,106 +22,142 @@ const Footer = () => {
 
       {/* Content */}
       <div className="relative z-10">
-        <div
-          className={
-            "wrapper-width flex flex-col justify-center md:flex-row" +
-            " md:justify-between md:items-start gap-12 md:gap-8"
-          }
-        >
-          {/* Newsletter Signup Form */}
-          <div
-            data-testid="footer-newsletter"
-            className="flex-1 flex justify-center md:justify-start"
-          >
-            <div className="bg-white/60 backdrop-blur-sm rounded-2xl p-6 shadow-sm border border-white/20">
+        <div className="wrapper-width">
+          {/* Mobile: Centered stacked layout */}
+          <div className="flex flex-col items-center gap-12 md:hidden">
+            {/* Newsletter Signup Form */}
+            <div
+              data-testid="footer-newsletter"
+              className="flex justify-center"
+            >
               <NewsletterForm />
             </div>
-          </div>
 
-          {/* Social Media Links */}
-          <div
-            data-testid="footer-social-links"
-            className="flex-1 flex justify-center items-center"
-          >
-            <div className="flex items-center gap-6">
-              <Link
-                href={
-                  "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
-                }
-                target={"_blank"}
-                data-testid="footer-youtube-link"
-                aria-label={"Visit Aaron on YouTube"}
-                className="group"
+            {/* Social Media Links with Copyright */}
+            <div className="flex flex-col items-center gap-6">
+              <div
+                data-testid="footer-social-links"
+                className="flex justify-center items-center"
               >
-                <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-red-50 group-hover:border-red-200 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
-                  <Youtube className="w-6 h-6 text-slate-600 group-hover:text-red-600 transition-colors duration-300" />
+                <div className="flex items-center gap-6">
+                  <Link
+                    href={
+                      "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
+                    }
+                    target={"_blank"}
+                    data-testid="footer-youtube-link"
+                    aria-label={"Visit Aaron on YouTube"}
+                    className="group"
+                  >
+                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                      <Youtube className="w-6 h-6 text-slate-600 transition-colors duration-300" />
+                    </div>
+                  </Link>
+                  <Link
+                    href={
+                      "https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
+                    }
+                    target={"_blank"}
+                    data-testid="footer-spotify-link"
+                    aria-label={"See Aaron's playlists on Spotify"}
+                    className="group"
+                  >
+                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                      <AudioLines className="w-6 h-6 text-slate-600 transition-colors duration-300" />
+                    </div>
+                  </Link>
+                  <Link
+                    href="https://www.instagram.com/aaroncurtisyoga/"
+                    target="_blank"
+                    data-testid="footer-instagram-link"
+                    aria-label={"Follow Aaron on Instagram"}
+                    className="group"
+                  >
+                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                      <Instagram className="w-6 h-6 text-slate-600 transition-colors duration-300" />
+                    </div>
+                  </Link>
                 </div>
-              </Link>
-              <Link
-                href={
-                  "https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
-                }
-                target={"_blank"}
-                data-testid="footer-spotify-link"
-                aria-label={"See Aaron's playlists on Spotify"}
-                className="group"
-              >
-                <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-green-50 group-hover:border-green-200 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
-                  <AudioLines className="w-6 h-6 text-slate-600 group-hover:text-green-600 transition-colors duration-300" />
-                </div>
-              </Link>
-              <Link
-                href="https://www.instagram.com/aaroncurtisyoga/"
-                target="_blank"
-                data-testid="footer-instagram-link"
-                aria-label={"Follow Aaron on Instagram"}
-                className="group"
-              >
-                <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-pink-50 group-hover:border-pink-200 group-hover:shadow-md transition-all duration-300 group-hover:scale-105">
-                  <Instagram className="w-6 h-6 text-slate-600 group-hover:text-pink-600 transition-colors duration-300" />
-                </div>
-              </Link>
+              </div>
+
+              {/* Copyright under social icons */}
+              <div className="text-center">
+                <p
+                  data-testid="footer-copyright"
+                  className="text-slate-500 text-sm"
+                >
+                  © {new Date().getFullYear()} Aaron Curtis
+                </p>
+              </div>
             </div>
           </div>
 
-          {/* Contact and Credits */}
-          <div
-            data-testid="footer-contact"
-            className="flex-1 text-center md:text-end space-y-4 text-sm"
-          >
-            <p
-              data-testid="footer-copyright"
-              className="text-slate-600 font-medium"
-            >
-              © {new Date().getFullYear()} All Rights Reserved
-            </p>
-            <p className="text-slate-600">
-              Reach out by{" "}
-              <HeroUiLink
-                data-testid="footer-email-link"
-                isExternal
-                size="sm"
-                underline="hover"
-                className="text-blue-700 hover:text-blue-600 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 font-medium"
-                href={`mailto:${instructorEmailAddress}`}
-              >
-                Email
-              </HeroUiLink>
-            </p>
-            <p className="text-slate-600">
-              Made with{" "}
-              <HeroUiLink
-                data-testid="footer-github-link"
-                className="text-blue-700 hover:text-blue-600 focus-visible:ring-2 focus-visible:ring-blue-300 focus-visible:ring-offset-2 font-medium"
-                href="https://github.com/aaroncurtisyoga/acy-next"
-                isExternal
-                size="sm"
-                target="_blank"
-                underline="hover"
-              >
-                ♡{" "}
-              </HeroUiLink>
-            </p>
+          {/* Desktop: Newsletter left, Social right */}
+          <div className="hidden md:block">
+            <div className="flex justify-between items-start">
+              {/* Newsletter Signup Form */}
+              <div data-testid="footer-newsletter" className="flex-shrink-0">
+                <NewsletterForm />
+              </div>
+
+              {/* Social Media Links with Copyright */}
+              <div className="flex flex-col items-end gap-6">
+                <div
+                  data-testid="footer-social-links"
+                  className="flex justify-end items-center"
+                >
+                  <div className="flex items-center gap-6">
+                    <Link
+                      href={
+                        "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
+                      }
+                      target={"_blank"}
+                      data-testid="footer-youtube-link"
+                      aria-label={"Visit Aaron on YouTube"}
+                      className="group"
+                    >
+                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                        <Youtube className="w-6 h-6 text-slate-600 transition-colors duration-300" />
+                      </div>
+                    </Link>
+                    <Link
+                      href={
+                        "https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
+                      }
+                      target={"_blank"}
+                      data-testid="footer-spotify-link"
+                      aria-label={"See Aaron's playlists on Spotify"}
+                      className="group"
+                    >
+                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                        <AudioLines className="w-6 h-6 text-slate-600 transition-colors duration-300" />
+                      </div>
+                    </Link>
+                    <Link
+                      href="https://www.instagram.com/aaroncurtisyoga/"
+                      target="_blank"
+                      data-testid="footer-instagram-link"
+                      aria-label={"Follow Aaron on Instagram"}
+                      className="group"
+                    >
+                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                        <Instagram className="w-6 h-6 text-slate-600 transition-colors duration-300" />
+                      </div>
+                    </Link>
+                  </div>
+                </div>
+
+                {/* Copyright under social icons */}
+                <div className="text-right">
+                  <p
+                    data-testid="footer-copyright"
+                    className="text-slate-500 text-sm"
+                  >
+                    © {new Date().getFullYear()} Aaron Curtis
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </div>
