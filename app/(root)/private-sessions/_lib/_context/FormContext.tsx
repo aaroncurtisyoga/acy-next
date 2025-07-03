@@ -52,7 +52,20 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<PrivateSessionFormData>({});
+  const [formData, setFormData] = useState<PrivateSessionFormData>(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("privateSessionFormData");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return {};
+        }
+      }
+    }
+    return {};
+  });
   const { isSignedIn } = useAuth();
   const router = useRouter();
   const pathname = usePathname();
@@ -125,9 +138,26 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
       setCurrentStep(step);
     }
   };
-  const updateFormData = (data: Partial<PrivateSessionFormData>) =>
-    setFormData((prev) => ({ ...prev, ...data }));
-  const resetFormData = () => setFormData({});
+  const updateFormData = (data: Partial<PrivateSessionFormData>) => {
+    const newData = (prev: PrivateSessionFormData) => ({ ...prev, ...data });
+    setFormData(newData);
+    // Save to localStorage
+    if (typeof window !== "undefined") {
+      const updatedData = newData(formData);
+      localStorage.setItem(
+        "privateSessionFormData",
+        JSON.stringify(updatedData),
+      );
+    }
+  };
+
+  const resetFormData = () => {
+    setFormData({});
+    // Clear localStorage
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("privateSessionFormData");
+    }
+  };
 
   const isComplete = currentStep === totalSteps;
 
