@@ -92,43 +92,6 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
     }
   }, [pathname, stepRoutes]);
 
-  // Handle browser back button to ensure sequential navigation
-  useEffect(() => {
-    const handlePopState = () => {
-      const currentRouteStep = stepRoutes[pathname as keyof typeof stepRoutes];
-      if (currentRouteStep) {
-        // Store the step we're coming from
-        const fromStep = currentRouteStep;
-
-        // Check after a small delay what step we actually navigated to
-        setTimeout(() => {
-          const actualStep =
-            stepRoutes[window.location.pathname as keyof typeof stepRoutes];
-
-          // If we didn't go to the sequential previous step, redirect there
-          if (fromStep > 1 && actualStep && actualStep !== fromStep - 1) {
-            const stepToRoute = {
-              1: "/private-sessions/welcome",
-              2: "/private-sessions/sign-in",
-              3: "/private-sessions/select-package",
-              4: "/private-sessions/checkout",
-              5: "/private-sessions/confirmation",
-            };
-
-            const correctRoute =
-              stepToRoute[(fromStep - 1) as keyof typeof stepToRoute];
-            if (correctRoute) {
-              router.replace(correctRoute);
-            }
-          }
-        }, 0);
-      }
-    };
-
-    window.addEventListener("popstate", handlePopState);
-    return () => window.removeEventListener("popstate", handlePopState);
-  }, [pathname, router, stepRoutes]);
-
   const goToNextStep = () =>
     setCurrentStep((prev) => Math.min(totalSteps, prev + 1));
   const goToPreviousStep = () =>

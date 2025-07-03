@@ -38,15 +38,16 @@ const SignInPage: React.FC = () => {
         </div>
 
         <div className="space-y-4">
-          <Button
-            color="primary"
-            size="lg"
-            fullWidth
-            onPress={handleContinue}
-            className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
-          >
-            Continue
-          </Button>
+          <div className="flex justify-center">
+            <Button
+              color="primary"
+              size="lg"
+              className="w-full max-w-[340px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+              onPress={handleContinue}
+            >
+              Continue
+            </Button>
+          </div>
 
           <div className="text-center">
             <SignOutButton redirectUrl="/private-sessions/sign-in">

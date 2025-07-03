@@ -270,7 +270,11 @@ const SelectPackageForm: FC = () => {
             <>
               <SignedOut>
                 <SignInButton>
-                  <Button color="primary" size="lg" className="w-full max-w-md">
+                  <Button
+                    color="primary"
+                    size="lg"
+                    className="w-full max-w-[440px]"
+                  >
                     Sign In to Purchase
                   </Button>
                 </SignInButton>
@@ -279,7 +283,7 @@ const SelectPackageForm: FC = () => {
                 <Button
                   color="primary"
                   size="lg"
-                  className="w-full max-w-md"
+                  className="w-full max-w-[440px]"
                   onPress={onSubmit}
                 >
                   Continue to Checkout
