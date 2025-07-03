@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button, Spinner } from "@heroui/react";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
@@ -99,26 +99,6 @@ const CheckoutPage: React.FC = () => {
     appearance,
   };
 
-  // Let Clerk and Stripe handle their own loading states
-
-  if (error) {
-    return (
-      <div className="wrapper-width py-6">
-        {/* Progress Stepper - Left-aligned to match content */}
-        <div className="text-left mb-6">
-          <ProgressStepper currentStep={4} totalSteps={4} />
-        </div>
-
-        <div className="text-center py-12">
-          <div className="text-red-600 text-lg mb-4">{error}</div>
-          <Button color="primary" onPress={() => createPaymentIntent()}>
-            Try Again
-          </Button>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="wrapper-width py-6">
       {/* Progress Stepper - Left-aligned to match content */}
@@ -136,10 +116,25 @@ const CheckoutPage: React.FC = () => {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Payment Form */}
         <div className="order-2 md:order-1">
-          {clientSecret && (
+          {error ? (
+            <div className="bg-white p-6 rounded-lg border">
+              <div className="text-center py-12">
+                <div className="text-red-600 text-lg mb-4">{error}</div>
+                <Button color="primary" onPress={() => createPaymentIntent()}>
+                  Try Again
+                </Button>
+              </div>
+            </div>
+          ) : clientSecret ? (
             <Elements options={options} stripe={stripePromise}>
               <CheckoutForm />
             </Elements>
+          ) : (
+            <div className="bg-white p-6 rounded-lg border h-[502px] flex items-center justify-center">
+              <div className="text-center">
+                <Spinner size="lg" color="primary" />
+              </div>
+            </div>
           )}
         </div>
 
