@@ -91,12 +91,13 @@ const OrderSummary: React.FC = () => {
             {/* Features */}
             <div className="space-y-1">
               <p className="text-sm font-medium text-gray-700">Includes:</p>
-              {features.map((feature, index) => (
-                <div key={index} className="flex items-center gap-2">
-                  <Check size={12} className="text-green-600 flex-shrink-0" />
-                  <span className="text-sm text-gray-600">{feature}</span>
-                </div>
-              ))}
+              <ul className="space-y-1 ml-6">
+                {features.map((feature, index) => (
+                  <li key={index} className="text-sm text-gray-600 list-disc">
+                    {feature}
+                  </li>
+                ))}
+              </ul>
             </div>
           </div>
         </div>
