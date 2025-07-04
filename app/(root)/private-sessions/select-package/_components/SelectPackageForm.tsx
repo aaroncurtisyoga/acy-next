@@ -106,7 +106,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Package Selection */}
-        <div className="mb-16">
+        <div className="mb-2">
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {
@@ -260,6 +260,16 @@ const SelectPackageForm: FC = () => {
               </>
             );
           })()}
+        </div>
+
+        {/* Legal Notice */}
+        <div className="mt-4 mb-8">
+          <p className="text-xs text-gray-500 leading-relaxed text-left">
+            <strong>Refund Policy:</strong> Full refunds are available at any
+            time prior to the actual class taking place. Once a session has
+            begun, refunds are not available. By proceeding with your purchase,
+            you acknowledge and agree to these terms.
+          </p>
         </div>
 
         {/* Checkout Button */}
