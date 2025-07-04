@@ -132,7 +132,7 @@ const SelectPackageForm: FC = () => {
                         <div
                           className={`${getPackageGradient()} p-4 rounded-[12px] text-slate-800 text-center mb-4`}
                         >
-                          <h3 className="text-lg font-semibold mb-1">
+                          <h3 className="text-lg md:text-lg font-semibold mb-1 md:mb-0.5">
                             {pkg.name}
                           </h3>
                           <p className="text-slate-600 text-sm">
@@ -195,7 +195,7 @@ const SelectPackageForm: FC = () => {
                           className={`${getPackageGradient()} p-4 rounded-[12px] mb-4 flex items-center justify-between`}
                         >
                           <div>
-                            <h3 className="text-sm font-semibold text-slate-800">
+                            <h3 className="text-sm md:text-lg font-semibold text-slate-800 md:mb-0.5">
                               {pkg.name}
                             </h3>
                             <p className="text-slate-600 text-xs">

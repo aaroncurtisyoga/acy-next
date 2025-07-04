@@ -37,22 +37,20 @@ const WelcomePage: React.FC = () => {
         <div className="flex flex-col items-center justify-center gap-8 max-w-md mx-auto">
           <div className="flex flex-col gap-4 w-full items-center">
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
-              <div className="w-7 h-7 rounded-full bg-white border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
-                <Check size={16} className="text-primary" />
-              </div>
-              <span className="text-gray-700">Custom programming</span>
+              <Check size={20} className="text-primary flex-shrink-0" />
+              <span className="text-gray-700 md:text-lg">
+                Custom programming
+              </span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
-              <div className="w-7 h-7 rounded-full bg-white border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
-                <Check size={16} className="text-primary" />
-              </div>
-              <span className="text-gray-700">Flexible scheduling</span>
+              <Check size={20} className="text-primary flex-shrink-0" />
+              <span className="text-gray-700 md:text-lg">
+                Flexible scheduling
+              </span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
-              <div className="w-7 h-7 rounded-full bg-white border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
-                <Check size={16} className="text-primary" />
-              </div>
-              <span className="text-gray-700">Expert guidance</span>
+              <Check size={20} className="text-primary flex-shrink-0" />
+              <span className="text-gray-700 md:text-lg">Expert guidance</span>
             </div>
           </div>
           <Button
