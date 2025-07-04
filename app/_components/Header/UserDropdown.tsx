@@ -62,7 +62,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
         className="flex items-center justify-center p-2 rounded-full hover:bg-gray-100/50 transition-all duration-200 ease-out"
         onClick={toggleMenu}
       >
-        <CircleUser className="w-8 h-8 text-gray-700 hover:text-gray-900 transition-colors duration-200" />
+        <CircleUser className="w-6 h-6 text-gray-700 hover:text-gray-900 transition-colors duration-200" />
       </button>
 
       {isDropdownOpen && (
