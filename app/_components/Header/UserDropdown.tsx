@@ -4,7 +4,7 @@ import { FC, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useClerk } from "@clerk/nextjs";
-import { User } from "lucide-react";
+import { CircleUser } from "lucide-react";
 
 interface UserDropdownProps {
   linksForLoggedInUsers: { href: string; name: string; testId: string }[];
@@ -59,10 +59,10 @@ const UserDropdown: FC<UserDropdownProps> = ({
         aria-label="User menu"
         aria-expanded={isDropdownOpen}
         aria-haspopup="menu"
-        className="flex items-center p-2 rounded-full hover:bg-gray-100"
+        className="flex items-center justify-center p-2 rounded-full hover:bg-gray-100/50 transition-all duration-200 ease-out"
         onClick={toggleMenu}
       >
-        <User className="w-6 h-6" />
+        <CircleUser className="w-8 h-8 text-gray-700 hover:text-gray-900 transition-colors duration-200" />
       </button>
 
       {isDropdownOpen && (
