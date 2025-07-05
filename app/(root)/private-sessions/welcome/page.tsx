@@ -17,7 +17,7 @@ const WelcomePage: React.FC = () => {
   };
 
   return (
-    <div className="max-w-2xl mx-auto">
+    <div className="max-w-2xl mx-auto pb-16">
       {/* Progress Stepper - Centered to match content */}
       <div className="mt-[60px] mb-6 text-center">
         <ProgressStepper currentStep={1} totalSteps={4} />

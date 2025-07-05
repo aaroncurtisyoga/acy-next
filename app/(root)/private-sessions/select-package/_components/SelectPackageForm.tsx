@@ -273,7 +273,7 @@ const SelectPackageForm: FC = () => {
         </div>
 
         {/* Checkout Button */}
-        <div className="flex flex-col items-center gap-4 mb-16">
+        <div className="flex flex-col items-center gap-4">
           {!isUserLoaded ? (
             <CheckoutButtonSkeleton />
           ) : (

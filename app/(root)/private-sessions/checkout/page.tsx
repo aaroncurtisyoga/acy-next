@@ -100,7 +100,7 @@ const CheckoutPage: React.FC = () => {
   };
 
   return (
-    <div className="wrapper-width py-6">
+    <div className="wrapper-width pt-6 pb-16">
       {/* Progress Stepper - Left-aligned to match content */}
       <div className="text-left mb-6">
         <ProgressStepper currentStep={4} totalSteps={4} />
