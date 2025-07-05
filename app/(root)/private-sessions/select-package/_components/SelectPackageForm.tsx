@@ -283,7 +283,7 @@ const SelectPackageForm: FC = () => {
                   <Button
                     color="primary"
                     size="lg"
-                    className="w-full max-w-[440px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+                    className="w-full max-w-[440px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
                   >
                     Sign In to Purchase
                   </Button>
@@ -293,7 +293,7 @@ const SelectPackageForm: FC = () => {
                 <Button
                   color="primary"
                   size="lg"
-                  className="w-full max-w-[440px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+                  className="w-full max-w-[440px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
                   onPress={onSubmit}
                 >
                   Continue to Checkout

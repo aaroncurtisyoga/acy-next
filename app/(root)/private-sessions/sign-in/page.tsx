@@ -42,7 +42,7 @@ const SignInPage: React.FC = () => {
             <Button
               color="primary"
               size="lg"
-              className="w-full max-w-[340px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+              className="w-full max-w-[340px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
               onPress={handleContinue}
             >
               Continue
@@ -54,7 +54,7 @@ const SignInPage: React.FC = () => {
               <Button
                 variant="light"
                 size="sm"
-                className="text-gray-500 hover:text-gray-700 underline underline-offset-2 transition-colors duration-200"
+                className="text-gray-500 hover:text-gray-700 underline underline-offset-2 transition-colors duration-200 rounded-lg"
               >
                 Sign in with a different account
               </Button>
@@ -92,7 +92,8 @@ const SignInPage: React.FC = () => {
             headerTitle: "hidden",
             headerSubtitle: "hidden",
             formFieldLabel: "text-gray-700 text-sm font-medium",
-            formButtonPrimary: "bg-primary-600 hover:bg-primary-700",
+            formButtonPrimary:
+              "w-full max-w-[440px] font-medium bg-primary hover:bg-[#2d4a9e] text-white transition-colors duration-200 border-none shadow-none rounded-lg py-3 px-4 text-base",
             footer: "bg-white",
             footerAction: "bg-white",
             form: "shadow-none border-none",
@@ -107,9 +108,9 @@ const SignInPage: React.FC = () => {
             identityPreviewEditButton: "text-primary-600",
             otpCodeFieldInput: "shadow-none",
             socialButtonsBlockButton:
-              "w-full border border-gray-300 rounded-md",
+              "w-full max-w-[440px] border border-gray-300 rounded-md font-medium py-3 px-4 text-base hover:bg-gray-50 transition-colors duration-200",
             socialButtonsBlockButtonArrow: "hidden",
-            socialButtonsBlockButtonText: "w-full text-center",
+            socialButtonsBlockButtonText: "w-full text-center text-gray-700",
           },
         }}
       />

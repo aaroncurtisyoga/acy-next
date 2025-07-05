@@ -20,7 +20,7 @@ const CheckoutButton: FC = () => {
             type="button"
             fullWidth={true}
             color="primary"
-            className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+            className="font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
           >
             Sign In to Purchase
           </Button>
@@ -30,7 +30,7 @@ const CheckoutButton: FC = () => {
         <Button
           type="submit"
           radius="sm"
-          className="text-base font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors"
+          className="text-base font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
           fullWidth={true}
           color="primary"
         >
