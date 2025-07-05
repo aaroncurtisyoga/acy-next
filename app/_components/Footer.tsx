@@ -49,7 +49,7 @@ const Footer = () => {
                     aria-label={"Visit Aaron on YouTube"}
                     className="group"
                   >
-                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-gray-300 group-hover:bg-gray-100 transition-all duration-300">
                       <Youtube className="w-6 h-6 text-slate-600 transition-colors duration-300" />
                     </div>
                   </Link>
@@ -62,7 +62,7 @@ const Footer = () => {
                     aria-label={"See Aaron's playlists on Spotify"}
                     className="group"
                   >
-                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-gray-300 group-hover:bg-gray-100 transition-all duration-300">
                       <AudioLines className="w-6 h-6 text-slate-600 transition-colors duration-300" />
                     </div>
                   </Link>
@@ -73,7 +73,7 @@ const Footer = () => {
                     aria-label={"Follow Aaron on Instagram"}
                     className="group"
                   >
-                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                    <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-gray-300 group-hover:bg-gray-100 transition-all duration-300">
                       <Instagram className="w-6 h-6 text-slate-600 transition-colors duration-300" />
                     </div>
                   </Link>
@@ -86,7 +86,7 @@ const Footer = () => {
                   data-testid="footer-copyright"
                   className="text-slate-500 text-sm"
                 >
-                  © {new Date().getFullYear()} Aaron Curtis
+                  © {new Date().getFullYear()} Aaron Curtis Yoga
                 </p>
               </div>
             </div>
@@ -116,7 +116,7 @@ const Footer = () => {
                       aria-label={"Visit Aaron on YouTube"}
                       className="group"
                     >
-                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-gray-300 group-hover:bg-gray-100 transition-all duration-300">
                         <Youtube className="w-6 h-6 text-slate-600 transition-colors duration-300" />
                       </div>
                     </Link>
@@ -129,7 +129,7 @@ const Footer = () => {
                       aria-label={"See Aaron's playlists on Spotify"}
                       className="group"
                     >
-                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-gray-300 group-hover:bg-gray-100 transition-all duration-300">
                         <AudioLines className="w-6 h-6 text-slate-600 transition-colors duration-300" />
                       </div>
                     </Link>
@@ -140,7 +140,7 @@ const Footer = () => {
                       aria-label={"Follow Aaron on Instagram"}
                       className="group"
                     >
-                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-white/30 group-hover:bg-gray-100 group-hover:border-gray-300 transition-all duration-300">
+                      <div className="p-3 rounded-full bg-white/70 backdrop-blur-sm shadow-sm border border-gray-300 group-hover:bg-gray-100 transition-all duration-300">
                         <Instagram className="w-6 h-6 text-slate-600 transition-colors duration-300" />
                       </div>
                     </Link>
@@ -153,7 +153,7 @@ const Footer = () => {
                     data-testid="footer-copyright"
                     className="text-slate-500 text-sm"
                   >
-                    © {new Date().getFullYear()} Aaron Curtis
+                    © {new Date().getFullYear()} Aaron Curtis Yoga
                   </p>
                 </div>
               </div>
