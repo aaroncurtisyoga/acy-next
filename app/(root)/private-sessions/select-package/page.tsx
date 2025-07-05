@@ -5,7 +5,7 @@ import SelectPackageForm from "./_components/SelectPackageForm";
 
 const SelectPackagePage: FC = () => {
   return (
-    <section className="pb-16">
+    <section>
       <SelectPackageForm />
     </section>
   );
