@@ -39,13 +39,25 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
     closeMenu();
   };
 
+  // Conditional styling for menu toggle based on sign-in state
+  const toggleClasses = isSignedIn
+    ? "transition-all duration-200 ease-out bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-full"
+    : "transition-all duration-200 ease-out";
+
   return (
     <>
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          icon={<Menu />}
+          icon={
+            <Menu
+              className={
+                isSignedIn ? "text-primary-700 dark:text-primary-300" : ""
+              }
+            />
+          }
           data-testid="menu-toggle"
+          className={toggleClasses}
         />
       </NavbarContent>
 
