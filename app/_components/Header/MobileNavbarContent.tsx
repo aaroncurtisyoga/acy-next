@@ -11,6 +11,7 @@ import {
   NavbarMenuToggle,
 } from "@heroui/react";
 import { Menu } from "lucide-react";
+import ThemeToggle from "@/app/_components/ThemeToggle";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 
 interface MobileNavbarContentProps {
@@ -47,6 +48,9 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   return (
     <>
       <NavbarContent className="sm:hidden" justify="end">
+        {/* Theme Toggle for Mobile */}
+        <ThemeToggle />
+
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           icon={

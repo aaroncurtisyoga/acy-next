@@ -4,6 +4,7 @@ import { FC, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavbarContent, NavbarItem } from "@heroui/react";
+import ThemeToggle from "@/app/_components/ThemeToggle";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 
 interface DesktopNavbarContentProps {
@@ -36,6 +37,11 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
             </Link>
           </NavbarItem>
         ))}
+
+        {/* Theme Toggle */}
+        <NavbarItem>
+          <ThemeToggle />
+        </NavbarItem>
 
         {/* User Dropdown is passed as children */}
         {children}
