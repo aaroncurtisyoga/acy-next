@@ -56,7 +56,7 @@ const WelcomePage: React.FC = () => {
           <Button
             color="primary"
             size="lg"
-            className="w-full max-w-[340px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
+            className="w-full max-w-[340px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
             onPress={handleGetStarted}
           >
             Next

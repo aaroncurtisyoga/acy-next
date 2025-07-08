@@ -42,7 +42,7 @@ const SignInPage: React.FC = () => {
             <Button
               color="primary"
               size="lg"
-              className="w-full max-w-[340px] font-medium [&:hover]:bg-[#2d4a9e] [&:hover]:text-white transition-colors rounded-lg"
+              className="w-full max-w-[340px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
               onPress={handleContinue}
             >
               Continue
@@ -93,7 +93,7 @@ const SignInPage: React.FC = () => {
             headerSubtitle: "hidden",
             formFieldLabel: "text-gray-700 text-sm font-medium",
             formButtonPrimary:
-              "w-full max-w-[440px] font-medium bg-primary hover:bg-[#2d4a9e] text-white transition-colors duration-200 border-none shadow-none rounded-lg py-3 px-4 text-base",
+              "w-full max-w-[440px] font-medium bg-primary hover:bg-[#1a5bb8] text-white transition-colors duration-200 border-none shadow-none rounded-lg py-3 px-4 text-base",
             footer: "bg-white",
             footerAction: "bg-white",
             form: "shadow-none border-none",

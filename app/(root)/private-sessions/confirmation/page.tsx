@@ -95,7 +95,7 @@ const ConfirmationPage: React.FC = () => {
           color="primary"
           size="lg"
           onPress={handleViewAccount}
-          className="min-w-[200px] rounded-lg"
+          className="min-w-[200px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
         >
           View My Account
         </Button>
@@ -104,7 +104,7 @@ const ConfirmationPage: React.FC = () => {
           size="lg"
           onPress={handleGoHome}
           startContent={<Home size={16} />}
-          className="min-w-[200px] rounded-lg"
+          className="min-w-[200px] font-medium rounded-lg"
         >
           Back to Home
         </Button>
