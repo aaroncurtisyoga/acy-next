@@ -34,53 +34,65 @@ const ConfirmationPage: React.FC = () => {
     <div className="max-w-2xl mx-auto p-6 text-center">
       {/* Success Icon */}
       <div className="mb-8">
-        <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 rounded-full mb-4">
-          <CheckCircle className="w-12 h-12 text-green-600" />
+        <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
+          <CheckCircle className="w-12 h-12 text-green-600 dark:text-green-400" />
         </div>
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100 mb-2">
           Payment Successful!
         </h1>
-        <p className="text-lg text-gray-600">
+        <p className="text-lg text-gray-600 dark:text-gray-300">
           Your private session package has been purchased successfully.
         </p>
       </div>
 
       {/* Order Details */}
-      <div className="bg-gray-50 rounded-lg p-6 mb-8 text-left">
-        <h2 className="text-xl font-semibold mb-4">Order Details</h2>
+      <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8 text-left">
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+          Order Details
+        </h2>
         <div className="space-y-3">
           <div className="flex justify-between">
-            <span className="text-gray-600">Package:</span>
-            <span className="font-medium">{formData.packageDetails.title}</span>
+            <span className="text-gray-600 dark:text-gray-400">Package:</span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              {formData.packageDetails.title}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Session Type:</span>
-            <span className="font-medium">{formData.sessionType}</span>
+            <span className="text-gray-600 dark:text-gray-400">
+              Session Type:
+            </span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
+              {formData.sessionType}
+            </span>
           </div>
           <div className="flex justify-between">
-            <span className="text-gray-600">Amount Paid:</span>
-            <span className="font-medium">
+            <span className="text-gray-600 dark:text-gray-400">
+              Amount Paid:
+            </span>
+            <span className="font-medium text-gray-900 dark:text-gray-100">
               ${formData.packageDetails.price}
             </span>
           </div>
           {formData.customerInfo && (
             <div className="flex justify-between">
-              <span className="text-gray-600">Email:</span>
-              <span className="font-medium">{formData.customerInfo.email}</span>
+              <span className="text-gray-600 dark:text-gray-400">Email:</span>
+              <span className="font-medium text-gray-900 dark:text-gray-100">
+                {formData.customerInfo.email}
+              </span>
             </div>
           )}
         </div>
       </div>
 
       {/* Next Steps */}
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6 mb-8">
+      <div className="bg-blue-50 dark:bg-blue-900/30 border border-blue-200 dark:border-blue-800 rounded-lg p-6 mb-8">
         <div className="flex items-center justify-center mb-3">
-          <Calendar className="w-6 h-6 text-blue-600 mr-2" />
-          <h3 className="text-lg font-semibold text-blue-900">
+          <Calendar className="w-6 h-6 text-blue-600 dark:text-blue-400 mr-2" />
+          <h3 className="text-lg font-semibold text-blue-900 dark:text-blue-100">
             What&apos;s Next?
           </h3>
         </div>
-        <div className="text-blue-800 space-y-2">
+        <div className="text-blue-800 dark:text-blue-200 space-y-2">
           <p>✅ You&apos;ll receive a confirmation email shortly</p>
           <p>
             ✅ Aaron will contact you within 24 hours to schedule your sessions
@@ -112,11 +124,11 @@ const ConfirmationPage: React.FC = () => {
 
       {/* Support */}
       <div className="mt-8 text-center">
-        <p className="text-sm text-gray-500">
+        <p className="text-sm text-gray-500 dark:text-gray-400">
           Questions? Contact Aaron at{" "}
           <a
             href="mailto:aaron@aaroncurtisyoga.com"
-            className="text-blue-600 hover:underline"
+            className="text-blue-600 dark:text-blue-400 hover:underline"
           >
             aaron@aaroncurtisyoga.com
           </a>

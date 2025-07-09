@@ -22,7 +22,7 @@ const CustomMobileMenuItem: FC<CustomMenuItemProps> = ({
         <Link
           href={link.href}
           onClick={() => setIsMenuOpen(false)}
-          className="block w-full text-lg font-medium text-gray-800"
+          className="block w-full text-lg font-medium text-gray-800 dark:text-gray-200"
           data-testid={`navbar-menu-item-${link.testId}`}
         >
           {link.name}

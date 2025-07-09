@@ -51,7 +51,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
     <div className="max-w-md mx-auto space-y-6">
       {/* Popular Suggestions */}
       <div>
-        <p className="text-sm text-gray-600 mb-3 text-center">
+        <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 text-center">
           Popular choices:
         </p>
         <div className="flex gap-2 justify-center">
@@ -71,7 +71,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
       </div>
 
       {/* Custom Counter */}
-      <Card>
+      <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardBody className="p-6">
           <div className="flex items-center justify-center gap-4 mb-4">
             <Button
@@ -79,13 +79,16 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
               variant="bordered"
               onPress={decrement}
               isDisabled={sessionCount <= MIN_SESSIONS}
+              className="border-gray-200 dark:border-gray-700"
             >
               <Minus size={16} />
             </Button>
 
             <div className="text-center min-w-[100px]">
-              <div className="text-3xl font-bold">{sessionCount}</div>
-              <div className="text-sm text-gray-600">
+              <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+                {sessionCount}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-400">
                 session{sessionCount !== 1 ? "s" : ""}
               </div>
             </div>
@@ -95,26 +98,29 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
               variant="bordered"
               onPress={increment}
               isDisabled={sessionCount >= MAX_SESSIONS}
+              className="border-gray-200 dark:border-gray-700"
             >
               <Plus size={16} />
             </Button>
           </div>
 
           {/* Pricing Display */}
-          <div className="text-center border-t pt-4">
-            <div className="text-2xl font-bold">${pricing.totalPrice}</div>
-            <div className="text-sm text-gray-600">
+          <div className="text-center border-t border-gray-200 dark:border-gray-700 pt-4">
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+              ${pricing.totalPrice}
+            </div>
+            <div className="text-sm text-gray-600 dark:text-gray-400">
               ${pricing.pricePerSession}/session
             </div>
 
             {pricing.discount && (
-              <div className="text-green-600 text-sm font-medium mt-1">
+              <div className="text-green-600 dark:text-green-400 text-sm font-medium mt-1">
                 {pricing.discount.label} • Save ${pricing.discount.amount}
               </div>
             )}
 
             {nextTier && (
-              <div className="text-blue-600 text-xs mt-2">
+              <div className="text-blue-600 dark:text-blue-400 text-xs mt-2">
                 Book {nextTier.minSessions}+ sessions to get {nextTier.label}
               </div>
             )}

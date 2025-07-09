@@ -66,18 +66,13 @@ const SignInPage: React.FC = () => {
   }
 
   return (
-    <div className="max-w-md mx-auto">
-      {/* Progress Stepper - Centered to match content */}
-      <div className="mt-[60px] mb-6 text-center">
-        <ProgressStepper currentStep={2} totalSteps={4} />
-      </div>
-
-      <div className="text-center mb-8">
-        <h2 className="text-2xl font-bold mb-4">Sign In to Continue</h2>
-        <p className="text-gray-600">
-          Please sign in to book your private yoga sessions with Aaron.
-        </p>
-      </div>
+    <div className="max-w-md mx-auto text-center">
+      <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100 mb-2">
+        Sign in to book
+      </h1>
+      <p className="text-gray-600 dark:text-gray-400 mb-8">
+        Please sign in to continue with your private session booking
+      </p>
 
       <SignIn
         routing="hash"

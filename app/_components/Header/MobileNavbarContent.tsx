@@ -43,7 +43,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   // Conditional styling for menu toggle based on sign-in state
   const toggleClasses = isSignedIn
     ? "transition-all duration-200 ease-out bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-full"
-    : "transition-all duration-200 ease-out";
+    : "transition-all duration-200 ease-out hover:bg-gray-100/50 dark:hover:bg-gray-800/50";
 
   return (
     <>
@@ -56,7 +56,9 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           icon={
             <Menu
               className={
-                isSignedIn ? "text-primary-700 dark:text-primary-300" : ""
+                isSignedIn
+                  ? "text-primary-700 dark:text-primary-300"
+                  : "text-gray-700 dark:text-gray-300"
               }
             />
           }

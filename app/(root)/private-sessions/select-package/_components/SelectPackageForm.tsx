@@ -68,7 +68,7 @@ const SelectPackageForm: FC = () => {
           {/* Header */}
           <div className="text-left">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center">
-              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
+              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100">
                 Select your package.
               </h1>
 
@@ -78,8 +78,8 @@ const SelectPackageForm: FC = () => {
                   onClick={() => setSessionType("individual")}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                     sessionType === "individual"
-                      ? "bg-slate-300 text-slate-900 shadow-sm"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                      ? "bg-slate-300 dark:bg-slate-600 text-slate-900 dark:text-slate-100 shadow-sm"
+                      : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-800 dark:hover:text-slate-200"
                   }`}
                 >
                   <div className="flex items-center gap-1.5">
@@ -91,8 +91,8 @@ const SelectPackageForm: FC = () => {
                   onClick={() => setSessionType("group")}
                   className={`px-3 py-1.5 rounded-full text-sm font-medium transition-all duration-200 ${
                     sessionType === "group"
-                      ? "bg-slate-300 text-slate-900 shadow-sm"
-                      : "bg-slate-100 text-slate-600 hover:bg-slate-200 hover:text-slate-800"
+                      ? "bg-slate-300 dark:bg-slate-600 text-slate-900 dark:text-slate-100 shadow-sm"
+                      : "bg-slate-100 dark:bg-slate-700 text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 hover:text-slate-800 dark:hover:text-slate-200"
                   }`}
                 >
                   <div className="flex items-center gap-1.5">
@@ -110,7 +110,7 @@ const SelectPackageForm: FC = () => {
           {/* Define unique gradients for each package */}
           {(() => {
             const getPackageGradient = () => {
-              return "bg-slate-100";
+              return "bg-slate-100 dark:bg-slate-700";
             };
 
             return (
@@ -120,29 +120,29 @@ const SelectPackageForm: FC = () => {
                   {currentPackages.map((pkg, index) => (
                     <div
                       key={pkg.id}
-                      className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer ${
+                      className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer bg-white dark:bg-gray-800 ${
                         selectedPackage === pkg.id
-                          ? "border-gray-300 shadow-md"
-                          : "border-gray-200 hover:border-gray-300"
+                          ? "border-gray-300 dark:border-gray-600 shadow-md"
+                          : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                       }`}
                       onClick={() => setSelectedPackage(pkg.id)}
                     >
                       <div className="p-4">
                         {/* Header */}
                         <div
-                          className={`${getPackageGradient()} p-4 rounded-[12px] text-slate-800 text-center mb-4`}
+                          className={`${getPackageGradient()} p-4 rounded-[12px] text-slate-800 dark:text-slate-200 text-center mb-4`}
                         >
                           <h3 className="text-lg md:text-lg font-semibold mb-1 md:mb-0.5">
                             {pkg.name}
                           </h3>
-                          <p className="text-slate-600 text-sm">
+                          <p className="text-slate-600 dark:text-slate-400 text-sm">
                             {pkg.description}
                           </p>
                           <div className="mt-3">
                             <span className="text-xl font-bold">
                               ${pkg.price}
                             </span>
-                            <span className="text-xs text-slate-500 ml-2">
+                            <span className="text-xs text-slate-500 dark:text-slate-400 ml-2">
                               (${pkg.perSession} per session)
                             </span>
                           </div>
@@ -166,9 +166,11 @@ const SelectPackageForm: FC = () => {
                             >
                               <CheckCircle
                                 size={14}
-                                className="text-green-600 flex-shrink-0"
+                                className="text-green-600 dark:text-green-400 flex-shrink-0"
                               />
-                              <span className="text-gray-700">{benefit}</span>
+                              <span className="text-gray-700 dark:text-gray-300">
+                                {benefit}
+                              </span>
                             </div>
                           ))}
                         </div>
@@ -182,10 +184,10 @@ const SelectPackageForm: FC = () => {
                   {currentPackages.map((pkg, index) => (
                     <div
                       key={pkg.id}
-                      className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer ${
+                      className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer bg-white dark:bg-gray-800 ${
                         selectedPackage === pkg.id
-                          ? "border-gray-300 shadow-md"
-                          : "border-gray-200 hover:border-gray-300"
+                          ? "border-gray-300 dark:border-gray-600 shadow-md"
+                          : "border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600"
                       }`}
                       onClick={() => setSelectedPackage(pkg.id)}
                     >
@@ -195,10 +197,10 @@ const SelectPackageForm: FC = () => {
                           className={`${getPackageGradient()} p-4 rounded-[12px] mb-4 flex items-center justify-between`}
                         >
                           <div>
-                            <h3 className="text-sm md:text-lg font-semibold text-slate-800 md:mb-0.5">
+                            <h3 className="text-sm md:text-lg font-semibold text-slate-800 dark:text-slate-200 md:mb-0.5">
                               {pkg.name}
                             </h3>
-                            <p className="text-slate-600 text-xs">
+                            <p className="text-slate-600 dark:text-slate-400 text-xs">
                               {pkg.description}
                             </p>
                           </div>
@@ -211,27 +213,27 @@ const SelectPackageForm: FC = () => {
 
                         {/* Netflix-style Feature List */}
                         <ul role="tabpanel" className="space-y-0">
-                          <li className="py-3 border-b border-gray-200">
+                          <li className="py-3 border-b border-gray-200 dark:border-gray-700">
                             <div className="space-y-1">
-                              <div className="text-xs text-gray-600">
+                              <div className="text-xs text-gray-600 dark:text-gray-400">
                                 Total Price
                               </div>
                               <div>
-                                <span className="text-lg font-bold text-gray-900">
+                                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
                                   ${pkg.price}
                                 </span>
-                                <span className="text-xs text-gray-500 ml-2">
+                                <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
                                   (${pkg.perSession} per session)
                                 </span>
                               </div>
                             </div>
                           </li>
-                          <li className="py-3 border-b border-gray-200">
+                          <li className="py-3 border-b border-gray-200 dark:border-gray-700">
                             <div className="space-y-1">
-                              <div className="text-xs text-gray-600">
+                              <div className="text-xs text-gray-600 dark:text-gray-400">
                                 Number of Sessions
                               </div>
-                              <div className="text-sm font-medium text-gray-900">
+                              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
                                 {pkg.sessions}
                               </div>
                             </div>
@@ -240,13 +242,13 @@ const SelectPackageForm: FC = () => {
                           {pkg.benefits.map((benefit, benefitIndex) => (
                             <li
                               key={benefitIndex}
-                              className="py-3 border-b border-gray-200 last:border-b-0"
+                              className="py-3 border-b border-gray-200 dark:border-gray-700 last:border-b-0"
                             >
                               <div className="space-y-1">
-                                <div className="text-xs text-gray-600">
+                                <div className="text-xs text-gray-600 dark:text-gray-400">
                                   Benefit {benefitIndex + 1}
                                 </div>
-                                <div className="text-sm text-gray-900">
+                                <div className="text-sm text-gray-900 dark:text-gray-100">
                                   {benefit}
                                 </div>
                               </div>
@@ -264,7 +266,7 @@ const SelectPackageForm: FC = () => {
 
         {/* Legal Notice */}
         <div className="mt-4 mb-8">
-          <p className="text-xs text-gray-500 leading-relaxed text-left">
+          <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-left">
             <strong>Refund Policy:</strong> Full refunds are available at any
             time prior to the actual class taking place. Once a session has
             begun, refunds are not available. By proceeding with your purchase,

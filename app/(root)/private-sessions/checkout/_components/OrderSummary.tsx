@@ -57,67 +57,31 @@ const OrderSummary: React.FC = () => {
   const total = price + tax;
 
   return (
-    <div className="space-y-6">
-      {/* Package Details */}
-      <div className="bg-white p-6 rounded-lg border">
-        <h3 className="text-lg font-semibold mb-4">Order Summary</h3>
-        <div className="space-y-4">
-          {/* Session Type */}
-          <div>
-            <div className="flex items-center justify-between">
-              <span className="text-sm text-gray-600">Session Type</span>
-              <span className="font-medium">{formData.sessionType}</span>
-            </div>
-          </div>
-
-          {/* Package/Session Info */}
-          <div>
-            <div className="flex items-center justify-between mb-2">
-              <span className="font-medium">{title}</span>
-              <span className="font-semibold">${price.toFixed(2)}</span>
-            </div>
-            <p className="text-sm text-gray-600 mb-3">{description}</p>
-
-            {/* Discount Info */}
-            {sessionPurchase?.discount && (
-              <div className="bg-green-50 border border-green-200 rounded-lg p-3 mb-3">
-                <p className="text-sm text-green-800 font-medium">
-                  🎉 {sessionPurchase.discount.label} - Save $
-                  {sessionPurchase.discount.amount.toFixed(2)}
-                </p>
-              </div>
-            )}
-
-            {/* Features */}
-            <div className="space-y-1">
-              <p className="text-sm font-medium text-gray-700">Includes:</p>
-              <ul className="space-y-1 ml-6">
-                {features.map((feature, index) => (
-                  <li key={index} className="text-sm text-gray-600 list-disc">
-                    {feature}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
+    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        Order Summary
+      </h3>
+      <div className="space-y-3">
+        <div className="flex justify-between">
+          <span className="text-gray-600 dark:text-gray-400">Package:</span>
+          <span className="font-medium text-gray-900 dark:text-gray-100">
+            {formData.packageDetails?.title}
+          </span>
         </div>
-      </div>
-
-      {/* Price Breakdown */}
-      <div className="bg-white p-6 rounded-lg border">
-        <div className="space-y-3">
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Subtotal</span>
-            <span>${price.toFixed(2)}</span>
-          </div>
-          <div className="flex items-center justify-between">
-            <span className="text-gray-600">Tax</span>
-            <span>${tax.toFixed(2)}</span>
-          </div>
-          <Divider />
-          <div className="flex items-center justify-between text-lg font-semibold">
-            <span>Total</span>
-            <span>${total.toFixed(2)}</span>
+        <div className="flex justify-between">
+          <span className="text-gray-600 dark:text-gray-400">
+            Session Type:
+          </span>
+          <span className="font-medium text-gray-900 dark:text-gray-100">
+            {formData.sessionType}
+          </span>
+        </div>
+        <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
+          <div className="flex justify-between text-lg font-semibold">
+            <span className="text-gray-900 dark:text-gray-100">Total:</span>
+            <span className="text-gray-900 dark:text-gray-100">
+              ${formData.packageDetails?.price}
+            </span>
           </div>
         </div>
       </div>

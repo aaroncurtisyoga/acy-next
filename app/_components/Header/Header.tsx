@@ -44,7 +44,7 @@ const Header: FC = () => {
       isMenuOpen={isMenuOpen}
       isBordered
       maxWidth="2xl"
-      className="bg-white shadow-sm static"
+      className="bg-white dark:bg-gray-900 shadow-sm static"
       classNames={{
         base: "static",
         wrapper: "px-6 py-4",
@@ -59,8 +59,12 @@ const Header: FC = () => {
           "data-[active=true]:text-slate-800",
           "data-[active=true]:bg-slate-100",
           "data-[active=true]:font-normal",
+          "dark:data-[active=true]:text-gray-200",
+          "dark:data-[active=true]:bg-gray-800",
           "hover:text-slate-700",
           "hover:bg-slate-50",
+          "dark:hover:text-gray-300",
+          "dark:hover:bg-gray-800",
           "transition-all",
           "duration-200",
         ],

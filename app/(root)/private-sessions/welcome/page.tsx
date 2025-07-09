@@ -4,6 +4,7 @@ import React from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
 import { Check } from "lucide-react";
+import { User, Users } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
 
@@ -25,7 +26,7 @@ const WelcomePage: React.FC = () => {
 
       {/* Step Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100">
           Choose your
           <br />
           private yoga training.
@@ -38,19 +39,21 @@ const WelcomePage: React.FC = () => {
           <div className="flex flex-col gap-4 w-full items-center">
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <Check size={20} className="text-primary flex-shrink-0" />
-              <span className="text-gray-700 md:text-lg">
+              <span className="text-gray-700 dark:text-gray-300 md:text-lg">
                 Custom programming
               </span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <Check size={20} className="text-primary flex-shrink-0" />
-              <span className="text-gray-700 md:text-lg">
+              <span className="text-gray-700 dark:text-gray-300 md:text-lg">
                 Flexible scheduling
               </span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <Check size={20} className="text-primary flex-shrink-0" />
-              <span className="text-gray-700 md:text-lg">Expert guidance</span>
+              <span className="text-gray-700 dark:text-gray-300 md:text-lg">
+                Expert guidance
+              </span>
             </div>
           </div>
           <Button
