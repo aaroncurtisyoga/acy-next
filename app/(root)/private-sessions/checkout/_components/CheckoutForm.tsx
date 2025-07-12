@@ -55,7 +55,7 @@ const CheckoutForm: React.FC = () => {
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100 mb-2">
           Complete your purchase
         </h1>
-        <p className="text-gray-600 dark:text-gray-400">
+        <p className="text-gray-700 dark:text-gray-300">
           Enter your payment information to book your private sessions
         </p>
       </div>

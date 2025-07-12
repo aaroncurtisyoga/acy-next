@@ -57,7 +57,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
             <Menu
               className={
                 isSignedIn
-                  ? "text-primary-700 dark:text-primary-300"
+                  ? "text-primary-700 dark:text-white"
                   : "text-gray-700 dark:text-gray-300"
               }
             />

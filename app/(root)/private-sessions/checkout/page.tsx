@@ -8,7 +8,7 @@ import { loadStripe } from "@stripe/stripe-js";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutForm from "@/app/(root)/private-sessions/checkout/_components/CheckoutForm";
 import OrderSummary from "@/app/(root)/private-sessions/checkout/_components/OrderSummary";
-import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
+import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
 
 const stripePromise = loadStripe(
   process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!,
@@ -101,16 +101,18 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="wrapper-width pt-6">
-      {/* Progress Stepper - Left-aligned to match content */}
+      {/* Step Indicator - Left-aligned to match content */}
       <div className="text-left mb-6">
-        <ProgressStepper currentStep={4} totalSteps={4} />
+        <StepIndicator currentStep={4} totalSteps={4} />
       </div>
 
       <div className="mb-8">
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100">
           Complete your payment.
         </h1>
-        <p className="text-gray-600 mt-2">Secure payment powered by Stripe</p>
+        <p className="text-gray-700 dark:text-gray-300 mt-2">
+          Secure payment powered by Stripe
+        </p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">

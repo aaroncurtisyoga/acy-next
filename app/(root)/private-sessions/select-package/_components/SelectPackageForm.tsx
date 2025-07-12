@@ -5,7 +5,7 @@ import { Button } from "@heroui/react";
 import { Check, CheckCircle, User, Users } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
-import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
+import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
 import { packages } from "@/app/(root)/private-sessions/select-package/_lib/packages";
 
 const SelectPackageForm: FC = () => {
@@ -58,9 +58,9 @@ const SelectPackageForm: FC = () => {
   return (
     <div className="max-w-4xl mx-auto">
       <div>
-        {/* Progress Stepper - Left-aligned to match content */}
+        {/* Step Indicator - Left-aligned to match content */}
         <div className="text-left mb-6">
-          <ProgressStepper currentStep={3} totalSteps={4} />
+          <StepIndicator currentStep={3} totalSteps={4} />
         </div>
 
         {/* Header and Session Type Selection */}

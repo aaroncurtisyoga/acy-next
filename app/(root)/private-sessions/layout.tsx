@@ -12,7 +12,7 @@ const PrivateSessionsLayout: FC<PrivateSessionsLayoutProps> = ({
 }) => {
   return (
     <WizardFormProvider>
-      <div className="w-full mx-auto px-4 pt-8 pb-24 bg-white dark:bg-gray-900 min-h-screen">
+      <div className="w-full mx-auto px-4 pt-8 pb-24 min-h-screen">
         {children}
       </div>
     </WizardFormProvider>

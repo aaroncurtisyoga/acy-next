@@ -6,7 +6,7 @@ import { SignIn, useAuth, useUser, SignOutButton } from "@clerk/nextjs";
 import { Button } from "@heroui/react";
 import { User } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
-import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
+import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
 
 const SignInPage: React.FC = () => {
   const { isSignedIn } = useAuth();
@@ -22,17 +22,19 @@ const SignInPage: React.FC = () => {
   if (isSignedIn && user) {
     return (
       <div className="max-w-md mx-auto">
-        {/* Progress Stepper - Centered to match content */}
+        {/* Step Indicator - Centered to match content */}
         <div className="mt-[60px] mb-6 text-center">
-          <ProgressStepper currentStep={2} totalSteps={4} />
+          <StepIndicator currentStep={2} totalSteps={4} />
         </div>
 
         <div className="text-center mb-8">
           <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-primary-600" />
           </div>
-          <h2 className="text-2xl font-bold mb-4">Welcome back!</h2>
-          <p className="text-gray-600 mb-6">
+          <h2 className="text-2xl font-bold mb-4 dark:text-gray-100">
+            Welcome back!
+          </h2>
+          <p className="text-gray-600 dark:text-gray-400 mb-6">
             Continue as <strong>{user.emailAddresses[0]?.emailAddress}</strong>
           </p>
         </div>
@@ -54,7 +56,7 @@ const SignInPage: React.FC = () => {
               <Button
                 variant="light"
                 size="sm"
-                className="text-gray-500 hover:text-gray-700 underline underline-offset-2 transition-colors duration-200 rounded-lg"
+                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline underline-offset-2 transition-colors duration-200 rounded-lg"
               >
                 Sign in with a different account
               </Button>

@@ -59,7 +59,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
 
   // Conditional icon styling
   const iconClasses = isSignedIn
-    ? "w-6 h-6 text-primary-700 dark:text-primary-300"
+    ? "w-6 h-6 text-primary-700 dark:text-white"
     : "w-6 h-6 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200";
 
   return (
