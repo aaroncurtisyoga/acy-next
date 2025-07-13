@@ -35,7 +35,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     <div className="h-full flex flex-col px-5 py-5 md:px-8 md:py-8 lg:px-12 lg:py-10">
       {hasEvents ? (
         <>
-          {/* Header Section - Only show when there are events */}
+          {/* Header */}
           <div className="mb-6 md:mb-8">
             <div className="flex items-center gap-3 mb-3">
               <div className="p-2 rounded-lg bg-primary-50 text-primary-600">
@@ -53,7 +53,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
             </p>
           </div>
 
-          {/* Filter Bar */}
+          {/* Filter bar */}
           <Card className="mb-6 shadow-sm border border-divider">
             <CardBody className="px-4 py-3">
               <div className="flex justify-between items-center">
@@ -73,7 +73,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
             </CardBody>
           </Card>
 
-          {/* Events Collection */}
+          {/* Events collection */}
           <div className="flex-1">
             <Collection
               collectionType={"All_Events"}

@@ -16,29 +16,29 @@ export async function POST(req: Request) {
     );
   }
 
-  // Get the headers
+  // Get webhook headers
   const headerPayload = await headers();
   const svix_id = headerPayload.get("svix-id");
   const svix_timestamp = headerPayload.get("svix-timestamp");
   const svix_signature = headerPayload.get("svix-signature");
 
-  // If there are no headers, error out
+  // Check headers exist
   if (!svix_id || !svix_timestamp || !svix_signature) {
     return new Response("Error occured -- no svix headers", {
       status: 400,
     });
   }
 
-  // Get the body
+  // Get request body
   const payload = await req.json();
   const body = JSON.stringify(payload);
 
-  // Create a new Svix instance with your secret.
+  // Create webhook instance
   const wh = new Webhook(WEBHOOK_SECRET);
 
   let evt: WebhookEvent;
 
-  // Verify the payload with the headers
+  // Verify payload
   try {
     evt = wh.verify(body, {
       "svix-id": svix_id,
@@ -52,10 +52,10 @@ export async function POST(req: Request) {
     });
   }
 
-  // Get the type
+  // Get event type
   const eventType = evt.type;
 
-  // Create a new user in database when a Clerk user is created
+  // Handle user creation
   if (eventType === "user.created") {
     const { id, email_addresses, image_url, first_name, last_name } = evt.data;
     const user = {
@@ -86,7 +86,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Update user in database when a Clerk user is updated
+  // Handle user update
   if (eventType === "user.updated") {
     const { id, image_url, first_name, last_name } = evt.data;
     try {
@@ -108,7 +108,7 @@ export async function POST(req: Request) {
     }
   }
 
-  // Delete user in database when a Clerk user is deleted
+  // Handle user deletion
   if (eventType === "user.deleted") {
     const { id } = evt.data;
     try {

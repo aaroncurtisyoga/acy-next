@@ -52,12 +52,12 @@ const UserDropdown: FC<UserDropdownProps> = ({
     setIsDropdownOpen(false);
   };
 
-  // Conditional styling based on sign-in state
+  // Button styling based on auth state
   const buttonClasses = isSignedIn
     ? "flex items-center justify-center p-2 rounded-full bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 transition-all duration-200 ease-out"
     : "flex items-center justify-center p-2 rounded-full hover:bg-gray-100/50 dark:hover:bg-gray-800/50 transition-all duration-200 ease-out";
 
-  // Conditional icon styling
+  // Icon styling based on auth state
   const iconClasses = isSignedIn
     ? "w-6 h-6 text-primary-700 dark:text-white"
     : "w-6 h-6 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-gray-100 transition-colors duration-200";

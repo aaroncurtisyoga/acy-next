@@ -26,7 +26,7 @@ const CheckoutPage: React.FC = () => {
       setLoading(true);
       setError(null);
 
-      // Support both new and legacy data structures
+      // Support both new and legacy data
       const sessionPurchase = formData.sessionPurchase;
       const packageDetails = formData.packageDetails;
 
@@ -41,7 +41,7 @@ const CheckoutPage: React.FC = () => {
         sessionCount = sessionPurchase.sessionCount;
         pricePerSession = sessionPurchase.pricePerSession;
       } else if (packageDetails) {
-        // Legacy support
+        // Legacy fallback
         amount = parseFloat(packageDetails.price);
         packageName = packageDetails.package;
       } else {
@@ -101,7 +101,7 @@ const CheckoutPage: React.FC = () => {
 
   return (
     <div className="wrapper-width pt-6">
-      {/* Step Indicator - Left-aligned to match content */}
+      {/* Step indicator */}
       <div className="text-left mb-6">
         <StepIndicator currentStep={4} totalSteps={4} />
       </div>
@@ -116,7 +116,7 @@ const CheckoutPage: React.FC = () => {
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
-        {/* Payment Form */}
+        {/* Payment form */}
         <div className="order-2 md:order-1">
           {error ? (
             <div className="bg-white p-6 rounded-lg border">
@@ -140,7 +140,7 @@ const CheckoutPage: React.FC = () => {
           )}
         </div>
 
-        {/* Order Summary */}
+        {/* Order summary */}
         <div className="order-1 md:order-2">
           <OrderSummary />
         </div>

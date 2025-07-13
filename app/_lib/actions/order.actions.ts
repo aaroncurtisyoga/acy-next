@@ -19,11 +19,11 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
   let checkoutSession: Stripe.Checkout.Session;
 
-  // Metadata: Useful for storing additional info for the order
+  // Metadata for order tracking
   const metadata: { [key: string]: string } = {
     buyerId: order.buyerId,
     type: order.type,
-    // Only Events will have an eventId. Private sessions won't have an eventId
+    // Events include eventId, private sessions don't
     ...(order.eventId && { eventId: order.eventId }),
   };
 

@@ -8,13 +8,13 @@ const ThemeToggle: FC = () => {
   const { theme, setTheme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // useEffect only runs on the client, so now we can safely show the UI
+  // Client-side mount check
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) {
-    // Return a placeholder with same dimensions to avoid layout shift
+    // Placeholder to prevent layout shift
     return (
       <button
         className="w-8 h-8 rounded-full flex items-center justify-center opacity-0"

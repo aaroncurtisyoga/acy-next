@@ -59,7 +59,7 @@ const Header: FC = () => {
   >([]);
 
   useEffect(() => {
-    // Only update menu items after Clerk has loaded
+    // Wait for Clerk to load
     if (!isLoaded) return;
 
     // Update authenticated menu items based on user's role
@@ -111,7 +111,7 @@ const Header: FC = () => {
       >
         <Logo setIsMenuOpen={setIsMenuOpen} />
 
-        {/* Mobile navigation - UserDropdown will be part of the mobile menu content */}
+        {/* Mobile navigation */}
         <MobileNavbarContent
           linksForLoggedInUsers={linksForLoggedInUsers}
           isMenuOpen={isMenuOpen}
@@ -119,7 +119,7 @@ const Header: FC = () => {
           isSignedIn={isSignedIn}
         />
 
-        {/* Desktop navigation with separate UserDropdown */}
+        {/* Desktop navigation */}
         <DesktopNavbarContent>
           <UserDropdown
             linksForLoggedInUsers={linksForLoggedInUsers}
@@ -129,7 +129,7 @@ const Header: FC = () => {
         </DesktopNavbarContent>
       </Navbar>
 
-      {/* Progress Bar - Only shows during private sessions flow */}
+      {/* Progress Bar */}
       <HeaderProgressBar />
     </div>
   );

@@ -27,7 +27,7 @@
 
 @layer utilities {
   #offering a {
-    @apply border-b border-dotted border-black hover:border-solid italic
+    @apply border-b border-dotted border-black hover:border-solid italic;
   }
 
   .wrapper {
@@ -35,15 +35,15 @@
   }
 
   .wrapper-width {
-    @apply w-full max-w-screen-2xl lg:mx-auto px-6 ;
+    @apply w-full max-w-screen-2xl lg:mx-auto px-6;
   }
 
   .error-headline {
-    @apply text-3xl md:text-5xl font-extrabold
+    @apply text-3xl md:text-5xl font-extrabold;
   }
 
   .error-subHeadline {
-    @apply text-xl md:text-2xl text-gray-500
+    @apply text-xl md:text-2xl text-gray-500;
   }
 
   .menu-item {
@@ -57,8 +57,6 @@
   .navbar-menu-toggle {
     @apply sm:hidden w-10 h-10 p-2 rounded-full flex items-center justify-center tap-highlight-transparent outline-none focus:outline-none focus:ring-2 focus:ring-primary transition-transform;
   }
-
-
 }
 
 /* Clerk Auth */
@@ -84,12 +82,69 @@
 
 /* Fix for Clerk main element width */
 .cl-main {
-  width: auto ;
-  max-width: 100% ;
-  padding: 0 1rem ;
+  width: auto;
+  max-width: 100%;
+  padding: 0 1rem;
 }
 
 .cl-card {
-  width: auto ;
-  max-width: 100% ;
+  width: auto;
+  max-width: 100%;
+}
+
+/* Dark mode overrides for Clerk footer */
+.dark .cl-footerAction {
+  background-color: transparent !important;
+}
+
+.dark .cl-footerActionText {
+  color: rgb(156 163 175) !important;
+  /* text-gray-400 */
+}
+
+.dark .cl-footerActionLink {
+  color: rgb(96 165 250) !important;
+  /* text-blue-400 */
+}
+
+.dark .cl-footerActionLink:hover {
+  color: rgb(147 197 253) !important;
+  /* text-blue-300 */
+}
+
+/* Dark mode for Clerk internal elements */
+.dark .cl-internal-b3fm6y {
+  background-color: transparent !important;
+}
+
+.dark .cl-footer [class*="cl-internal"] {
+  background-color: transparent !important;
+}
+
+.dark .cl-footerAction [class*="cl-internal"] {
+  background-color: transparent !important;
+}
+
+/* Secured by Clerk text */
+.dark .cl-internal-wf8x4b {
+  color: rgb(156 163 175) !important;
+}
+
+/* Remove box-shadow from Clerk primary button */
+[class*="cl-internal"][data-variant="solid"][data-color="primary"] {
+  box-shadow: none !important;
+}
+
+/* Make divider lines visible in dark mode */
+.dark .cl-dividerLine {
+  background-color: rgb(75 85 99) !important;
+  /* gray-600 */
+}
+
+/* Enhanced social button styling for dark mode */
+.dark .cl-socialButtonsBlockButton {
+  border-color: rgb(107 114 128) !important;
+  /* gray-500 - lighter border */
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
+  /* subtle shadow */
 }

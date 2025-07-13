@@ -13,7 +13,7 @@ const Footer = () => {
                          radial-gradient(circle at 80% 20%, rgba(156, 163, 175, 0.04) 0%, transparent 50%)`,
       }}
     >
-      {/* Subtle yoga-inspired pattern overlay */}
+      {/* Background pattern */}
       <div
         className="absolute inset-0 opacity-[0.02]"
         style={{
@@ -24,9 +24,9 @@ const Footer = () => {
       {/* Content */}
       <div className="relative z-10">
         <div className="wrapper-width">
-          {/* Mobile: Centered stacked layout */}
+          {/* Mobile layout */}
           <div className="flex flex-col items-center gap-12 md:hidden">
-            {/* Newsletter Signup Form */}
+            {/* Newsletter */}
             <div
               data-testid="footer-newsletter"
               className="flex justify-center"
@@ -34,7 +34,7 @@ const Footer = () => {
               <NewsletterForm />
             </div>
 
-            {/* Social Media Links with Copyright */}
+            {/* Social & Copyright */}
             <div className="flex flex-col items-center gap-6">
               <div
                 data-testid="footer-social-links"
@@ -81,7 +81,7 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Copyright and theme toggle */}
+              {/* Copyright & theme toggle */}
               <div className="text-center">
                 <div className="flex items-center justify-center gap-4">
                   <p
@@ -96,15 +96,15 @@ const Footer = () => {
             </div>
           </div>
 
-          {/* Desktop: Newsletter left, Social right */}
+          {/* Desktop layout */}
           <div className="hidden md:block">
             <div className="flex justify-between items-start">
-              {/* Newsletter Signup Form */}
+              {/* Newsletter */}
               <div data-testid="footer-newsletter" className="flex-shrink-0">
                 <NewsletterForm />
               </div>
 
-              {/* Social Media Links with Copyright */}
+              {/* Social & Copyright */}
               <div className="flex flex-col items-end gap-6">
                 <div
                   data-testid="footer-social-links"
@@ -151,7 +151,7 @@ const Footer = () => {
                   </div>
                 </div>
 
-                {/* Copyright and theme toggle */}
+                {/* Copyright & theme toggle */}
                 <div className="text-right">
                   <div className="flex items-center justify-end gap-4">
                     <p

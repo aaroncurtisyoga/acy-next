@@ -20,7 +20,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
         justify="end"
         data-testid="navbar-menu-desktop"
       >
-        {/* Auth and Unauthenticated Links */}
+        {/* Navigation links */}
         {unauthenticatedLinks.map((link, index) => (
           <NavbarItem
             key={`${link.name}-${index}`}
@@ -37,7 +37,7 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
           </NavbarItem>
         ))}
 
-        {/* User Dropdown is passed as children */}
+        {/* User dropdown */}
         {children}
       </NavbarContent>
     </>

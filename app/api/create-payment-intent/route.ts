@@ -15,7 +15,7 @@ export async function POST(request: NextRequest) {
     const { amount, packageName, sessionType, sessionCount, pricePerSession } =
       await request.json();
 
-    // Validate required fields
+    // Check required fields
     if (!amount || !sessionType) {
       return NextResponse.json(
         { error: "Missing required fields" },

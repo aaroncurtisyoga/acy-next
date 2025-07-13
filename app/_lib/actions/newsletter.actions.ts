@@ -7,7 +7,7 @@ import { handleError } from "@/app/_lib/utils";
 type Inputs = z.infer<typeof NewsletterFormSchema>;
 
 export async function addNewsletterEntry(data: Inputs) {
-  // Validate form data
+  // Validate form
   const formValidationResult = NewsletterFormSchema.safeParse(data);
 
   if (formValidationResult.success === false) {

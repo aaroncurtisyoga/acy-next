@@ -8,7 +8,7 @@ import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormC
 const OrderSummary: React.FC = () => {
   const { formData } = useWizardForm();
 
-  // Support both new and legacy data structures
+  // Support both new and legacy data
   const sessionPurchase = formData.sessionPurchase;
   const packageDetails = formData.packageDetails;
 
@@ -46,7 +46,7 @@ const OrderSummary: React.FC = () => {
               : []),
           ];
   } else {
-    // Legacy support
+    // Legacy fallback
     price = parseFloat(packageDetails!.price);
     title = packageDetails!.title;
     description = packageDetails!.description;

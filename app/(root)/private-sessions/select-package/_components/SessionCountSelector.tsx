@@ -49,7 +49,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
 
   return (
     <div className="max-w-md mx-auto space-y-6">
-      {/* Popular Suggestions */}
+      {/* Popular choices */}
       <div>
         <p className="text-sm text-gray-600 dark:text-gray-400 mb-3 text-center">
           Popular choices:
@@ -70,7 +70,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
         </div>
       </div>
 
-      {/* Custom Counter */}
+      {/* Custom counter */}
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
         <CardBody className="p-6">
           <div className="flex items-center justify-center gap-4 mb-4">
@@ -104,7 +104,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
             </Button>
           </div>
 
-          {/* Pricing Display */}
+          {/* Pricing */}
           <div className="text-center border-t border-gray-200 dark:border-gray-700 pt-4">
             <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
               ${pricing.totalPrice}

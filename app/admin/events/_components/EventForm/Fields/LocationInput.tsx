@@ -41,7 +41,7 @@ const LocationInput: FC<LocationInputProps> = ({
     setSearchValue(value);
   };
 
-  // Create a mapping of keys to place_ids for lookup
+  // Map place IDs for lookup
   const placeIdMap = React.useMemo(() => {
     const map: Record<string, string> = {};
     suggestions?.forEach((location: LocationSuggestion) => {

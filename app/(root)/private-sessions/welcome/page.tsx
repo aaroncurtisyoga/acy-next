@@ -19,12 +19,12 @@ const WelcomePage: React.FC = () => {
 
   return (
     <div className="max-w-2xl mx-auto">
-      {/* Step Indicator - Centered to match content */}
+      {/* Step indicator */}
       <div className="mt-[60px] mb-6 text-center">
         <StepIndicator currentStep={1} totalSteps={4} />
       </div>
 
-      {/* Step Header */}
+      {/* Header */}
       <div className="text-center mb-8">
         <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100">
           Choose your
@@ -33,7 +33,7 @@ const WelcomePage: React.FC = () => {
         </h1>
       </div>
 
-      {/* Benefits List */}
+      {/* Benefits */}
       <div className="mb-12">
         <div className="flex flex-col items-center justify-center gap-8 max-w-md mx-auto">
           <div className="flex flex-col gap-4 w-full items-center">

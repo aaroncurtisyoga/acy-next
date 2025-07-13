@@ -28,7 +28,7 @@ const NewsletterForm = () => {
     const result = await addNewsletterEntry(data);
 
     if (result.formErrors) {
-      // Handle validation errors
+      // Show validation errors
       for (const [field, error] of Object.entries(result.formErrors)) {
         if (field !== "_errors" && error && "_errors" in error) {
           setError(field as keyof Inputs, {
@@ -41,7 +41,7 @@ const NewsletterForm = () => {
     }
 
     if (result.apiError) {
-      // Handle API errors
+      // Show API errors
       setError("root", {
         type: "server",
         message: result.message,
