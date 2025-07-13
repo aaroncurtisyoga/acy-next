@@ -1,13 +1,6 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import {
-  Dropdown,
-  DropdownTrigger,
-  DropdownMenu,
-  DropdownItem,
-  Button,
-} from "@heroui/react";
 import { Sun, Moon, Monitor } from "lucide-react";
 import { useTheme } from "next-themes";
 
@@ -23,68 +16,50 @@ const ThemeToggle: FC = () => {
   if (!mounted) {
     // Return a placeholder with same dimensions to avoid layout shift
     return (
-      <Button
-        isIconOnly
-        variant="light"
-        className="w-10 h-10"
+      <button
+        className="w-8 h-8 rounded-full flex items-center justify-center opacity-0"
         aria-label="Theme toggle"
       >
-        <div className="w-5 h-5" />
-      </Button>
+        <div className="w-4 h-4" />
+      </button>
     );
   }
 
+  const cycleTheme = () => {
+    if (theme === "light") {
+      setTheme("dark");
+    } else if (theme === "dark") {
+      setTheme("system");
+    } else {
+      setTheme("light");
+    }
+  };
+
   const getIcon = () => {
     if (theme === "system") {
-      return <Monitor className="w-5 h-5" />;
+      return <Monitor className="w-4 h-4" />;
     }
     return resolvedTheme === "dark" ? (
-      <Moon className="w-5 h-5" />
+      <Moon className="w-4 h-4" />
     ) : (
-      <Sun className="w-5 h-5" />
+      <Sun className="w-4 h-4" />
     );
   };
 
-  const themes = [
-    { key: "light", label: "Light", icon: Sun },
-    { key: "dark", label: "Dark", icon: Moon },
-    { key: "system", label: "System", icon: Monitor },
-  ];
+  const getLabel = () => {
+    if (theme === "system") return "System theme";
+    return resolvedTheme === "dark" ? "Dark mode" : "Light mode";
+  };
 
   return (
-    <Dropdown placement="bottom-end">
-      <DropdownTrigger>
-        <Button
-          isIconOnly
-          variant="light"
-          className="w-10 h-10 text-gray-700 hover:text-gray-900 dark:text-gray-300 dark:hover:text-gray-100 transition-colors"
-          aria-label="Theme toggle"
-        >
-          {getIcon()}
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu
-        aria-label="Theme selection"
-        selectedKeys={[theme || "system"]}
-        selectionMode="single"
-        onSelectionChange={(keys) => {
-          const selectedTheme = Array.from(keys)[0] as string;
-          setTheme(selectedTheme);
-        }}
-      >
-        {themes.map((themeOption) => {
-          const IconComponent = themeOption.icon;
-          return (
-            <DropdownItem
-              key={themeOption.key}
-              startContent={<IconComponent className="w-4 h-4" />}
-            >
-              {themeOption.label}
-            </DropdownItem>
-          );
-        })}
-      </DropdownMenu>
-    </Dropdown>
+    <button
+      onClick={cycleTheme}
+      className="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-all duration-200 group"
+      aria-label={`Switch to ${theme === "light" ? "dark" : theme === "dark" ? "system" : "light"} mode`}
+      title={getLabel()}
+    >
+      {getIcon()}
+    </button>
   );
 };
 
