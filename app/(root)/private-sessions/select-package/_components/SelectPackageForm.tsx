@@ -68,7 +68,7 @@ const SelectPackageForm: FC = () => {
           {/* Header */}
           <div className="text-left">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center">
-              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100">
+              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200">
                 Select your package.
               </h1>
 
@@ -219,7 +219,7 @@ const SelectPackageForm: FC = () => {
                                 Total Price
                               </div>
                               <div>
-                                <span className="text-lg font-bold text-gray-900 dark:text-gray-100">
+                                <span className="text-lg font-bold text-gray-900 dark:text-gray-200">
                                   ${pkg.price}
                                 </span>
                                 <span className="text-xs text-gray-500 dark:text-gray-400 ml-2">
@@ -233,7 +233,7 @@ const SelectPackageForm: FC = () => {
                               <div className="text-xs text-gray-600 dark:text-gray-400">
                                 Number of Sessions
                               </div>
-                              <div className="text-sm font-medium text-gray-900 dark:text-gray-100">
+                              <div className="text-sm font-medium text-gray-900 dark:text-gray-200">
                                 {pkg.sessions}
                               </div>
                             </div>
@@ -248,7 +248,7 @@ const SelectPackageForm: FC = () => {
                                 <div className="text-xs text-gray-600 dark:text-gray-400">
                                   Benefit {benefitIndex + 1}
                                 </div>
-                                <div className="text-sm text-gray-900 dark:text-gray-100">
+                                <div className="text-sm text-gray-900 dark:text-gray-200">
                                   {benefit}
                                 </div>
                               </div>

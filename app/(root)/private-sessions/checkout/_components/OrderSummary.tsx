@@ -57,14 +57,14 @@ const OrderSummary: React.FC = () => {
   const total = price + tax;
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-100">
+    <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
         Order Summary
       </h3>
       <div className="space-y-3">
         <div className="flex justify-between">
           <span className="text-gray-600 dark:text-gray-400">Package:</span>
-          <span className="font-medium text-gray-900 dark:text-gray-100">
+          <span className="font-medium text-gray-900 dark:text-gray-200">
             {formData.packageDetails?.title}
           </span>
         </div>
@@ -72,14 +72,14 @@ const OrderSummary: React.FC = () => {
           <span className="text-gray-600 dark:text-gray-400">
             Session Type:
           </span>
-          <span className="font-medium text-gray-900 dark:text-gray-100">
+          <span className="font-medium text-gray-900 dark:text-gray-200">
             {formData.sessionType}
           </span>
         </div>
         <div className="border-t border-gray-200 dark:border-gray-600 pt-3">
           <div className="flex justify-between text-lg font-semibold">
-            <span className="text-gray-900 dark:text-gray-100">Total:</span>
-            <span className="text-gray-900 dark:text-gray-100">
+            <span className="text-gray-900 dark:text-gray-200">Total:</span>
+            <span className="text-gray-900 dark:text-gray-200">
               ${formData.packageDetails?.price}
             </span>
           </div>

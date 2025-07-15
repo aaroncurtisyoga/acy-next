@@ -37,7 +37,7 @@ const ConfirmationPage: React.FC = () => {
         <div className="inline-flex items-center justify-center w-20 h-20 bg-green-100 dark:bg-green-900/30 rounded-full mb-4">
           <CheckCircle className="w-12 h-12 text-green-600 dark:text-green-400" />
         </div>
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100 mb-2">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200 mb-2">
           Payment Successful!
         </h1>
         <p className="text-lg text-gray-600 dark:text-gray-300">
@@ -47,7 +47,7 @@ const ConfirmationPage: React.FC = () => {
 
       {/* Order Details */}
       <div className="bg-gray-50 dark:bg-gray-800 border border-gray-200 dark:border-gray-700 rounded-lg p-6 mb-8 text-left">
-        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-100">
+        <h2 className="text-xl font-semibold mb-4 text-gray-900 dark:text-gray-200">
           Order Details
         </h2>
         <div className="space-y-3">

@@ -141,7 +141,7 @@ const config: Config = {
               700: "#e4e4e7",
               800: "#f4f4f5",
               900: "#fafafa",
-              DEFAULT: "#000000",
+              DEFAULT: "#0F0F0F",
               foreground: "#ffffff",
             },
             foreground: {

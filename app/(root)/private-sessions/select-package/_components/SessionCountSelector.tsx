@@ -85,7 +85,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
             </Button>
 
             <div className="text-center min-w-[100px]">
-              <div className="text-3xl font-bold text-gray-900 dark:text-gray-100">
+              <div className="text-3xl font-bold text-gray-900 dark:text-gray-200">
                 {sessionCount}
               </div>
               <div className="text-sm text-gray-600 dark:text-gray-400">
@@ -106,7 +106,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
 
           {/* Pricing */}
           <div className="text-center border-t border-gray-200 dark:border-gray-700 pt-4">
-            <div className="text-2xl font-bold text-gray-900 dark:text-gray-100">
+            <div className="text-2xl font-bold text-gray-900 dark:text-gray-200">
               ${pricing.totalPrice}
             </div>
             <div className="text-sm text-gray-600 dark:text-gray-400">

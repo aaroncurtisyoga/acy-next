@@ -31,7 +31,7 @@ const SignInPage: React.FC = () => {
           <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-primary-600" />
           </div>
-          <h2 className="text-2xl font-bold mb-4 dark:text-gray-100">
+          <h2 className="text-2xl font-bold mb-4 dark:text-gray-200">
             Welcome back!
           </h2>
           <p className="text-gray-600 dark:text-gray-400 mb-6">
@@ -69,7 +69,7 @@ const SignInPage: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto text-center">
-      <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100 mb-2 mt-[60px]">
+      <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200 mb-2 mt-[60px]">
         Sign in to book
       </h1>
       <p className="text-gray-600 dark:text-gray-400 mb-8">

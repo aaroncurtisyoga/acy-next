@@ -52,10 +52,10 @@ const CheckoutForm: React.FC = () => {
     <div className="max-w-2xl mx-auto space-y-8">
       {/* Header */}
       <div className="text-center">
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100 mb-2">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200 mb-2">
           Complete your purchase
         </h1>
-        <p className="text-gray-700 dark:text-gray-300">
+        <p className="text-gray-700 dark:text-gray-400">
           Enter your payment information to book your private sessions
         </p>
       </div>

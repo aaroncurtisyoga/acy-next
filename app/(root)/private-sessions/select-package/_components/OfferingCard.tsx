@@ -31,7 +31,7 @@ const OfferingCard: FC<PurchaseCardProps> = ({
     >
       <CardHeader className="flex flex-row justify-between items-start gap-2 pointer-events-none">
         <div>
-          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-100">
+          <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-200">
             {offering.title}
           </h3>
           <p className="text-sm text-gray-600 dark:text-gray-400">
@@ -56,11 +56,11 @@ const OfferingCard: FC<PurchaseCardProps> = ({
       </CardHeader>
       <CardBody className={"pt-1 px-7 pointer-events-none"}>
         <p
-          className={"text-4xl font-semibold text-gray-900 dark:text-gray-100"}
+          className={"text-4xl font-semibold text-gray-900 dark:text-gray-200"}
         >
           ${offering.price}
         </p>
-        <p className={"text-sm mt-4 mb-1 text-gray-700 dark:text-gray-300"}>
+        <p className={"text-sm mt-4 mb-1 text-gray-700 dark:text-gray-400"}>
           This includes:
         </p>
         <ul>
@@ -68,7 +68,7 @@ const OfferingCard: FC<PurchaseCardProps> = ({
             <li
               key={feature}
               className={
-                "flex text-sm items-center text-gray-700 dark:text-gray-300"
+                "flex text-sm items-center text-gray-700 dark:text-gray-400"
               }
             >
               <Check
