@@ -1,8 +1,6 @@
 "use client";
 
 import React from "react";
-import { Divider } from "@heroui/react";
-import { Check } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 
 const OrderSummary: React.FC = () => {
