@@ -83,7 +83,7 @@ const Header: FC = () => {
         isMenuOpen={isMenuOpen}
         isBordered
         maxWidth="2xl"
-        className="bg-white dark:bg-gray-900 shadow-sm static"
+        className="bg-white dark:bg-background shadow-sm static"
         classNames={{
           base: "static",
           wrapper: "px-6 py-4",

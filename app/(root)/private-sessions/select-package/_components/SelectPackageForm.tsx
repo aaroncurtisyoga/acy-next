@@ -2,7 +2,7 @@ import React, { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
 import { Button } from "@heroui/react";
-import { Check, CheckCircle, User, Users } from "lucide-react";
+import { Check, CheckCircle, User, Users, DollarSign } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
@@ -127,53 +127,58 @@ const SelectPackageForm: FC = () => {
                       }`}
                       onClick={() => setSelectedPackage(pkg.id)}
                     >
-                      <div className="p-4">
-                        {/* Header */}
-                        <div
-                          className={`${getPackageGradient()} p-4 rounded-[12px] text-slate-800 dark:text-slate-200 text-center mb-4`}
-                        >
-                          <h3 className="text-lg md:text-lg font-semibold mb-1 md:mb-0.5">
-                            {pkg.name}
-                          </h3>
-                          <p className="text-slate-600 dark:text-slate-400 text-sm">
-                            {pkg.description}
-                          </p>
-                          <div className="mt-3">
-                            <span className="text-xl font-bold">
+                      {/* Header - Only name and description */}
+                      <div
+                        className={`${getPackageGradient()} p-4 rounded-t-[16px] text-slate-800 dark:text-slate-200 text-center relative`}
+                      >
+                        <h3 className="text-lg font-semibold mb-1">
+                          {pkg.name}
+                        </h3>
+                        <p className="text-slate-600 dark:text-slate-400 text-sm">
+                          {pkg.description}
+                        </p>
+
+                        {/* Selection indicator in top right */}
+                        {selectedPackage === pkg.id && (
+                          <div className="absolute top-3 right-3 w-6 h-6 rounded-full bg-primary border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
+                            <Check size={12} className="text-white" />
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Body - Price and benefits */}
+                      <div className="p-4 space-y-3">
+                        {/* Price as a line item */}
+                        <div className="flex items-center gap-3 text-sm">
+                          <DollarSign
+                            size={14}
+                            className="text-green-600 dark:text-green-400 flex-shrink-0"
+                          />
+                          <div className="flex-1">
+                            <span className="font-semibold text-gray-900 dark:text-gray-200">
                               ${pkg.price}
                             </span>
-                            <span className="text-xs text-slate-500 dark:text-slate-400 ml-2">
+                            <span className="text-xs text-gray-500 dark:text-gray-400 ml-1">
                               (${pkg.perSession} per session)
                             </span>
                           </div>
                         </div>
 
-                        {/* Custom Radio Button */}
-                        <div className="flex justify-center mb-4">
-                          {selectedPackage === pkg.id && (
-                            <div className="w-7 h-7 rounded-full bg-primary border-2 border-primary flex items-center justify-center transition-all duration-200 shadow-sm">
-                              <Check size={16} className="text-white" />
-                            </div>
-                          )}
-                        </div>
-
                         {/* Benefits */}
-                        <div className="space-y-2">
-                          {pkg.benefits.map((benefit, benefitIndex) => (
-                            <div
-                              key={benefitIndex}
-                              className="flex items-center gap-2 text-sm"
-                            >
-                              <CheckCircle
-                                size={14}
-                                className="text-green-600 dark:text-green-400 flex-shrink-0"
-                              />
-                              <span className="text-gray-700 dark:text-gray-300">
-                                {benefit}
-                              </span>
-                            </div>
-                          ))}
-                        </div>
+                        {pkg.benefits.map((benefit, benefitIndex) => (
+                          <div
+                            key={benefitIndex}
+                            className="flex items-center gap-3 text-sm"
+                          >
+                            <CheckCircle
+                              size={14}
+                              className="text-blue-600 dark:text-blue-400 flex-shrink-0"
+                            />
+                            <span className="text-gray-700 dark:text-gray-300">
+                              {benefit}
+                            </span>
+                          </div>
+                        ))}
                       </div>
                     </div>
                   ))}
