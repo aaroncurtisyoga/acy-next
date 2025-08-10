@@ -3,7 +3,7 @@
 import React, { ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
-import { ProgressStepper } from "@/app/(root)/private-sessions/select-package/_components/ProgressStepper";
+import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
 
 const pathToStepMap = {
   "/private-sessions/sign-in": 1,
@@ -30,7 +30,7 @@ export const WizardLayout: React.FC<WizardLayoutProps> = ({ children }) => {
 
   return (
     <>
-      <ProgressStepper currentStep={currentStep} totalSteps={totalSteps} />
+      <StepIndicator currentStep={currentStep} totalSteps={totalSteps} />
       {children}
     </>
   );
