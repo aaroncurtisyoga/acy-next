@@ -10,7 +10,10 @@ import {
 } from "@internationalized/date";
 import { useFormContext, useWatch } from "react-hook-form";
 import { PlaceDetails } from "@/app/_lib/types";
-import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import {
+  EventFormValues,
+  useEventFormContext,
+} from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
@@ -20,6 +23,7 @@ import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInp
 
 const BasicInfo: FC = () => {
   const router = useRouter();
+  const { mode } = useEventFormContext();
   const {
     control,
     handleSubmit,
@@ -79,8 +83,12 @@ const BasicInfo: FC = () => {
       endDateTime: data.endDateTime.toString(),
     };
 
-    // Go to next step
-    const nextStepUrl = `/admin/events/create/details`; // this could also be dynamic based on "mode"
+    // Go to next step - dynamic based on mode
+    const eventId = data.id;
+    const nextStepUrl =
+      mode === "edit"
+        ? `/admin/events/${eventId}/edit/details`
+        : `/admin/events/create/details`;
     router.push(nextStepUrl);
   };
 
