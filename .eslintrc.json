@@ -1,41 +1,6 @@
 {
   "extends": "next/core-web-vitals",
   "rules": {
-    "import/order": [
-      "error",
-      {
-        "groups": [
-          "builtin",     // Built-in modules e.g. React
-          "external",    // External e.g. Next, Tanstack, etc.
-          "internal",    // Internal modules e.g. Components
-          "index",       // Index file
-          "object",       // Imported objects
-          "type"         // Imported types
-        ],
-        "pathGroups": [
-          {
-            "pattern": "next/**",
-            "group": "external",
-            "position": "before"
-          },
-          {
-            "pattern": "react",
-            "group": "builtin",
-            "position": "before"
-          },
-          {
-            "pattern": "*.{scss,css}",
-            "group": "index",
-            "position": "after"
-          }
-        ],
-        "pathGroupsExcludedImportTypes": ["builtin"],
-        "newlines-between": "never",
-        "alphabetize": {
-          "order": "asc",
-          "caseInsensitive": true
-        }
-      }
-    ]
+    "import/order": "off"
   }
 }
