@@ -16,7 +16,7 @@ const DetailsForExternallyHostedEvent: FC = () => {
   } = useFormContext<EventFormValues>();
 
   const onSubmit = async () => {
-    router.push("/events/create/submit"); // dynamic if needed
+    router.push("/admin/events/create/submit"); // dynamic if needed
   };
 
   return (
@@ -30,7 +30,10 @@ const DetailsForExternallyHostedEvent: FC = () => {
       </div>
       <div className="flex justify-between mt-5">
         <Button type="button">
-          <HeroUiLink href="/events/create" className="text-default-foreground">
+          <HeroUiLink
+            href="/admin/events/create"
+            className="text-default-foreground"
+          >
             Previous
           </HeroUiLink>
         </Button>

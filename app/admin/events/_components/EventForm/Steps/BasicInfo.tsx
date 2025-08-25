@@ -80,7 +80,7 @@ const BasicInfo: FC = () => {
     };
 
     // Go to next step
-    const nextStepUrl = `/events/create/details`; // this could also be dynamic based on "mode"
+    const nextStepUrl = `/admin/events/create/details`; // this could also be dynamic based on "mode"
     router.push(nextStepUrl);
   };
 
