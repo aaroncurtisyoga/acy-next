@@ -2,17 +2,27 @@
 
 import { revalidatePath } from "next/cache";
 import { parseZonedDateTime } from "@internationalized/date";
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/_lib/prisma";
 import {
   GetAllEventsParams,
   GetAllEventsResponse,
   GetRelatedEventsByCategoryParams,
 } from "@/app/_lib/types";
+import { CreateEventData, UpdateEventData } from "@/app/_lib/types/event";
 import { handleError } from "@/app/_lib/utils";
+import {
+  calculateSkipAmount,
+  calculateTotalPages,
+} from "@/app/_lib/utils/pagination";
+import { buildEventSearchConditions } from "@/app/_lib/utils/query-builders";
 
-const prisma = new PrismaClient();
-
-export async function createEvent({ event, path }) {
+export async function createEvent({
+  event,
+  path,
+}: {
+  event: CreateEventData;
+  path: string;
+}) {
   try {
     // Parse the string into a ZonedDateTime object
     const startZonedDateTime = parseZonedDateTime(event.startDateTime);
@@ -26,6 +36,7 @@ export async function createEvent({ event, path }) {
       data: {
         ...event,
         ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
+        isHostedExternally: event.isHostedExternally ?? false,
         // Convert string to Date and then to ISO String
         startDateTime: startDateTimeISO,
         endDateTime: endDateTimeISO,
@@ -69,9 +80,9 @@ export async function deleteEvent(
   }
 }
 
-async function getEventAttendees(eventId: any) {
+async function getEventAttendees(eventId: string) {
   return prisma.order.findMany({
-    where: { event: eventId },
+    where: { event: { id: eventId } },
     include: {
       buyer: {
         select: {
@@ -92,51 +103,35 @@ export async function getAllEvents({
   isActive = true,
 }: GetAllEventsParams): Promise<GetAllEventsResponse> {
   try {
-    const activeCondition = { isActive };
+    const whereConditions = buildEventSearchConditions(
+      query,
+      category,
+      isActive,
+    );
+    const skipAmount = calculateSkipAmount(Number(page), limit);
 
-    const titleCondition = query ? { title: { contains: query } } : {};
-    const categoryCondition = category
-      ? { category: { name: { equals: category } } }
-      : {};
-    const dateCondition = { endDateTime: { gt: new Date() } };
-
-    const skipAmount = (Number(page) - 1) * limit;
-
-    const events = await prisma.event.findMany({
-      where: {
-        AND: [
-          titleCondition,
-          categoryCondition,
-          dateCondition,
-          activeCondition,
-        ],
-      },
-      orderBy: { startDateTime: "asc" },
-      take: limit,
-      skip: skipAmount,
-      include: {
-        category: true,
-        location: true,
-      },
-    });
-
-    const eventsCount = await prisma.event.count({
-      where: {
-        AND: [
-          titleCondition,
-          categoryCondition,
-          dateCondition,
-          activeCondition,
-        ],
-      },
-    });
+    const [events, eventsCount] = await Promise.all([
+      prisma.event.findMany({
+        where: whereConditions,
+        orderBy: { startDateTime: "asc" },
+        take: limit,
+        skip: skipAmount,
+        include: {
+          category: true,
+          location: true,
+        },
+      }),
+      prisma.event.count({
+        where: whereConditions,
+      }),
+    ]);
 
     const hasFiltersApplied: boolean = !!query || !!category;
 
     return {
       data: events,
       hasFiltersApplied,
-      totalPages: Math.ceil(eventsCount / limit),
+      totalPages: calculateTotalPages(eventsCount, limit),
     };
   } catch (error) {
     handleError(error);
@@ -156,26 +151,26 @@ export async function getEventsWithSameCategory({
   page = 1,
 }: GetRelatedEventsByCategoryParams) {
   try {
-    const skipAmount = (Number(page) - 1) * limit;
+    const skipAmount = calculateSkipAmount(Number(page), limit);
+    const whereConditions = {
+      AND: [{ category: { id: categoryId } }, { id: { not: eventId } }],
+    };
 
-    const events = await prisma.event.findMany({
-      where: {
-        AND: [{ category: { id: categoryId } }, { id: { not: eventId } }],
-      },
-      orderBy: { createdAt: "desc" },
-      take: limit,
-      skip: skipAmount,
-    });
-
-    const eventsCount = await prisma.event.count({
-      where: {
-        AND: [{ category: { id: categoryId } }, { id: { not: eventId } }],
-      },
-    });
+    const [events, eventsCount] = await Promise.all([
+      prisma.event.findMany({
+        where: whereConditions,
+        orderBy: { createdAt: "desc" },
+        take: limit,
+        skip: skipAmount,
+      }),
+      prisma.event.count({
+        where: whereConditions,
+      }),
+    ]);
 
     return {
       data: events,
-      totalPages: Math.ceil(eventsCount / limit),
+      totalPages: calculateTotalPages(eventsCount, limit),
     };
   } catch (error) {
     handleError(error);
@@ -201,14 +196,41 @@ export async function getEventById(eventId: string) {
   }
 }
 
-export async function updateEvent({ event, path }) {
+export async function updateEvent({
+  event,
+  path,
+}: {
+  event: UpdateEventData;
+  path: string;
+}) {
   try {
+    const { _id, categoryId, category, location, ...eventData } = event;
+
     const updatedEvent = await prisma.event.update({
-      where: { id: event._id },
+      where: { id: _id },
       data: {
-        ...event,
-        isFree: parseInt(event.price, 10) === 0,
-        category: event.categoryId,
+        ...eventData,
+        ...(event.price ? { isFree: parseInt(event.price, 10) === 0 } : {}),
+        ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
+        ...(location &&
+        location.placeId &&
+        location.name &&
+        location.formattedAddress
+          ? {
+              location: {
+                connectOrCreate: {
+                  create: {
+                    name: location.name,
+                    formattedAddress: location.formattedAddress,
+                    placeId: location.placeId,
+                    lat: location.lat,
+                    lng: location.lng,
+                  },
+                  where: { placeId: location.placeId },
+                },
+              },
+            }
+          : {}),
       },
     });
 

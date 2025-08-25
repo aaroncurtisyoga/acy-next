@@ -45,6 +45,15 @@ model Event {
   location               Location  @relation(fields: [locationId], references: [id])
   order                  Order[]
   attendees              EventUser[]
+   
+  // External sync fields
+  sourceType      String?   // 'MOMENCE'
+  sourceId        String?   // External booking ID
+  externalUrl     String?   // Direct booking link
+  lastSynced      DateTime?
+  isExternal      Boolean   @default(false)
+  
+  @@index([sourceType, sourceId])
 }
 
 model User {

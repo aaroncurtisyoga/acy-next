@@ -1,18 +1,30 @@
 "use client";
 
-import { createContext, useContext, useState, ReactNode, FC } from "react";
+import {
+  createContext,
+  useContext,
+  useState,
+  ReactNode,
+  FC,
+  useEffect,
+  useMemo,
+} from "react";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
+import { SessionPurchase, SessionType } from "../types";
 
 interface PrivateSessionFormData {
-  sessionType?: "Individual" | "Group";
-  package?: string;
+  sessionType?: SessionType;
+  sessionCount?: number;
+  sessionPurchase?: SessionPurchase;
+  package?: string; // Legacy support
   packageDetails?: {
     title: string;
     price: string;
     description: string;
     features: string[];
     package: string;
-  };
+  }; // Legacy support
   customerInfo?: {
     email: string;
     name: string;
@@ -40,10 +52,45 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
   const [currentStep, setCurrentStep] = useState(1);
-  const [formData, setFormData] = useState<PrivateSessionFormData>({});
+  const [formData, setFormData] = useState<PrivateSessionFormData>(() => {
+    // Initialize from localStorage if available
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("privateSessionFormData");
+      if (saved) {
+        try {
+          return JSON.parse(saved);
+        } catch {
+          return {};
+        }
+      }
+    }
+    return {};
+  });
   const { isSignedIn } = useAuth();
+  const router = useRouter();
+  const pathname = usePathname();
 
-  const totalSteps = 3; // Sign In -> Package Selection -> Checkout (Welcome & Confirmation don't count)
+  const totalSteps = 4; // Welcome -> Sign-in -> Package Selection -> Checkout
+
+  // Map routes to steps - memoized to prevent useEffect dependency issues
+  const stepRoutes = useMemo(
+    () => ({
+      "/private-sessions/welcome": 1,
+      "/private-sessions/sign-in": 2,
+      "/private-sessions/select-package": 3,
+      "/private-sessions/checkout": 4,
+      "/private-sessions/confirmation": 5,
+    }),
+    [],
+  );
+
+  // Update current step based on pathname
+  useEffect(() => {
+    const step = stepRoutes[pathname as keyof typeof stepRoutes];
+    if (step) {
+      setCurrentStep(step);
+    }
+  }, [pathname, stepRoutes]);
 
   const goToNextStep = () =>
     setCurrentStep((prev) => Math.min(totalSteps, prev + 1));
@@ -54,9 +101,26 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
       setCurrentStep(step);
     }
   };
-  const updateFormData = (data: Partial<PrivateSessionFormData>) =>
-    setFormData((prev) => ({ ...prev, ...data }));
-  const resetFormData = () => setFormData({});
+  const updateFormData = (data: Partial<PrivateSessionFormData>) => {
+    const newData = (prev: PrivateSessionFormData) => ({ ...prev, ...data });
+    setFormData(newData);
+    // Save to localStorage
+    if (typeof window !== "undefined") {
+      const updatedData = newData(formData);
+      localStorage.setItem(
+        "privateSessionFormData",
+        JSON.stringify(updatedData),
+      );
+    }
+  };
+
+  const resetFormData = () => {
+    setFormData({});
+    // Clear localStorage
+    if (typeof window !== "undefined") {
+      localStorage.removeItem("privateSessionFormData");
+    }
+  };
 
   const isComplete = currentStep === totalSteps;
 

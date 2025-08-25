@@ -39,18 +39,32 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
     closeMenu();
   };
 
+  // Toggle styling based on auth state
+  const toggleClasses = isSignedIn
+    ? "transition-all duration-200 ease-out bg-primary-50 dark:bg-primary-900/20 hover:bg-primary-100 dark:hover:bg-primary-900/30 rounded-full"
+    : "transition-all duration-200 ease-out hover:bg-gray-100/50 dark:hover:bg-gray-800/50";
+
   return (
     <>
       <NavbarContent className="sm:hidden" justify="end">
         <NavbarMenuToggle
           aria-label={isMenuOpen ? "Close menu" : "Open menu"}
-          icon={<Menu />}
+          icon={
+            <Menu
+              className={
+                isSignedIn
+                  ? "text-primary-700 dark:text-white"
+                  : "text-gray-700 dark:text-gray-300"
+              }
+            />
+          }
           data-testid="menu-toggle"
+          className={toggleClasses}
         />
       </NavbarContent>
 
       <NavbarMenu data-testid="navbar-menu-mobile">
-        {/* Unauthenticated Links - visible to all users */}
+        {/* Navigation links */}
         {unauthenticatedLinks.map((link, index) => (
           <NavbarMenuItem
             key={`${link.name}-${index}`}
@@ -67,7 +81,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           </NavbarMenuItem>
         ))}
 
-        {/* Authenticated Links - only visible when signed in */}
+        {/* User links */}
         {isSignedIn &&
           linksForLoggedInUsers.map((link, index) => (
             <NavbarMenuItem
@@ -85,7 +99,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
             </NavbarMenuItem>
           ))}
 
-        {/* Auth Links - show sign in or sign out */}
+        {/* Auth links */}
         <NavbarMenuItem>
           {isSignedIn ? (
             <button

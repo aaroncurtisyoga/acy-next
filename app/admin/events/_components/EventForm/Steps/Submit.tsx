@@ -28,7 +28,7 @@ const SubmitStep = () => {
         }
       } else {
         const created = await createEvent({
-          event: values,
+          event: values as any,
           path: "/events",
         });
         if (created) {

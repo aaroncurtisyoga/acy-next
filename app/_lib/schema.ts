@@ -58,5 +58,6 @@ export const CategoryFormSchema = z.object({
 });
 
 export const SelectPackageFormSchema = z.object({
-  package: z.string().trim().min(1, "Please select a package"), // Required
+  // Package selection is now handled directly in component state
+  // No form validation needed for the new package-based approach
 });

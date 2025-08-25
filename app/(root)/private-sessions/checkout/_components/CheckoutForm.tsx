@@ -8,7 +8,7 @@ import {
   useElements,
   PaymentElement,
 } from "@stripe/react-stripe-js";
-import { Loader2 } from "lucide-react";
+import { Loader2, ArrowRight } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 
 const CheckoutForm: React.FC = () => {
@@ -49,8 +49,10 @@ const CheckoutForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-white p-6 rounded-lg border">
-      <h2 className="text-xl font-semibold mb-6">Payment Information</h2>
+    <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
+        Payment Details
+      </h3>
 
       <form onSubmit={handleSubmit}>
         <div className="mb-6">
@@ -72,8 +74,10 @@ const CheckoutForm: React.FC = () => {
         </div>
 
         {errorMessage && (
-          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
-            <p className="text-red-600 text-sm">{errorMessage}</p>
+          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md">
+            <p className="text-red-600 dark:text-red-400 text-sm">
+              {errorMessage}
+            </p>
           </div>
         )}
 
@@ -86,13 +90,14 @@ const CheckoutForm: React.FC = () => {
           startContent={
             isLoading ? <Loader2 className="animate-spin" size={16} /> : null
           }
+          className="font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
         >
           {isLoading ? "Processing..." : "Complete Payment"}
         </Button>
       </form>
 
       <div className="mt-4 text-center">
-        <p className="text-xs text-gray-500">
+        <p className="text-xs text-gray-500 dark:text-gray-400">
           🔒 Your payment information is secure and encrypted
         </p>
       </div>

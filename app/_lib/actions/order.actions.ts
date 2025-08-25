@@ -1,8 +1,9 @@
 "use server";
 
 import { redirect } from "next/navigation";
-import { Prisma, PrismaClient } from "@prisma/client";
+import { Prisma } from "@prisma/client";
 import Stripe from "stripe";
+import prisma from "@/app/_lib/prisma";
 import {
   CheckoutOrderParams,
   CreateOrderParams,
@@ -10,8 +11,11 @@ import {
   GetOrdersByUserParams,
 } from "@/app/_lib/types";
 import { handleError } from "@/app/_lib/utils";
-
-const prisma = new PrismaClient();
+import {
+  calculateSkipAmount,
+  calculateTotalPages,
+} from "@/app/_lib/utils/pagination";
+import { buildOrderSearchConditions } from "@/app/_lib/utils/query-builders";
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -19,11 +23,11 @@ export const checkoutOrder = async (order: CheckoutOrderParams) => {
 
   let checkoutSession: Stripe.Checkout.Session;
 
-  // Metadata: Useful for storing additional info for the order
+  // Metadata for order tracking
   const metadata: { [key: string]: string } = {
     buyerId: order.buyerId,
     type: order.type,
-    // Only Events will have an eventId. Private sessions won't have an eventId
+    // Events include eventId, private sessions don't
     ...(order.eventId && { eventId: order.eventId }),
   };
 
@@ -77,26 +81,10 @@ export async function getOrdersByEvent({
   eventId,
 }: GetOrdersByEventParams) {
   try {
+    const whereConditions = buildOrderSearchConditions(searchString, eventId);
+
     return await prisma.order.findMany({
-      where: {
-        AND: [
-          { event: { id: eventId } },
-          {
-            OR: [
-              {
-                buyer: {
-                  firstName: { contains: searchString, mode: "insensitive" },
-                },
-              },
-              {
-                buyer: {
-                  lastName: { contains: searchString, mode: "insensitive" },
-                },
-              },
-            ],
-          },
-        ],
-      },
+      where: whereConditions,
       include: {
         event: {
           select: { title: true },
@@ -117,22 +105,25 @@ export async function getOrdersByUser({
   page,
 }: GetOrdersByUserParams) {
   try {
-    const skipAmount = (Number(page) - 1) * limit;
-    const orders = await prisma.order.findMany({
-      where: { buyer: { id: userId } },
-      orderBy: { createdAt: "desc" },
-      skip: skipAmount,
-      take: limit,
-      include: { event: { select: { title: true, id: true } } },
-    });
+    const skipAmount = calculateSkipAmount(Number(page), limit);
+    const whereConditions = { buyer: { id: userId } };
 
-    const totalOrders = await prisma.order.count({
-      where: { buyer: { id: userId } },
-    });
+    const [orders, totalOrders] = await Promise.all([
+      prisma.order.findMany({
+        where: whereConditions,
+        orderBy: { createdAt: "desc" },
+        skip: skipAmount,
+        take: limit,
+        include: { event: { select: { title: true, id: true } } },
+      }),
+      prisma.order.count({
+        where: whereConditions,
+      }),
+    ]);
 
     return {
       data: orders,
-      totalPages: Math.ceil(totalOrders / limit),
+      totalPages: calculateTotalPages(totalOrders, limit),
     };
   } catch (error) {
     handleError(error);

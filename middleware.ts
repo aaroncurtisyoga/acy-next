@@ -20,10 +20,10 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware(async (auth, req) => {
-  // Get the authentication object by awaiting it
+  // Get auth object
   const authObject = await auth();
 
-  // Restrict admin routes to users that are signed in and have the admin role
+  // Check admin access
   if (isAdminRoute(req)) {
     if (authObject.sessionClaims?.metadata?.role !== "admin") {
       const url = req.nextUrl.clone();
@@ -32,8 +32,7 @@ export default clerkMiddleware(async (auth, req) => {
     }
   }
 
-  // Restrict authenticated routes to users that are signed in
-  // Only apply authentication check if it's not a public route
+  // Check auth for protected routes
   if (isAuthenticatedRoute(req) && !isPublicRoute(req)) {
     if (!authObject.userId) {
       const url = req.nextUrl.clone();

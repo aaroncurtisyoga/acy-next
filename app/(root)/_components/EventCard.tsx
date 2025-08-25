@@ -40,7 +40,12 @@ const EventCard: FC<CardProps> = ({ event }) => {
           {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
           {formatDateTime(startDateTime).timeOnly}
         </p>
-        <p className={"md:text-sm mt-1"}>{event.location.name}</p>
+        <p className={"md:text-sm mt-1"}>
+          {event.location.name}
+          {event.isExternal && (
+            <span className="ml-1 text-xs text-gray-500">(External)</span>
+          )}
+        </p>
       </div>
     </div>
   );

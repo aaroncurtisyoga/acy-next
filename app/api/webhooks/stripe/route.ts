@@ -18,10 +18,10 @@ export async function POST(request: Request) {
     return NextResponse.json({ message: "Webhook error", error: err });
   }
 
-  // Get the ID and type
+  // Get event type
   const stripeEventType = stripeEvent.type;
 
-  // CREATE - Handle both checkout sessions and payment intents
+  // Handle checkout completion
   if (stripeEventType === "checkout.session.completed") {
     const { id, amount_total, metadata } = stripeEvent.data.object;
 
@@ -46,7 +46,7 @@ export async function POST(request: Request) {
     }
   }
 
-  // Handle payment intent succeeded for embedded checkout
+  // Handle payment success
   if (stripeEventType === "payment_intent.succeeded") {
     const { id, amount, metadata } = stripeEvent.data.object;
 

@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
 import { useUser } from "@clerk/nextjs";
 import { Navbar } from "@heroui/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
@@ -8,6 +9,43 @@ import Logo from "@/app/_components/Header/Logo";
 import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 import UserDropdown from "@/app/_components/Header/UserDropdown";
 import { adminLinks, authenticatedLinks } from "@/app/_lib/constants";
+
+// HeaderProgressBar Component
+const HeaderProgressBar: FC = () => {
+  const pathname = usePathname();
+
+  // Check if we're in the private sessions flow
+  const isPrivateSessionsFlow = pathname.startsWith("/private-sessions");
+
+  if (!isPrivateSessionsFlow) return null;
+
+  // Map routes to steps
+  const getStepFromPath = (
+    path: string,
+  ): { current: number; total: number } => {
+    const stepMap: { [key: string]: number } = {
+      "/private-sessions/welcome": 1,
+      "/private-sessions/sign-in": 2,
+      "/private-sessions/select-package": 3,
+      "/private-sessions/checkout": 4,
+    };
+
+    const current = stepMap[path] || 1;
+    return { current, total: 4 };
+  };
+
+  const { current, total } = getStepFromPath(pathname);
+  const progressPercentage = (current / total) * 100;
+
+  return (
+    <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gray-200 dark:bg-gray-700 z-10">
+      <div
+        className="h-full bg-primary transition-all duration-300 ease-out"
+        style={{ width: `${progressPercentage}%` }}
+      />
+    </div>
+  );
+};
 
 const Header: FC = () => {
   const { isSignedIn, isLoaded, user } = useUser();
@@ -21,7 +59,7 @@ const Header: FC = () => {
   >([]);
 
   useEffect(() => {
-    // Only update menu items after Clerk has loaded
+    // Wait for Clerk to load
     if (!isLoaded) return;
 
     // Update authenticated menu items based on user's role
@@ -38,63 +76,62 @@ const Header: FC = () => {
   }, [isLoaded, user, isSignedIn]);
 
   return (
-    <Navbar
-      data-testid="navbar"
-      onMenuOpenChange={setIsMenuOpen}
-      isMenuOpen={isMenuOpen}
-      isBordered
-      maxWidth="2xl"
-      classNames={{
-        item: [
-          "flex",
-          "relative",
-          "h-full",
-          "items-center",
-          // Remove bold from active state
-          "data-[active=true]:font-normal",
-          // Active state styling
-          "data-[active=true]:after:content-['']",
-          "data-[active=true]:after:absolute",
-          "data-[active=true]:after:bottom-0",
-          "data-[active=true]:after:left-0",
-          "data-[active=true]:after:right-0",
-          "data-[active=true]:after:h-[3px]",
-          "data-[active=true]:after:rounded-[2px]",
-          "data-[active=true]:after:bg-primary",
-          // Hover state styling
-          "hover:after:content-['']",
-          "hover:after:absolute",
-          "hover:after:bottom-0",
-          "hover:after:left-0",
-          "hover:after:right-0",
-          "hover:after:h-[3px]",
-          "hover:after:rounded-[2px]",
-          "hover:after:bg-primary",
-          // Transition
-          "after:transition-all",
-          "after:duration-200",
-        ],
-      }}
-    >
-      <Logo setIsMenuOpen={setIsMenuOpen} />
-
-      {/* Mobile navigation - UserDropdown will be part of the mobile menu content */}
-      <MobileNavbarContent
-        linksForLoggedInUsers={linksForLoggedInUsers}
+    <div className="relative">
+      <Navbar
+        data-testid="navbar"
+        onMenuOpenChange={setIsMenuOpen}
         isMenuOpen={isMenuOpen}
-        setIsMenuOpen={setIsMenuOpen}
-        isSignedIn={isSignedIn}
-      />
+        isBordered
+        maxWidth="2xl"
+        className="bg-white dark:bg-background shadow-sm static"
+        classNames={{
+          base: "static",
+          wrapper: "px-6 py-4",
+          item: [
+            "flex",
+            "relative",
+            "h-full",
+            "items-center",
+            "px-3",
+            "py-2",
+            "rounded-lg",
+            "data-[active=true]:text-slate-800",
+            "data-[active=true]:bg-slate-100",
+            "data-[active=true]:font-normal",
+            "dark:data-[active=true]:text-gray-200",
+            "dark:data-[active=true]:bg-gray-800",
+            "hover:text-slate-700",
+            "hover:bg-slate-50",
+            "dark:hover:text-gray-300",
+            "dark:hover:bg-gray-800",
+            "transition-all",
+            "duration-200",
+          ],
+        }}
+      >
+        <Logo setIsMenuOpen={setIsMenuOpen} />
 
-      {/* Desktop navigation with separate UserDropdown */}
-      <DesktopNavbarContent>
-        <UserDropdown
+        {/* Mobile navigation */}
+        <MobileNavbarContent
           linksForLoggedInUsers={linksForLoggedInUsers}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
           isSignedIn={isSignedIn}
-          className="hidden sm:block" // Hide on mobile, show on desktop
         />
-      </DesktopNavbarContent>
-    </Navbar>
+
+        {/* Desktop navigation */}
+        <DesktopNavbarContent>
+          <UserDropdown
+            linksForLoggedInUsers={linksForLoggedInUsers}
+            isSignedIn={isSignedIn}
+            className="hidden sm:block" // Hide on mobile, show on desktop
+          />
+        </DesktopNavbarContent>
+      </Navbar>
+
+      {/* Progress Bar */}
+      <HeaderProgressBar />
+    </div>
   );
 };
 
