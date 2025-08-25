@@ -9,15 +9,19 @@ interface AdminLayoutProps {
 
 export default function AdminLayout({ children }: AdminLayoutProps) {
   return (
-    <div className="flex flex-col md:flex-row min-h-screen">
+    <div className="flex flex-col md:flex-row min-h-screen bg-background">
       {/* Sidebar */}
-      <aside className="w-full md:w-64 bg-gray-100 p-4">
-        <h1 className="text-2xl font-bold mb-4">Admin Dashboard</h1>
+      <aside className="w-full md:w-64 bg-content1 border-r border-divider p-4">
+        <h1 className="text-2xl font-bold mb-4 text-foreground">
+          Admin Dashboard
+        </h1>
         <SidebarMenu />
       </aside>
 
       {/* Main content */}
-      <main className="flex-1 p-4">{children}</main>
+      <main className="flex-1 p-4 bg-background text-foreground">
+        {children}
+      </main>
     </div>
   );
 }

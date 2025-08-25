@@ -45,7 +45,7 @@ const SubmitStep: FC = () => {
         <div className="flex justify-between mt-5">
           <Button type="button">
             <HeroUiLink
-              href="/events/create/details"
+              href="/admin/events/create/details"
               className="text-default-foreground"
             >
               Previous

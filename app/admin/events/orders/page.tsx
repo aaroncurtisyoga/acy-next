@@ -18,7 +18,7 @@ const Orders = async ({ searchParams }: OrdersPageProps) => {
 
   return (
     <section className={"wrapper py-5 md:py-10 "}>
-      <h3 className={"text-xl mb-5"}>Orders</h3>
+      <h3 className={"text-xl mb-5 text-foreground"}>Orders</h3>
       <OrdersTable orders={orders} />
     </section>
   );
