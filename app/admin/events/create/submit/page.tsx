@@ -6,6 +6,7 @@ import { Button } from "@heroui/react";
 import { Link as HeroUiLink } from "@heroui/react";
 import { useFormContext } from "react-hook-form";
 import { createEvent } from "@/app/_lib/actions/event.actions";
+import { CreateEventData } from "@/app/_lib/types/event";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
@@ -19,7 +20,7 @@ const SubmitStep: FC = () => {
 
     try {
       const newEvent = await createEvent({
-        event: formValues,
+        event: formValues as CreateEventData,
         path: "/events",
       });
 

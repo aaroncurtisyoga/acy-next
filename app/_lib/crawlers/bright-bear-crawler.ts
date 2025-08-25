@@ -13,6 +13,60 @@ interface MomenceClass {
 export class BrightBearCrawler {
   private baseUrl = "https://www.brightbearyogadc.com/book-a-class";
 
+  private static extractClassData = (makeUrlsAbsolute = false) => {
+    const classElements = document.querySelectorAll(
+      '.schedule-item, .class-item, [data-testid*="class"]',
+    );
+
+    return Array.from(classElements).map((el) => {
+      const title = el
+        .querySelector(".class-title, .class-name, h3, h4")
+        ?.textContent?.trim();
+      const instructor = el
+        .querySelector(
+          '.instructor-name, .teacher, [data-testid*="instructor"]',
+        )
+        ?.textContent?.trim();
+      const dateTime = el
+        .querySelector(".class-time, .start-time, time")
+        ?.textContent?.trim();
+      const price = el.querySelector(".price, .cost")?.textContent?.trim();
+
+      // Extract booking URL
+      let bookingLink = null;
+      const possibleLinks = [
+        el.querySelector('a[href*="book"]'),
+        el.querySelector('a[href*="register"]'),
+        el.querySelector(".book-button"),
+        el.querySelector('button[onclick*="book"]'),
+        el.querySelector("[data-booking-url]"),
+        el.closest("a"),
+      ];
+
+      for (const link of possibleLinks) {
+        if (link) {
+          bookingLink =
+            link.getAttribute("href") || link.getAttribute("data-booking-url");
+          if (bookingLink) break;
+        }
+      }
+
+      // If relative URL, make it absolute
+      if (makeUrlsAbsolute && bookingLink && bookingLink.startsWith("/")) {
+        bookingLink = `https://www.brightbearyogadc.com${bookingLink}`;
+      }
+
+      return {
+        title,
+        instructor,
+        dateTime,
+        bookingLink,
+        price,
+        element: el.outerHTML.substring(0, 500), // For debugging
+      };
+    });
+  };
+
   async getAaronClasses(): Promise<MomenceClass[]> {
     const browser = await puppeteer.launch({
       headless: true,
@@ -47,57 +101,7 @@ export class BrightBearCrawler {
           );
 
           // Extract class data from iframe
-          classes = await frame.evaluate(() => {
-            const classElements = document.querySelectorAll(
-              '.schedule-item, .class-item, [data-testid*="class"]',
-            );
-
-            return Array.from(classElements).map((el) => {
-              const title = el
-                .querySelector(".class-title, .class-name, h3, h4")
-                ?.textContent?.trim();
-              const instructor = el
-                .querySelector(
-                  '.instructor-name, .teacher, [data-testid*="instructor"]',
-                )
-                ?.textContent?.trim();
-              const dateTime = el
-                .querySelector(".class-time, .start-time, time")
-                ?.textContent?.trim();
-              const price = el
-                .querySelector(".price, .cost")
-                ?.textContent?.trim();
-
-              // Extract booking URL
-              let bookingLink = null;
-              const possibleLinks = [
-                el.querySelector('a[href*="book"]'),
-                el.querySelector('a[href*="register"]'),
-                el.querySelector(".book-button"),
-                el.querySelector('button[onclick*="book"]'),
-                el.querySelector("[data-booking-url]"),
-                el.closest("a"),
-              ];
-
-              for (const link of possibleLinks) {
-                if (link) {
-                  bookingLink =
-                    link.getAttribute("href") ||
-                    link.getAttribute("data-booking-url");
-                  if (bookingLink) break;
-                }
-              }
-
-              return {
-                title,
-                instructor,
-                dateTime,
-                bookingLink,
-                price,
-                element: el.outerHTML.substring(0, 500), // For debugging
-              };
-            });
-          });
+          classes = await frame.evaluate(BrightBearCrawler.extractClassData);
         }
       } else {
         // Direct widget case
@@ -112,75 +116,30 @@ export class BrightBearCrawler {
         );
         if (instructorFilter) {
           await instructorFilter.click();
-          await page.waitForTimeout(500);
+          await new Promise((resolve) => setTimeout(resolve, 500));
 
-          // Look for Aaron in dropdown
-          const aaronOption = await page.$x(
-            '//option[contains(text(), "Aaron")] | //li[contains(text(), "Aaron")] | //div[contains(text(), "Aaron Curtis")]',
-          );
-          if (aaronOption.length > 0) {
-            await aaronOption[0].click();
-            await page.waitForTimeout(2000);
+          // Look for Aaron in dropdown using evaluate
+          const foundAaron = await page.evaluate(() => {
+            const options = document.querySelectorAll("option, li, div");
+            for (const option of options) {
+              const text = option.textContent?.toLowerCase();
+              if (text?.includes("aaron") || text?.includes("curtis")) {
+                (option as HTMLElement).click();
+                return true;
+              }
+            }
+            return false;
+          });
+
+          if (foundAaron) {
+            await new Promise((resolve) => setTimeout(resolve, 2000));
           }
         }
 
         // Extract class data
-        classes = await page.evaluate(() => {
-          const classElements = document.querySelectorAll(
-            '.schedule-item, .class-item, [data-testid*="class"]',
-          );
-
-          return Array.from(classElements).map((el) => {
-            const title = el
-              .querySelector(".class-title, .class-name, h3, h4")
-              ?.textContent?.trim();
-            const instructor = el
-              .querySelector(
-                '.instructor-name, .teacher, [data-testid*="instructor"]',
-              )
-              ?.textContent?.trim();
-            const dateTime = el
-              .querySelector(".class-time, .start-time, time")
-              ?.textContent?.trim();
-            const price = el
-              .querySelector(".price, .cost")
-              ?.textContent?.trim();
-
-            // Extract booking URL
-            let bookingLink = null;
-            const possibleLinks = [
-              el.querySelector('a[href*="book"]'),
-              el.querySelector('a[href*="register"]'),
-              el.querySelector(".book-button"),
-              el.querySelector('button[onclick*="book"]'),
-              el.querySelector("[data-booking-url]"),
-              el.closest("a"),
-            ];
-
-            for (const link of possibleLinks) {
-              if (link) {
-                bookingLink =
-                  link.getAttribute("href") ||
-                  link.getAttribute("data-booking-url");
-                if (bookingLink) break;
-              }
-            }
-
-            // If relative URL, make it absolute
-            if (bookingLink && bookingLink.startsWith("/")) {
-              bookingLink = `https://www.brightbearyogadc.com${bookingLink}`;
-            }
-
-            return {
-              title,
-              instructor,
-              dateTime,
-              bookingLink,
-              price,
-              element: el.outerHTML.substring(0, 500), // For debugging
-            };
-          });
-        });
+        classes = await page.evaluate(() =>
+          BrightBearCrawler.extractClassData(true),
+        );
       }
 
       console.log(`Found ${classes.length} total classes`);
@@ -234,7 +193,7 @@ export class BrightBearCrawler {
     }
 
     return {
-      id: `momence-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
+      id: `momence-${Date.now()}-${Math.random().toString(36).substring(2, 11)}`,
       title: rawClass.title || "Yoga Class",
       instructor: rawClass.instructor || "Aaron Curtis",
       startDateTime,

@@ -204,13 +204,32 @@ export async function updateEvent({
   path: string;
 }) {
   try {
+    const { _id, categoryId, category, location, ...eventData } = event;
+
     const updatedEvent = await prisma.event.update({
-      where: { id: event._id },
+      where: { id: _id },
       data: {
-        ...event,
+        ...eventData,
         ...(event.price ? { isFree: parseInt(event.price, 10) === 0 } : {}),
-        ...(event.categoryId
-          ? { category: { connect: { id: event.categoryId } } }
+        ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
+        ...(location &&
+        location.placeId &&
+        location.name &&
+        location.formattedAddress
+          ? {
+              location: {
+                connectOrCreate: {
+                  create: {
+                    name: location.name,
+                    formattedAddress: location.formattedAddress,
+                    placeId: location.placeId,
+                    lat: location.lat,
+                    lng: location.lng,
+                  },
+                  where: { placeId: location.placeId },
+                },
+              },
+            }
           : {}),
       },
     });

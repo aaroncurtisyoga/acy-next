@@ -28,9 +28,9 @@ export interface UpdateEventData {
   categoryId?: string;
   category?: string;
   location?: {
-    name: string;
-    formattedAddress: string;
-    placeId: string;
+    name?: string;
+    formattedAddress?: string;
+    placeId?: string;
     lat?: number;
     lng?: number;
   };
