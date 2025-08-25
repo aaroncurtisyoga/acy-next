@@ -119,7 +119,10 @@ const CheckoutPage: React.FC = () => {
         {/* Payment form */}
         <div className="order-2 md:order-1">
           {error ? (
-            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-lg border border-gray-200 dark:border-gray-700">
+            <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
+                Payment Details
+              </h3>
               <div className="text-center py-12">
                 <div className="text-red-600 dark:text-red-400 text-lg mb-4">
                   {error}
@@ -134,8 +137,11 @@ const CheckoutPage: React.FC = () => {
               <CheckoutForm />
             </Elements>
           ) : (
-            <div className="bg-white dark:bg-gray-800/50 p-6 rounded-lg border border-gray-200 dark:border-gray-700 h-[502px] flex items-center justify-center">
-              <div className="text-center">
+            <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6 min-h-[502px]">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
+                Payment Details
+              </h3>
+              <div className="flex items-center justify-center py-20">
                 <Spinner size="lg" color="primary" />
               </div>
             </div>

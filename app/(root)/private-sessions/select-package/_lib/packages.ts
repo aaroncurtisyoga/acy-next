@@ -2,6 +2,16 @@
 export const packages = {
   individual: [
     {
+      id: "test",
+      name: "Test Package",
+      sessions: 1,
+      price: 1,
+      perSession: 1,
+      description: "Production testing only",
+      benefits: ["For testing payment flow"],
+      popular: false,
+    },
+    {
       id: "starter",
       name: "Single Session",
       sessions: 1,
@@ -41,6 +51,16 @@ export const packages = {
     },
   ],
   group: [
+    {
+      id: "test",
+      name: "Test Package",
+      sessions: 1,
+      price: 1,
+      perSession: 1,
+      description: "Production testing only",
+      benefits: ["For testing payment flow"],
+      popular: false,
+    },
     {
       id: "starter",
       name: "Single Session",
