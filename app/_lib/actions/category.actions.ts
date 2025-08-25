@@ -1,10 +1,8 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/_lib/prisma";
 import { CreateCategoryParams } from "@/app/_lib/types";
 import { handleError } from "@/app/_lib/utils";
-
-const prisma = new PrismaClient();
 export const createCategory = async ({
   categoryName,
 }: CreateCategoryParams) => {

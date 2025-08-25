@@ -1,22 +1,33 @@
 "use server";
 
-import { PrismaClient } from "@prisma/client";
+import prisma from "@/app/_lib/prisma";
 import { handleError } from "@/app/_lib/utils";
-const prisma = new PrismaClient();
+import {
+  calculateSkipAmount,
+  calculateTotalPages,
+} from "@/app/_lib/utils/pagination";
+import { buildUserSearchConditions } from "@/app/_lib/utils/query-builders";
 
 export async function getAllUsers({ query, limit = 8, page = 1 }) {
-  const skipAmount = (Number(page) - 1) * limit;
   try {
-    const users = await prisma.user.findMany({
-      // Todo: Setup to work w/ search query
-      where: {},
-      orderBy: { firstName: "asc" },
-      take: limit,
-      skip: skipAmount,
-    });
+    const skipAmount = calculateSkipAmount(page, limit);
+    const whereConditions = buildUserSearchConditions(query);
+
+    const [users, totalUsers] = await Promise.all([
+      prisma.user.findMany({
+        where: whereConditions,
+        orderBy: { firstName: "asc" },
+        take: limit,
+        skip: skipAmount,
+      }),
+      prisma.user.count({
+        where: whereConditions,
+      }),
+    ]);
+
     return {
       data: users,
-      totalPages: Math.ceil(users.length / limit),
+      totalPages: calculateTotalPages(totalUsers, limit),
     };
   } catch (error) {
     handleError(error);
