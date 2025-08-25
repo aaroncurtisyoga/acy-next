@@ -7,7 +7,7 @@
     "build": "next build",
     "start": "next start",
     "vercel-build": "prisma migrate deploy && next build",
-    "postinstall": "prisma generate",
+    "postinstall": "prisma generate && npx puppeteer browsers install chrome",
     "lint": "next lint",
     "lint:fix": "eslint . --ext .js,.jsx,.ts,.tsx --fix",
     "version:patch": "./scripts/version.sh patch",
