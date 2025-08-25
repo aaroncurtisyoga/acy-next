@@ -74,7 +74,6 @@ export class BrightBearCrawler {
       defaultViewport: chromium.defaultViewport,
       executablePath: await chromium.executablePath(),
       headless: chromium.headless,
-      ignoreHTTPSErrors: true,
     });
 
     try {
