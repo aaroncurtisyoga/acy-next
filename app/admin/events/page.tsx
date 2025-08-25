@@ -4,7 +4,7 @@ import TableEventManagement from "@/app/admin/events/_components/TableEventManag
 const AdminEventsPage: FC = () => {
   return (
     <div className={"wrapper"}>
-      <h1 className={"text-xl my-5"}>Admin Events Page</h1>
+      <h1 className={"text-xl my-5 text-foreground"}>Admin Events Page</h1>
       <TableEventManagement />
     </div>
   );

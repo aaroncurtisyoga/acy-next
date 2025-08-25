@@ -18,7 +18,7 @@ const AdminCategories: FC = () => {
 
   return (
     <div className={"wrapper"}>
-      <h1 className={"text-xl mb-5"}>Categories</h1>
+      <h1 className={"text-xl mb-5 text-foreground"}>Categories</h1>
       <TableCategoryManagement
         categories={categories}
         setCategories={setCategories}

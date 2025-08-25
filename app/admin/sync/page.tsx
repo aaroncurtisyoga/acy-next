@@ -28,7 +28,7 @@ export default function SyncPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4">Event Sync</h1>
+      <h1 className="text-2xl font-bold mb-4 text-foreground">Event Sync</h1>
       <div className="max-w-2xl">
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6 mb-4">
           <h2 className="text-xl font-semibold mb-4">
