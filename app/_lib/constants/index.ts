@@ -9,6 +9,7 @@ import {
   ClipboardPlus,
   UsersRound,
   RefreshCw,
+  Home,
 } from "lucide-react";
 import { TravelOption } from "@/app/_lib/types";
 
@@ -81,6 +82,7 @@ export const travelOptions: TravelOption[] = [
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 
 export const adminDashboardLinks = [
+  { name: "Home", path: "/", icon: Home },
   { name: "Events", path: "/admin/events", icon: Calendar },
   { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
