@@ -65,7 +65,7 @@
     "react-dom": "^19.0.0",
     "react-hook-form": "^7.51.4",
     "sass": "^1.77.1",
-    "sharp": "^0.33.3",
+    "sharp": "^0.34.3",
     "stripe": "^16.11.0",
     "svix": "^1.24.0",
     "tailwind-merge": "^2.3.0",
