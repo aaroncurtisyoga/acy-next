@@ -77,7 +77,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 z-10"
+          className="absolute right-0 mt-2 w-48 bg-white dark:bg-gray-800 shadow-lg rounded-md border border-gray-200 dark:border-gray-700 z-50"
           role="menu"
           aria-labelledby="user-menu-button"
           data-testid="user-dropdown-menu"

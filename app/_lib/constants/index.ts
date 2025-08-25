@@ -8,6 +8,7 @@ import {
   TramFront,
   ClipboardPlus,
   UsersRound,
+  RefreshCw,
 } from "lucide-react";
 import { TravelOption } from "@/app/_lib/types";
 
@@ -85,6 +86,7 @@ export const adminDashboardLinks = [
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "New Category", path: "/admin/categories/create", icon: Box },
   { name: "Users", path: "/admin/users", icon: UsersRound },
+  { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
 ];
 
 export const TableEventManagementColumns = [
