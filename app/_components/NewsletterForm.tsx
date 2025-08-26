@@ -1,90 +1,81 @@
 "use client";
 
-import { useState } from "react";
-import { Spinner, Input } from "@heroui/react";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { ArrowRight, Check } from "lucide-react";
-import { SubmitHandler, useForm } from "react-hook-form";
-import { z } from "zod";
+import React, { useState } from "react";
+import { Input, Button } from "@heroui/react";
 import { addNewsletterEntry } from "@/app/_lib/actions/newsletter.actions";
-import { NewsletterFormSchema } from "@/app/_lib/schema";
-
-type Inputs = z.infer<typeof NewsletterFormSchema>;
 
 const NewsletterForm = () => {
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
   const [isSuccess, setIsSuccess] = useState(false);
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    setError,
-    formState: { errors, isSubmitting },
-  } = useForm<Inputs>({
-    resolver: zodResolver(NewsletterFormSchema),
-  });
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError("");
+    setIsSubmitting(true);
 
-  const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    const result = await addNewsletterEntry(data);
+    const result = await addNewsletterEntry({ email });
 
-    if (result.formErrors) {
-      // Show validation errors
-      for (const [field, error] of Object.entries(result.formErrors)) {
-        if (field !== "_errors" && error && "_errors" in error) {
-          setError(field as keyof Inputs, {
-            type: "server",
-            message: error._errors?.join(", "),
-          });
-        }
-      }
+    if (result.formErrors || result.apiError) {
+      setError(result.message || "Something went wrong");
+      setIsSubmitting(false);
       return;
     }
 
-    if (result.apiError) {
-      // Show API errors
-      setError("root", {
-        type: "server",
-        message: result.message,
-      });
-      return;
-    }
-
-    // Success - show success state and reset after delay
     setIsSuccess(true);
+    setEmail("");
+    setIsSubmitting(false);
+
     setTimeout(() => {
       setIsSuccess(false);
-      reset();
     }, 3000);
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <Input
-        {...register("email")}
-        type="email"
-        label="Email"
-        placeholder="Enter your email"
-        description={
-          isSuccess
-            ? "Thank you for signing up!"
-            : "Be the first to know about events & more!"
-        }
-        variant="flat"
-        isDisabled={isSubmitting || isSuccess}
-        isInvalid={!!errors.email || !!errors.root}
-        errorMessage={errors.email?.message || errors.root?.message}
-        endContent={
-          <button type="submit" disabled={isSubmitting || isSuccess}>
-            {isSubmitting ? (
-              <Spinner size="sm" />
-            ) : isSuccess ? (
-              <Check size={20} />
-            ) : (
-              <ArrowRight size={20} />
-            )}
-          </button>
-        }
-      />
+    <form onSubmit={handleSubmit} className="w-full max-w-sm">
+      <div className="flex flex-col gap-4">
+        <Input
+          type="email"
+          label="Email"
+          placeholder="Enter your email"
+          value={email}
+          onValueChange={setEmail}
+          description={
+            isSuccess
+              ? "Thank you for signing up!"
+              : "Be the first to know about events & more!"
+          }
+          variant="flat"
+          color={isSuccess ? "success" : "default"}
+          isDisabled={isSubmitting}
+          isInvalid={!!error}
+          errorMessage={error}
+          isClearable
+          size="md"
+          classNames={{
+            base: "max-w-full",
+            mainWrapper: "h-full",
+            input: "text-sm",
+            inputWrapper:
+              "h-full bg-default-100 data-[hover=true]:bg-default-200",
+            label: "text-sm font-medium",
+            description: "text-xs",
+            errorMessage: "text-xs",
+          }}
+        />
+        <Button
+          type="submit"
+          color="primary"
+          variant="solid"
+          size="md"
+          isLoading={isSubmitting}
+          isDisabled={isSubmitting}
+          className="font-medium"
+        >
+          {isSubmitting ? "Subscribing..." : "Subscribe"}
+        </Button>
+      </div>
     </form>
   );
 };
