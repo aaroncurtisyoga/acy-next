@@ -36,6 +36,11 @@ export const formatDateTime = (dateString: Date) => {
     hour12: true,
   };
 
+  const monthYearOptions: Intl.DateTimeFormatOptions = {
+    month: "long",
+    year: "numeric",
+  };
+
   const formattedDateTime: string = new Date(dateString).toLocaleString(
     "en-US",
     dateTimeOptions,
@@ -60,12 +65,35 @@ export const formatDateTime = (dateString: Date) => {
     timeOptions,
   );
 
+  const formattedMonthYear: string = new Date(dateString).toLocaleString(
+    "en-US",
+    monthYearOptions,
+  );
+
+  // Additional formatted parts
+  const date = new Date(dateString);
+  const monthShort = date
+    .toLocaleDateString("en-US", { month: "short" })
+    .toUpperCase();
+  const monthLong = date.toLocaleDateString("en-US", { month: "long" });
+  const dayNumber = date.getDate();
+  const year = date.getFullYear();
+  const weekdayShort = date.toLocaleDateString("en-US", { weekday: "short" });
+  const weekdayLong = date.toLocaleDateString("en-US", { weekday: "long" });
+
   return {
     dateTime: formattedDateTime,
     dateOnly: formattedDate,
     dateOnlyWithoutYear: formattedDateWithoutYear,
     dateLongWithoutYear: formattedDateLongWithoutYear,
     timeOnly: formattedTime,
+    monthYear: formattedMonthYear,
+    monthShort,
+    monthLong,
+    dayNumber,
+    year,
+    weekdayShort,
+    weekdayLong,
   };
 };
 

@@ -8,6 +8,7 @@ import "./globals.css";
 export const metadata: Metadata = {
   title: { template: "%s | Aaron Curtis Yoga", default: "Aaron Curtis Yoga" },
   description: "Yoga Events & Education",
+  viewport: "width=device-width, initial-scale=1, maximum-scale=5",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {

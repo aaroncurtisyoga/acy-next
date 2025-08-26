@@ -28,19 +28,19 @@ const Collection: FC<CollectionProps> = ({
     <>
       {data.length > 0 ? (
         <div>
-          <ul>
-            {data.map((event) => {
-              return (
-                <li key={event.id}>
-                  {view === "text" ? (
-                    <EventText event={event} />
-                  ) : (
-                    <EventCard event={event} />
-                  )}
-                </li>
-              );
-            })}
-          </ul>
+          {view === "text" ? (
+            <div className="space-y-2">
+              {data.map((event) => (
+                <EventText key={event.id} event={event} />
+              ))}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
+              {data.map((event) => (
+                <EventCard key={event.id} event={event} />
+              ))}
+            </div>
+          )}
 
           {totalPages > 1 && (
             <Pagination

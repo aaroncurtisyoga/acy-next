@@ -34,7 +34,7 @@
     "@clerk/nextjs": "^6.12.12",
     "@clerk/themes": "^2.2.55",
     "@googlemaps/google-maps-services-js": "^3.4.0",
-    "@heroui/react": "^2.7.0",
+    "@heroui/react": "^2.8.2",
     "@hookform/resolvers": "^5.2.1",
     "@internationalized/date": "^3.6.0",
     "@mailchimp/mailchimp_marketing": "^3.0.80",

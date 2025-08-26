@@ -3,6 +3,8 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
+import { Card, CardBody, CardFooter, Chip } from "@heroui/react";
+import { Calendar, Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
 
@@ -12,42 +14,81 @@ interface CardProps {
 
 const EventCard: FC<CardProps> = ({ event }) => {
   const { id, category, imageUrl, startDateTime, title } = event;
+  const dateTime = formatDateTime(startDateTime);
+
   return (
-    <div
-      className={
-        "flex flex-col w-full md:max-w-[400px]" +
-        " md:min-h-[280px] overflow-hidden" +
-        " rounded-sm bg-white shadow-md transition-all hover:shadow-lg"
-      }
+    <Card
+      className="w-full md:max-w-[400px] shadow-medium hover:shadow-xl transition-all duration-300 border-none"
+      isPressable
+      as={Link}
+      href={`/events/${id}`}
     >
-      <Link href={`/events/${id}`} className={"flex-col hover:underline"}>
-        <Image
-          src={imageUrl}
-          alt={`People doing ${category.name}`}
-          sizes={"400px"}
-          width={400}
-          height={140}
-          className={"w-full h-auto md:h-[140px]"}
-          style={{ objectFit: "cover" }}
-          priority={true}
-        />
-        <p className="text-lg line-clamp-2 flex-1 text-black pt-2 px-3">
-          {title}
-        </p>
-      </Link>
-      <div className={"pt-1 px-3 mb-8 md:mb-auto"}>
-        <p className="md:text-sm mb-1/2 font-semibold">
-          {formatDateTime(startDateTime).dateOnlyWithoutYear} •{" "}
-          {formatDateTime(startDateTime).timeOnly}
-        </p>
-        <p className={"md:text-sm mt-1"}>
-          {event.location.name}
+      <CardBody className="p-0 overflow-visible">
+        <div className="relative">
+          <Image
+            src={imageUrl}
+            alt={`People doing ${category.name}`}
+            sizes="400px"
+            width={400}
+            height={200}
+            className="w-full h-[180px] md:h-[200px] object-cover"
+            priority={true}
+          />
+          {/* Date Badge */}
+          <div className="absolute top-3 left-3 bg-background/95 backdrop-blur-md rounded-lg p-2 shadow-large">
+            <div className="text-center min-w-[50px]">
+              <div className="text-xs font-bold text-danger-500">
+                {dateTime.monthShort}
+              </div>
+              <div className="text-2xl font-bold text-foreground">
+                {dateTime.dayNumber}
+              </div>
+            </div>
+          </div>
           {event.isExternal && (
-            <span className="ml-1 text-xs text-gray-500">(External)</span>
+            <Chip
+              size="sm"
+              variant="flat"
+              color="warning"
+              className="absolute top-3 right-3"
+            >
+              External
+            </Chip>
           )}
-        </p>
-      </div>
-    </div>
+        </div>
+
+        <div className="px-4 py-3">
+          <h3 className="text-lg font-semibold text-foreground line-clamp-2 mb-3">
+            {title}
+          </h3>
+
+          <div className="space-y-2">
+            <div className="flex items-center gap-2 text-sm text-foreground-600">
+              <Clock className="w-4 h-4 text-primary-500" />
+              <span className="font-medium">{dateTime.timeOnly}</span>
+              <span className="text-foreground-400">•</span>
+              <span>{dateTime.dateOnlyWithoutYear}</span>
+            </div>
+
+            <div className="flex items-center gap-2 text-sm text-foreground-600">
+              <MapPin className="w-4 h-4 text-primary-500" />
+              <span className="line-clamp-1">{event.location.name}</span>
+            </div>
+          </div>
+        </div>
+      </CardBody>
+
+      <CardFooter className="px-4 py-3 border-t border-divider">
+        <div className="flex justify-between items-center w-full">
+          <Chip size="sm" variant="flat" color="primary" className="capitalize">
+            {category.name}
+          </Chip>
+          <span className="text-sm font-semibold text-primary hover:text-primary-700">
+            View Details →
+          </span>
+        </div>
+      </CardFooter>
+    </Card>
   );
 };
 
