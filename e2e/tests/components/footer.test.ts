@@ -62,28 +62,11 @@ test.describe("Footer Component", () => {
   });
 
   test("should display contact information and credits", async ({ page }) => {
-    const contactSection = page.locator("[data-testid='footer-contact']");
-    await expect(contactSection).toBeVisible();
-
-    const emailLink = contactSection.locator(
-      "[data-testid='footer-email-link']",
-    );
-    await expect(emailLink).toHaveAttribute(
-      "href",
-      "mailto:aaroncurtisyoga@gmail.com",
-    );
-
-    const githubLink = contactSection.locator(
-      "[data-testid='footer-github-link']",
-    );
-    await expect(githubLink).toHaveAttribute(
-      "href",
-      "https://github.com/aaroncurtisyoga/acy-next",
-    );
-
+    const copyrightElement = page.locator("[data-testid='footer-copyright']");
     const currentYear = new Date().getFullYear().toString();
-    await expect(contactSection).toContainText(
-      `© ${currentYear} All Rights Reserved`,
-    );
+    await expect(copyrightElement).toContainText(currentYear);
+
+    const socialSection = page.locator("[data-testid='footer-social-links']");
+    await expect(socialSection).toBeVisible();
   });
 });

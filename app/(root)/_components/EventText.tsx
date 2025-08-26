@@ -15,7 +15,7 @@ const EventText: FC<EventTextProps> = ({ event }) => {
   const formattedTime = formatDateTime(startDateTime).timeOnly;
 
   const signUpHref = event.isHostedExternally
-    ? event.externalRegistrationUrl
+    ? event.externalRegistrationUrl || event.externalUrl || `/events/${id}`
     : `/events/${id}`;
 
   return (
