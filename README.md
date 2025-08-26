@@ -11,15 +11,14 @@
 6. [Testing](#testing)
 7. [Contact](#contact)
 
-
 ## <a name="introduction">Introduction</a>
 
 This app is designed to help current and future yoga students:
+
 - Learn about Aaron Curtis
 - Find weekly schedules
 - Sign up for the newsletter
 - Register for events (_work in progress_)
-
 
 ## <a name="quick-start">Quick Start</a>
 
@@ -55,11 +54,28 @@ NEXT_PUBLIC_SERVER_URL
 ```
 
 ### Common Scripts
+
 - `npm run dev` to start the development server
 - `npm run build` for production build
 - `npm run lint` to run ESLint
 - `npm run lint:fix` to fix linting errors
 
+### Testing the Bright Bear Yoga Crawler
+
+To test and sync Aaron Curtis's yoga classes from Bright Bear Yoga:
+
+**Test the crawler only (no database update):**
+
+1. Start the development server: `npm run dev`
+2. Navigate to: `http://localhost:3000/api/test-sync/simple`
+
+**Sync data to database and update the main site:**
+
+1. Start the development server: `npm run dev`
+2. Make a POST request: `curl -X POST http://localhost:3000/api/dev-sync`
+3. Check `http://localhost:3000` to see the updated events on your main site
+
+The sync endpoint will run the crawler and save the class data to your database, making it visible on the main website.
 
 ## <a name="tech-stack">Tech Stack</a>
 
@@ -70,10 +86,10 @@ NEXT_PUBLIC_SERVER_URL
 - **Vercel Blob Storage** ([docs](https://vercel.com/docs/storage))
 
   **_Third-Party APIs_**
+
 - **Clerk** ([docs](https://docs.clerk.dev/))
 - **Stripe** ([docs](https://stripe.com/docs))
 - **Mailchimp Marketing API** ([docs](https://mailchimp.com/developer/marketing/))
-
 
 ## <a name="features">Features</a>
 
@@ -83,25 +99,25 @@ NEXT_PUBLIC_SERVER_URL
 4. **Search & Filter:** Users can search and filter events.
 5. **Checkout and Payment:** Secure payments powered by Stripe.
 
-
 ## <a name="postgres">Postgres Database</a>
 
 You can use Prisma Studio to view and manage your Vercel Postgres database schema and data. Depending on the environment, use one of the following commands:
 
 - **Local Development Database**:
-   ```bash
-   npx prisma studio
-   ```
+
+  ```bash
+  npx prisma studio
+  ```
+
   Opens Prisma Studio using your local `.env` configuration, connecting to your development database.
 
 - **Production Database**:
-   ```bash
-   dotenv -e .env.production -- npx prisma studio
-   ```
+  ```bash
+  dotenv -e .env.production -- npx prisma studio
+  ```
   Opens Prisma Studio using the `.env.production` file, connecting to your production database.
 
 > **Tip**: Ensure each environment file has the correct `DATABASE_URL` for seamless connections.
-
 
 ## <a name="testing">Testing</a>
 
@@ -109,9 +125,11 @@ This application uses [Playwright](https://playwright.dev/) for end-to-end testi
 
 - **Run Tests Locally**:
   To execute all tests from the terminal, use the following command:
+
   ```bash
   npx playwright test
   ```
+
   > **Note**: The development server must be running prior to executing this command.
 
 - **Automated Testing**:
@@ -120,7 +138,7 @@ This application uses [Playwright](https://playwright.dev/) for end-to-end testi
 - **IDE Recommendation**:
   Regardless of your preferred IDE, it is recommended to leverage the [Playwright Test extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). This extension provides a comprehensive set of tools for efficiently running and monitoring tests.
 
-
 ## <a name="contact">Contact</a>
+
 - **Instagram:** [@aaroncurtisyoga](https://www.instagram.com/aaroncurtisyoga/)
 - **Email:** aaroncurtisyoga@gmail.com

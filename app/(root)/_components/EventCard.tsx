@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardBody, CardFooter, Chip } from "@heroui/react";
+import { Card, CardBody, CardFooter, Chip, Button } from "@heroui/react";
 import { Calendar, Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
@@ -18,7 +18,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
 
   return (
     <Card
-      className="w-full md:max-w-[400px] shadow-medium hover:shadow-xl transition-all duration-300 border-none"
+      className="w-full md:max-w-[400px] shadow-medium hover:shadow-xl transition-all duration-300 border-none rounded-3xl"
       isPressable
       as={Link}
       href={`/events/${id}`}
@@ -31,7 +31,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
             sizes="400px"
             width={400}
             height={200}
-            className="w-full h-[180px] md:h-[200px] object-cover"
+            className="w-full h-[180px] md:h-[200px] object-cover rounded-t-3xl"
             priority={true}
           />
           {/* Date Badge */}
@@ -45,16 +45,6 @@ const EventCard: FC<CardProps> = ({ event }) => {
               </div>
             </div>
           </div>
-          {event.isExternal && (
-            <Chip
-              size="sm"
-              variant="flat"
-              color="warning"
-              className="absolute top-3 right-3"
-            >
-              External
-            </Chip>
-          )}
         </div>
 
         <div className="px-4 py-3">
@@ -74,18 +64,25 @@ const EventCard: FC<CardProps> = ({ event }) => {
               <MapPin className="w-4 h-4 text-primary-500" />
               <span className="line-clamp-1">{event.location.name}</span>
             </div>
+
+            <div className="flex items-center gap-2 text-sm text-foreground-500">
+              <div className="w-2 h-2 rounded-full bg-primary-400"></div>
+              <span className="line-clamp-1">{category.name}</span>
+            </div>
           </div>
         </div>
       </CardBody>
 
       <CardFooter className="px-4 py-3 border-t border-divider">
-        <div className="flex justify-between items-center w-full">
-          <Chip size="sm" variant="flat" color="primary" className="capitalize">
-            {category.name}
-          </Chip>
-          <span className="text-sm font-semibold text-primary hover:text-primary-700">
-            View Details →
-          </span>
+        <div className="flex justify-end items-center w-full">
+          <Button
+            size="sm"
+            color="primary"
+            variant="flat"
+            className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-primary-900/40 dark:text-primary-300 dark:hover:bg-primary-900/60"
+          >
+            Sign Up
+          </Button>
         </div>
       </CardFooter>
     </Card>

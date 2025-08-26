@@ -20,7 +20,7 @@ const EventText: FC<EventTextProps> = ({ event }) => {
     : `/events/${id}`;
 
   return (
-    <Card className="w-full mb-4 shadow-small hover:shadow-medium transition-shadow duration-200">
+    <Card className="w-full mb-4 shadow-small hover:shadow-medium transition-shadow duration-200 rounded-3xl">
       <CardBody className="px-4 py-3">
         <div className="flex flex-col md:flex-row md:items-center gap-4">
           {/* Date Badge */}
@@ -42,21 +42,6 @@ const EventText: FC<EventTextProps> = ({ event }) => {
           <div className="flex-1">
             <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
               <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-              <div className="flex gap-2">
-                {event.isExternal && (
-                  <Chip size="sm" variant="flat" color="warning">
-                    External
-                  </Chip>
-                )}
-                <Chip
-                  size="sm"
-                  variant="flat"
-                  color="primary"
-                  className="capitalize"
-                >
-                  {category.name}
-                </Chip>
-              </div>
             </div>
 
             <div className="flex flex-wrap gap-4 text-sm text-foreground-600">
@@ -69,6 +54,11 @@ const EventText: FC<EventTextProps> = ({ event }) => {
                 <MapPin className="w-4 h-4 text-primary-500" />
                 <span>{event.location.name}</span>
               </div>
+
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-primary-400"></div>
+                <span>{category.name}</span>
+              </div>
             </div>
           </div>
 
@@ -80,12 +70,7 @@ const EventText: FC<EventTextProps> = ({ event }) => {
               color="primary"
               variant="flat"
               size="md"
-              endContent={
-                event.isHostedExternally ? (
-                  <ExternalLink className="w-4 h-4" />
-                ) : null
-              }
-              className="font-semibold"
+              className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-primary-900/40 dark:text-primary-300 dark:hover:bg-primary-900/60"
             >
               Sign Up
             </Button>

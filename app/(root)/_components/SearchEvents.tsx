@@ -40,15 +40,13 @@ const SearchEvent = ({ className }: SearchEventProps) => {
 
   return (
     <Input
-      className={cn("w-full", className)}
-      endContent={<SearchIcon size={14} />}
-      placeholder={"e.g. 'Power Vinyasa'"}
-      key={"SearchInput"}
-      label="Search for Events"
-      labelPlacement={"outside"}
+      label="Search"
+      placeholder="e.g. 'Power Vinyasa'"
+      value={query}
       onChange={(e) => setQuery(e.target.value)}
-      type="text"
-      variant={"bordered"}
+      type="search"
+      variant="flat"
+      startContent={<SearchIcon size={16} />}
     />
   );
 };

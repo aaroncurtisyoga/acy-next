@@ -57,48 +57,31 @@ const NewsletterForm = () => {
     }, 3000);
   };
 
-  const getIcon = () => {
-    if (isSubmitting) return <Spinner size="sm" />;
-    if (isSuccess) return <Check className="text-success" />;
-    return <ArrowRight className="text-default-900" />;
-  };
-
-  const getDescription = () => {
-    if (isSuccess) return "Thank you for signing up!";
-    return "Be the first to know about events & more!";
-  };
-
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <Input
         {...register("email")}
-        classNames={{
-          description: "text-default-900",
-          label: "font-medium",
-          mainWrapper: "w-64",
-        }}
-        description={getDescription()}
         type="email"
-        label="Newsletter:"
-        labelPlacement="outside"
-        variant="underlined"
-        placeholder="Email"
+        label="Email"
+        placeholder="Enter your email"
+        description={
+          isSuccess
+            ? "Thank you for signing up!"
+            : "Be the first to know about events & more!"
+        }
+        variant="flat"
         isDisabled={isSubmitting || isSuccess}
+        isInvalid={!!errors.email || !!errors.root}
         errorMessage={errors.email?.message || errors.root?.message}
         endContent={
-          <button
-            className="focus:outline-none"
-            type="submit"
-            disabled={isSubmitting || isSuccess}
-            aria-label={
-              isSubmitting
-                ? "Submitting"
-                : isSuccess
-                  ? "Submission successful"
-                  : "Submit newsletter form"
-            }
-          >
-            {getIcon()}
+          <button type="submit" disabled={isSubmitting || isSuccess}>
+            {isSubmitting ? (
+              <Spinner size="sm" />
+            ) : isSuccess ? (
+              <Check size={20} />
+            ) : (
+              <ArrowRight size={20} />
+            )}
           </button>
         }
       />
