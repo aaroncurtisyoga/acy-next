@@ -17,7 +17,7 @@ const stripePromise = loadStripe(
 const CheckoutPage: React.FC = () => {
   const { formData } = useWizardForm();
   const [clientSecret, setClientSecret] = useState("");
-  const [loading, setLoading] = useState(true);
+  const [, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const router = useRouter();
 

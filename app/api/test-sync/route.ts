@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventSyncService } from "@/app/_lib/services/event-sync-service";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   // Only allow in development
   if (process.env.NODE_ENV === "production") {
     return NextResponse.json(

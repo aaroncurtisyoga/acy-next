@@ -123,4 +123,7 @@ export async function POST(req: Request) {
       );
     }
   }
+
+  // Return OK for unhandled event types
+  return NextResponse.json({ message: "OK" });
 }

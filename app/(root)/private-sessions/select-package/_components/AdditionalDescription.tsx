@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Link as HeroUiLink } from "@heroui/react";
 
 export const AdditionalDescription: FC = () => (
   <div className="mx-auto text-left max-w-[440px] text-xs text-gray-600 dark:text-gray-400 mb-2">

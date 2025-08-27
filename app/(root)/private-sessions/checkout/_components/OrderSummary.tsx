@@ -14,45 +14,45 @@ const OrderSummary: React.FC = () => {
     return null;
   }
 
-  let price: number;
-  let title: string;
-  let description: string;
-  let features: string[];
+  // let price: number;
+  // let title: string;
+  // let description: string;
+  // let features: string[];
 
   if (sessionPurchase) {
-    price = sessionPurchase.totalPrice;
-    title = `${sessionPurchase.sessionCount} ${sessionPurchase.sessionType} Session${sessionPurchase.sessionCount !== 1 ? "s" : ""}`;
-    description = `${sessionPurchase.sessionCount} hours of training at $${sessionPurchase.pricePerSession}/session`;
-    features =
-      sessionPurchase.sessionType === "Individual"
-        ? [
-            "Personalized programming",
-            "Virtual or In Person",
-            "Breathwork",
-            "Meditation",
-            ...(sessionPurchase.sessionCount >= 4
-              ? ["Async Q & A", "Video Support"]
-              : []),
-          ]
-        : [
-            "Unique programming for your group",
-            "Virtual or In Person",
-            "Breathwork",
-            "Meditation",
-            ...(sessionPurchase.sessionCount >= 4
-              ? ["Async Q & A", "Video Support", "Sound Bath"]
-              : []),
-          ];
+    // price = sessionPurchase.totalPrice;
+    // title = `${sessionPurchase.sessionCount} ${sessionPurchase.sessionType} Session${sessionPurchase.sessionCount !== 1 ? "s" : ""}`;
+    // description = `${sessionPurchase.sessionCount} hours of training at $${sessionPurchase.pricePerSession}/session`;
+    // features =
+    //   sessionPurchase.sessionType === "Individual"
+    //     ? [
+    //         "Personalized programming",
+    //         "Virtual or In Person",
+    //         "Breathwork",
+    //         "Meditation",
+    //         ...(sessionPurchase.sessionCount >= 4
+    //           ? ["Async Q & A", "Video Support"]
+    //           : []),
+    //       ]
+    //     : [
+    //         "Unique programming for your group",
+    //         "Virtual or In Person",
+    //         "Breathwork",
+    //         "Meditation",
+    //         ...(sessionPurchase.sessionCount >= 4
+    //           ? ["Async Q & A", "Video Support", "Sound Bath"]
+    //           : []),
+    //       ];
   } else {
     // Legacy fallback
-    price = parseFloat(packageDetails!.price);
-    title = packageDetails!.title;
-    description = packageDetails!.description;
-    features = packageDetails!.features;
+    // price = parseFloat(packageDetails!.price);
+    // title = packageDetails!.title;
+    // description = packageDetails!.description;
+    // features = packageDetails!.features;
   }
 
-  const tax = price * 0.08; // 8% tax (adjust as needed)
-  const total = price + tax;
+  // const tax = price * 0.08; // 8% tax (adjust as needed)
+  // const total = price + tax;
 
   return (
     <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6">

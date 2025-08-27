@@ -24,20 +24,20 @@ const ManageUsersTable: FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
+  // const [totalPages, setTotalPages] = useState(0); // Unused - for future pagination
+  const [page /*, setPage */] = useState(1); // setPage for future pagination
+  const [searchText /*, setSearchText */] = useState(""); // setSearchText for future search
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const { data, totalPages } = await getAllUsers({
+        const { data /* , totalPages */ } = await getAllUsers({
           limit: 8,
           page,
           query: searchText,
         });
         setUsers(data);
-        setTotalPages(totalPages);
+        // setTotalPages(totalPages); // Unused - for future pagination
         setLoading(false);
       } catch (error) {
         handleError("Failed to fetch users", error);

@@ -61,6 +61,7 @@ export async function createEvent({
     return newEvent;
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
 
@@ -74,26 +75,28 @@ export async function deleteEvent(
     if (deletedEvent) {
       return { success: true };
     }
+    return { success: false };
   } catch (error) {
     handleError(error);
     return { success: false };
   }
 }
 
-async function getEventAttendees(eventId: string) {
-  return prisma.order.findMany({
-    where: { event: { id: eventId } },
-    include: {
-      buyer: {
-        select: {
-          firstName: true,
-          lastName: true,
-          photo: true,
-        },
-      },
-    },
-  });
-}
+// Unused function - commented out to fix build
+// async function getEventAttendees(eventId: string) {
+//   return prisma.order.findMany({
+//     where: { event: { id: eventId } },
+//     include: {
+//       buyer: {
+//         select: {
+//           firstName: true,
+//           lastName: true,
+//           photo: true,
+//         },
+//       },
+//     },
+//   });
+// }
 
 export async function getAllEvents({
   query,
@@ -135,14 +138,20 @@ export async function getAllEvents({
     };
   } catch (error) {
     handleError(error);
+    return {
+      data: [],
+      hasFiltersApplied: false,
+      totalPages: 0,
+    };
   }
 }
 
-const getCategoryByName = async (name: string) => {
-  return prisma.category.findUnique({
-    where: { name: name },
-  });
-};
+// Unused function - commented out to fix build
+// const getCategoryByName = async (name: string) => {
+//   return prisma.category.findUnique({
+//     where: { name: name },
+//   });
+// };
 
 export async function getEventsWithSameCategory({
   categoryId,
@@ -174,6 +183,10 @@ export async function getEventsWithSameCategory({
     };
   } catch (error) {
     handleError(error);
+    return {
+      data: [],
+      totalPages: 0,
+    };
   }
 }
 
@@ -193,6 +206,7 @@ export async function getEventById(eventId: string) {
     });
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
 
@@ -239,5 +253,6 @@ export async function updateEvent({
     return updatedEvent;
   } catch (error) {
     handleError(error);
+    return null;
   }
 }
