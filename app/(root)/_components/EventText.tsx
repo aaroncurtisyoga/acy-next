@@ -2,8 +2,8 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { Card, CardBody, Chip, Button } from "@heroui/react";
-import { Calendar, Clock, MapPin, ExternalLink } from "lucide-react";
+import { Card, CardBody, Button } from "@heroui/react";
+import { Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
 

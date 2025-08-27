@@ -2,15 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input, cn } from "@heroui/react";
+import { Input } from "@heroui/react";
 import { Search as SearchIcon } from "lucide-react";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
 
-interface SearchEventProps {
-  className?: string;
-}
-
-const SearchEvent = ({ className }: SearchEventProps) => {
+const SearchEvent = () => {
   const [query, setQuery] = useState("");
   const router = useRouter();
   const searchParams = useSearchParams();

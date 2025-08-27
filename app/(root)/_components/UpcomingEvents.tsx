@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { Card, CardBody, CardHeader, Divider } from "@heroui/react";
-import { Calendar, Filter } from "lucide-react";
+import { Card, CardBody } from "@heroui/react";
+import { Calendar } from "lucide-react";
 import Collection from "@/app/(root)/_components/Collection";
 import FilterEventsModal from "@/app/(root)/_components/FilterEventsModal";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";

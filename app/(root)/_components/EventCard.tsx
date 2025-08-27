@@ -3,8 +3,8 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardBody, CardFooter, Chip, Button } from "@heroui/react";
-import { Calendar, Clock, MapPin } from "lucide-react";
+import { Card, CardBody, CardFooter, Button } from "@heroui/react";
+import { Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
 
