@@ -24,7 +24,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
 
   const { data, hasFiltersApplied, totalPages } = await getAllEvents({
     category,
-    limit: 8,
+    limit: 4,
     page,
     query: searchText,
   });
@@ -78,7 +78,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
             collectionType={"All_Events"}
             data={data}
             hasFiltersApplied={hasFiltersApplied}
-            limit={8}
+            limit={4}
             page={page}
             totalPages={totalPages}
             view={"text"}

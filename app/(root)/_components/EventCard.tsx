@@ -18,7 +18,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
 
   return (
     <Card
-      className="w-full md:max-w-[400px] shadow-medium hover:shadow-xl transition-all duration-300 border-none rounded-3xl"
+      className="w-full md:max-w-[400px] shadow-medium hover:shadow-xl transition-all duration-300 border-none rounded-3xl bg-content1 dark:bg-content1"
       isPressable
       as={Link}
       href={`/events/${id}`}
@@ -79,7 +79,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
             size="sm"
             color="primary"
             variant="flat"
-            className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-primary-900/40 dark:text-primary-300 dark:hover:bg-primary-900/60"
+            className="font-semibold"
           >
             Sign Up
           </Button>

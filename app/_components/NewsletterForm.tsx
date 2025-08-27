@@ -38,7 +38,6 @@ const NewsletterForm = () => {
         <Input
           type="email"
           label="Email"
-          placeholder="Enter your email"
           value={email}
           onValueChange={setEmail}
           description={
