@@ -1,5 +1,21 @@
 @import "tailwindcss";
-@config "../tailwind.config.ts";
+
+/* Content paths */
+@source "../app/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../pages/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../_components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
+
+/* Custom theme values */
+@theme {
+  --breakpoint-md: 768px;
+  --breakpoint-lg: 1024px;
+  --breakpoint-2xl: 1536px;
+  --width-screen-2xl: 1536px;
+}
+
+/* HeroUI plugin */
+@plugin "../hero";
 
 /* Remove focus rings from HeroUI inputs */
 [data-slot="input-wrapper"] {
