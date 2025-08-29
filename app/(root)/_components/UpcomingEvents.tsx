@@ -2,7 +2,6 @@ import { FC } from "react";
 import { Card, CardBody } from "@heroui/react";
 import { Calendar } from "lucide-react";
 import Collection from "@/app/(root)/_components/Collection";
-import FilterEventsModal from "@/app/(root)/_components/FilterEventsModal";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
@@ -22,12 +21,13 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const searchText = (resolvedParams?.query as string) || "";
   const category = (resolvedParams?.category as string) || "";
 
-  const { data, hasFiltersApplied, totalPages } = await getAllEvents({
-    category,
-    limit: 4,
-    page,
-    query: searchText,
-  });
+  const { data, hasFiltersApplied, totalPages, totalCount } =
+    await getAllEvents({
+      category,
+      limit: 3,
+      page,
+      query: searchText,
+    });
 
   const hasEvents = data.length > 0;
 
@@ -36,9 +36,6 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {/* Header - Always show */}
       <div className="mb-6 md:mb-8">
         <div className="flex items-center gap-3 mb-3">
-          <div className="p-2 rounded-lg bg-primary-50 text-primary-600">
-            <Calendar size={24} />
-          </div>
           <h1
             className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
           >
@@ -52,7 +49,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       </div>
 
       {/* Filter bar - Always show */}
-      <Card className="mb-6 shadow-sm border border-divider">
+      {/* <Card className="mb-6 shadow-sm border border-divider">
         <CardBody className="px-4 py-3">
           <div className="flex justify-between items-center">
             <div className="flex items-center gap-2">
@@ -69,7 +66,17 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
             <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
           </div>
         </CardBody>
-      </Card>
+      </Card> */}
+
+      {/* Simple event count display */}
+      <div className="mb-6">
+        <div className="flex items-center gap-2">
+          <div className="w-2 h-2 rounded-full bg-primary-500"></div>
+          <p className="font-semibold text-foreground-800">
+            {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
+          </p>
+        </div>
+      </div>
 
       {/* Content area */}
       {hasEvents ? (
@@ -78,7 +85,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
             collectionType={"All_Events"}
             data={data}
             hasFiltersApplied={hasFiltersApplied}
-            limit={4}
+            limit={3}
             page={page}
             totalPages={totalPages}
             view={"text"}

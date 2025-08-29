@@ -3,7 +3,6 @@
 import mailchimp from "@mailchimp/mailchimp_marketing";
 import { z } from "zod";
 import { NewsletterFormSchema } from "@/app/_lib/schema";
-import { handleError } from "@/app/_lib/utils";
 type Inputs = z.infer<typeof NewsletterFormSchema>;
 
 export async function addNewsletterEntry(data: Inputs) {
@@ -30,18 +29,19 @@ export async function addNewsletterEntry(data: Inputs) {
       return {
         message: `A confirmation email should be in your inbox soon.`,
       };
-    } catch (error) {
+    } catch (error: any) {
+      console.error("Newsletter subscription error:", error);
+
       if (
         error.response?.status === 400 &&
         error.response?.text?.includes("Member Exists")
       ) {
-        handleError('Newsletter subscription failed: "Member Exists" error.');
         return {
           apiError: "ALREADY_SUBSCRIBED",
           message: "Looks like you're already subscribed.",
         };
       }
-      handleError("Newsletter subscription failed.", error);
+
       return {
         apiError: "Failed to subscribe.",
         message: "Sorry. Something went wrong. Please try again later!",

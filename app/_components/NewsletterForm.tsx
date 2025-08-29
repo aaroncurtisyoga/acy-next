@@ -36,8 +36,9 @@ const NewsletterForm = () => {
     <form onSubmit={handleSubmit} className="w-full max-w-sm">
       <div className="flex flex-col gap-4">
         <Input
-          type="email"
           label="Email"
+          placeholder="Enter your email"
+          type="email"
           value={email}
           onValueChange={setEmail}
           description={
@@ -45,23 +46,11 @@ const NewsletterForm = () => {
               ? "Thank you for signing up!"
               : "Be the first to know about events & more!"
           }
-          variant="flat"
           color={isSuccess ? "success" : "default"}
           isDisabled={isSubmitting}
           isInvalid={!!error}
           errorMessage={error}
           isClearable
-          size="md"
-          classNames={{
-            base: "max-w-full",
-            mainWrapper: "h-full",
-            input: "text-sm",
-            inputWrapper:
-              "h-full bg-default-100 data-[hover=true]:bg-default-200",
-            label: "text-sm font-medium",
-            description: "text-xs",
-            errorMessage: "text-xs",
-          }}
         />
         <Button
           type="submit"

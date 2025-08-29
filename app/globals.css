@@ -1,6 +1,24 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
+@config "../tailwind.config.ts";
+
+/* Remove focus rings from HeroUI inputs */
+[data-slot="input-wrapper"] {
+  ring-width: 0 !important;
+  ring-offset-width: 0 !important;
+  outline: none !important;
+}
+
+[data-slot="input-wrapper"]:focus-within {
+  ring-width: 0 !important;
+  ring-offset-width: 0 !important;
+  outline: none !important;
+}
+
+.group[data-focus-visible="true"] [data-slot="input-wrapper"] {
+  ring-width: 0 !important;
+  ring-offset-width: 0 !important;
+  outline: none !important;
+}
 
 /* Prevent horizontal overflow on mobile */
 html,

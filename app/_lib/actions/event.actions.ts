@@ -135,6 +135,7 @@ export async function getAllEvents({
       data: events,
       hasFiltersApplied,
       totalPages: calculateTotalPages(eventsCount, limit),
+      totalCount: eventsCount,
     };
   } catch (error) {
     handleError(error);
@@ -142,6 +143,7 @@ export async function getAllEvents({
       data: [],
       hasFiltersApplied: false,
       totalPages: 0,
+      totalCount: 0,
     };
   }
 }
