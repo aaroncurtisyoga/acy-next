@@ -12,7 +12,7 @@ const EventsPage = async ({ searchParams }: EventsPageProps) => {
     <section
       className={
         "grid grow w-full md:min-h-[calc(100dvh-201px)] max-w-screen-2xl " +
-        "md:grid-cols-[1fr,1fr] lg:mx-auto"
+        "md:grid-cols-2 lg:mx-auto"
       }
     >
       <div className={"relative"}>

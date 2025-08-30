@@ -1,9 +1,8 @@
 @import "tailwindcss";
 
-/* Content paths */
+/* Content paths - Tailwind v4 syntax */
 @source "../app/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../pages/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../_components/**/*.{js,ts,jsx,tsx,mdx}";
+@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
 @source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
 
 /* Custom theme values */
@@ -16,25 +15,6 @@
 
 /* HeroUI plugin */
 @plugin "../hero";
-
-/* Remove focus rings from HeroUI inputs */
-[data-slot="input-wrapper"] {
-  ring-width: 0 !important;
-  ring-offset-width: 0 !important;
-  outline: none !important;
-}
-
-[data-slot="input-wrapper"]:focus-within {
-  ring-width: 0 !important;
-  ring-offset-width: 0 !important;
-  outline: none !important;
-}
-
-.group[data-focus-visible="true"] [data-slot="input-wrapper"] {
-  ring-width: 0 !important;
-  ring-offset-width: 0 !important;
-  outline: none !important;
-}
 
 /* Prevent horizontal overflow on mobile */
 html,
