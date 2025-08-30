@@ -82,7 +82,7 @@ const Footer = () => {
                 <div className="flex items-center justify-center md:justify-end gap-4">
                   <p
                     data-testid="footer-copyright"
-                    className="text-slate-500 text-sm"
+                    className="text-slate-500 dark:text-slate-400 text-sm"
                   >
                     © {new Date().getFullYear()} Aaron Curtis Yoga
                   </p>

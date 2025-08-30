@@ -14,11 +14,11 @@ import {
 import { TravelOption } from "@/app/_lib/types";
 
 export const unauthenticatedLinks = [
-  {
-    name: "Private Sessions",
-    href: "/private-sessions",
-    testId: "private-sessions-link",
-  },
+  // {
+  //   name: "Private Sessions",
+  //   href: "/private-sessions",
+  //   testId: "private-sessions-link",
+  // },
 ];
 
 export const adminLinks = [

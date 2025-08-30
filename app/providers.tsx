@@ -30,14 +30,14 @@ export function Providers({ children }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange={false}
-    >
-      <ThemedClerkProvider>
-        <HeroUIProvider navigate={router.push}>
+    <HeroUIProvider navigate={router.push}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange={false}
+      >
+        <ThemedClerkProvider>
           <ToastProvider
             toastProps={{
               radius: "full",
@@ -52,8 +52,8 @@ export function Providers({ children }: ProvidersProps) {
             }}
           />
           {children}
-        </HeroUIProvider>
-      </ThemedClerkProvider>
-    </ThemeProvider>
+        </ThemedClerkProvider>
+      </ThemeProvider>
+    </HeroUIProvider>
   );
 }
