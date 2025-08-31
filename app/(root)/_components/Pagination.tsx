@@ -31,7 +31,7 @@ const Pagination: FC<PaginationProps> = ({
   };
 
   return (
-    <div className="flex items-center justify-center gap-4 mt-6">
+    <div className="flex items-center justify-center gap-4 mt-6 mb-4">
       <button
         onClick={() => onClick("prev")}
         disabled={Number(page) <= 1}

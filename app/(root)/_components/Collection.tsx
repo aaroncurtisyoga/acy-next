@@ -43,11 +43,13 @@ const Collection: FC<CollectionProps> = ({
           )}
 
           {totalPages > 1 && (
-            <Pagination
-              urlParamName={urlParamName}
-              page={page}
-              totalPages={totalPages}
-            />
+            <div className="mb-6">
+              <Pagination
+                urlParamName={urlParamName}
+                page={page}
+                totalPages={totalPages}
+              />
+            </div>
           )}
         </div>
       ) : (

@@ -3,7 +3,7 @@ import { getImageProps } from "next/image";
 export default async function ImageResponsiveHandstand() {
   const common = {
     alt: "Aaron doing handstand posture",
-    className: "object-cover",
+    className: "object-cover object-center",
     fill: true,
   };
 

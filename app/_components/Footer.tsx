@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer
       data-testid="footer"
-      className="border-t border-slate-200 dark:border-slate-700 py-12 bg-gradient-to-br from-stone-50 via-blue-50/20 to-slate-50 dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 relative overflow-hidden"
+      className="border-t border-slate-200 dark:border-slate-700 py-12 bg-gradient-to-br from-stone-50 via-blue-50/20 to-slate-50 dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 relative overflow-hidden flex-shrink-0"
       style={{
         backgroundImage: `radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
                          radial-gradient(circle at 80% 20%, rgba(156, 163, 175, 0.04) 0%, transparent 50%)`,
@@ -22,7 +22,7 @@ const Footer = () => {
       />
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-20">
         <div className="wrapper-width">
           {/* Single responsive layout */}
           <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 md:gap-12">
@@ -80,13 +80,13 @@ const Footer = () => {
               {/* Copyright & theme toggle */}
               <div className="text-center md:text-right">
                 <div className="flex items-center justify-center md:justify-end gap-4">
+                  <ThemeToggle />
                   <p
                     data-testid="footer-copyright"
                     className="text-slate-500 dark:text-slate-400 text-sm"
                   >
                     © {new Date().getFullYear()} Aaron Curtis Yoga
                   </p>
-                  <ThemeToggle />
                 </div>
               </div>
             </div>
