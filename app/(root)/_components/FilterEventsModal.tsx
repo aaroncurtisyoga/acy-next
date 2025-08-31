@@ -25,7 +25,7 @@ const FilterEventsModal = ({ hasFiltersApplied }: FilterModalProps) => {
         hideButtons
       >
         <div>
-          <SearchEvents className={"mb-4"} />
+          <SearchEvents />
           <CategoryButtons />
         </div>
       </BasicModal>

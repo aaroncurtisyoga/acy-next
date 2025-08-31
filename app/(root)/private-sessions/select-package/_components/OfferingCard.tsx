@@ -1,5 +1,5 @@
 import React, { FC } from "react";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Card, CardBody, CardHeader } from "@heroui/react";
 import { Check } from "lucide-react";
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 

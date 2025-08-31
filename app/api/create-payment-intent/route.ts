@@ -45,7 +45,9 @@ export async function POST(request: NextRequest) {
       clientSecret: paymentIntent.client_secret,
     });
   } catch (error) {
-    console.error("Error creating payment intent:", error);
+    if (process.env.NODE_ENV === "development") {
+      console.error("Error creating payment intent:", error);
+    }
     return NextResponse.json(
       { error: "Failed to create payment intent" },
       { status: 500 },

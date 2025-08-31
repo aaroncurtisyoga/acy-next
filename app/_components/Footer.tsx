@@ -24,30 +24,28 @@ const Footer = () => {
       {/* Content */}
       <div className="relative z-10">
         <div className="wrapper-width">
-          {/* Mobile layout */}
-          <div className="flex flex-col items-center gap-12 md:hidden">
+          {/* Single responsive layout */}
+          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 md:gap-12">
             {/* Newsletter */}
             <div
               data-testid="footer-newsletter"
-              className="flex justify-center"
+              className="flex-shrink-0 order-2 md:order-1"
             >
               <NewsletterForm />
             </div>
 
             {/* Social & Copyright */}
-            <div className="flex flex-col items-center gap-6">
+            <div className="flex flex-col items-center md:items-end gap-6 order-1 md:order-2">
               <div
                 data-testid="footer-social-links"
-                className="flex justify-center items-center"
+                className="flex items-center"
               >
                 <div className="flex items-center gap-6">
                   <Link
-                    href={
-                      "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
-                    }
-                    target={"_blank"}
+                    href="https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
+                    target="_blank"
                     data-testid="footer-youtube-link"
-                    aria-label={"Visit Aaron on YouTube"}
+                    aria-label="Visit Aaron on YouTube"
                     className="group"
                   >
                     <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
@@ -55,12 +53,10 @@ const Footer = () => {
                     </div>
                   </Link>
                   <Link
-                    href={
-                      "https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
-                    }
-                    target={"_blank"}
+                    href="https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
+                    target="_blank"
                     data-testid="footer-spotify-link"
-                    aria-label={"See Aaron's playlists on Spotify"}
+                    aria-label="See Aaron's playlists on Spotify"
                     className="group"
                   >
                     <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
@@ -71,7 +67,7 @@ const Footer = () => {
                     href="https://www.instagram.com/aaroncurtisyoga/"
                     target="_blank"
                     data-testid="footer-instagram-link"
-                    aria-label={"Follow Aaron on Instagram"}
+                    aria-label="Follow Aaron on Instagram"
                     className="group"
                   >
                     <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
@@ -82,86 +78,15 @@ const Footer = () => {
               </div>
 
               {/* Copyright & theme toggle */}
-              <div className="text-center">
-                <div className="flex items-center justify-center gap-4">
+              <div className="text-center md:text-right">
+                <div className="flex items-center justify-center md:justify-end gap-4">
                   <p
                     data-testid="footer-copyright"
-                    className="text-slate-500 text-sm"
+                    className="text-slate-500 dark:text-slate-400 text-sm"
                   >
                     © {new Date().getFullYear()} Aaron Curtis Yoga
                   </p>
                   <ThemeToggle />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          {/* Desktop layout */}
-          <div className="hidden md:block">
-            <div className="flex justify-between items-start">
-              {/* Newsletter */}
-              <div data-testid="footer-newsletter" className="flex-shrink-0">
-                <NewsletterForm />
-              </div>
-
-              {/* Social & Copyright */}
-              <div className="flex flex-col items-end gap-6">
-                <div
-                  data-testid="footer-social-links"
-                  className="flex justify-end items-center"
-                >
-                  <div className="flex items-center gap-6">
-                    <Link
-                      href={
-                        "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
-                      }
-                      target={"_blank"}
-                      data-testid="footer-youtube-link"
-                      aria-label={"Visit Aaron on YouTube"}
-                      className="group"
-                    >
-                      <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
-                        <Youtube className="w-6 h-6 text-slate-600 dark:text-slate-300 transition-colors duration-300" />
-                      </div>
-                    </Link>
-                    <Link
-                      href={
-                        "https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
-                      }
-                      target={"_blank"}
-                      data-testid="footer-spotify-link"
-                      aria-label={"See Aaron's playlists on Spotify"}
-                      className="group"
-                    >
-                      <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
-                        <AudioLines className="w-6 h-6 text-slate-600 dark:text-slate-300 transition-colors duration-300" />
-                      </div>
-                    </Link>
-                    <Link
-                      href="https://www.instagram.com/aaroncurtisyoga/"
-                      target="_blank"
-                      data-testid="footer-instagram-link"
-                      aria-label={"Follow Aaron on Instagram"}
-                      className="group"
-                    >
-                      <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
-                        <Instagram className="w-6 h-6 text-slate-600 dark:text-slate-300 transition-colors duration-300" />
-                      </div>
-                    </Link>
-                  </div>
-                </div>
-
-                {/* Copyright & theme toggle */}
-                <div className="text-right">
-                  <div className="flex items-center justify-end gap-4">
-                    <p
-                      data-testid="footer-copyright"
-                      className="text-slate-500 text-sm"
-                    >
-                      © {new Date().getFullYear()} Aaron Curtis Yoga
-                    </p>
-                    <ThemeToggle />
-                  </div>
                 </div>
               </div>
             </div>

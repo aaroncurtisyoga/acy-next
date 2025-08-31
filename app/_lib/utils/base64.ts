@@ -12,5 +12,6 @@ export async function getBase64(imageUrl: string) {
     return base64;
   } catch (error) {
     handleError(error);
+    return "";
   }
 }

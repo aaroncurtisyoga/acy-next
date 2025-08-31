@@ -1,7 +1,6 @@
 "use client";
 
-import { Link as HeroUiLink } from "@heroui/link";
-import { Button } from "@heroui/react";
+import { Link as HeroUiLink, Button } from "@heroui/react";
 import Error from "@/app/_components/Error";
 import { instructorEmailAddress } from "@/app/_lib/constants";
 

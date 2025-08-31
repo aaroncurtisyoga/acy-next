@@ -2,6 +2,8 @@
 
 import { FC } from "react";
 import Link from "next/link";
+import { Card, CardBody, Button } from "@heroui/react";
+import { Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
 
@@ -10,29 +12,72 @@ interface EventTextProps {
 }
 
 const EventText: FC<EventTextProps> = ({ event }) => {
-  const { id, startDateTime, title } = event;
-  const formattedDate = formatDateTime(startDateTime).dateOnlyWithoutYear;
-  const formattedTime = formatDateTime(startDateTime).timeOnly;
+  const { id, startDateTime, title, category } = event;
+  const dateTime = formatDateTime(startDateTime);
 
   const signUpHref = event.isHostedExternally
-    ? event.externalRegistrationUrl
+    ? event.externalRegistrationUrl || event.externalUrl || `/events/${id}`
     : `/events/${id}`;
 
   return (
-    <>
-      <p className={"text-base text-default-900 md:text-lg mb-4"}>
-        {formattedDate} - {formattedTime} - {title} at {event.location.name} -{" "}
-        <Link
-          className={
-            "italic underline cursor-pointer" +
-            " text-primary hover:text-primary-700"
-          }
-          href={signUpHref}
-        >
-          Sign Up
-        </Link>
-      </p>
-    </>
+    <Card className="w-full mb-4 shadow-small hover:shadow-medium transition-shadow duration-200 rounded-3xl">
+      <CardBody className="px-4 py-3">
+        <div className="flex flex-col md:flex-row md:items-center gap-4">
+          {/* Date Badge */}
+          <div className="flex items-center gap-3">
+            <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 text-center min-w-[60px]">
+              <div className="text-xs font-bold text-primary-600 dark:text-primary-400">
+                {dateTime.monthShort}
+              </div>
+              <div className="text-2xl font-bold text-foreground">
+                {dateTime.dayNumber}
+              </div>
+              <div className="text-xs text-foreground-500">
+                {dateTime.weekdayLong}
+              </div>
+            </div>
+          </div>
+
+          {/* Event Details */}
+          <div className="flex-1">
+            <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
+              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
+            </div>
+
+            <div className="flex flex-wrap gap-4 text-sm text-foreground-600">
+              <div className="flex items-center gap-1.5">
+                <Clock className="w-4 h-4 text-primary-500" />
+                <span className="font-medium">{dateTime.timeOnly}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-primary-500" />
+                <span>{event.location.name}</span>
+              </div>
+
+              <div className="flex items-center gap-1.5">
+                <div className="w-2 h-2 rounded-full bg-primary-400"></div>
+                <span>{category.name}</span>
+              </div>
+            </div>
+          </div>
+
+          {/* Sign Up Button */}
+          <div className="md:ml-auto">
+            <Button
+              as={Link}
+              href={signUpHref}
+              color="primary"
+              variant="flat"
+              size="md"
+              className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-primary-900/40 dark:text-primary-300 dark:hover:bg-primary-900/60"
+            >
+              Sign Up
+            </Button>
+          </div>
+        </div>
+      </CardBody>
+    </Card>
   );
 };
 

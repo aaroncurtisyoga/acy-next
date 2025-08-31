@@ -2,8 +2,7 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useClerk } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 import {
   NavbarContent,
   NavbarMenu,
@@ -27,16 +26,8 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   isSignedIn = false,
 }) => {
   const pathname = usePathname();
-  const { signOut } = useClerk();
-  const router = useRouter();
-
   const closeMenu = () => {
     setIsMenuOpen(false);
-  };
-
-  const handleSignOut = () => {
-    signOut(() => router.push("/"));
-    closeMenu();
   };
 
   // Toggle styling based on auth state
@@ -63,7 +54,10 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
         />
       </NavbarContent>
 
-      <NavbarMenu data-testid="navbar-menu-mobile">
+      <NavbarMenu
+        data-testid="navbar-menu-mobile"
+        className="bg-white dark:bg-slate-900"
+      >
         {/* Navigation links */}
         {unauthenticatedLinks.map((link, index) => (
           <NavbarMenuItem
@@ -72,7 +66,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           >
             <Link
               data-testid={`navbar-menu-item-${link.testId}`}
-              className="w-full"
+              className="w-full text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400"
               href={link.href}
               onClick={closeMenu}
             >
@@ -90,7 +84,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
             >
               <Link
                 data-testid={`navbar-menu-item-${link.testId}`}
-                className="w-full"
+                className="w-full text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400"
                 href={link.href}
                 onClick={closeMenu}
               >
@@ -100,11 +94,11 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           ))}
 
         {/* Auth links */}
-        <NavbarMenuItem>
+        {/* <NavbarMenuItem>
           {isSignedIn ? (
             <button
               data-testid="navbar-menu-item-logout"
-              className="w-full text-left"
+              className="w-full text-left text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400"
               onClick={handleSignOut}
             >
               Log out
@@ -112,14 +106,14 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
           ) : (
             <Link
               data-testid="navbar-menu-item-login"
-              className="w-full"
+              className="w-full text-gray-700 dark:text-gray-300 hover:text-primary dark:hover:text-primary-400"
               href="/sign-in"
               onClick={closeMenu}
             >
               Log in
             </Link>
           )}
-        </NavbarMenuItem>
+        </NavbarMenuItem> */}
       </NavbarMenu>
     </>
   );

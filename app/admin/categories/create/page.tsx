@@ -17,7 +17,7 @@ const CreateCategory: FC = () => {
     handleSubmit,
     reset,
     setError,
-    formState: { errors, isSubmitting, isSubmitSuccessful },
+    formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(CategoryFormSchema),
     defaultValues: {

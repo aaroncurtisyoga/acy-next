@@ -9,7 +9,7 @@ import {
   useEffect,
   useMemo,
 } from "react";
-import { useRouter, usePathname } from "next/navigation";
+import { usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { SessionPurchase, SessionType } from "../types";
 
@@ -67,7 +67,6 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
     return {};
   });
   const { isSignedIn } = useAuth();
-  const router = useRouter();
   const pathname = usePathname();
 
   const totalSteps = 4; // Welcome -> Sign-in -> Package Selection -> Checkout

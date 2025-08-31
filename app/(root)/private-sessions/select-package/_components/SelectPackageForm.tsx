@@ -53,7 +53,6 @@ const SelectPackageForm: FC = () => {
   };
 
   const currentPackages = packages[sessionType];
-  const selectedPkg = currentPackages.find((p) => p.id === selectedPackage);
 
   return (
     <div className="max-w-4xl mx-auto">
@@ -131,7 +130,7 @@ const SelectPackageForm: FC = () => {
               <>
                 {/* Mobile: Stacked Cards */}
                 <div className="block md:hidden space-y-4">
-                  {currentPackages.map((pkg, index) => (
+                  {currentPackages.map((pkg) => (
                     <div
                       key={pkg.id}
                       className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer bg-white dark:bg-gray-800 ${
@@ -200,7 +199,7 @@ const SelectPackageForm: FC = () => {
 
                 {/* Desktop: Netflix-style Side by Side */}
                 <div className="hidden md:grid md:grid-cols-3 gap-3">
-                  {currentPackages.map((pkg, index) => (
+                  {currentPackages.map((pkg) => (
                     <div
                       key={pkg.id}
                       className={`border-2 rounded-[18px] transition-all duration-200 cursor-pointer bg-white dark:bg-gray-800 ${

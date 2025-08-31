@@ -32,7 +32,9 @@ export class DatabaseError extends AppError {
 }
 
 export function handleError(error: unknown, context?: string): never {
-  console.error(`Error ${context ? `in ${context}` : ""}:`, error);
+  if (process.env.NODE_ENV === "development") {
+    console.error(`Error ${context ? `in ${context}` : ""}:`, error);
+  }
 
   if (error instanceof AppError) {
     throw error;
@@ -46,11 +48,15 @@ export function handleError(error: unknown, context?: string): never {
 }
 
 export function logError(error: unknown, context?: string): void {
-  console.error(`Error ${context ? `in ${context}` : ""}:`, {
-    message: error instanceof Error ? error.message : String(error),
-    stack: error instanceof Error ? error.stack : undefined,
-    timestamp: new Date().toISOString(),
-  });
+  if (process.env.NODE_ENV === "development") {
+    console.error(`Error ${context ? `in ${context}` : ""}:`, {
+      message: error instanceof Error ? error.message : String(error),
+      stack: error instanceof Error ? error.stack : undefined,
+      timestamp: new Date().toISOString(),
+    });
+  }
+  // In production, you should send this to a proper logging service
+  // Example: sendToLoggingService(error, context);
 }
 
 export function isOperationalError(error: Error): boolean {

@@ -41,5 +41,6 @@ export const getAllCategories = async () => {
     return await prisma.category.findMany();
   } catch (error) {
     handleError(error);
+    return [];
   }
 };

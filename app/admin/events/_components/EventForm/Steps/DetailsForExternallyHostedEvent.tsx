@@ -4,19 +4,28 @@ import { FC } from "react";
 import { useRouter } from "next/navigation";
 import { Button, Link as HeroUiLink } from "@heroui/react";
 import { useFormContext } from "react-hook-form";
-import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import {
+  EventFormValues,
+  useEventFormContext,
+} from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 
 const DetailsForExternallyHostedEvent: FC = () => {
   const router = useRouter();
+  const { mode } = useEventFormContext();
   const {
     control,
     handleSubmit,
     formState: { errors, isSubmitting },
   } = useFormContext<EventFormValues>();
 
-  const onSubmit = async () => {
-    router.push("/admin/events/create/submit"); // dynamic if needed
+  const onSubmit = async (data: EventFormValues) => {
+    const eventId = data.id;
+    const nextStepUrl =
+      mode === "edit"
+        ? `/admin/events/${eventId}/edit/submit`
+        : `/admin/events/create/submit`;
+    router.push(nextStepUrl);
   };
 
   return (
@@ -31,7 +40,7 @@ const DetailsForExternallyHostedEvent: FC = () => {
       <div className="flex justify-between mt-5">
         <Button type="button">
           <HeroUiLink
-            href="/admin/events/create"
+            href={mode === "edit" ? "../" : "/admin/events/create"}
             className="text-default-foreground"
           >
             Previous
