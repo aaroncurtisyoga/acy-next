@@ -55,7 +55,7 @@ NEXT_PUBLIC_SERVER_URL=
 [//]: # (For Cron Jobs)
 CRON_SECRET=
 
-[//]: # (For Browserless - Production only, optional for local dev)
+[//]: # (For Browserless - Required for web scraping)
 BROWSERLESS_API_TOKEN=
 ```
 
@@ -68,18 +68,19 @@ BROWSERLESS_API_TOKEN=
 
 ### Web Scraping & Event Sync
 
-The application automatically syncs yoga classes from Bright Bear Yoga using web scraping.
+The application automatically syncs yoga classes from Bright Bear Yoga using web scraping powered by Browserless.io.
 
 **Architecture:**
 
-- **Local Development**: Uses Playwright with local browser for scraping
-- **Production (Vercel)**: Uses Browserless.io cloud browser service to avoid heavy browser dependencies
+- **All Environments**: Exclusively uses Browserless.io cloud browser service for consistent and reliable web scraping
+- **No Local Playwright**: The application is configured to always use Browserless - local Playwright execution is not supported
+- **Required Token**: The `BROWSERLESS_API_TOKEN` environment variable must be set for the application to function
 
-**Setup for Production:**
+**Setup:**
 
 1. Sign up for free Browserless account at https://account.browserless.io/signup/email?plan=free (1,000 pages/month free)
-2. Add `BROWSERLESS_API_TOKEN` to your Vercel environment variables
-3. The crawler will automatically use Browserless in production when the token is present
+2. Add `BROWSERLESS_API_TOKEN` to your environment variables (both local `.env` and Vercel)
+3. The crawler will fail with an error if this token is not present - this is by design to ensure consistent behavior
 
 **Testing the Crawler:**
 
@@ -87,17 +88,38 @@ The application automatically syncs yoga classes from Bright Bear Yoga using web
 
 1. Start the development server: `npm run dev`
 2. Navigate to: `http://localhost:3000/api/test-sync/simple`
+   - Or use curl: `curl http://localhost:3000/api/test-sync/simple`
+   - This returns the scraped classes as JSON without saving to database
 
-**Sync data to database:**
+**Test full sync with database:**
+
+1. Start the development server: `npm run dev`
+2. Navigate to: `http://localhost:3000/api/test-sync`
+   - Or use curl: `curl http://localhost:3000/api/test-sync`
+   - This scrapes classes AND saves them to the database
+
+**Manual sync to database (POST):**
 
 1. Start the development server: `npm run dev`
 2. Make a POST request: `curl -X POST http://localhost:3000/api/dev-sync`
 3. Check `http://localhost:3000` to see the updated events
 
+**Test browser connection (Browserless):**
+
+1. Start the development server: `npm run dev`
+2. Navigate to: `http://localhost:3000/api/test-sync/playwright-debug`
+   - Tests whether Browserless connection is working correctly
+   - Will fail if `BROWSERLESS_API_TOKEN` is not set (this is intentional)
+
 **Automated Sync:**
 
-- A Vercel cron job runs daily to sync events automatically
-- Configure in `vercel.json` for production deployment
+- A Vercel cron job runs daily at 8:00 AM UTC to sync events automatically
+- Configured in `vercel.json` at path `/api/cron/sync-events`
+- To test the cron endpoint locally:
+  ```bash
+  curl -H "Authorization: Bearer YOUR_CRON_SECRET" http://localhost:3000/api/cron/sync-events
+  ```
+  Note: Replace `YOUR_CRON_SECRET` with the value from your `.env` file
 
 ## <a name="tech-stack">Tech Stack</a>
 

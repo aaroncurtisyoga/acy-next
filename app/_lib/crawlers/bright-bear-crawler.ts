@@ -16,15 +16,14 @@ export class BrightBearCrawler {
   async getAaronClasses(): Promise<MomenceClass[]> {
     console.log("🔄 Launching browser for web scraping...");
 
-    // Use Browserless in production, local browser in development
-    const browser = process.env.BROWSERLESS_API_TOKEN
-      ? await chromium.connectOverCDP(
-          `wss://production-sfo.browserless.io?token=${process.env.BROWSERLESS_API_TOKEN}`,
-        )
-      : await chromium.launch({
-          headless: true,
-          args: ["--no-sandbox", "--disable-setuid-sandbox"],
-        });
+    // Always use Browserless to ensure consistency across environments
+    if (!process.env.BROWSERLESS_API_TOKEN) {
+      throw new Error("BROWSERLESS_API_TOKEN is required for web scraping");
+    }
+
+    const browser = await chromium.connectOverCDP(
+      `wss://production-sfo.browserless.io?token=${process.env.BROWSERLESS_API_TOKEN}`,
+    );
 
     try {
       const page = await browser.newPage();
@@ -41,53 +40,107 @@ export class BrightBearCrawler {
       // Wait for the async content to load - look for the session list container
       console.log("⏳ Waiting for async content to load...");
       await page.waitForSelector(
-        ".sc-12ui18s-1.jxVRBv.momence-host_schedule-session_list",
+        ".momence-host_schedule-session_list",
         { timeout: 15000 }, // Increased timeout
       );
 
-      // Skip screenshot in production to save time
-      if (!process.env.BROWSERLESS_API_TOKEN) {
-        await page.screenshot({ path: "debug-screenshot.png" });
-        console.log("📸 Screenshot saved to debug-screenshot.png");
-      }
+      // Skip screenshot when using Browserless to save time
+      // Uncomment for debugging if needed:
+      // await page.screenshot({ path: "debug-screenshot.png" });
+      // console.log("📸 Screenshot saved to debug-screenshot.png");
 
       // Log the page content to see what's there
       const pageTitle = await page.title();
       console.log(`📄 Page title: ${pageTitle}`);
 
-      // Look for the instructor dropdown button
-      const instructorDropdown = await page.$(
+      // Look for ALL dropdown buttons on the page to find the instructor one
+      const allDropdowns = await page.$$(
         'button[id*="headlessui-listbox-button"]',
       );
 
-      if (instructorDropdown) {
-        console.log("📋 Found instructor dropdown...");
+      console.log(`📋 Found ${allDropdowns.length} dropdown(s) on page...`);
 
+      // Find the instructor dropdown by checking button text
+      let instructorDropdown = null;
+      for (const dropdown of allDropdowns) {
+        const buttonText = await dropdown.textContent();
+        console.log(`Dropdown text: ${buttonText}`);
+
+        // The instructor dropdown should contain instructor names or "All Instructors"
+        if (
+          buttonText?.includes("Instructor") ||
+          buttonText?.includes("Aaron") ||
+          buttonText?.includes("All") ||
+          buttonText?.includes("Select")
+        ) {
+          instructorDropdown = dropdown;
+          console.log(`✅ Found instructor dropdown with text: ${buttonText}`);
+          break;
+        }
+      }
+
+      if (instructorDropdown) {
         // Check if Aaron is already selected by looking at the button text
         const buttonText = await instructorDropdown.textContent();
-        console.log(`Current selection: ${buttonText}`);
+        console.log(`Current instructor selection: ${buttonText}`);
 
         if (!buttonText?.includes("Aaron Curtis")) {
           console.log("🔄 Aaron not selected, clicking dropdown...");
 
           // Click on the dropdown to open it
           await instructorDropdown.click();
-          await page.waitForTimeout(1000);
+          await page.waitForTimeout(1500);
 
-          // Wait for dropdown options to appear and select Aaron
-          const aaronOption = await page.$("text=/Aaron Curtis/i");
+          // Wait for dropdown options to appear
+          await page.waitForSelector('[role="listbox"]', { timeout: 5000 });
+
+          // Look for Aaron Curtis option - try multiple selectors
+          let aaronOption = await page.$(
+            'li[role="option"]:has-text("Aaron Curtis")',
+          );
+          if (!aaronOption) {
+            aaronOption = await page.$(
+              'div[role="option"]:has-text("Aaron Curtis")',
+            );
+          }
+          if (!aaronOption) {
+            aaronOption = await page.$("text=/Aaron Curtis/i");
+          }
+
           if (aaronOption) {
             console.log("✅ Found Aaron in dropdown, selecting...");
             await aaronOption.click();
-            await page.waitForTimeout(2000); // Reduced wait time for filtering
+
+            // Wait for the page to reload/filter after selection
+            console.log("⏳ Waiting for page to filter classes...");
+            await page.waitForTimeout(3000);
+
+            // Verify selection was successful
+            const newButtonText = await instructorDropdown.textContent();
+            console.log(`New selection: ${newButtonText}`);
+
+            if (!newButtonText?.includes("Aaron Curtis")) {
+              console.log("⚠️ Selection may have failed, continuing anyway...");
+            }
           } else {
             console.log("⚠️ Aaron Curtis not found in dropdown options");
+            console.log("📋 Available options:");
+            const options = await page.$$('[role="option"], li[role="option"]');
+            for (const option of options) {
+              const text = await option.textContent();
+              console.log(`  - ${text}`);
+            }
           }
         } else {
           console.log("✅ Aaron Curtis already selected");
         }
       } else {
         console.log("⚠️ Instructor dropdown not found");
+        console.log("📋 Available dropdowns texts:");
+        for (const dropdown of allDropdowns) {
+          const text = await dropdown.textContent();
+          console.log(`  - ${text}`);
+        }
       }
 
       // Extract classes from the page using the correct Momence selectors
@@ -235,9 +288,24 @@ export class BrightBearCrawler {
         console.log("Sample class data:", classes[0]);
       }
 
-      // Since we've already filtered by Aaron through the dropdown,
-      // just parse all the returned classes
-      const aaronClasses = classes.map((cls) => this.parseClassData(cls));
+      // Filter for Aaron's classes explicitly and parse them
+      const aaronRawClasses = classes.filter((cls) => {
+        const isAaron =
+          cls.instructor?.toLowerCase().includes("aaron") ||
+          cls.instructor?.toLowerCase().includes("curtis");
+        if (!isAaron && cls.instructor) {
+          console.log(`Filtering out class by ${cls.instructor}: ${cls.title}`);
+        }
+        return isAaron;
+      });
+
+      console.log(
+        `Found ${aaronRawClasses.length} classes specifically for Aaron`,
+      );
+
+      const aaronClasses = aaronRawClasses.map((cls) =>
+        this.parseClassData(cls),
+      );
 
       console.log(`Found ${aaronClasses.length} classes for Aaron`);
 
