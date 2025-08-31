@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
-import { chromium } from "playwright";
+import { chromium } from "playwright-core";
 
 export async function GET(_request: NextRequest) {
   // Only allow in development
@@ -11,19 +11,25 @@ export async function GET(_request: NextRequest) {
   }
 
   try {
-    console.log("🔍 Debug: Testing Playwright setup...");
+    console.log("🔍 Debug: Testing Browserless setup...");
 
-    const browser = await chromium.launch({
-      headless: true,
-      timeout: 30000,
-    });
-    console.log("✅ Browser launched successfully");
+    // Always use Browserless for consistency
+    if (!process.env.BROWSERLESS_API_TOKEN) {
+      throw new Error("BROWSERLESS_API_TOKEN is required");
+    }
+
+    console.log("Mode: Browserless");
+
+    const browser = await chromium.connectOverCDP(
+      `wss://production-sfo.browserless.io?token=${process.env.BROWSERLESS_API_TOKEN}`,
+    );
+    console.log("✅ Browser connected successfully");
 
     const page = await browser.newPage();
     console.log("✅ New page created");
 
     await page.goto("https://example.com", {
-      waitUntil: "networkidle",
+      waitUntil: "domcontentloaded",
       timeout: 30000,
     });
     console.log("✅ Navigation successful");
@@ -36,7 +42,8 @@ export async function GET(_request: NextRequest) {
 
     return NextResponse.json({
       success: true,
-      message: "Playwright test completed successfully",
+      message: "Browser test completed successfully",
+      mode: "Browserless",
       title,
       environment: process.env.NODE_ENV,
       timestamp: new Date().toISOString(),
