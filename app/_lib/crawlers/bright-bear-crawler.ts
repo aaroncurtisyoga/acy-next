@@ -29,19 +29,27 @@ export class BrightBearCrawler {
     try {
       const page = await browser.newPage();
 
+      // Set page timeout to 30 seconds instead of default 30s
+      page.setDefaultTimeout(30000);
+
       console.log(`📍 Navigating to ${this.baseUrl}...`);
-      await page.goto(this.baseUrl, { waitUntil: "networkidle" });
+      await page.goto(this.baseUrl, {
+        waitUntil: "domcontentloaded", // Changed from networkidle to domcontentloaded for faster load
+        timeout: 20000,
+      });
 
       // Wait for the async content to load - look for the session list container
       console.log("⏳ Waiting for async content to load...");
       await page.waitForSelector(
         ".sc-12ui18s-1.jxVRBv.momence-host_schedule-session_list",
-        { timeout: 10000 },
+        { timeout: 15000 }, // Increased timeout
       );
 
-      // Take a screenshot for debugging
-      await page.screenshot({ path: "debug-screenshot.png" });
-      console.log("📸 Screenshot saved to debug-screenshot.png");
+      // Skip screenshot in production to save time
+      if (!process.env.BROWSERLESS_API_TOKEN) {
+        await page.screenshot({ path: "debug-screenshot.png" });
+        console.log("📸 Screenshot saved to debug-screenshot.png");
+      }
 
       // Log the page content to see what's there
       const pageTitle = await page.title();
@@ -71,7 +79,7 @@ export class BrightBearCrawler {
           if (aaronOption) {
             console.log("✅ Found Aaron in dropdown, selecting...");
             await aaronOption.click();
-            await page.waitForTimeout(3000); // Wait for filtering to complete
+            await page.waitForTimeout(2000); // Reduced wait time for filtering
           } else {
             console.log("⚠️ Aaron Curtis not found in dropdown options");
           }
