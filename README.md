@@ -57,6 +57,10 @@ CRON_SECRET=
 
 [//]: # (For Browserless - Required for web scraping)
 BROWSERLESS_API_TOKEN=
+
+[//]: # (For ZoomShift - Required for DCBP class scraping)
+ZOOMSHIFT_EMAIL=your-zoomshift-email@example.com
+ZOOMSHIFT_PASSWORD=your-zoomshift-password
 ```
 
 ### Common Scripts
@@ -68,12 +72,14 @@ BROWSERLESS_API_TOKEN=
 
 ### Web Scraping & Event Sync
 
-The application automatically syncs yoga classes from Bright Bear Yoga using web scraping powered by Browserless.io.
+The application automatically syncs yoga classes from **two sources**:
+
+1. **Bright Bear Yoga** - Aaron's public class schedule
+2. **DC Bouldering Project** - Aaron's teaching schedule via ZoomShift
 
 **Architecture:**
 
 - **All Environments**: Exclusively uses Browserless.io cloud browser service for consistent and reliable web scraping
-- **No Local Playwright**: The application is configured to always use Browserless - local Playwright execution is not supported
 - **Required Token**: The `BROWSERLESS_API_TOKEN` environment variable must be set for the application to function
 
 **Setup:**
@@ -82,14 +88,19 @@ The application automatically syncs yoga classes from Bright Bear Yoga using web
 2. Add `BROWSERLESS_API_TOKEN` to your environment variables (both local `.env` and Vercel)
 3. The crawler will fail with an error if this token is not present - this is by design to ensure consistent behavior
 
-**Testing the Crawler:**
+**Testing the Crawlers:**
 
-**Test the crawler only (no database update):**
+**Test individual crawlers (no database update):**
 
-1. Start the development server: `npm run dev`
-2. Navigate to: `http://localhost:3000/api/test-sync/simple`
-   - Or use curl: `curl http://localhost:3000/api/test-sync/simple`
-   - This returns the scraped classes as JSON without saving to database
+1. **Bright Bear only:** `curl http://localhost:3000/api/test-sync/simple`
+   - Returns scraped Bright Bear classes as JSON without saving to database
+
+2. **DCBP only:** `curl http://localhost:3000/api/test-sync/dcbp`
+   - Returns scraped DCBP classes from ZoomShift as JSON without saving to database
+
+3. **Both crawlers:** `curl http://localhost:3000/api/test-sync/both`
+   - Tests both Bright Bear and DCBP crawlers simultaneously
+   - Returns results from both sources with success/failure status for each
 
 **Test full sync with database:**
 
@@ -113,13 +124,20 @@ The application automatically syncs yoga classes from Bright Bear Yoga using web
 
 **Automated Sync:**
 
-- A Vercel cron job runs daily at 8:00 AM UTC to sync events automatically
-- Configured in `vercel.json` at path `/api/cron/sync-events`
+- A Vercel cron job runs daily at 8:00 AM UTC to sync events from **both sources** automatically
+- Configured in `vercel.json` at path `/api/cron/sync-events` with 120s timeout for both crawlers
 - To test the cron endpoint locally:
   ```bash
   curl -H "Authorization: Bearer YOUR_CRON_SECRET" http://localhost:3000/api/cron/sync-events
   ```
   Note: Replace `YOUR_CRON_SECRET` with the value from your `.env` file
+
+**Vercel Pro Optimization:**
+
+- Function timeout set to 120 seconds for combined sync operations
+- Crawlers optimized for Vercel Pro limits (300s max duration)
+- Parallel execution of both crawlers to minimize total execution time
+- Browserless.io ensures consistent browser environment across all deployments
 
 ## <a name="tech-stack">Tech Stack</a>
 

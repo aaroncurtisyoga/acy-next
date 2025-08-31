@@ -10,13 +10,15 @@ export async function GET(request: NextRequest) {
     }
 
     const syncService = new EventSyncService();
-    const result = await syncService.syncBrightBearEvents();
+    const result = await syncService.syncAllEvents();
 
     return NextResponse.json({
       success: true,
       timestamp: new Date().toISOString(),
-      synced: result.synced,
-      deactivated: result.deactivated,
+      brightBear: result.brightBear,
+      dcbp: result.dcbp,
+      totalSynced: result.brightBear.synced + result.dcbp.synced,
+      totalDeactivated: result.brightBear.deactivated + result.dcbp.deactivated,
     });
   } catch (error: any) {
     console.error("Cron sync failed:", error);
