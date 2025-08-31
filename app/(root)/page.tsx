@@ -10,12 +10,13 @@ const EventsPage = async ({ searchParams }: EventsPageProps) => {
 
   return (
     <section
-      className={
-        "grid grow w-full md:min-h-[calc(100dvh-201px)] max-w-screen-2xl " +
-        "md:grid-cols-2 lg:mx-auto"
-      }
+      className={"grid grow w-full max-w-7xl " + "md:grid-cols-2 lg:mx-auto"}
     >
-      <div className={"relative"}>
+      <div
+        className={
+          "relative min-h-[300px] md:min-h-[400px] aspect-[4/3] md:aspect-auto"
+        }
+      >
         <ImageResponsiveHandstand />
       </div>
       <UpcomingEvents searchParams={resolvedParams} />

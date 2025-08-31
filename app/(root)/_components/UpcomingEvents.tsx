@@ -32,7 +32,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const hasEvents = data.length > 0;
 
   return (
-    <div className="h-full flex flex-col px-5 py-5 md:px-8 md:py-8 lg:px-12 lg:py-10">
+    <div className="h-full flex flex-col px-5 py-5 pb-8 md:px-8 md:py-8 md:pb-12 lg:px-12 lg:py-10 lg:pb-16">
       {/* Header - Always show */}
       <div className="mb-6 md:mb-8">
         <div className="flex items-center gap-3 mb-3">
