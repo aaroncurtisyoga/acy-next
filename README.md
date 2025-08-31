@@ -50,7 +50,13 @@ NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
 STRIPE_SECRET_KEY=
 STRIPE_WEBHOOK_SECRET=
 
-NEXT_PUBLIC_SERVER_URL
+NEXT_PUBLIC_SERVER_URL=
+
+[//]: # (For Cron Jobs)
+CRON_SECRET=
+
+[//]: # (For Browserless - Production only, optional for local dev)
+BROWSERLESS_API_TOKEN=
 ```
 
 ### Common Scripts
@@ -60,22 +66,38 @@ NEXT_PUBLIC_SERVER_URL
 - `npm run lint` to run ESLint
 - `npm run lint:fix` to fix linting errors
 
-### Testing the Bright Bear Yoga Crawler
+### Web Scraping & Event Sync
 
-To test and sync Aaron Curtis's yoga classes from Bright Bear Yoga:
+The application automatically syncs yoga classes from Bright Bear Yoga using web scraping.
+
+**Architecture:**
+
+- **Local Development**: Uses Playwright with local browser for scraping
+- **Production (Vercel)**: Uses Browserless.io cloud browser service to avoid heavy browser dependencies
+
+**Setup for Production:**
+
+1. Sign up for free Browserless account at https://account.browserless.io/signup/email?plan=free (1,000 pages/month free)
+2. Add `BROWSERLESS_API_TOKEN` to your Vercel environment variables
+3. The crawler will automatically use Browserless in production when the token is present
+
+**Testing the Crawler:**
 
 **Test the crawler only (no database update):**
 
 1. Start the development server: `npm run dev`
 2. Navigate to: `http://localhost:3000/api/test-sync/simple`
 
-**Sync data to database and update the main site:**
+**Sync data to database:**
 
 1. Start the development server: `npm run dev`
 2. Make a POST request: `curl -X POST http://localhost:3000/api/dev-sync`
-3. Check `http://localhost:3000` to see the updated events on your main site
+3. Check `http://localhost:3000` to see the updated events
 
-The sync endpoint will run the crawler and save the class data to your database, making it visible on the main website.
+**Automated Sync:**
+
+- A Vercel cron job runs daily to sync events automatically
+- Configure in `vercel.json` for production deployment
 
 ## <a name="tech-stack">Tech Stack</a>
 

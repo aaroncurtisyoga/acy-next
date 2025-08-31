@@ -1,4 +1,4 @@
-import { chromium } from "playwright";
+import { chromium } from "playwright-core";
 
 interface MomenceClass {
   id: string;
@@ -16,10 +16,15 @@ export class BrightBearCrawler {
   async getAaronClasses(): Promise<MomenceClass[]> {
     console.log("🔄 Launching browser for web scraping...");
 
-    const browser = await chromium.launch({
-      headless: true,
-      args: ["--no-sandbox", "--disable-setuid-sandbox"],
-    });
+    // Use Browserless in production, local browser in development
+    const browser = process.env.BROWSERLESS_API_TOKEN
+      ? await chromium.connectOverCDP(
+          `wss://production-sfo.browserless.io?token=${process.env.BROWSERLESS_API_TOKEN}`,
+        )
+      : await chromium.launch({
+          headless: true,
+          args: ["--no-sandbox", "--disable-setuid-sandbox"],
+        });
 
     try {
       const page = await browser.newPage();
