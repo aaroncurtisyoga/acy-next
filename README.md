@@ -3,7 +3,7 @@
 
 ## <a name="table">Table of Contents</a>
 
-1. [Introduction](#introduction)
+1. [Intro](#introduction)
 2. [Quick Start](#quick-start)
 3. [Tech Stack](#tech-stack)
 4. [Features](#features)
