@@ -10,7 +10,8 @@ export async function GET(request: NextRequest) {
     }
 
     const syncService = new EventSyncService();
-    const result = await syncService.syncAllEvents();
+    // Use sequential execution to avoid concurrent rate limits
+    const result = await syncService.syncAllEvents(true);
 
     return NextResponse.json({
       success: true,

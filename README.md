@@ -97,6 +97,7 @@ The application automatically syncs yoga classes from **two sources**:
 
 2. **DCBP only:** `curl http://localhost:3000/api/test-sync/dcbp`
    - Returns scraped DCBP classes from ZoomShift as JSON without saving to database
+   - Requires `ZOOMSHIFT_EMAIL` and `ZOOMSHIFT_PASSWORD` environment variables
 
 3. **Both crawlers:** `curl http://localhost:3000/api/test-sync/both`
    - Tests both Bright Bear and DCBP crawlers simultaneously
@@ -134,9 +135,11 @@ The application automatically syncs yoga classes from **two sources**:
 
 **Vercel Pro Optimization:**
 
-- Function timeout set to 120 seconds for combined sync operations
+- Function timeout set to 180 seconds for combined sync operations (includes retries)
 - Crawlers optimized for Vercel Pro limits (300s max duration)
-- Parallel execution of both crawlers to minimize total execution time
+- **Rate limit protection**: 3 retries with exponential backoff (5s, 10s, 20s delays)
+- **Sequential execution**: Cron jobs run crawlers one at a time to avoid concurrent connection limits
+- **Fallback handling**: If one crawler fails, the other continues independently
 - Browserless.io ensures consistent browser environment across all deployments
 
 ## <a name="tech-stack">Tech Stack</a>

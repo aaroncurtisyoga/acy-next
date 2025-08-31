@@ -2,6 +2,10 @@ import { DCBPCrawler } from "@/app/_lib/crawlers/dcbp-crawler";
 import { SyncEventData } from "@/app/_lib/types/event";
 import { EventDatabaseOperations } from "./event-database-operations";
 import { LocationCategoryService } from "./location-category-service";
+import {
+  withRetry,
+  isBrowserlessRateLimit,
+} from "@/app/_lib/utils/retry-helper";
 
 export class DCBPSyncService {
   private crawler = new DCBPCrawler();
@@ -14,7 +18,12 @@ export class DCBPSyncService {
       console.log("Starting DCBP sync...");
 
       const [externalClasses, locationId, categoryId] = await Promise.all([
-        this.crawler.getScheduledClasses(),
+        withRetry(() => this.crawler.getScheduledClasses(), {
+          maxAttempts: 3,
+          baseDelay: 5000,
+          maxDelay: 20000,
+          retryCondition: isBrowserlessRateLimit,
+        }),
         this.locationCategoryService.getDCBPLocationId(),
         this.locationCategoryService.getDefaultCategoryId(),
       ]);

@@ -2,6 +2,10 @@ import { BrightBearCrawler } from "@/app/_lib/crawlers/bright-bear-crawler";
 import { SyncEventData } from "@/app/_lib/types/event";
 import { EventDatabaseOperations } from "./event-database-operations";
 import { LocationCategoryService } from "./location-category-service";
+import {
+  withRetry,
+  isBrowserlessRateLimit,
+} from "@/app/_lib/utils/retry-helper";
 
 export class BrightBearSyncService {
   private crawler = new BrightBearCrawler();
@@ -14,7 +18,12 @@ export class BrightBearSyncService {
       console.log("Starting Bright Bear sync...");
 
       const [externalClasses, locationId, categoryId] = await Promise.all([
-        this.crawler.getAaronClasses(),
+        withRetry(() => this.crawler.getAaronClasses(), {
+          maxAttempts: 3,
+          baseDelay: 5000,
+          maxDelay: 20000,
+          retryCondition: isBrowserlessRateLimit,
+        }),
         this.locationCategoryService.getBrightBearLocationId(),
         this.locationCategoryService.getDefaultCategoryId(),
       ]);

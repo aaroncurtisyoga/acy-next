@@ -13,13 +13,41 @@ export class EventSyncService {
     return this.dcbpService.syncEvents();
   }
 
-  async syncAllEvents() {
+  async syncAllEvents(sequential: boolean = false) {
     console.log("Starting full sync of all external events...");
 
-    const results = await Promise.allSettled([
-      this.syncBrightBearEvents(),
-      this.syncDCBPEvents(),
-    ]);
+    let results: PromiseSettledResult<any>[];
+
+    if (sequential) {
+      console.log("Running crawlers sequentially to avoid rate limits...");
+      results = [];
+
+      // Run Bright Bear first
+      try {
+        const brightBearResult = await this.syncBrightBearEvents();
+        results.push({ status: "fulfilled", value: brightBearResult } as any);
+      } catch (error) {
+        results.push({ status: "rejected", reason: error } as any);
+      }
+
+      // Add delay between crawlers
+      console.log("Waiting 3 seconds before next crawler...");
+      await new Promise((resolve) => setTimeout(resolve, 3000));
+
+      // Run DCBP second
+      try {
+        const dcbpResult = await this.syncDCBPEvents();
+        results.push({ status: "fulfilled", value: dcbpResult } as any);
+      } catch (error) {
+        results.push({ status: "rejected", reason: error } as any);
+      }
+    } else {
+      // Original parallel execution
+      results = await Promise.allSettled([
+        this.syncBrightBearEvents(),
+        this.syncDCBPEvents(),
+      ]);
+    }
 
     const summary = {
       brightBear: {
