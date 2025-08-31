@@ -4,10 +4,13 @@
       "maxDuration": 60
     },
     "app/api/cron/sync-events/route.ts": {
-      "maxDuration": 60
+      "maxDuration": 120
     },
     "app/api/test-sync/route.ts": {
       "maxDuration": 60
+    },
+    "app/api/test-sync/both/route.ts": {
+      "maxDuration": 120
     },
     "app/api/dev-sync/route.ts": {
       "maxDuration": 60
