@@ -26,11 +26,11 @@
     },
     {
       "path": "/api/sync/dcbp",
-      "schedule": "0 0 31 2 *"
+      "schedule": "0 0 1 1 *"
     },
     {
       "path": "/api/sync/bright-bear",
-      "schedule": "0 0 31 2 *"
+      "schedule": "0 0 1 1 *"
     }
   ]
 }
