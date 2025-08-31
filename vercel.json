@@ -3,6 +3,9 @@
     "app/api/sync/bright-bear/route.ts": {
       "maxDuration": 60
     },
+    "app/api/sync/dcbp/route.ts": {
+      "maxDuration": 60
+    },
     "app/api/cron/sync-events/route.ts": {
       "maxDuration": 180
     },
@@ -20,6 +23,14 @@
     {
       "path": "/api/cron/sync-events",
       "schedule": "0 8 * * *"
+    },
+    {
+      "path": "/api/sync/dcbp",
+      "schedule": "0 0 31 2 *"
+    },
+    {
+      "path": "/api/sync/bright-bear",
+      "schedule": "0 0 31 2 *"
     }
   ]
 }
