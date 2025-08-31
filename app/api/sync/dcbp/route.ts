@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { EventSyncService } from "@/app/_lib/services/event-sync-service";
 
-export async function GET(request: NextRequest) {
+export async function GET(_request: NextRequest) {
   try {
     // Optional: Add authentication if needed
-    // const authHeader = request.headers.get("authorization");
+    // const authHeader = _request.headers.get("authorization");
     // if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
     //   return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
     // }
@@ -32,7 +32,7 @@ export async function GET(request: NextRequest) {
   }
 }
 
-export async function POST(request: NextRequest) {
+export async function POST(_request: NextRequest) {
   // POST endpoint for manual triggering with potential options
-  return GET(request);
+  return GET(_request);
 }
