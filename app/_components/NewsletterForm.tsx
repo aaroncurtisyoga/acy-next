@@ -1,57 +1,64 @@
 "use client";
 
-import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
 import { Input, Button } from "@heroui/react";
 import { addNewsletterEntry } from "@/app/_lib/actions/newsletter.actions";
+import { NewsletterFormSchema } from "@/app/_lib/schema";
+import { z } from "zod";
+
+type FormData = z.infer<typeof NewsletterFormSchema>;
 
 const NewsletterForm = () => {
-  const [email, setEmail] = useState("");
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const [error, setError] = useState("");
-  const [isSuccess, setIsSuccess] = useState(false);
+  const {
+    register,
+    handleSubmit,
+    reset,
+    setError,
+    clearErrors,
+    formState: { errors, isSubmitting, isSubmitSuccessful },
+  } = useForm<FormData>({
+    resolver: zodResolver(NewsletterFormSchema),
+  });
 
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setError("");
-    setIsSubmitting(true);
-
-    const result = await addNewsletterEntry({ email });
+  const onSubmit = async (data: FormData) => {
+    clearErrors();
+    const result = await addNewsletterEntry(data);
 
     if (result.formErrors || result.apiError) {
-      setError(result.message || "Something went wrong");
-      setIsSubmitting(false);
+      setError("email", {
+        type: "manual",
+        message: result.message || "Something went wrong",
+      });
       return;
     }
 
-    setIsSuccess(true);
-    setEmail("");
-    setIsSubmitting(false);
-
+    reset();
     setTimeout(() => {
-      setIsSuccess(false);
+      clearErrors();
     }, 3000);
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-full max-w-sm">
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
       <div className="flex flex-col gap-4">
         <Input
+          {...register("email")}
           label="Email"
           placeholder="Enter your email"
           type="email"
           variant="bordered"
-          value={email}
-          onValueChange={setEmail}
           description={
-            isSuccess
+            isSubmitSuccessful
               ? "Thank you for signing up!"
               : "Be the first to know about events & more!"
           }
-          color={isSuccess ? "success" : "default"}
+          color={isSubmitSuccessful ? "success" : "default"}
           isDisabled={isSubmitting}
-          isInvalid={!!error}
-          errorMessage={error}
+          isInvalid={!!errors.email}
+          errorMessage={errors.email?.message}
           isClearable
+          onClear={() => clearErrors("email")}
         />
         <Button
           type="submit"

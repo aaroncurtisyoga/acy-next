@@ -27,7 +27,7 @@ const envSchema = z.object({
 
   // Mailchimp (optional)
   MAILCHIMP_API_KEY: z.string().optional(),
-  MAILCHIMP_SERVER_PREFIX: z.string().optional(),
+  MAILCHIMP_API_SERVER: z.string().optional(),
   MAILCHIMP_AUDIENCE_ID: z.string().optional(),
 
   // Vercel Blob (optional)
