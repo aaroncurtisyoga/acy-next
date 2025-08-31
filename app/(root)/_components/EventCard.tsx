@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody, CardFooter, Button } from "@heroui/react";
 import { Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
@@ -72,6 +72,19 @@ const EventCard: FC<CardProps> = ({ event }) => {
           </div>
         </div>
       </CardBody>
+
+      <CardFooter className="px-4 py-3 border-t border-divider">
+        <div className="flex justify-end items-center w-full">
+          <Button
+            size="sm"
+            color="primary"
+            variant="bordered"
+            className="font-semibold"
+          >
+            Sign Up
+          </Button>
+        </div>
+      </CardFooter>
     </Card>
   );
 };
