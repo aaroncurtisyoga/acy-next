@@ -1,20 +1,5 @@
 @import "tailwindcss";
-
-/* Content paths - Tailwind v4 syntax */
-@source "../app/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../components/**/*.{js,ts,jsx,tsx,mdx}";
-@source "../node_modules/@heroui/theme/dist/**/*.{js,ts,jsx,tsx}";
-
-/* Custom theme values */
-@theme {
-  --breakpoint-md: 768px;
-  --breakpoint-lg: 1024px;
-  --breakpoint-2xl: 1536px;
-  --width-screen-2xl: 1536px;
-}
-
-/* HeroUI plugin */
-@plugin "../hero";
+@config "../tailwind.config.js";
 
 /* Prevent horizontal overflow on mobile */
 html,

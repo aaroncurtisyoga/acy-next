@@ -34,6 +34,8 @@
     "@clerk/nextjs": "^6.12.12",
     "@clerk/themes": "^2.2.55",
     "@googlemaps/google-maps-services-js": "^3.4.0",
+    "@heroui/button": "^2.2.24",
+    "@heroui/input": "^2.4.25",
     "@heroui/react": "^2.8.2",
     "@hookform/resolvers": "^5.2.1",
     "@internationalized/date": "^3.6.0",
@@ -72,6 +74,7 @@
     "stripe": "^18.4.0",
     "svix": "^1.24.0",
     "tailwind-merge": "^3.3.1",
+    "tailwindcss": "^4.1.12",
     "tailwindcss-animate": "^1.0.7",
     "usehooks-ts": "^3.1.0",
     "zod": "^4.1.2"
@@ -95,7 +98,6 @@
     "prettier": "^3.2.5",
     "prettier-plugin-tailwindcss": "^0.6.14",
     "prisma": "^6.14.0",
-    "tailwindcss": "^4.1.12",
     "typescript": "^5.9.2"
   }
 }

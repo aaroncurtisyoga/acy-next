@@ -39,6 +39,7 @@ const NewsletterForm = () => {
           label="Email"
           placeholder="Enter your email"
           type="email"
+          variant="bordered"
           value={email}
           onValueChange={setEmail}
           description={
