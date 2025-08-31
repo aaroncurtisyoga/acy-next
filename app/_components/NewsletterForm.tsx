@@ -40,7 +40,10 @@ const NewsletterForm = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)} className="w-full max-w-sm">
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className="w-full max-w-[min(384px,calc(100vw-3rem))]"
+    >
       <div className="flex flex-col gap-4">
         <Input
           {...register("email")}
@@ -49,9 +52,11 @@ const NewsletterForm = () => {
           type="email"
           variant="bordered"
           description={
-            isSubmitSuccessful
-              ? "Thank you for signing up!"
-              : "Be the first to know about events & more!"
+            <span className="block w-full">
+              {isSubmitSuccessful
+                ? "Thank you for signing up!"
+                : "Be the first to know about events & more!"}
+            </span>
           }
           color={isSubmitSuccessful ? "success" : "default"}
           isDisabled={isSubmitting}
@@ -59,6 +64,7 @@ const NewsletterForm = () => {
           errorMessage={errors.email?.message}
           isClearable
           onClear={() => clearErrors("email")}
+          className="w-full"
         />
         <Button
           type="submit"
