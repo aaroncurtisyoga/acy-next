@@ -23,7 +23,7 @@ const baseUserLinks = [
 const baseAdminLinks = [
   {
     name: "Admin",
-    href: "/admin",
+    href: "/admin/events",
     baseTestId: "admin-link",
   },
 ];

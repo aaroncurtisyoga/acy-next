@@ -26,22 +26,22 @@ const TableEventManagement: FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedEvent, setSelectedEvent] = useState(null);
   const [events, setEvents] = useState([]);
-  const [totalPages, setTotalPages] = useState(0);
-  const [page, setPage] = useState(1);
-  const [searchText, setSearchText] = useState("");
-  const [category, setCategory] = useState("");
+  // const [totalPages, setTotalPages] = useState(0); // Unused - commented for future pagination
+  const [page /*, setPage */] = useState(1); // setPage for future pagination
+  const [searchText /*, setSearchText */] = useState(""); // setSearchText for future search
+  const [category /*, setCategory */] = useState(""); // setCategory for future filtering
 
   useEffect(() => {
     const fetchEvents = async () => {
       try {
-        const { data, totalPages } = await getAllEvents({
+        const { data /* , totalPages */ } = await getAllEvents({
           category,
           limit: 8,
           page,
           query: searchText,
         });
         setEvents(data);
-        setTotalPages(totalPages);
+        // setTotalPages(totalPages); // Unused - for future pagination
       } catch (error) {
         handleError("Failed to fetch events", error);
         addToast({

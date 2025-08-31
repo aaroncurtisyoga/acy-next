@@ -4,8 +4,7 @@ import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { HeroUIProvider } from "@heroui/system";
-import { ToastProvider } from "@heroui/toast";
+import { HeroUIProvider, ToastProvider } from "@heroui/react";
 import { ThemeProvider, useTheme } from "next-themes";
 
 interface ProvidersProps {
@@ -31,14 +30,14 @@ export function Providers({ children }: ProvidersProps) {
   const router = useRouter();
 
   return (
-    <ThemeProvider
-      attribute="class"
-      defaultTheme="system"
-      enableSystem
-      disableTransitionOnChange={false}
-    >
-      <ThemedClerkProvider>
-        <HeroUIProvider navigate={router.push}>
+    <HeroUIProvider navigate={router.push}>
+      <ThemeProvider
+        attribute="class"
+        defaultTheme="system"
+        enableSystem
+        disableTransitionOnChange={false}
+      >
+        <ThemedClerkProvider>
           <ToastProvider
             toastProps={{
               radius: "full",
@@ -53,8 +52,8 @@ export function Providers({ children }: ProvidersProps) {
             }}
           />
           {children}
-        </HeroUIProvider>
-      </ThemedClerkProvider>
-    </ThemeProvider>
+        </ThemedClerkProvider>
+      </ThemeProvider>
+    </HeroUIProvider>
   );
 }

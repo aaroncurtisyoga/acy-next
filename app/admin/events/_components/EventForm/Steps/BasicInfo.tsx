@@ -28,7 +28,6 @@ const BasicInfo: FC = () => {
     control,
     handleSubmit,
     setValue,
-    getValues,
     reset,
     formState: { errors, isSubmitting },
   } = useFormContext<EventFormValues>();
@@ -77,12 +76,6 @@ const BasicInfo: FC = () => {
   }, [currentValues, setLocationValueInReactHookForm, setValue]);
 
   const onSubmit = async (data: EventFormValues) => {
-    const payload = {
-      ...data,
-      startDateTime: data.startDateTime.toString(),
-      endDateTime: data.endDateTime.toString(),
-    };
-
     // Go to next step - dynamic based on mode
     const eventId = data.id;
     const nextStepUrl =

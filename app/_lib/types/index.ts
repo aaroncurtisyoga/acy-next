@@ -91,6 +91,7 @@ export interface GetAllEventsResponse {
   data: EventWithLocationAndCategory[];
   totalPages: number;
   hasFiltersApplied: boolean;
+  totalCount: number;
 }
 
 export type NavbarLink = {

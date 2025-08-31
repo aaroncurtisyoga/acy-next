@@ -31,6 +31,10 @@ export async function getAllUsers({ query, limit = 8, page = 1 }) {
     };
   } catch (error) {
     handleError(error);
+    return {
+      data: [],
+      totalPages: 0,
+    };
   }
 }
 
@@ -44,6 +48,7 @@ export async function deleteUser(
     if (deletedUser) {
       return { success: true };
     }
+    return { success: false };
   } catch (error) {
     handleError(error);
     return { success: false };

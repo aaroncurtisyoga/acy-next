@@ -8,12 +8,13 @@ import { handleError } from "@/app/_lib/utils";
 
 export async function POST(req: Request) {
   // You can find this in the Clerk Dashboard -> Webhooks -> choose the webhooks
-  const WEBHOOK_SECRET = process.env.WEBHOOK_SECRET;
+  const WEBHOOK_SECRET = process.env.CLERK_WEBHOOK_SECRET;
 
   if (!WEBHOOK_SECRET) {
     handleError(
       "Please add WEBHOOK_SECRET from Clerk Dashboard to .env or .env.local",
     );
+    return new Response("Configuration error", { status: 500 });
   }
 
   // Get webhook headers
@@ -46,7 +47,7 @@ export async function POST(req: Request) {
       "svix-signature": svix_signature,
     }) as WebhookEvent;
   } catch (err) {
-    handleError("Error verifying webhooks:", err);
+    handleError(err, "verifying webhook");
     return new Response("Error occurred", {
       status: 400,
     });
@@ -78,11 +79,11 @@ export async function POST(req: Request) {
         return NextResponse.json({ message: "OK", user: newUser });
       }
     } catch (error) {
-      handleError("creating", error);
-      return NextResponse.json({
-        message: "Error creating user",
-        error: error.message,
-      });
+      handleError(error, "creating user");
+      return NextResponse.json(
+        { message: "Error creating user" },
+        { status: 500 },
+      );
     }
   }
 
@@ -100,11 +101,11 @@ export async function POST(req: Request) {
       });
       return NextResponse.json({ message: "OK", user: updatedUser });
     } catch (error) {
-      handleError("updating", error);
-      return NextResponse.json({
-        message: "Error updating user",
-        error: error.message,
-      });
+      handleError(error, "updating user");
+      return NextResponse.json(
+        { message: "Error updating user" },
+        { status: 500 },
+      );
     }
   }
 
@@ -115,11 +116,14 @@ export async function POST(req: Request) {
       const deletedUser = await prisma.user.delete({ where: { clerkId: id! } });
       return NextResponse.json({ message: "OK", user: deletedUser });
     } catch (error) {
-      handleError("deleting", error);
-      return NextResponse.json({
-        message: "Error deleting user",
-        error: error.message,
-      });
+      handleError(error, "deleting user");
+      return NextResponse.json(
+        { message: "Error deleting user" },
+        { status: 500 },
+      );
     }
   }
+
+  // Return OK for unhandled event types
+  return NextResponse.json({ message: "OK" });
 }

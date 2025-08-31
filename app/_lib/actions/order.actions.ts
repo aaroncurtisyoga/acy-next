@@ -73,6 +73,7 @@ export const createOrder = async (order: CreateOrderParams) => {
     });
   } catch (error) {
     handleError(error);
+    return null;
   }
 };
 
@@ -96,6 +97,7 @@ export async function getOrdersByEvent({
     });
   } catch (error) {
     handleError(error);
+    return [];
   }
 }
 
@@ -127,5 +129,9 @@ export async function getOrdersByUser({
     };
   } catch (error) {
     handleError(error);
+    return {
+      data: [],
+      totalPages: 0,
+    };
   }
 }
