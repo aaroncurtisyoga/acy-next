@@ -68,9 +68,9 @@ const EventText: FC<EventTextProps> = ({ event }) => {
               as={Link}
               href={signUpHref}
               color="primary"
-              variant="flat"
+              variant="light"
               size="md"
-              className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-primary-900/40 dark:text-primary-300 dark:hover:bg-primary-900/60"
+              className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
             >
               Sign Up
             </Button>

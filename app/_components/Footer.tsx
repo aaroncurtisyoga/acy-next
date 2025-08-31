@@ -7,7 +7,7 @@ const Footer = () => {
   return (
     <footer
       data-testid="footer"
-      className="border-t border-slate-200 dark:border-slate-700 py-12 bg-gradient-to-br from-stone-50 via-blue-50/20 to-slate-50 dark:from-slate-900 dark:via-slate-800/20 dark:to-slate-900 text-slate-700 dark:text-slate-300 relative overflow-hidden"
+      className="border-t border-slate-200 dark:border-slate-700 py-12 bg-gradient-to-br from-stone-50 via-blue-50/20 to-slate-50 dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 relative overflow-hidden"
       style={{
         backgroundImage: `radial-gradient(circle at 20% 50%, rgba(59, 130, 246, 0.03) 0%, transparent 50%),
                          radial-gradient(circle at 80% 20%, rgba(156, 163, 175, 0.04) 0%, transparent 50%)`,

@@ -35,7 +35,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
             priority={true}
           />
           {/* Date Badge */}
-          <div className="absolute top-3 left-3 bg-background/95 backdrop-blur-md rounded-lg p-2 shadow-large">
+          <div className="absolute top-3 left-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-lg p-2 shadow-large">
             <div className="text-center min-w-[50px]">
               <div className="text-xs font-bold text-danger-500">
                 {dateTime.monthShort}
@@ -78,7 +78,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
           <Button
             size="sm"
             color="primary"
-            variant="flat"
+            variant="bordered"
             className="font-semibold"
           >
             Sign Up

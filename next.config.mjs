@@ -8,6 +8,7 @@ import withPlaiceholder from "@plaiceholder/next";
 const nextConfig = {
   images: {
     remotePatterns: [{ hostname: "*.public.blob.vercel-storage.com" }],
+    qualities: [50, 75, 80, 90, 100],
   },
   async headers() {
     return [
