@@ -1,4 +1,18 @@
 {
+  "functions": {
+    "app/api/sync/bright-bear/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/cron/sync-events/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/test-sync/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/dev-sync/route.ts": {
+      "maxDuration": 60
+    }
+  },
   "crons": [
     {
       "path": "/api/cron/sync-events",
