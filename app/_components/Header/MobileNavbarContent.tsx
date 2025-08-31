@@ -2,8 +2,7 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { usePathname, useRouter } from "next/navigation";
-import { useClerk } from "@clerk/nextjs";
+import { usePathname } from "next/navigation";
 import {
   NavbarContent,
   NavbarMenu,
@@ -27,16 +26,8 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   isSignedIn = false,
 }) => {
   const pathname = usePathname();
-  const { signOut } = useClerk();
-  const router = useRouter();
-
   const closeMenu = () => {
     setIsMenuOpen(false);
-  };
-
-  const handleSignOut = () => {
-    signOut(() => router.push("/"));
-    closeMenu();
   };
 
   // Toggle styling based on auth state

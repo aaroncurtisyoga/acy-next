@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { Input, Button } from "@heroui/react";
 import { addNewsletterEntry } from "@/app/_lib/actions/newsletter.actions";
 

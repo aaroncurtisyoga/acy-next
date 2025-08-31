@@ -1,6 +1,6 @@
 "use client";
 
-import React, { FC } from "react";
+import { FC } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery } from "@/app/_lib/utils";
 

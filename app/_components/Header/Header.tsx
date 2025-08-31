@@ -1,13 +1,10 @@
 "use client";
 
 import { FC, useState } from "react";
-// import { useUser } from "@clerk/nextjs";
 import { Navbar } from "@heroui/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
 import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
-// import UserDropdown from "@/app/_components/Header/UserDropdown";
-// import { adminLinks, authenticatedLinks } from "@/app/_lib/constants";
 
 // HeaderProgressBar Component
 // const HeaderProgressBar: FC = () => {

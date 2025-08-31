@@ -15,7 +15,7 @@ export async function addNewsletterEntry(data: Inputs) {
     // Init Mailchimp client
     mailchimp.setConfig({
       apiKey: process.env.MAILCHIMP_API_KEY,
-      server: process.env.MAILCHIMP_API_SERVER,
+      server: process.env.MAILCHIMP_SERVER_PREFIX,
     });
 
     try {
