@@ -54,7 +54,7 @@ const NewsletterForm = () => {
           description={
             <span className="block w-full">
               {isSubmitSuccessful
-                ? "Thank you for signing up!"
+                ? "Success! Check your email for confirmation."
                 : "Be the first to know about events & more!"}
             </span>
           }

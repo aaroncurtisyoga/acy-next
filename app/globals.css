@@ -188,5 +188,5 @@ img {
 
 /* Force navbar dark mode background */
 .dark [data-testid="navbar"] {
-  background-color: #161616 !important;
+  background-color: #0a0a0a !important;
 }

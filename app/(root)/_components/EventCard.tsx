@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import { Card, CardBody, CardFooter, Button } from "@heroui/react";
+import { Card, CardBody } from "@heroui/react";
 import { Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
@@ -35,7 +35,7 @@ const EventCard: FC<CardProps> = ({ event }) => {
             priority={true}
           />
           {/* Date Badge */}
-          <div className="absolute top-3 left-3 bg-background/95 backdrop-blur-md rounded-lg p-2 shadow-large">
+          <div className="absolute top-3 left-3 bg-white/95 dark:bg-gray-900/95 backdrop-blur-md rounded-lg p-2 shadow-large">
             <div className="text-center min-w-[50px]">
               <div className="text-xs font-bold text-danger-500">
                 {dateTime.monthShort}
@@ -72,19 +72,6 @@ const EventCard: FC<CardProps> = ({ event }) => {
           </div>
         </div>
       </CardBody>
-
-      <CardFooter className="px-4 py-3 border-t border-divider">
-        <div className="flex justify-end items-center w-full">
-          <Button
-            size="sm"
-            color="primary"
-            variant="flat"
-            className="font-semibold"
-          >
-            Sign Up
-          </Button>
-        </div>
-      </CardFooter>
     </Card>
   );
 };
