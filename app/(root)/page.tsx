@@ -14,7 +14,7 @@ const EventsPage = async ({ searchParams }: EventsPageProps) => {
     >
       <div
         className={
-          "relative min-h-[300px] md:min-h-[400px] aspect-[4/3] md:aspect-auto"
+          "relative min-h-[300px] md:min-h-[400px] aspect-[4/3] md:aspect-auto md:h-full"
         }
       >
         <ImageResponsiveHandstand />

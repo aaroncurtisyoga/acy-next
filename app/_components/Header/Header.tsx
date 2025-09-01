@@ -1,10 +1,9 @@
 "use client";
 
-import { FC, useState } from "react";
+import { FC } from "react";
 import { Navbar } from "@heroui/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
-import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 
 // HeaderProgressBar Component
 // const HeaderProgressBar: FC = () => {
@@ -44,39 +43,10 @@ import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 // };
 
 const Header: FC = () => {
-  // const { isSignedIn, isLoaded, user } = useUser();
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
-  // const [linksForLoggedInUsers, setLinksForLoggedInUsers] = useState<
-  //   Array<{
-  //     name: string;
-  //     href: string;
-  //     testId: string;
-  //   }>
-  // >([]);
-
-  // useEffect(() => {
-  //   // Wait for Clerk to load
-  //   if (!isLoaded) return;
-
-  //   // Update authenticated menu items based on user's role
-  //   if (isSignedIn) {
-  //     const isAdmin = user?.publicMetadata?.role === "admin";
-  //     setLinksForLoggedInUsers([
-  //       ...authenticatedLinks,
-  //       ...(isAdmin ? adminLinks : []),
-  //     ]);
-  //   } else {
-  //     // Reset authenticated menu items if user is not signed in
-  //     setLinksForLoggedInUsers([]);
-  //   }
-  // }, [isLoaded, user, isSignedIn]);
-
   return (
     <div className="relative">
       <Navbar
         data-testid="navbar"
-        onMenuOpenChange={setIsMenuOpen}
-        isMenuOpen={isMenuOpen}
         isBordered
         maxWidth="2xl"
         className="shadow-sm static border-b border-slate-200 dark:border-slate-700"
@@ -107,15 +77,7 @@ const Header: FC = () => {
           ],
         }}
       >
-        <Logo setIsMenuOpen={setIsMenuOpen} />
-
-        {/* Mobile navigation */}
-        <MobileNavbarContent
-          linksForLoggedInUsers={[]}
-          isMenuOpen={isMenuOpen}
-          setIsMenuOpen={setIsMenuOpen}
-          isSignedIn={false}
-        />
+        <Logo />
 
         {/* Desktop navigation */}
         <DesktopNavbarContent>{null}</DesktopNavbarContent>
