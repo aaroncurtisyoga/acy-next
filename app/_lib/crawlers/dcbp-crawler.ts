@@ -527,6 +527,11 @@ export class DCBPCrawler {
         const titleElement = shift.querySelector(".title");
         const timeText = titleElement?.textContent?.trim() || "";
 
+        // Log the specific date and time for debugging
+        console.log(
+          `Shift ${shift.getAttribute("data-id")} on ${month + 1}/${day}/${year}: "${timeText}"`,
+        );
+
         debugInfo.parseIssues.push({
           step: "time_parsing",
           titleElementFound: !!titleElement,
@@ -636,6 +641,7 @@ export class DCBPCrawler {
     const match = timeLower.match(/(\d{1,2}):(\d{2})([ap]m)/);
 
     if (!match) {
+      console.warn(`Failed to parse time string: ${timeStr}`);
       // Return a default date if parsing fails
       return new Date();
     }
@@ -651,6 +657,49 @@ export class DCBPCrawler {
       hours = 0;
     }
 
-    return new Date(year, month, day, hours, minutes);
+    // Create date string formatted for EST/EDT
+    const monthStr = String(month + 1).padStart(2, "0");
+    const dayStr = String(day).padStart(2, "0");
+    const hoursStr = String(hours).padStart(2, "0");
+    const minutesStr = String(minutes).padStart(2, "0");
+
+    // Determine if this date is in EDT (daylight saving time) or EST
+    // DST in 2025: March 9 - November 2
+    const testDate = new Date(year, month, day);
+    const isDST = this.isDaylightSavingTime(testDate);
+
+    // Create ISO string with proper timezone offset
+    // EDT is UTC-4, EST is UTC-5
+    const offset = isDST ? "-04:00" : "-05:00";
+    const dateStr = `${year}-${monthStr}-${dayStr}T${hoursStr}:${minutesStr}:00${offset}`;
+
+    const resultDate = new Date(dateStr);
+
+    // Debug logging
+    console.log(`Parsing time: ${timeStr} on ${year}-${month + 1}-${day}`);
+    console.log(`Is DST: ${isDST}, Using offset: ${offset}`);
+    console.log(`ISO string: ${dateStr}`);
+    console.log(`Result date UTC: ${resultDate.toISOString()}`);
+    console.log(
+      `Result date ET: ${resultDate.toLocaleString("en-US", { timeZone: "America/New_York" })}`,
+    );
+
+    return resultDate;
+  }
+
+  private isDaylightSavingTime(date: Date): boolean {
+    // DST in the US starts on the second Sunday of March
+    // and ends on the first Sunday of November
+    const year = date.getFullYear();
+
+    // Find second Sunday of March
+    const march = new Date(year, 2, 1); // March 1st
+    const dstStart = new Date(year, 2, 1 + (14 - march.getDay()));
+
+    // Find first Sunday of November
+    const november = new Date(year, 10, 1); // November 1st
+    const dstEnd = new Date(year, 10, 1 + (7 - november.getDay()));
+
+    return date >= dstStart && date < dstEnd;
   }
 }

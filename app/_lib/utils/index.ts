@@ -9,6 +9,7 @@ export const formatDateTime = (dateString: Date) => {
     hour: "numeric", // numeric hour (e.g., '8')
     minute: "numeric", // numeric minute (e.g., '30')
     hour12: true, // use 12-hour clock (true) or 24-hour clock (false)
+    timeZone: "America/New_York", // Force EST/EDT timezone
   };
 
   const dateOptions: Intl.DateTimeFormatOptions = {
@@ -16,29 +17,34 @@ export const formatDateTime = (dateString: Date) => {
     month: "short",
     year: "numeric",
     day: "numeric",
+    timeZone: "America/New_York",
   };
 
   const dateOptionsWithoutYear: Intl.DateTimeFormatOptions = {
     weekday: "short",
     month: "long",
     day: "numeric",
+    timeZone: "America/New_York",
   };
 
   const dateOptionsLongWithoutYear: Intl.DateTimeFormatOptions = {
     weekday: "long",
     month: "long",
     day: "numeric",
+    timeZone: "America/New_York",
   };
 
   const timeOptions: Intl.DateTimeFormatOptions = {
     hour: "numeric",
     minute: "numeric",
     hour12: true,
+    timeZone: "America/New_York", // Force EST/EDT timezone for display
   };
 
   const monthYearOptions: Intl.DateTimeFormatOptions = {
     month: "long",
     year: "numeric",
+    timeZone: "America/New_York",
   };
 
   const formattedDateTime: string = new Date(dateString).toLocaleString(
@@ -70,16 +76,38 @@ export const formatDateTime = (dateString: Date) => {
     monthYearOptions,
   );
 
-  // Additional formatted parts
+  // Additional formatted parts - use EST/EDT timezone
   const date = new Date(dateString);
   const monthShort = date
-    .toLocaleDateString("en-US", { month: "short" })
+    .toLocaleDateString("en-US", {
+      month: "short",
+      timeZone: "America/New_York",
+    })
     .toUpperCase();
-  const monthLong = date.toLocaleDateString("en-US", { month: "long" });
-  const dayNumber = date.getDate();
-  const year = date.getFullYear();
-  const weekdayShort = date.toLocaleDateString("en-US", { weekday: "short" });
-  const weekdayLong = date.toLocaleDateString("en-US", { weekday: "long" });
+  const monthLong = date.toLocaleDateString("en-US", {
+    month: "long",
+    timeZone: "America/New_York",
+  });
+  const dayNumber = parseInt(
+    date.toLocaleDateString("en-US", {
+      day: "numeric",
+      timeZone: "America/New_York",
+    }),
+  );
+  const year = parseInt(
+    date.toLocaleDateString("en-US", {
+      year: "numeric",
+      timeZone: "America/New_York",
+    }),
+  );
+  const weekdayShort = date.toLocaleDateString("en-US", {
+    weekday: "short",
+    timeZone: "America/New_York",
+  });
+  const weekdayLong = date.toLocaleDateString("en-US", {
+    weekday: "long",
+    timeZone: "America/New_York",
+  });
 
   return {
     dateTime: formattedDateTime,
