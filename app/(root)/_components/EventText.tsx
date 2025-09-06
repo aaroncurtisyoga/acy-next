@@ -20,57 +20,84 @@ const EventText: FC<EventTextProps> = ({ event }) => {
     : `/events/${id}`;
 
   return (
-    <Card className="w-full mb-4 shadow-small hover:shadow-medium transition-shadow duration-200 rounded-3xl">
+    <Card className="w-full mb-4 shadow-small hover:shadow-medium transition-shadow duration-200 rounded-3xl @container">
       <CardBody className="px-4 py-3">
-        <div className="flex flex-col md:flex-row md:items-center gap-4">
-          {/* Date Badge */}
-          <div className="flex items-center gap-3">
-            <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 text-center min-w-[60px]">
-              <div className="text-xs font-bold text-primary-600 dark:text-primary-400">
-                {dateTime.monthShort}
+        <div className="flex flex-col gap-3">
+          {/* Mobile: Compact date + title row, Desktop: Date badge + details */}
+          <div className="flex flex-row items-start gap-3">
+            {/* Desktop Date Badge - Hidden on narrow containers */}
+            <div className="hidden @sm:block">
+              <div className="bg-primary-50 dark:bg-primary-900/20 rounded-lg p-3 text-center min-w-[60px]">
+                <div className="text-xs font-bold text-primary-600 dark:text-primary-400">
+                  {dateTime.monthShort}
+                </div>
+                <div className="text-2xl font-bold text-foreground">
+                  {dateTime.dayNumber}
+                </div>
+                <div className="text-xs text-foreground-500">
+                  {dateTime.weekdayShort}
+                </div>
               </div>
-              <div className="text-2xl font-bold text-foreground">
-                {dateTime.dayNumber}
+            </div>
+
+            {/* Event Details */}
+            <div className="flex-1">
+              <div className="flex items-center gap-2 mb-2">
+                {/* Mobile: Show title first, then date */}
+                <h3 className="text-lg font-semibold text-foreground">
+                  {title}
+                </h3>
+                <span className="@sm:hidden text-sm text-foreground-500">
+                  |
+                </span>
+                <span className="@sm:hidden text-sm font-medium text-foreground-600 whitespace-nowrap">
+                  {dateTime.weekdayShort.toUpperCase()}, {dateTime.monthShort}{" "}
+                  {dateTime.dayNumber}
+                </span>
               </div>
-              <div className="text-xs text-foreground-500">
-                {dateTime.weekdayLong}
+
+              <div className="flex flex-wrap gap-4 text-sm text-foreground-600">
+                <div className="flex items-center gap-1.5">
+                  <Clock className="w-4 h-4 text-primary-500" />
+                  <span className="font-medium">{dateTime.timeOnly}</span>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <MapPin className="w-4 h-4 text-primary-500" />
+                  <span>{event.location.name}</span>
+                </div>
+
+                <div className="flex items-center gap-1.5">
+                  <div className="w-2 h-2 rounded-full bg-primary-400"></div>
+                  <span>{category.name}</span>
+                </div>
               </div>
+            </div>
+
+            {/* Desktop Sign Up Button */}
+            <div className="hidden @sm:block ml-auto">
+              <Button
+                as={Link}
+                href={signUpHref}
+                color="primary"
+                variant="light"
+                size="md"
+                className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+              >
+                Sign Up
+              </Button>
             </div>
           </div>
 
-          {/* Event Details */}
-          <div className="flex-1">
-            <div className="flex flex-wrap items-start justify-between gap-2 mb-2">
-              <h3 className="text-lg font-semibold text-foreground">{title}</h3>
-            </div>
-
-            <div className="flex flex-wrap gap-4 text-sm text-foreground-600">
-              <div className="flex items-center gap-1.5">
-                <Clock className="w-4 h-4 text-primary-500" />
-                <span className="font-medium">{dateTime.timeOnly}</span>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <MapPin className="w-4 h-4 text-primary-500" />
-                <span>{event.location.name}</span>
-              </div>
-
-              <div className="flex items-center gap-1.5">
-                <div className="w-2 h-2 rounded-full bg-primary-400"></div>
-                <span>{category.name}</span>
-              </div>
-            </div>
-          </div>
-
-          {/* Sign Up Button */}
-          <div className="md:ml-auto">
+          {/* Mobile Sign Up Button - Full width */}
+          <div className="@sm:hidden">
             <Button
               as={Link}
               href={signUpHref}
               color="primary"
               variant="light"
               size="md"
-              className="font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
+              className="w-full font-semibold bg-primary-100 text-primary-700 hover:bg-primary-200 dark:bg-gray-800 dark:text-white dark:hover:bg-gray-700"
             >
               Sign Up
             </Button>
