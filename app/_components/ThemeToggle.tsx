@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const ThemeToggle: FC = () => {
@@ -46,12 +46,6 @@ const ThemeToggle: FC = () => {
     if (!mounted) return "Theme";
 
     return resolvedTheme === "dark" ? "Dark" : "Light";
-  };
-
-  const getNextTheme = () => {
-    if (theme === "light") return "dark";
-    if (theme === "dark") return "system";
-    return "light";
   };
 
   if (!mounted) {
