@@ -29,13 +29,13 @@ const Footer = () => {
             {/* Newsletter */}
             <div
               data-testid="footer-newsletter"
-              className="w-full md:w-auto flex-shrink-0 order-2 md:order-1"
+              className="w-full md:w-auto flex-shrink-0 order-1 md:order-1"
             >
               <NewsletterForm />
             </div>
 
-            {/* Social & Copyright */}
-            <div className="flex flex-col items-center md:items-end gap-6 order-1 md:order-2 w-full md:w-auto">
+            {/* Social & Theme toggle */}
+            <div className="flex flex-col items-center md:items-end gap-6 order-2 md:order-2 w-full md:w-auto">
               <div
                 data-testid="footer-social-links"
                 className="flex items-center"
@@ -77,17 +77,9 @@ const Footer = () => {
                 </div>
               </div>
 
-              {/* Copyright & theme toggle */}
+              {/* Theme toggle */}
               <div className="text-center md:text-right">
-                <div className="flex items-center justify-center md:justify-end gap-4">
-                  <ThemeToggle />
-                  <p
-                    data-testid="footer-copyright"
-                    className="text-slate-500 dark:text-slate-400 text-sm"
-                  >
-                    © {new Date().getFullYear()} Aaron Curtis Yoga
-                  </p>
-                </div>
+                <ThemeToggle />
               </div>
             </div>
           </div>
