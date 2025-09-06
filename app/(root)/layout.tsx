@@ -7,9 +7,9 @@ import "@/app/globals.css";
 
 export default function Layout({ children }: { children: ReactNode }) {
   return (
-    <div className={"flex flex-col min-h-dvh bg-white dark:bg-[#0a0a0a]"}>
+    <div className={"bg-white dark:bg-[#0a0a0a]"}>
       <Header />
-      <main className={"grow bg-white dark:bg-[#0a0a0a]"}>{children}</main>
+      <main className={"bg-white dark:bg-[#0a0a0a]"}>{children}</main>
       <Footer />
     </div>
   );
