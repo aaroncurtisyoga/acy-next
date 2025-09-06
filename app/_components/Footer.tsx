@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { AudioLines, Instagram, Youtube } from "lucide-react";
+import { FaYoutube, FaSpotify, FaInstagram } from "react-icons/fa";
 import NewsletterForm from "@/app/_components/NewsletterForm";
 import ThemeToggle from "@/app/_components/ThemeToggle";
 
@@ -22,20 +22,20 @@ const Footer = () => {
       />
 
       {/* Content */}
-      <div className="relative z-20">
-        <div className="wrapper-width">
+      <div className="relative z-20 w-full">
+        <div className="w-full md:wrapper-width">
           {/* Single responsive layout */}
-          <div className="flex flex-col md:flex-row items-center md:items-start justify-between gap-8 md:gap-12">
+          <div className="flex flex-col md:flex-row items-stretch md:items-start justify-between gap-8 md:gap-12 px-5 md:px-0">
             {/* Newsletter */}
             <div
               data-testid="footer-newsletter"
-              className="flex-shrink-0 order-2 md:order-1"
+              className="w-full md:w-auto flex-shrink-0 order-2 md:order-1"
             >
               <NewsletterForm />
             </div>
 
             {/* Social & Copyright */}
-            <div className="flex flex-col items-center md:items-end gap-6 order-1 md:order-2">
+            <div className="flex flex-col items-center md:items-end gap-6 order-1 md:order-2 w-full md:w-auto">
               <div
                 data-testid="footer-social-links"
                 className="flex items-center"
@@ -49,7 +49,7 @@ const Footer = () => {
                     className="group"
                   >
                     <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
-                      <Youtube className="w-6 h-6 text-slate-600 dark:text-slate-300 transition-colors duration-300" />
+                      <FaYoutube className="w-6 h-6 text-[#FF0000] dark:text-[#FF0000] transition-transform duration-300 group-hover:scale-110" />
                     </div>
                   </Link>
                   <Link
@@ -60,7 +60,7 @@ const Footer = () => {
                     className="group"
                   >
                     <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
-                      <AudioLines className="w-6 h-6 text-slate-600 dark:text-slate-300 transition-colors duration-300" />
+                      <FaSpotify className="w-6 h-6 text-[#1DB954] dark:text-[#1DB954] transition-transform duration-300 group-hover:scale-110" />
                     </div>
                   </Link>
                   <Link
@@ -71,7 +71,7 @@ const Footer = () => {
                     className="group"
                   >
                     <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600 group-hover:bg-gray-100 dark:group-hover:bg-slate-700 transition-all duration-300">
-                      <Instagram className="w-6 h-6 text-slate-600 dark:text-slate-300 transition-colors duration-300" />
+                      <FaInstagram className="w-6 h-6 text-[#E4405F] dark:text-[#E4405F] transition-transform duration-300 group-hover:scale-110" />
                     </div>
                   </Link>
                 </div>

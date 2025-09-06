@@ -40,10 +40,7 @@ const NewsletterForm = () => {
   };
 
   return (
-    <form
-      onSubmit={handleSubmit(onSubmit)}
-      className="w-full max-w-[min(384px,calc(100vw-3rem))]"
-    >
+    <form onSubmit={handleSubmit(onSubmit)} className="w-full md:max-w-[384px]">
       <div className="flex flex-col gap-4">
         <Input
           {...register("email")}
