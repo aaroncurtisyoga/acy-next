@@ -29,8 +29,8 @@ const Checkout: FC<ICheckoutButtonProps> = ({ event }) => {
     <div
       id={"event-checkout"}
       className={
-        "flex-1 w-full border-t-2 h-[140px] p-[24px] fixed bottom-0 z-10 bg-white" +
-        " md:border-[1px] md:rounded-2xl md:relative" +
+        "flex-1 w-full border-t-2 h-[140px] p-[24px] bg-white" +
+        " md:border-[1px] md:rounded-2xl" +
         " md:max-w-[360px]"
       }
     >

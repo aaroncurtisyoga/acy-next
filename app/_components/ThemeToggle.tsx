@@ -1,64 +1,75 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Sun, Moon, Monitor } from "lucide-react";
+import { Sun, Moon } from "lucide-react";
 import { useTheme } from "next-themes";
 
 const ThemeToggle: FC = () => {
-  const { theme, setTheme, resolvedTheme } = useTheme();
+  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
-  // Client-side mount check
   useEffect(() => {
     setMounted(true);
-  }, []);
+    console.log("ThemeToggle mounted:", { theme, resolvedTheme, systemTheme });
+  }, [theme, resolvedTheme, systemTheme]);
 
-  if (!mounted) {
-    // Placeholder to prevent layout shift
-    return (
-      <button
-        className="w-8 h-8 rounded-full flex items-center justify-center opacity-0"
-        aria-label="Theme toggle"
-      >
-        <div className="w-4 h-4" />
-      </button>
-    );
-  }
+  const handleThemeChange = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
 
-  const cycleTheme = () => {
-    if (theme === "light") {
-      setTheme("dark");
-    } else if (theme === "dark") {
-      setTheme("system");
-    } else {
-      setTheme("light");
-    }
+    console.log("Theme button clicked!", {
+      current: theme,
+      resolved: resolvedTheme,
+      system: systemTheme,
+      mounted,
+    });
+
+    if (!mounted) return;
+
+    // Simple toggle between light and dark
+    const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
+    console.log("Setting theme to:", nextTheme);
+    setTheme(nextTheme);
   };
 
   const getIcon = () => {
-    if (theme === "system") {
-      return <Monitor className="w-4 h-4" />;
+    if (!mounted) return <Sun className="w-5 h-5" />;
+
+    if (resolvedTheme === "dark") {
+      return <Moon className="w-5 h-5" />;
+    } else {
+      return <Sun className="w-5 h-5" />;
     }
-    return resolvedTheme === "dark" ? (
-      <Sun className="w-4 h-4" />
-    ) : (
-      <Moon className="w-4 h-4" />
-    );
   };
 
-  const getLabel = () => {
-    if (theme === "system") return "System theme";
-    return resolvedTheme === "dark" ? "Dark mode" : "Light mode";
+  const getThemeText = () => {
+    if (!mounted) return "Theme";
+
+    return resolvedTheme === "dark" ? "Dark" : "Light";
   };
+
+  if (!mounted) {
+    return (
+      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
+        <Sun className="w-5 h-5" />
+        <span className="text-sm font-medium">Light</span>
+      </div>
+    );
+  }
 
   return (
     <button
-      onClick={cycleTheme}
-      className="w-8 h-8 rounded-full flex items-center justify-center text-slate-500 hover:text-slate-700 dark:text-slate-400 dark:hover:text-slate-200 bg-slate-50/50 hover:bg-slate-100 dark:bg-slate-800/50 dark:hover:bg-slate-800 border border-slate-200/50 dark:border-slate-700/50 transition-all duration-200 group cursor-pointer"
-      aria-label={`Switch to ${theme === "light" ? "dark" : theme === "dark" ? "system" : "light"} mode`}
-      title={getLabel()}
+      onClick={handleThemeChange}
+      onTouchStart={() => {}} // Enable touch events on mobile
+      className="group flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200 touch-manipulation select-none cursor-pointer"
+      aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
+      title={`Current: ${getThemeText()}. Click to switch.`}
+      type="button"
     >
-      {getIcon()}
+      <div className="transition-transform duration-200 group-hover:scale-110 group-active:scale-95">
+        {getIcon()}
+      </div>
+      <span className="text-sm font-medium">{getThemeText()}</span>
     </button>
   );
 };
