@@ -28,7 +28,7 @@ const Footer = () => {
           {/* Newsletter */}
           <div
             data-testid="footer-newsletter"
-            className="w-full md:w-auto flex-shrink-0 order-1 md:order-1"
+            className="w-full md:w-80 flex-shrink-0 order-1 md:order-1"
           >
             <NewsletterForm />
           </div>
