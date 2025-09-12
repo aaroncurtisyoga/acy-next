@@ -3,6 +3,7 @@
 import { createContext, useContext } from "react";
 import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { now, getLocalTimeZone } from "@internationalized/date";
 
 export type EventFormValues = {
   // add all fields here, from all steps
@@ -53,10 +54,22 @@ export const EventFormProvider = ({
   mode: "create" | "edit";
   defaultValues?: EventFormValues;
 }) => {
-  const methods = useForm<EventFormValues>({ defaultValues });
+  // Set proper default values for form initialization
+  const formDefaultValues: EventFormValues = {
+    startDateTime: now(getLocalTimeZone()),
+    endDateTime: now(getLocalTimeZone()).add({ hours: 1 }),
+    ...defaultValues,
+  };
+
+  const methods = useForm<EventFormValues>({
+    defaultValues: formDefaultValues,
+    mode: "onChange", // Enable onChange validation for better UX
+  });
 
   return (
-    <EventFormContext.Provider value={{ mode, defaultValues }}>
+    <EventFormContext.Provider
+      value={{ mode, defaultValues: formDefaultValues }}
+    >
       <FormProvider {...methods}>{children}</FormProvider>
     </EventFormContext.Provider>
   );

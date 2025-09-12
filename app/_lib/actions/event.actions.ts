@@ -32,29 +32,34 @@ export async function createEvent({
     const startDateTimeISO = startZonedDateTime.toAbsoluteString();
     const endDateTimeISO = endZonedDateTime.toAbsoluteString();
 
+    // Handle location creation/connection first
+    const location = await prisma.location.upsert({
+      where: {
+        placeId: event.location.placeId,
+      },
+      create: {
+        ...event.location,
+      },
+      update: {
+        ...event.location,
+      },
+    });
+
     const newEvent = await prisma.event.create({
       data: {
-        ...event,
-        ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
-        isHostedExternally: event.isHostedExternally ?? false,
-        // Convert string to Date and then to ISO String
+        title: event.title,
+        description: event.description,
         startDateTime: startDateTimeISO,
         endDateTime: endDateTimeISO,
-        category: {
-          connect: {
-            id: event.category,
-          },
-        },
-        location: {
-          connectOrCreate: {
-            create: {
-              ...event.location,
-            },
-            where: {
-              placeId: event.location.placeId,
-            },
-          },
-        },
+        price: event.price,
+        maxAttendees: event.maxAttendees,
+        imageUrl: event.imageUrl,
+        externalRegistrationUrl: event.externalRegistrationUrl,
+        ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
+        isHostedExternally: event.isHostedExternally ?? false,
+        // Use scalar field assignments instead of nested connects
+        categoryId: event.category,
+        locationId: location.id,
       },
     });
     revalidatePath(path);
