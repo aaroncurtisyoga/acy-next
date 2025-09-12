@@ -3,8 +3,15 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavbarContent, NavbarItem } from "@heroui/react";
+import {
+  NavbarContent,
+  NavbarItem,
+  Button,
+  useDisclosure,
+} from "@heroui/react";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
+import { HiOutlineMail } from "react-icons/hi";
+import NewsletterModal from "@/app/_components/NewsletterModal";
 
 interface DesktopNavbarContentProps {
   children: ReactNode;
@@ -12,6 +19,7 @@ interface DesktopNavbarContentProps {
 
 const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
   const pathname = usePathname();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
     <>
@@ -37,9 +45,25 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
           </NavbarItem>
         ))}
 
+        {/* Newsletter button */}
+        <NavbarItem>
+          <Button
+            onPress={onOpen}
+            color="primary"
+            variant="flat"
+            startContent={<HiOutlineMail className="w-4 h-4" />}
+            className="font-medium"
+          >
+            Newsletter
+          </Button>
+        </NavbarItem>
+
         {/* User dropdown */}
         {children}
       </NavbarContent>
+
+      {/* Newsletter Modal */}
+      <NewsletterModal isOpen={isOpen} onOpenChange={onOpenChange} />
     </>
   );
 };
