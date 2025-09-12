@@ -46,17 +46,15 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
         ))}
 
         {/* Newsletter button */}
-        <NavbarItem>
-          <Button
-            onPress={onOpen}
-            color="primary"
-            variant="flat"
-            startContent={<HiOutlineMail className="w-4 h-4" />}
-            className="font-medium"
-          >
-            Newsletter
-          </Button>
-        </NavbarItem>
+        <Button
+          onPress={onOpen}
+          color="primary"
+          variant="flat"
+          startContent={<HiOutlineMail className="w-4 h-4" />}
+          className="font-medium"
+        >
+          Newsletter
+        </Button>
 
         {/* User dropdown */}
         {children}
