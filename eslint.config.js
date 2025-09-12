@@ -8,6 +8,15 @@ const compat = new FlatCompat({
 
 module.exports = [
   {
+    ignores: [
+      "node_modules/**",
+      ".next/**",
+      "out/**",
+      "build/**",
+      "next-env.d.ts",
+    ],
+  },
+  {
     ignores: [".next/**", "node_modules/**", ".vercel/**", "out/**"],
   },
   ...compat.extends("next/core-web-vitals"),

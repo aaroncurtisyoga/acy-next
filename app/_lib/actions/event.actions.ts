@@ -222,12 +222,20 @@ export async function updateEvent({
   try {
     const { _id, categoryId, category, location, ...eventData } = event;
 
+    // Use _id if provided, otherwise use id
+    const eventId = _id || event.id;
+
+    // Use categoryId if provided, otherwise use category
+    const categoryToConnect = categoryId || category;
+
     const updatedEvent = await prisma.event.update({
-      where: { id: _id },
+      where: { id: eventId },
       data: {
         ...eventData,
         ...(event.price ? { isFree: parseInt(event.price, 10) === 0 } : {}),
-        ...(categoryId ? { category: { connect: { id: categoryId } } } : {}),
+        ...(categoryToConnect
+          ? { category: { connect: { id: categoryToConnect } } }
+          : {}),
         ...(location &&
         location.placeId &&
         location.name &&

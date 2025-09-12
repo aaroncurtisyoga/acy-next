@@ -25,6 +25,9 @@ export type EventFormValues = {
   maxAttendees?: number;
   price?: string;
   externalRegistrationUrl?: string;
+  isExternal?: boolean;
+  sourceType?: string;
+  sourceId?: string;
 };
 
 interface EventFormContextValue {
