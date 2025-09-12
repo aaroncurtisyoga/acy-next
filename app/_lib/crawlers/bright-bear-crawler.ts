@@ -430,7 +430,12 @@ export class BrightBearCrawler {
         // Try to parse the full date string
         const parsedDate = new Date(dateTimeStr);
 
-        if (!isNaN(parsedDate.getTime()) && parsedDate.getFullYear() > 2024) {
+        // Accept dates that are from the past year onwards (for historical data)
+        // or future dates within reasonable bounds
+        const oneYearAgo = new Date();
+        oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
+
+        if (!isNaN(parsedDate.getTime()) && parsedDate >= oneYearAgo) {
           startDateTime = parsedDate;
           console.log(
             `    ✅ Parsed start time: ${startDateTime.toLocaleString()}`,
