@@ -1,76 +1,125 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Sun, Moon } from "lucide-react";
+import { HiSun, HiMoon, HiComputerDesktop } from "react-icons/hi2";
 import { useTheme } from "next-themes";
 
 const ThemeToggle: FC = () => {
-  const { theme, setTheme, resolvedTheme, systemTheme } = useTheme();
+  const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
-    console.log("ThemeToggle mounted:", { theme, resolvedTheme, systemTheme });
-  }, [theme, resolvedTheme, systemTheme]);
-
-  const handleThemeChange = (e: React.MouseEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-
-    console.log("Theme button clicked!", {
-      current: theme,
-      resolved: resolvedTheme,
-      system: systemTheme,
-      mounted,
-    });
-
-    if (!mounted) return;
-
-    // Simple toggle between light and dark
-    const nextTheme = resolvedTheme === "dark" ? "light" : "dark";
-    console.log("Setting theme to:", nextTheme);
-    setTheme(nextTheme);
-  };
-
-  const getIcon = () => {
-    if (!mounted) return <Sun className="w-5 h-5" />;
-
-    if (resolvedTheme === "dark") {
-      return <Moon className="w-5 h-5" />;
-    } else {
-      return <Sun className="w-5 h-5" />;
-    }
-  };
-
-  const getThemeText = () => {
-    if (!mounted) return "Theme";
-
-    return resolvedTheme === "dark" ? "Dark" : "Light";
-  };
+  }, []);
 
   if (!mounted) {
     return (
-      <div className="flex items-center gap-2 text-slate-700 dark:text-slate-300">
-        <Sun className="w-5 h-5" />
-        <span className="text-sm font-medium">Light</span>
-      </div>
+      <fieldset className="inline-flex items-center p-1 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600">
+        <div className="flex items-center gap-1">
+          <div className="p-2 rounded-full">
+            <HiComputerDesktop className="w-4 h-4 text-slate-500" />
+          </div>
+          <div className="p-2 rounded-full">
+            <HiSun className="w-4 h-4 text-slate-500" />
+          </div>
+          <div className="p-2 rounded-full">
+            <HiMoon className="w-4 h-4 text-slate-500" />
+          </div>
+        </div>
+      </fieldset>
     );
   }
 
   return (
-    <button
-      onClick={handleThemeChange}
-      onTouchStart={() => {}} // Enable touch events on mobile
-      className="group flex items-center gap-2 text-slate-700 dark:text-slate-300 hover:text-slate-900 dark:hover:text-slate-100 transition-colors duration-200 touch-manipulation select-none cursor-pointer"
-      aria-label={`Switch to ${resolvedTheme === "dark" ? "light" : "dark"} mode`}
-      title={`Current: ${getThemeText()}. Click to switch.`}
-      type="button"
+    <fieldset
+      className="inline-flex items-center p-1 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600"
+      aria-label="Select theme"
     >
-      <div className="transition-transform duration-200 group-hover:scale-110 group-active:scale-95">
-        {getIcon()}
+      <legend className="sr-only">Select a display theme:</legend>
+
+      <div className="flex items-center gap-1">
+        {/* System theme option */}
+        <div className="relative">
+          <input
+            type="radio"
+            id="theme-system"
+            name="theme"
+            value="system"
+            checked={theme === "system"}
+            onChange={() => setTheme("system")}
+            className="sr-only peer"
+            aria-label="System theme"
+          />
+          <label
+            htmlFor="theme-system"
+            className="flex items-center justify-center p-2 rounded-full cursor-pointer transition-all duration-200 
+                     text-slate-500 dark:text-slate-400
+                     hover:text-slate-700 dark:hover:text-slate-200
+                     peer-checked:bg-gray-100 dark:peer-checked:bg-slate-700
+                     peer-checked:text-slate-900 dark:peer-checked:text-slate-100
+                     peer-checked:shadow-sm"
+            title="Use system theme"
+          >
+            <HiComputerDesktop className="w-4 h-4" />
+            <span className="sr-only">System theme</span>
+          </label>
+        </div>
+
+        {/* Light theme option */}
+        <div className="relative">
+          <input
+            type="radio"
+            id="theme-light"
+            name="theme"
+            value="light"
+            checked={theme === "light"}
+            onChange={() => setTheme("light")}
+            className="sr-only peer"
+            aria-label="Light theme"
+          />
+          <label
+            htmlFor="theme-light"
+            className="flex items-center justify-center p-2 rounded-full cursor-pointer transition-all duration-200
+                     text-slate-500 dark:text-slate-400
+                     hover:text-slate-700 dark:hover:text-slate-200
+                     peer-checked:bg-gray-100 dark:peer-checked:bg-slate-700
+                     peer-checked:text-slate-900 dark:peer-checked:text-slate-100
+                     peer-checked:shadow-sm"
+            title="Light theme"
+          >
+            <HiSun className="w-4 h-4" />
+            <span className="sr-only">Light theme</span>
+          </label>
+        </div>
+
+        {/* Dark theme option */}
+        <div className="relative">
+          <input
+            type="radio"
+            id="theme-dark"
+            name="theme"
+            value="dark"
+            checked={theme === "dark"}
+            onChange={() => setTheme("dark")}
+            className="sr-only peer"
+            aria-label="Dark theme"
+          />
+          <label
+            htmlFor="theme-dark"
+            className="flex items-center justify-center p-2 rounded-full cursor-pointer transition-all duration-200
+                     text-slate-500 dark:text-slate-400
+                     hover:text-slate-700 dark:hover:text-slate-200
+                     peer-checked:bg-gray-100 dark:peer-checked:bg-slate-700
+                     peer-checked:text-slate-900 dark:peer-checked:text-slate-100
+                     peer-checked:shadow-sm"
+            title="Dark theme"
+          >
+            <HiMoon className="w-4 h-4" />
+            <span className="sr-only">Dark theme</span>
+          </label>
+        </div>
       </div>
-      <span className="text-sm font-medium">{getThemeText()}</span>
-    </button>
+    </fieldset>
   );
 };
 
