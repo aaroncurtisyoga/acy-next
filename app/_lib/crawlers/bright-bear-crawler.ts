@@ -59,6 +59,7 @@ export class BrightBearCrawler {
       );
 
       console.log(`📋 Found ${allDropdowns.length} dropdown(s) on page...`);
+      console.log("🔍 Searching for instructor dropdown...");
 
       // Find the instructor dropdown by checking button text
       let instructorDropdown = null;
@@ -144,16 +145,25 @@ export class BrightBearCrawler {
       }
 
       // Extract classes from the page using the correct Momence selectors
-      console.log("🔍 Starting class extraction...");
+      console.log("🔍 Starting class extraction from Momence widget...");
+      console.log("📊 Extracting session data from DOM...");
 
       const classes = await page.evaluate(() => {
         const results = [];
+        const debugInfo = {
+          totalArticles: 0,
+          articlesWithInstructor: 0,
+          articlesWithDate: 0,
+          articlesWithPrice: 0,
+          articlesProcessed: 0,
+        };
 
         // Target the specific class article elements in the Momence session list
         const classElements = document.querySelectorAll(
           "article[data-session_id]",
         );
 
+        debugInfo.totalArticles = classElements.length;
         console.log(`Found ${classElements.length} class articles`);
 
         classElements.forEach((article: any) => {
@@ -261,7 +271,13 @@ export class BrightBearCrawler {
             descriptionEl?.getAttribute("title")?.trim() ||
             "";
 
+          if (instructor) debugInfo.articlesWithInstructor++;
+          if (dateTime) debugInfo.articlesWithDate++;
+          if (price) debugInfo.articlesWithPrice++;
+          debugInfo.articlesProcessed++;
+
           if (title && instructor && sessionId) {
+            console.log(`Processing class: ${title} by ${instructor}`);
             results.push({
               title,
               instructor,
@@ -280,16 +296,30 @@ export class BrightBearCrawler {
           }
         });
 
-        return results;
+        console.log("Extraction debug info:", debugInfo);
+        return { results, debugInfo };
       });
 
-      console.log(`Found ${classes.length} total classes`);
-      if (classes.length > 0) {
-        console.log("Sample class data:", classes[0]);
+      const extractedClasses = classes.results || classes;
+      const debugInfo = classes.debugInfo;
+
+      console.log(`✅ Found ${extractedClasses.length} total classes on page`);
+      if (debugInfo) {
+        console.log("📊 Extraction statistics:");
+        console.log(`  - Total articles: ${debugInfo.totalArticles}`);
+        console.log(
+          `  - Articles with instructor: ${debugInfo.articlesWithInstructor}`,
+        );
+        console.log(`  - Articles with date: ${debugInfo.articlesWithDate}`);
+        console.log(`  - Articles with price: ${debugInfo.articlesWithPrice}`);
+      }
+      if (extractedClasses.length > 0) {
+        console.log("📝 Sample class data:", extractedClasses[0]);
       }
 
       // Filter for Aaron's classes explicitly and parse them
-      const aaronRawClasses = classes.filter((cls) => {
+      console.log("🔎 Filtering for Aaron Curtis classes...");
+      const aaronRawClasses = extractedClasses.filter((cls) => {
         const isAaron =
           cls.instructor?.toLowerCase().includes("aaron") ||
           cls.instructor?.toLowerCase().includes("curtis");
@@ -300,21 +330,37 @@ export class BrightBearCrawler {
       });
 
       console.log(
-        `Found ${aaronRawClasses.length} classes specifically for Aaron`,
+        `✅ Found ${aaronRawClasses.length} classes specifically for Aaron Curtis`,
       );
 
-      const aaronClasses = aaronRawClasses.map((cls) =>
-        this.parseClassData(cls),
-      );
+      if (aaronRawClasses.length === 0) {
+        console.warn(
+          "⚠️ No Aaron Curtis classes found - check instructor filter",
+        );
+      } else {
+        console.log("📅 Parsing class dates and times...");
+      }
 
-      console.log(`Found ${aaronClasses.length} classes for Aaron`);
+      const aaronClasses = aaronRawClasses.map((cls, index) => {
+        console.log(
+          `  [${index + 1}/${aaronRawClasses.length}] Parsing: ${cls.title} on ${cls.dateTime}`,
+        );
+        return this.parseClassData(cls);
+      });
+
+      console.log(
+        `🎯 Successfully parsed ${aaronClasses.length} Aaron Curtis classes`,
+      );
+      console.log("✨ Bright Bear crawl complete");
 
       return aaronClasses;
     } catch (error) {
-      console.error("Error crawling Bright Bear:", error);
+      console.error("❌ Error crawling Bright Bear:", error);
       throw error;
     } finally {
+      console.log("🔒 Closing browser connection...");
       await browser.close();
+      console.log("✅ Browser closed successfully");
     }
   }
 
@@ -328,6 +374,7 @@ export class BrightBearCrawler {
 
     // Parse date and time - improved parsing for Momence format
     if (rawClass.dateTime) {
+      console.log(`    📅 Parsing date/time: ${rawClass.dateTime}`);
       try {
         // The dateTime comes in formats like:
         // "Tuesday, September 2 6:30 AM" (missing year)
@@ -385,6 +432,9 @@ export class BrightBearCrawler {
 
         if (!isNaN(parsedDate.getTime()) && parsedDate.getFullYear() > 2024) {
           startDateTime = parsedDate;
+          console.log(
+            `    ✅ Parsed start time: ${startDateTime.toLocaleString()}`,
+          );
 
           // Extract duration from description or default to 45 minutes
           let duration = 45; // Default for most classes
@@ -398,6 +448,9 @@ export class BrightBearCrawler {
 
           endDateTime = new Date(
             startDateTime.getTime() + duration * 60 * 1000,
+          );
+          console.log(
+            `    ✅ Calculated end time: ${endDateTime.toLocaleString()} (${duration} min class)`,
           );
         } else {
           console.warn(
