@@ -23,7 +23,7 @@ import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInp
 
 const BasicInfo: FC = () => {
   const router = useRouter();
-  const { mode } = useEventFormContext();
+  const { mode, defaultValues } = useEventFormContext();
   const {
     control,
     handleSubmit,
@@ -87,6 +87,15 @@ const BasicInfo: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
+      {defaultValues?.isExternal && (
+        <div className="mb-4 p-3 bg-default-100 rounded-lg flex items-center gap-2">
+          <span className="text-sm text-default-600">
+            This event was synced from an external source
+            {defaultValues.sourceType && ` (${defaultValues.sourceType})`}. You
+            can still edit all fields including the category.
+          </span>
+        </div>
+      )}
       <div className="grid grid-cols-2 gap-5">
         <TitleInput
           control={control}

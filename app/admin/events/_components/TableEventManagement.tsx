@@ -13,7 +13,7 @@ import {
   useDisclosure,
   addToast,
 } from "@heroui/react";
-import { Eye, Pencil, Trash2 } from "lucide-react";
+import { Eye, Pencil, Trash2, ExternalLink } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
 import TableLoading from "@/app/_components/TableLoading";
@@ -117,8 +117,26 @@ const TableEventManagement: FC = () => {
               <TableCell>
                 {formatDateTime(event.startDateTime).dateTime}
               </TableCell>
-              <TableCell>{event.title}</TableCell>
-              <TableCell>{event.category.name}</TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  {event.title}
+                  {event.isExternal && (
+                    <Tooltip content="Synced from external source">
+                      <ExternalLink size={14} className="text-default-400" />
+                    </Tooltip>
+                  )}
+                </div>
+              </TableCell>
+              <TableCell>
+                <div className="flex items-center gap-2">
+                  {event.category.name}
+                  {event.sourceType && (
+                    <span className="text-xs text-default-400">
+                      ({event.sourceType})
+                    </span>
+                  )}
+                </div>
+              </TableCell>
               <TableCell>
                 <div className="flex items-center gap-3">
                   <Tooltip content={"View"}>
