@@ -303,7 +303,9 @@ export class BrightBearCrawler {
       const extractedClasses = classes.results || classes;
       const debugInfo = classes.debugInfo;
 
-      console.log(`✅ Found ${extractedClasses.length} total classes on page`);
+      console.log(
+        `✅ Found ${Array.isArray(extractedClasses) ? extractedClasses.length : 0} total classes on page`,
+      );
       if (debugInfo) {
         console.log("📊 Extraction statistics:");
         console.log(`  - Total articles: ${debugInfo.totalArticles}`);
@@ -313,21 +315,25 @@ export class BrightBearCrawler {
         console.log(`  - Articles with date: ${debugInfo.articlesWithDate}`);
         console.log(`  - Articles with price: ${debugInfo.articlesWithPrice}`);
       }
-      if (extractedClasses.length > 0) {
+      if (Array.isArray(extractedClasses) && extractedClasses.length > 0) {
         console.log("📝 Sample class data:", extractedClasses[0]);
       }
 
       // Filter for Aaron's classes explicitly and parse them
       console.log("🔎 Filtering for Aaron Curtis classes...");
-      const aaronRawClasses = extractedClasses.filter((cls) => {
-        const isAaron =
-          cls.instructor?.toLowerCase().includes("aaron") ||
-          cls.instructor?.toLowerCase().includes("curtis");
-        if (!isAaron && cls.instructor) {
-          console.log(`Filtering out class by ${cls.instructor}: ${cls.title}`);
-        }
-        return isAaron;
-      });
+      const aaronRawClasses = Array.isArray(extractedClasses)
+        ? extractedClasses.filter((cls) => {
+            const isAaron =
+              cls.instructor?.toLowerCase().includes("aaron") ||
+              cls.instructor?.toLowerCase().includes("curtis");
+            if (!isAaron && cls.instructor) {
+              console.log(
+                `Filtering out class by ${cls.instructor}: ${cls.title}`,
+              );
+            }
+            return isAaron;
+          })
+        : [];
 
       console.log(
         `✅ Found ${aaronRawClasses.length} classes specifically for Aaron Curtis`,
