@@ -20,7 +20,7 @@ const NewsletterModal = ({ isOpen, onOpenChange }: NewsletterModalProps) => {
       <ModalContent>
         {() => (
           <>
-            <ModalHeader className="text-2xl font-semibold text-center">
+            <ModalHeader className="text-2xl font-semibold justify-center">
               Stay Connected
             </ModalHeader>
             <ModalBody className="pb-6">
@@ -37,7 +37,7 @@ const NewsletterModal = ({ isOpen, onOpenChange }: NewsletterModalProps) => {
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary mt-0.5">✓</span>
-                      <span>Exclusive retreat announcements</span>
+                      <span>Exclusive workshop announcements</span>
                     </li>
                     <li className="flex items-start gap-2">
                       <span className="text-primary mt-0.5">✓</span>
