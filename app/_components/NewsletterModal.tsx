@@ -15,10 +15,7 @@ const NewsletterModal = ({ isOpen, onOpenChange }: NewsletterModalProps) => {
       onOpenChange={onOpenChange}
       placement="center"
       backdrop="blur"
-      size="md"
-      classNames={{
-        wrapper: "flex items-center justify-center p-4",
-      }}
+      size="2xl"
     >
       <ModalContent>
         {() => (

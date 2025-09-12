@@ -8,9 +8,14 @@ body {
   max-width: 100%;
 }
 
-/* Ensure all elements respect viewport width */
-* {
+/* Ensure all elements respect viewport width, except modals */
+*:not([role="dialog"]) {
   max-width: 100vw;
+  box-sizing: border-box;
+}
+
+/* Ensure box-sizing for modals without max-width constraint */
+[role="dialog"] {
   box-sizing: border-box;
 }
 
