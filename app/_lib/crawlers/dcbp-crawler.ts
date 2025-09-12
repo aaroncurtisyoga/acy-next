@@ -176,35 +176,81 @@ export class DCBPCrawler {
         );
       }
 
-      // Check current month and navigate to August 2024 if needed
+      // Get current date to determine which month to start from
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const currentMonth = now.getMonth(); // 0-based (0 = January)
+      const monthNames = [
+        "January",
+        "February",
+        "March",
+        "April",
+        "May",
+        "June",
+        "July",
+        "August",
+        "September",
+        "October",
+        "November",
+        "December",
+      ];
+
+      // Check current month shown in calendar
       const currentMonthText = await page.textContent(
         '[data-target="layouts--date-range-picker.pickerText"]',
       );
       console.log(`Current month shown: ${currentMonthText}`);
 
-      // If we're not on August 2025, navigate there
-      if (
-        !currentMonthText?.includes("2025") ||
-        !currentMonthText?.includes("Aug")
-      ) {
-        console.log("📅 Navigating to August 2025...");
+      // Navigate to current month if needed
+      const targetMonthName = monthNames[currentMonth];
+      const targetMonthYear = currentYear;
 
-        // Click back until we reach August 2025
+      if (
+        !currentMonthText?.includes(targetMonthYear.toString()) ||
+        !currentMonthText?.includes(targetMonthName.substring(0, 3))
+      ) {
+        console.log(
+          `📅 Navigating to ${targetMonthName} ${targetMonthYear}...`,
+        );
+
+        // Try to navigate to current month (max 12 attempts)
         for (let attempts = 0; attempts < 12; attempts++) {
           const monthText = await page.textContent(
             '[data-target="layouts--date-range-picker.pickerText"]',
           );
           console.log(`Currently viewing: ${monthText}`);
 
-          if (monthText?.includes("Aug") && monthText?.includes("2025")) {
-            console.log("✅ Reached August 2025");
+          if (
+            monthText?.includes(targetMonthName.substring(0, 3)) &&
+            monthText?.includes(targetMonthYear.toString())
+          ) {
+            console.log(`✅ Reached ${targetMonthName} ${targetMonthYear}`);
             break;
           }
 
-          // Click previous month
-          await page.click(
-            'a[data-action*="layouts--date-range-picker#previous"]',
+          // Determine if we need to go forward or backward
+          // Parse the current month being displayed
+          const currentDisplayMonth = monthNames.findIndex((m) =>
+            monthText?.includes(m.substring(0, 3)),
           );
+          const currentDisplayYear = parseInt(
+            monthText?.match(/\d{4}/)?.[0] || "0",
+          );
+
+          const shouldGoForward =
+            currentDisplayYear < targetMonthYear ||
+            (currentDisplayYear === targetMonthYear &&
+              currentDisplayMonth < currentMonth);
+
+          if (shouldGoForward) {
+            await page.click(
+              'a[data-action*="layouts--date-range-picker#next"]',
+            );
+          } else {
+            await page.click(
+              'a[data-action*="layouts--date-range-picker#previous"]',
+            );
+          }
           await page.waitForTimeout(1000);
         }
       }
@@ -216,70 +262,70 @@ export class DCBPCrawler {
       const schedulePageUrl = page.url();
       console.log(`📍 Schedule page: ${schedulePageUrl}`);
 
-      // Get classes from current month and next month for comprehensive coverage
+      // Get classes from current month and next 2 months (3 months total)
       const allClasses = [];
+      const monthsToCheck = 3; // Check current month + next 2 months
 
-      // First, extract classes from current month
-      console.log("📅 Extracting classes from current month...");
-      const currentMonthResult = await this.extractClassesFromCurrentView(page);
-      console.log("📊 Current month debug info:");
       console.log(
-        "  - scheduleItems:",
-        currentMonthResult.debugInfo.scheduleItems,
+        `📅 Will check ${monthsToCheck} months starting from ${monthNames[currentMonth]} ${currentYear}`,
       );
-      console.log(
-        "  - shiftElements:",
-        currentMonthResult.debugInfo.shiftElements,
-      );
-      console.log("  - aaronShifts:", currentMonthResult.debugInfo.aaronShifts);
-      console.log(
-        "  - totalResults:",
-        currentMonthResult.debugInfo.totalResults,
-      );
-      console.log(
-        "  - parseIssues:",
-        JSON.stringify(currentMonthResult.debugInfo.parseIssues, null, 2),
-      );
-      allClasses.push(...currentMonthResult.results);
 
-      // Navigate to next month
-      console.log("📅 Navigating to next month...");
+      for (let monthIndex = 0; monthIndex < monthsToCheck; monthIndex++) {
+        // Get current month text
+        const monthText = await page.textContent(
+          '[data-target="layouts--date-range-picker.pickerText"]',
+        );
 
-      // Get current month before navigation
-      const currentMonthTextBeforeNav = await page.textContent(
-        '[data-target="layouts--date-range-picker.pickerText"]',
-      );
-      console.log(`Current month: ${currentMonthTextBeforeNav}`);
+        console.log(`\n📅 Extracting classes from ${monthText}...`);
+        const monthResult = await this.extractClassesFromCurrentView(page);
 
-      // Click next month arrow
-      await page.click('a[data-action*="layouts--date-range-picker#next"]');
+        console.log(`📊 ${monthText} extraction results:`);
+        console.log(
+          `  - Schedule items found: ${monthResult.debugInfo.scheduleItems}`,
+        );
+        console.log(
+          `  - Shift elements found: ${monthResult.debugInfo.shiftElements}`,
+        );
+        console.log(`  - Aaron's shifts: ${monthResult.debugInfo.aaronShifts}`);
+        console.log(
+          `  - Classes extracted: ${monthResult.debugInfo.totalResults}`,
+        );
 
-      // Wait for month to change
-      await page.waitForFunction(
-        (oldText: string) => {
-          const element = document.querySelector(
+        allClasses.push(...monthResult.results);
+
+        // Navigate to next month if not the last iteration
+        if (monthIndex < monthsToCheck - 1) {
+          console.log("➡️ Moving to next month...");
+
+          const currentMonthTextBeforeNav = monthText;
+
+          // Click next month arrow
+          await page.click('a[data-action*="layouts--date-range-picker#next"]');
+
+          // Wait for month to change
+          await page.waitForFunction(
+            (oldText: string) => {
+              const element = document.querySelector(
+                '[data-target="layouts--date-range-picker.pickerText"]',
+              );
+              return element && element.textContent !== oldText;
+            },
+            currentMonthTextBeforeNav,
+            { timeout: 5000 },
+          );
+
+          // Wait for calendar to re-render
+          await page.waitForTimeout(2000);
+
+          const newMonthText = await page.textContent(
             '[data-target="layouts--date-range-picker.pickerText"]',
           );
-          return element && element.textContent !== oldText;
-        },
-        currentMonthTextBeforeNav,
-        { timeout: 5000 },
-      );
-
-      // Wait for calendar to re-render
-      await page.waitForTimeout(2000);
-
-      const newMonthText = await page.textContent(
-        '[data-target="layouts--date-range-picker.pickerText"]',
-      );
-      console.log(`Now showing: ${newMonthText}`);
-
-      const nextMonthResult = await this.extractClassesFromCurrentView(page);
-      console.log("📊 Next month debug info:", nextMonthResult.debugInfo);
-      allClasses.push(...nextMonthResult.results);
+          console.log(`Now showing: ${newMonthText}`);
+        }
+      }
 
       console.log(
-        `Found total ${allClasses.length} classes across both months`,
+        `\n🎯 Found total ${allClasses.length} classes across ${monthsToCheck} months`,
       );
 
       return allClasses.map((cls) => this.parseClassData(cls));
