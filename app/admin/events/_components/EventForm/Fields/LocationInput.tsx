@@ -23,32 +23,40 @@ const LocationInput: FC<LocationInputProps> = ({
   setLocationValueInReactHookForm,
   errors,
 }) => {
-  const { setSearchValue, suggestions } = useAutocompleteSuggestions();
+  const { setSearchValue, suggestions, isLoading } =
+    useAutocompleteSuggestions();
+  const [isLoadingDetails, setIsLoadingDetails] = React.useState(false);
 
   const handleSelectLocation = async (placeId: string) => {
-    await placeDetails(placeId).then((place) => {
-      setLocationValueInReactHookForm({
-        formattedAddress: place.formatted_address,
-        lat: place.geometry.location.lat,
-        lng: place.geometry.location.lng,
-        name: place.name,
-        placeId: place.place_id,
-      });
-    });
+    if (!placeId || isLoadingDetails) return;
+
+    setIsLoadingDetails(true);
+    try {
+      const place = await placeDetails(placeId);
+      if (place) {
+        setLocationValueInReactHookForm({
+          formattedAddress: place.formatted_address,
+          lat: place.geometry.location.lat,
+          lng: place.geometry.location.lng,
+          name: place.name,
+          placeId: place.place_id,
+        });
+      }
+    } catch (error) {
+      console.error("Failed to get place details:", error);
+    } finally {
+      setIsLoadingDetails(false);
+    }
   };
 
-  const onInputChange = (value: string) => {
-    setSearchValue(value);
-  };
+  const onInputChange = React.useCallback(
+    (value: string) => {
+      setSearchValue(value);
+    },
+    [setSearchValue],
+  );
 
-  // Map place IDs for lookup
-  const placeIdMap = React.useMemo(() => {
-    const map: Record<string, string> = {};
-    suggestions?.forEach((location: LocationSuggestion) => {
-      map[location.place_id] = location.place_id;
-    });
-    return map;
-  }, [suggestions]);
+  // No need for placeIdMap anymore since we use the key directly
 
   return (
     <Controller
@@ -61,10 +69,11 @@ const LocationInput: FC<LocationInputProps> = ({
           label="Location"
           placeholder="Search for a location"
           variant={"bordered"}
+          isLoading={isLoading || isLoadingDetails}
           onInputChange={onInputChange}
           onSelectionChange={(key) => {
-            // Convert the key to a string and use it to look up the place_id
-            const placeId = placeIdMap[key.toString()];
+            // The key is already the place_id, use it directly
+            const placeId = key?.toString();
             if (placeId) {
               handleSelectLocation(placeId);
             }

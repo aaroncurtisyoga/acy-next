@@ -7,12 +7,14 @@ interface StartDatePickerInputProps {
   control: Control<EventFormValues>;
   errors: FieldErrors<EventFormValues>;
   isSubmitting: boolean;
+  onChange?: (value: any) => void;
 }
 
 const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
   control,
   errors,
   isSubmitting,
+  onChange,
 }) => {
   return (
     <Controller
@@ -26,7 +28,7 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
               isDisabled={isSubmitting}
               isInvalid={!!errors.startDateTime}
               hideTimeZone
-              onChange={field.onChange}
+              onChange={onChange || field.onChange}
               variant={"bordered"}
               label={"Start Date/Time"}
               value={field.value}

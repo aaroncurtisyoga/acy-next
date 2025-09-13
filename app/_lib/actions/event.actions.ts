@@ -24,6 +24,11 @@ export async function createEvent({
   path: string;
 }) {
   try {
+    // Validate required fields
+    if (!event.location || !event.location.placeId) {
+      throw new Error("Location is required and must have a valid placeId");
+    }
+
     // Parse the string into a ZonedDateTime object
     const startZonedDateTime = parseZonedDateTime(event.startDateTime);
     const endZonedDateTime = parseZonedDateTime(event.endDateTime);
@@ -32,29 +37,34 @@ export async function createEvent({
     const startDateTimeISO = startZonedDateTime.toAbsoluteString();
     const endDateTimeISO = endZonedDateTime.toAbsoluteString();
 
+    // Handle location creation/connection first
+    const location = await prisma.location.upsert({
+      where: {
+        placeId: event.location.placeId,
+      },
+      create: {
+        ...event.location,
+      },
+      update: {
+        ...event.location,
+      },
+    });
+
     const newEvent = await prisma.event.create({
       data: {
-        ...event,
-        ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
-        isHostedExternally: event.isHostedExternally ?? false,
-        // Convert string to Date and then to ISO String
+        title: event.title,
+        description: event.description,
         startDateTime: startDateTimeISO,
         endDateTime: endDateTimeISO,
-        category: {
-          connect: {
-            id: event.category,
-          },
-        },
-        location: {
-          connectOrCreate: {
-            create: {
-              ...event.location,
-            },
-            where: {
-              placeId: event.location.placeId,
-            },
-          },
-        },
+        price: event.price,
+        maxAttendees: event.maxAttendees,
+        imageUrl: event.imageUrl,
+        externalRegistrationUrl: event.externalRegistrationUrl,
+        isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
+        isHostedExternally: event.isHostedExternally ?? false,
+        // Use scalar field assignments instead of nested connects
+        categoryId: event.category,
+        locationId: location.id,
       },
     });
     revalidatePath(path);
@@ -232,7 +242,7 @@ export async function updateEvent({
       where: { id: eventId },
       data: {
         ...eventData,
-        ...(event.price ? { isFree: parseInt(event.price, 10) === 0 } : {}),
+        isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
         ...(categoryToConnect
           ? { category: { connect: { id: categoryToConnect } } }
           : {}),

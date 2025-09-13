@@ -1,3 +1,5 @@
+"use client";
+
 import { Button, Tooltip, Divider } from "@heroui/react";
 import { type Editor } from "@tiptap/react";
 import {
@@ -14,13 +16,16 @@ import {
   Underline,
   Link2Off,
 } from "lucide-react";
+import { useCallback, memo } from "react";
 
-type ToolbarProps = {
-  editor: Editor;
-};
+interface ToolbarProps {
+  editor: Editor | null;
+}
 
-const Toolbar = ({ editor }: ToolbarProps) => {
-  const setLink = () => {
+const Toolbar = memo(({ editor }: ToolbarProps) => {
+  const setLink = useCallback(() => {
+    if (!editor) return;
+
     const previousUrl = editor.getAttributes("link").href;
     const url = window.prompt("URL", previousUrl);
 
@@ -37,7 +42,11 @@ const Toolbar = ({ editor }: ToolbarProps) => {
 
     // update link
     editor.chain().focus().extendMarkRange("link").setLink({ href: url }).run();
-  };
+  }, [editor]);
+
+  if (!editor) {
+    return null;
+  }
 
   return (
     <div className="flex flex-wrap gap-1 p-3 mb-2 border-default-200 border rounded-medium bg-default-50">
@@ -224,6 +233,8 @@ const Toolbar = ({ editor }: ToolbarProps) => {
       </Tooltip>
     </div>
   );
-};
+});
+
+Toolbar.displayName = "Toolbar";
 
 export default Toolbar;

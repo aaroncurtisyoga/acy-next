@@ -24,7 +24,8 @@
   },
   "lint-staged": {
     "*.{js,jsx,ts,tsx}": [
-      "eslint --fix"
+      "eslint --fix",
+      "bash -c 'npx tsc --noEmit'"
     ],
     "*.{js,jsx,ts,tsx,json,css,md}": [
       "prettier --write"
@@ -69,6 +70,7 @@
     "query-string": "^9.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-dropzone": "^14.3.8",
     "react-hook-form": "^7.51.4",
     "react-icons": "^5.5.0",
     "sass": "^1.77.1",

@@ -12,7 +12,7 @@ interface EventTextProps {
 }
 
 const EventText: FC<EventTextProps> = ({ event }) => {
-  const { id, startDateTime, title, category } = event;
+  const { id, startDateTime, title, category, isFree } = event;
   const dateTime = formatDateTime(startDateTime);
 
   const signUpHref = event.isHostedExternally
@@ -71,6 +71,14 @@ const EventText: FC<EventTextProps> = ({ event }) => {
                   <div className="w-2 h-2 rounded-full bg-primary-400"></div>
                   <span>{category.name}</span>
                 </div>
+
+                {isFree && (
+                  <div className="flex items-center gap-1.5">
+                    <div className="px-2 py-1 bg-success-100 text-success-700 dark:bg-success-900/30 dark:text-success-400 rounded-full text-xs font-bold">
+                      FREE
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 

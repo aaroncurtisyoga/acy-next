@@ -1,14 +1,10 @@
 "use client";
 
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
-import {
-  parseZonedDateTime,
-  now,
-  getLocalTimeZone,
-} from "@internationalized/date";
-import { useFormContext, useWatch } from "react-hook-form";
+import { parseZonedDateTime } from "@internationalized/date";
+import { useFormContext } from "react-hook-form";
 import { PlaceDetails } from "@/app/_lib/types";
 import {
   EventFormValues,
@@ -17,6 +13,7 @@ import {
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
+import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
@@ -29,10 +26,13 @@ const BasicInfo: FC = () => {
     handleSubmit,
     setValue,
     reset,
+    watch,
     formState: { errors, isSubmitting },
   } = useFormContext<EventFormValues>();
 
-  const currentValues = useWatch({ control });
+  // Watch only specific fields we need instead of all values
+  const endDateTime = watch("endDateTime");
+  const isHostedExternally = watch("isHostedExternally");
 
   const setLocationValueInReactHookForm = useCallback(
     (placeDetails: PlaceDetails) => {
@@ -47,42 +47,58 @@ const BasicInfo: FC = () => {
     [setValue],
   );
 
-  // Automatically normalize date values for UI if needed
-  useEffect(() => {
-    if (!currentValues.startDateTime) {
-      setValue("startDateTime", now(getLocalTimeZone()));
-    } else {
-      setValue(
-        "startDateTime",
-        parseZonedDateTime(currentValues.startDateTime),
-      );
-    }
+  // Handle start date change and auto-update end date
+  const handleStartDateChange = useCallback(
+    (newStartDate: any) => {
+      setValue("startDateTime", newStartDate);
 
-    if (!currentValues.endDateTime) {
-      setValue("endDateTime", now(getLocalTimeZone()));
-    } else {
-      setValue("endDateTime", parseZonedDateTime(currentValues.endDateTime));
-    }
+      const currentEndDate = endDateTime;
+      if (newStartDate && currentEndDate) {
+        const startTime =
+          typeof newStartDate === "string"
+            ? parseZonedDateTime(newStartDate)
+            : newStartDate;
+        const endTime =
+          typeof currentEndDate === "string"
+            ? parseZonedDateTime(currentEndDate)
+            : currentEndDate;
 
-    if (currentValues.location?.formattedAddress) {
-      setLocationValueInReactHookForm({
-        formattedAddress: currentValues.location.formattedAddress,
-        lat: currentValues.location.lat || 0,
-        lng: currentValues.location.lng || 0,
-        name: currentValues.location.name || "",
-        placeId: currentValues.location.placeId || "",
-      });
-    }
-  }, [currentValues, setLocationValueInReactHookForm, setValue]);
+        if (
+          startTime &&
+          endTime &&
+          typeof startTime !== "string" &&
+          typeof endTime !== "string" &&
+          startTime.compare(endTime) >= 0
+        ) {
+          // If start time is same or after end time, set end time to start time + 1 hour
+          const newEndTime = startTime.add({ hours: 1 });
+          setValue("endDateTime", newEndTime);
+        }
+      }
+    },
+    [setValue, endDateTime],
+  );
+
+  // No need for initialization useEffect - handled in EventFormProvider
 
   const onSubmit = async (data: EventFormValues) => {
-    // Go to next step - dynamic based on mode
+    // Go to next step - dynamic based on mode and hosting type
     const eventId = data.id;
-    const nextStepUrl =
-      mode === "edit"
-        ? `/admin/events/${eventId}/edit/details`
-        : `/admin/events/create/details`;
-    router.push(nextStepUrl);
+
+    // Skip details step for externally hosted events since all required info is already collected
+    if (data.isHostedExternally) {
+      const nextStepUrl =
+        mode === "edit"
+          ? `/admin/events/${eventId}/edit/submit`
+          : `/admin/events/create/submit`;
+      router.push(nextStepUrl);
+    } else {
+      const nextStepUrl =
+        mode === "edit"
+          ? `/admin/events/${eventId}/edit/details`
+          : `/admin/events/create/details`;
+      router.push(nextStepUrl);
+    }
   };
 
   return (
@@ -111,6 +127,7 @@ const BasicInfo: FC = () => {
           control={control}
           errors={errors}
           isSubmitting={isSubmitting}
+          onChange={handleStartDateChange}
         />
         <EndDatePickerInput
           control={control}
@@ -126,11 +143,27 @@ const BasicInfo: FC = () => {
           control={control}
           isSubmitting={isSubmitting}
         />
+        {isHostedExternally && (
+          <ExternalRegistrationUrlInput
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
+        )}
       </div>
       <div className="flex justify-between mt-5">
-        <Button type="button" className="mr-5" onPress={() => reset()}>
-          Reset Form
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="light"
+            onPress={() => router.push("/admin/events")}
+          >
+            Cancel
+          </Button>
+          <Button type="button" onPress={() => reset()}>
+            Reset Form
+          </Button>
+        </div>
         <Button type="submit" color="primary">
           Next
         </Button>

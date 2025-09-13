@@ -1,7 +1,8 @@
 import { FC } from "react";
 import { Card, CardBody } from "@heroui/react";
 import { Calendar } from "lucide-react";
-import Collection from "@/app/(root)/_components/Collection";
+import EventText from "@/app/(root)/_components/EventText";
+import Pagination from "@/app/(root)/_components/Pagination";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
@@ -81,15 +82,17 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {/* Content area */}
       {hasEvents ? (
         <div className="flex-1">
-          <Collection
-            collectionType={"All_Events"}
-            data={data}
-            hasFiltersApplied={hasFiltersApplied}
-            limit={3}
-            page={page}
-            totalPages={totalPages}
-            view={"text"}
-          />
+          <div className="space-y-2">
+            {data.map((event) => (
+              <EventText key={event.id} event={event} />
+            ))}
+          </div>
+
+          {totalPages > 1 && (
+            <div className="mb-6 mt-8">
+              <Pagination page={page} totalPages={totalPages} />
+            </div>
+          )}
         </div>
       ) : (
         // Empty State - Below filter bar

@@ -1,15 +1,13 @@
 import {
   Bike,
-  Box,
   Boxes,
   Calendar,
   Car,
   Footprints,
   TramFront,
-  ClipboardPlus,
   UsersRound,
   RefreshCw,
-  Home,
+  ExternalLink,
 } from "lucide-react";
 import { TravelOption } from "@/app/_lib/types";
 
@@ -82,13 +80,11 @@ export const travelOptions: TravelOption[] = [
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 
 export const adminDashboardLinks = [
-  { name: "Home", path: "/", icon: Home },
   { name: "Events", path: "/admin/events", icon: Calendar },
-  { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
-  { name: "New Category", path: "/admin/categories/create", icon: Box },
   { name: "Users", path: "/admin/users", icon: UsersRound },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
+  { name: "Main Site", path: "/", icon: ExternalLink },
 ];
 
 export const TableEventManagementColumns = [
