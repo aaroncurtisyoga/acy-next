@@ -86,7 +86,6 @@ export const adminDashboardLinks = [
   { name: "Events", path: "/admin/events", icon: Calendar },
   { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
-  { name: "New Category", path: "/admin/categories/create", icon: Box },
   { name: "Users", path: "/admin/users", icon: UsersRound },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
 ];

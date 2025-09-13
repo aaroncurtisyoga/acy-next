@@ -54,10 +54,20 @@ export const EventFormProvider = ({
   mode: "create" | "edit";
   defaultValues?: EventFormValues;
 }) => {
+  // Round up to the nearest hour for better UX
+  const currentTime = now(getLocalTimeZone());
+  const roundedStartTime = currentTime
+    .set({
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
+    .add({ hours: 1 });
+
   // Set proper default values for form initialization
   const formDefaultValues: EventFormValues = {
-    startDateTime: now(getLocalTimeZone()),
-    endDateTime: now(getLocalTimeZone()).add({ hours: 1 }),
+    startDateTime: roundedStartTime,
+    endDateTime: roundedStartTime.add({ hours: 1 }),
     ...defaultValues,
   };
 
