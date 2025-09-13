@@ -184,6 +184,8 @@ export const EventFormProvider = ({
       });
       return () => subscription.unsubscribe();
     }
+    // Return empty cleanup function for edit mode
+    return () => {};
   }, [methods, mode]);
 
   const clearFormData = () => {

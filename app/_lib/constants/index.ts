@@ -7,7 +7,6 @@ import {
   TramFront,
   UsersRound,
   RefreshCw,
-  Home,
   ExternalLink,
 } from "lucide-react";
 import { TravelOption } from "@/app/_lib/types";

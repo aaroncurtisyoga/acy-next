@@ -16,7 +16,7 @@ import {
   Card,
   CardBody,
 } from "@heroui/react";
-import { ImagePlus, Check, Upload, X, Image as ImageIcon } from "lucide-react";
+import { ImagePlus, Check, Upload, Image as ImageIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FieldErrors, useWatch } from "react-hook-form";
 import { getImages } from "@/app/_lib/actions/blob.actions";
@@ -31,7 +31,6 @@ interface ImagePickerProps {
 const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
   const [images, setImages] = useState([]);
   const [selectedImgUrl, setSelectedImgUrl] = useState(null);
-  const [uploadedImageUrl, setUploadedImageUrl] = useState<string | null>(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -77,7 +76,6 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
         }
 
         const data = await response.json();
-        setUploadedImageUrl(data.url);
         setValue("imageUrl", data.url);
 
         // Refresh images list
@@ -129,7 +127,6 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
 
   const clearImage = () => {
     setValue("imageUrl", "");
-    setUploadedImageUrl(null);
   };
 
   return (
