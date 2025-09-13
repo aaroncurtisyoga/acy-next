@@ -55,7 +55,7 @@ export async function createEvent({
         maxAttendees: event.maxAttendees,
         imageUrl: event.imageUrl,
         externalRegistrationUrl: event.externalRegistrationUrl,
-        ...(event.price ? { isFree: Number(event.price) === 0 } : {}),
+        isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
         isHostedExternally: event.isHostedExternally ?? false,
         // Use scalar field assignments instead of nested connects
         categoryId: event.category,
@@ -237,7 +237,7 @@ export async function updateEvent({
       where: { id: eventId },
       data: {
         ...eventData,
-        ...(event.price ? { isFree: parseInt(event.price, 10) === 0 } : {}),
+        isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
         ...(categoryToConnect
           ? { category: { connect: { id: categoryToConnect } } }
           : {}),

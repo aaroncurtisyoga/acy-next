@@ -19,8 +19,21 @@ const SubmitStep = () => {
     const values = getValues();
 
     try {
+      // Convert ZonedDateTime objects to ISO strings for serialization
+      const eventData = {
+        ...values,
+        id,
+        startDateTime: values.startDateTime?.toString
+          ? values.startDateTime.toString()
+          : values.startDateTime,
+        endDateTime: values.endDateTime?.toString
+          ? values.endDateTime.toString()
+          : values.endDateTime,
+        isFree: values.isFree ?? false,
+      };
+
       const updated = await updateEvent({
-        event: { ...values, id }, // assuming your backend expects `id`
+        event: eventData,
         path: `/events/${id}`,
       });
 

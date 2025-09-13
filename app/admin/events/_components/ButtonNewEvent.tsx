@@ -6,7 +6,7 @@ import { CirclePlus } from "lucide-react";
 const ButtonNewEvent: FC = () => {
   return (
     <Button startContent={<CirclePlus />}>
-      <Link href={"/admin/events/new"}>New</Link>
+      <Link href={"/admin/events/create"}>New</Link>
     </Button>
   );
 };

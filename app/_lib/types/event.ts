@@ -3,6 +3,7 @@ export interface CreateEventData {
   startDateTime: string;
   endDateTime: string;
   price?: string;
+  isFree?: boolean;
   category: string;
   location: {
     name: string;
@@ -25,6 +26,7 @@ export interface UpdateEventData {
   startDateTime?: string;
   endDateTime?: string;
   price?: string;
+  isFree?: boolean;
   categoryId?: string;
   category?: string;
   location?: {

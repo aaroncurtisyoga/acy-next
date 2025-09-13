@@ -13,7 +13,7 @@ interface CardProps {
 }
 
 const EventCard: FC<CardProps> = ({ event }) => {
-  const { id, category, imageUrl, startDateTime, title } = event;
+  const { id, category, imageUrl, startDateTime, title, isFree, price } = event;
   const dateTime = formatDateTime(startDateTime);
 
   return (
@@ -74,7 +74,16 @@ const EventCard: FC<CardProps> = ({ event }) => {
       </CardBody>
 
       <CardFooter className="px-4 py-3 border-t border-divider">
-        <div className="flex justify-end items-center w-full">
+        <div className="flex justify-between items-center w-full">
+          <div className="flex items-center">
+            {isFree ? (
+              <span className="text-lg font-bold text-success-600">Free</span>
+            ) : (
+              <span className="text-lg font-bold text-foreground">
+                ${price}
+              </span>
+            )}
+          </div>
           <Button
             size="sm"
             color="primary"

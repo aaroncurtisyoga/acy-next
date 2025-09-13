@@ -25,6 +25,7 @@ export type EventFormValues = {
   imageUrl?: string;
   maxAttendees?: number;
   price?: string;
+  isFree?: boolean;
   externalRegistrationUrl?: string;
   isExternal?: boolean;
   sourceType?: string;
@@ -69,6 +70,7 @@ export const EventFormProvider = ({
     startDateTime: roundedStartTime,
     endDateTime: roundedStartTime.add({ hours: 1 }),
     isHostedExternally: false,
+    isFree: false,
     ...defaultValues,
   };
 

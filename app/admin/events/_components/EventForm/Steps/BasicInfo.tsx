@@ -142,9 +142,18 @@ const BasicInfo: FC = () => {
         )}
       </div>
       <div className="flex justify-between mt-5">
-        <Button type="button" className="mr-5" onPress={() => reset()}>
-          Reset Form
-        </Button>
+        <div className="flex gap-2">
+          <Button
+            type="button"
+            variant="light"
+            onPress={() => router.push("/admin/events")}
+          >
+            Cancel
+          </Button>
+          <Button type="button" onPress={() => reset()}>
+            Reset Form
+          </Button>
+        </div>
         <Button type="submit" color="primary">
           Next
         </Button>

@@ -34,18 +34,22 @@ const DetailsForInternallyHostedEvent: FC = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div className="grid grid-cols-2 gap-5">
-        <PriceInput
-          control={control}
-          isSubmitting={isSubmitting}
-          errors={errors}
-        />
-        <MaxAttendees
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
-        <ImagePicker errors={errors} setValue={setValue} />
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
+        <div>
+          <PriceInput
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
+        </div>
+        <div className="space-y-5">
+          <MaxAttendees
+            control={control}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
+          <ImagePicker errors={errors} setValue={setValue} control={control} />
+        </div>
       </div>
       <div className="grid grid-cols-1 gap-5 mt-5">
         <DescriptionRichTextEditor control={control} errors={errors} />
