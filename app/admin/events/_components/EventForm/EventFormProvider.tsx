@@ -68,6 +68,7 @@ export const EventFormProvider = ({
   const formDefaultValues: EventFormValues = {
     startDateTime: roundedStartTime,
     endDateTime: roundedStartTime.add({ hours: 1 }),
+    isHostedExternally: false,
     ...defaultValues,
   };
 

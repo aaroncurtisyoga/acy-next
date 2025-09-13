@@ -38,6 +38,7 @@ const Tiptap = memo(
       shouldRerenderOnTransaction: false,
       extensions: [
         StarterKit.configure({
+          underline: false, // Disable built-in underline to use our custom one
           bulletList: {
             HTMLAttributes: { class: "list-disc pl-4 my-2" },
             keepMarks: true,
