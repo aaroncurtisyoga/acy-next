@@ -1,7 +1,34 @@
 import qs from "query-string";
 import { RemoveUrlQueryParams, UrlQueryParams } from "@/app/_lib/types";
 
-export const formatDateTime = (dateString: Date) => {
+export const formatDateTime = (dateInput: Date | string) => {
+  // Handle different input types - convert to Date object
+  let dateString: Date;
+  if (typeof dateInput === "string") {
+    dateString = new Date(dateInput);
+  } else {
+    dateString = dateInput;
+  }
+
+  // Validate that we have a valid date
+  if (isNaN(dateString.getTime())) {
+    console.error("Invalid date provided to formatDateTime:", dateInput);
+    // Return fallback values for invalid dates
+    return {
+      dateTime: "Invalid Date",
+      dateOnly: "Invalid Date",
+      dateOnlyWithoutYear: "Invalid Date",
+      dateLongWithoutYear: "Invalid Date",
+      timeOnly: "Invalid Time",
+      monthYear: "Invalid Date",
+      monthShort: "N/A",
+      monthLong: "N/A",
+      dayNumber: 0,
+      year: 0,
+      weekdayShort: "N/A",
+      weekdayLong: "N/A",
+    };
+  }
   const dateTimeOptions: Intl.DateTimeFormatOptions = {
     weekday: "short", // abbreviated weekday name (e.g., 'Mon')
     month: "short", // abbreviated month name (e.g., 'Oct')

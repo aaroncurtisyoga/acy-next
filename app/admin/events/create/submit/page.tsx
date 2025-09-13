@@ -7,8 +7,10 @@ import { Link as HeroUiLink } from "@heroui/react";
 import { useFormContext } from "react-hook-form";
 import { createEvent } from "@/app/_lib/actions/event.actions";
 import { CreateEventData } from "@/app/_lib/types/event";
-import { handleError } from "@/app/_lib/utils";
-import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import {
+  EventFormValues,
+  useEventFormContext,
+} from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import EventText from "@/app/(root)/_components/EventText";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
@@ -17,7 +19,10 @@ import { getAllCategories } from "@/app/_lib/actions/category.actions";
 const SubmitStep: FC = () => {
   const router = useRouter();
   const { getValues, reset } = useFormContext<EventFormValues>();
-  const [categoryName, setCategoryName] = useState<string>("Category");
+  const { clearFormData } = useEventFormContext();
+  const [categoryName, setCategoryName] = useState<string>("Loading...");
+  const [submitError, setSubmitError] = useState<string>("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     const fetchCategoryName = async () => {
@@ -30,10 +35,15 @@ const SubmitStep: FC = () => {
           );
           if (category) {
             setCategoryName(category.name);
+          } else {
+            setCategoryName("Unknown Category");
           }
         } catch (error) {
           console.error("Failed to fetch category:", error);
+          setCategoryName("Error loading category");
         }
+      } else {
+        setCategoryName("No category selected");
       }
     };
     fetchCategoryName();
@@ -41,23 +51,45 @@ const SubmitStep: FC = () => {
 
   async function createNewEvent() {
     const formValues = getValues();
+    setSubmitError("");
+    setIsSubmitting(true);
 
     try {
       // Validate required fields
-      if (!formValues.location?.placeId) {
-        throw new Error("Please select a valid location");
+      if (!formValues.location || !formValues.location.placeId) {
+        setSubmitError("Please select a valid location from the dropdown");
+        setIsSubmitting(false);
+        return;
       }
+
+      if (!formValues.title) {
+        setSubmitError("Please enter a title");
+        setIsSubmitting(false);
+        return;
+      }
+
+      if (!formValues.category) {
+        setSubmitError("Please select a category");
+        setIsSubmitting(false);
+        return;
+      }
+
+      console.log("Form values:", formValues);
+      console.log("Location details:", formValues.location);
+      console.log("Location placeId:", formValues.location?.placeId);
 
       // Convert ZonedDateTime objects to ISO strings for serialization
       const eventData: CreateEventData = {
-        ...formValues,
+        title: formValues.title,
         startDateTime: formValues.startDateTime?.toString
           ? formValues.startDateTime.toString()
           : formValues.startDateTime,
         endDateTime: formValues.endDateTime?.toString
           ? formValues.endDateTime.toString()
           : formValues.endDateTime,
+        price: formValues.price || "0",
         isFree: formValues.isFree ?? false,
+        category: formValues.category,
         location: {
           name: formValues.location.name,
           formattedAddress: formValues.location.formattedAddress,
@@ -65,19 +97,37 @@ const SubmitStep: FC = () => {
           lat: formValues.location.lat,
           lng: formValues.location.lng,
         },
-      } as CreateEventData;
+        description: formValues.description || "",
+        maxAttendees: formValues.maxAttendees || undefined,
+        imageUrl: formValues.imageUrl || "",
+        isHostedExternally: formValues.isHostedExternally || false,
+        externalRegistrationUrl:
+          formValues.externalRegistrationUrl || undefined,
+      };
+
+      console.log("Event data being sent:", eventData);
 
       const newEvent = await createEvent({
         event: eventData,
         path: "/events",
       });
 
+      console.log("Create event response:", newEvent);
+
       if (newEvent) {
+        clearFormData(); // Clear stored form data
         reset(); // Clear form state
-        router.push(`/`);
+        router.push(`/admin/events`);
+      } else {
+        setSubmitError("Failed to create event - no response from server");
       }
     } catch (error) {
-      handleError(error);
+      console.error("Error creating event:", error);
+      setSubmitError(
+        `Error creating event: ${error instanceof Error ? error.message : "Unknown error"}`,
+      );
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -87,6 +137,7 @@ const SubmitStep: FC = () => {
   };
 
   const handleCancel = () => {
+    clearFormData(); // Clear stored form data
     reset(); // Clear form state
     router.push("/admin/events"); // Go back to events list
   };
@@ -100,13 +151,13 @@ const SubmitStep: FC = () => {
     description: formValues.description || "",
     imageUrl: formValues.imageUrl || "/assets/images/handstand_desktop.jpeg",
     startDateTime: formValues.startDateTime
-      ? new Date(formValues.startDateTime.toString())
+      ? formValues.startDateTime.toDate("America/New_York")
       : new Date(),
     endDateTime: formValues.endDateTime
-      ? new Date(formValues.endDateTime.toString())
+      ? formValues.endDateTime.toDate("America/New_York")
       : new Date(),
     price: formValues.price || "0",
-    isFree: formValues.isFree || false,
+    isFree: formValues.isFree === true,
     isHostedExternally: formValues.isHostedExternally || false,
     externalRegistrationUrl: formValues.externalRegistrationUrl || null,
     maxAttendees: formValues.maxAttendees || null,
@@ -125,7 +176,11 @@ const SubmitStep: FC = () => {
     },
     location: {
       id: "preview-location",
-      name: formValues.location?.name || "Location",
+      name:
+        formValues.location?.name ||
+        (formValues.location?.formattedAddress
+          ? formValues.location.formattedAddress.split(",")[0]
+          : "No location selected"),
       formattedAddress: formValues.location?.formattedAddress || "",
       lat: formValues.location?.lat || null,
       lng: formValues.location?.lng || null,
@@ -148,12 +203,23 @@ const SubmitStep: FC = () => {
       </div>
 
       <form onSubmit={onSubmit}>
+        {submitError && (
+          <div className="mb-4 p-3 bg-danger-50 border border-danger-200 rounded-lg">
+            <p className="text-danger-600 text-sm font-medium">{submitError}</p>
+          </div>
+        )}
+
         <div className="flex justify-between mt-5">
           <div className="flex gap-3">
-            <Button type="button" variant="bordered" onPress={handleCancel}>
+            <Button
+              type="button"
+              variant="bordered"
+              onPress={handleCancel}
+              isDisabled={isSubmitting}
+            >
               Cancel
             </Button>
-            <Button type="button">
+            <Button type="button" isDisabled={isSubmitting}>
               <HeroUiLink
                 href="/admin/events/create/details"
                 className="text-default-foreground"
@@ -162,8 +228,8 @@ const SubmitStep: FC = () => {
               </HeroUiLink>
             </Button>
           </div>
-          <Button type="submit" color="primary">
-            Create Event
+          <Button type="submit" color="primary" isLoading={isSubmitting}>
+            {isSubmitting ? "Creating Event..." : "Create Event"}
           </Button>
         </div>
       </form>

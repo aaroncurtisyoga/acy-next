@@ -82,13 +82,23 @@ const BasicInfo: FC = () => {
   // No need for initialization useEffect - handled in EventFormProvider
 
   const onSubmit = async (data: EventFormValues) => {
-    // Go to next step - dynamic based on mode
+    // Go to next step - dynamic based on mode and hosting type
     const eventId = data.id;
-    const nextStepUrl =
-      mode === "edit"
-        ? `/admin/events/${eventId}/edit/details`
-        : `/admin/events/create/details`;
-    router.push(nextStepUrl);
+
+    // Skip details step for externally hosted events since all required info is already collected
+    if (data.isHostedExternally) {
+      const nextStepUrl =
+        mode === "edit"
+          ? `/admin/events/${eventId}/edit/submit`
+          : `/admin/events/create/submit`;
+      router.push(nextStepUrl);
+    } else {
+      const nextStepUrl =
+        mode === "edit"
+          ? `/admin/events/${eventId}/edit/details`
+          : `/admin/events/create/details`;
+      router.push(nextStepUrl);
+    }
   };
 
   return (

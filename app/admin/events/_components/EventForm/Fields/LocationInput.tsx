@@ -56,14 +56,7 @@ const LocationInput: FC<LocationInputProps> = ({
     [setSearchValue],
   );
 
-  // Map place IDs for lookup
-  const placeIdMap = React.useMemo(() => {
-    const map: Record<string, string> = {};
-    suggestions?.forEach((location: LocationSuggestion) => {
-      map[location.place_id] = location.place_id;
-    });
-    return map;
-  }, [suggestions]);
+  // No need for placeIdMap anymore since we use the key directly
 
   return (
     <Controller
@@ -79,8 +72,8 @@ const LocationInput: FC<LocationInputProps> = ({
           isLoading={isLoading || isLoadingDetails}
           onInputChange={onInputChange}
           onSelectionChange={(key) => {
-            // Convert the key to a string and use it to look up the place_id
-            const placeId = placeIdMap[key?.toString()];
+            // The key is already the place_id, use it directly
+            const placeId = key?.toString();
             if (placeId) {
               handleSelectLocation(placeId);
             }
