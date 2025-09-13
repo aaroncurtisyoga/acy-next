@@ -15,10 +15,8 @@ export default function AdminDashboard() {
     router.push(path);
   };
 
-  // Filter out the "Home" link since we're already on the dashboard
-  const dashboardCards = adminDashboardLinks.filter(
-    (link) => link.path !== "/",
-  );
+  // Show all admin links as cards
+  const dashboardCards = adminDashboardLinks;
 
   return (
     <div className="p-6">
@@ -39,7 +37,7 @@ export default function AdminDashboard() {
               key={item.path}
               isPressable
               isHoverable
-              className="p-4 transition-all duration-200 hover:scale-105 cursor-pointer border border-divider hover:shadow-lg"
+              className="p-4 transition-all duration-200 cursor-pointer border border-divider hover:shadow-lg"
               onPress={() => handleCardClick(item.path)}
             >
               <CardHeader className="flex flex-col items-center pb-2">
@@ -73,6 +71,8 @@ function getCardDescription(name: string): string {
       return "Manage user accounts and permissions";
     case "Sync Events":
       return "Synchronize events with external sources";
+    case "Main Site":
+      return "Go back to the main website";
     default:
       return `Manage ${name.toLowerCase()}`;
   }

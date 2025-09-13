@@ -8,6 +8,7 @@ import {
   UsersRound,
   RefreshCw,
   Home,
+  ExternalLink,
 } from "lucide-react";
 import { TravelOption } from "@/app/_lib/types";
 
@@ -80,11 +81,11 @@ export const travelOptions: TravelOption[] = [
 export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 
 export const adminDashboardLinks = [
-  { name: "Home", path: "/", icon: Home },
   { name: "Events", path: "/admin/events", icon: Calendar },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "Users", path: "/admin/users", icon: UsersRound },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
+  { name: "Main Site", path: "/", icon: ExternalLink },
 ];
 
 export const TableEventManagementColumns = [
