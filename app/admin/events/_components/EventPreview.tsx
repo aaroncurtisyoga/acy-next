@@ -28,7 +28,9 @@ const EventPreview = ({ event }) => {
         <Image alt={title} height={60} radius="sm" src={imageUrl} width={60} />
         <div className="flex flex-col">
           <p className="text-lg font-bold">{title}</p>
-          <p className="text-small text-default-500">{location.name}</p>
+          <p className="text-small text-default-500">
+            {location?.name || "No location"}
+          </p>
         </div>
       </CardHeader>
       <Divider />
@@ -39,7 +41,8 @@ const EventPreview = ({ event }) => {
           <strong>Category:</strong> {category}
         </p>
         <p>
-          <strong>Location:</strong> {location.formattedAddress}
+          <strong>Location:</strong>{" "}
+          {location?.formattedAddress || "No address"}
         </p>
         <p>
           <strong>Date & Time:</strong>{" "}
@@ -55,7 +58,7 @@ const EventPreview = ({ event }) => {
       </CardBody>
       <Divider />
       <CardFooter>
-        <Link isExternal href={location.url || "#"} showAnchorIcon>
+        <Link isExternal href={location?.url || "#"} showAnchorIcon>
           View Location on Map
         </Link>
       </CardFooter>

@@ -3,6 +3,7 @@
 import { createContext, useContext } from "react";
 import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
+import { now, getLocalTimeZone } from "@internationalized/date";
 
 export type EventFormValues = {
   // add all fields here, from all steps
@@ -24,6 +25,7 @@ export type EventFormValues = {
   imageUrl?: string;
   maxAttendees?: number;
   price?: string;
+  isFree?: boolean;
   externalRegistrationUrl?: string;
   isExternal?: boolean;
   sourceType?: string;
@@ -53,10 +55,34 @@ export const EventFormProvider = ({
   mode: "create" | "edit";
   defaultValues?: EventFormValues;
 }) => {
-  const methods = useForm<EventFormValues>({ defaultValues });
+  // Round up to the nearest hour for better UX
+  const currentTime = now(getLocalTimeZone());
+  const roundedStartTime = currentTime
+    .set({
+      minute: 0,
+      second: 0,
+      millisecond: 0,
+    })
+    .add({ hours: 1 });
+
+  // Set proper default values for form initialization
+  const formDefaultValues: EventFormValues = {
+    startDateTime: roundedStartTime,
+    endDateTime: roundedStartTime.add({ hours: 1 }),
+    isHostedExternally: false,
+    isFree: false,
+    ...defaultValues,
+  };
+
+  const methods = useForm<EventFormValues>({
+    defaultValues: formDefaultValues,
+    mode: "onChange", // Enable onChange validation for better UX
+  });
 
   return (
-    <EventFormContext.Provider value={{ mode, defaultValues }}>
+    <EventFormContext.Provider
+      value={{ mode, defaultValues: formDefaultValues }}
+    >
       <FormProvider {...methods}>{children}</FormProvider>
     </EventFormContext.Provider>
   );

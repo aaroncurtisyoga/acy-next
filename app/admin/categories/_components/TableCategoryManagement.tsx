@@ -15,6 +15,7 @@ import { Category } from "@prisma/client";
 import BasicModal from "@/app/_components/BasicModal";
 import { deleteCategory } from "@/app/_lib/actions/category.actions";
 import { handleError } from "@/app/_lib/utils";
+import { Trash2 } from "lucide-react";
 
 interface CategoryManagementTableProps {
   categories: Category[];
@@ -46,27 +47,29 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
     <>
       <Table
         aria-label={"Table for Managing Event Categories"}
-        className={"mt-5"}
+        className={"mt-2"}
       >
         <TableHeader>
-          <TableColumn>Id</TableColumn>
-          <TableColumn>Name</TableColumn>
-          <TableColumn>Delete</TableColumn>
+          <TableColumn>Category Name</TableColumn>
+          <TableColumn width={100}>Actions</TableColumn>
         </TableHeader>
         <TableBody>
           {categories.map((category: Category) => (
             <TableRow key={category.id}>
-              <TableCell>{category.id}</TableCell>
-              <TableCell>{category.name}</TableCell>
+              <TableCell className="font-medium">{category.name}</TableCell>
               <TableCell>
                 <Button
-                  size={"sm"}
+                  isIconOnly
+                  size="sm"
+                  color="danger"
+                  variant="light"
                   onPress={() => {
                     onOpen();
                     setCategoryToDelete(category);
                   }}
+                  aria-label={`Delete ${category.name}`}
                 >
-                  Delete
+                  <Trash2 className="w-4 h-4" />
                 </Button>
               </TableCell>
             </TableRow>
