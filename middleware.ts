@@ -10,7 +10,7 @@ const isAuthenticatedRoute = createRouteMatcher([
   // "/private-sessions/checkout(.*)",
 ]);
 
-const isAdminRoute = createRouteMatcher(["/admin/(.*)"]);
+const isAdminRoute = createRouteMatcher(["/admin", "/admin/(.*)"]);
 
 const isPublicRoute = createRouteMatcher([
   "/",
