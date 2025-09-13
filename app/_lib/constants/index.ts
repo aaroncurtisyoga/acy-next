@@ -1,12 +1,10 @@
 import {
   Bike,
-  Box,
   Boxes,
   Calendar,
   Car,
   Footprints,
   TramFront,
-  ClipboardPlus,
   UsersRound,
   RefreshCw,
   Home,
@@ -84,7 +82,6 @@ export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
 export const adminDashboardLinks = [
   { name: "Home", path: "/", icon: Home },
   { name: "Events", path: "/admin/events", icon: Calendar },
-  { name: "New Event", path: "/admin/events/create", icon: ClipboardPlus },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "Users", path: "/admin/users", icon: UsersRound },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
