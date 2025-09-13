@@ -1,14 +1,10 @@
 "use client";
 
-import { FC, useCallback, useEffect } from "react";
+import { FC, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { Button } from "@heroui/react";
-import {
-  parseZonedDateTime,
-  now,
-  getLocalTimeZone,
-} from "@internationalized/date";
-import { useFormContext, useWatch } from "react-hook-form";
+import { parseZonedDateTime } from "@internationalized/date";
+import { useFormContext } from "react-hook-form";
 import { PlaceDetails } from "@/app/_lib/types";
 import {
   EventFormValues,
@@ -17,6 +13,7 @@ import {
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
 import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
+import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
@@ -34,8 +31,8 @@ const BasicInfo: FC = () => {
   } = useFormContext<EventFormValues>();
 
   // Watch only specific fields we need instead of all values
-  const startDateTime = watch("startDateTime");
   const endDateTime = watch("endDateTime");
+  const isHostedExternally = watch("isHostedExternally");
 
   const setLocationValueInReactHookForm = useCallback(
     (placeDetails: PlaceDetails) => {
@@ -136,6 +133,13 @@ const BasicInfo: FC = () => {
           control={control}
           isSubmitting={isSubmitting}
         />
+        {isHostedExternally && (
+          <ExternalRegistrationUrlInput
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
+        )}
       </div>
       <div className="flex justify-between mt-5">
         <Button type="button" className="mr-5" onPress={() => reset()}>
