@@ -12,7 +12,7 @@ interface EventTextProps {
 }
 
 const EventText: FC<EventTextProps> = ({ event }) => {
-  const { id, startDateTime, title, category, isFree, price } = event;
+  const { id, startDateTime, title, category, isFree } = event;
   const dateTime = formatDateTime(startDateTime);
 
   const signUpHref = event.isHostedExternally
