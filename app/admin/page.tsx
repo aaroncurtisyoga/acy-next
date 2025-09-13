@@ -1,12 +1,9 @@
 "use client";
 
-import { Card, CardHeader, CardBody } from "@heroui/react";
+import { Card, CardHeader, CardBody, Button } from "@heroui/react";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 import { useRouter } from "next/navigation";
-
-interface AdminDashboardProps {
-  searchParams: Promise<{ search?: string }>;
-}
+import { Plus } from "lucide-react";
 
 export default function AdminDashboard() {
   const router = useRouter();
@@ -37,7 +34,7 @@ export default function AdminDashboard() {
               key={item.path}
               isPressable
               isHoverable
-              className="p-4 transition-all duration-200 cursor-pointer border border-divider hover:shadow-lg"
+              className="p-4 transition-all duration-200 cursor-pointer border border-divider hover:shadow-lg relative flex flex-col h-full"
               onPress={() => handleCardClick(item.path)}
             >
               <CardHeader className="flex flex-col items-center pb-2">
@@ -48,10 +45,30 @@ export default function AdminDashboard() {
                   {item.name}
                 </h3>
               </CardHeader>
-              <CardBody className="pt-0">
-                <p className="text-sm text-foreground-500 text-center">
+              <CardBody className="pt-0 flex flex-col flex-grow">
+                <p className="text-sm text-foreground-500 text-center mb-3 flex-grow">
                   {getCardDescription(item.name)}
                 </p>
+                {(item.name === "Events" || item.name === "Categories") && (
+                  <div onClick={(e) => e.stopPropagation()}>
+                    <Button
+                      size="sm"
+                      color="primary"
+                      variant="flat"
+                      startContent={<Plus size={16} />}
+                      className="w-full mt-auto"
+                      onPress={() => {
+                        router.push(
+                          item.name === "Events"
+                            ? "/admin/events/create"
+                            : "/admin/categories/create",
+                        );
+                      }}
+                    >
+                      New
+                    </Button>
+                  </div>
+                )}
               </CardBody>
             </Card>
           );

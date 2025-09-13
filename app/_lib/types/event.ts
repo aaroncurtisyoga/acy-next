@@ -9,8 +9,8 @@ export interface CreateEventData {
     name: string;
     formattedAddress: string;
     placeId: string;
-    lat?: number;
-    lng?: number;
+    lat?: number | null;
+    lng?: number | null;
   };
   description?: string;
   maxAttendees?: number;

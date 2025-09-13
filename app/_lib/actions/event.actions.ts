@@ -24,6 +24,11 @@ export async function createEvent({
   path: string;
 }) {
   try {
+    // Validate required fields
+    if (!event.location || !event.location.placeId) {
+      throw new Error("Location is required and must have a valid placeId");
+    }
+
     // Parse the string into a ZonedDateTime object
     const startZonedDateTime = parseZonedDateTime(event.startDateTime);
     const endZonedDateTime = parseZonedDateTime(event.endDateTime);

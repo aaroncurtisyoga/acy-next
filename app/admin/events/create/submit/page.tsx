@@ -10,7 +10,7 @@ import { CreateEventData } from "@/app/_lib/types/event";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
-import EventCard from "@/app/(root)/_components/EventCard";
+import EventText from "@/app/(root)/_components/EventText";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
 
@@ -43,6 +43,11 @@ const SubmitStep: FC = () => {
     const formValues = getValues();
 
     try {
+      // Validate required fields
+      if (!formValues.location?.placeId) {
+        throw new Error("Please select a valid location");
+      }
+
       // Convert ZonedDateTime objects to ISO strings for serialization
       const eventData: CreateEventData = {
         ...formValues,
@@ -53,6 +58,13 @@ const SubmitStep: FC = () => {
           ? formValues.endDateTime.toString()
           : formValues.endDateTime,
         isFree: formValues.isFree ?? false,
+        location: {
+          name: formValues.location.name,
+          formattedAddress: formValues.location.formattedAddress,
+          placeId: formValues.location.placeId,
+          lat: formValues.location.lat,
+          lng: formValues.location.lng,
+        },
       } as CreateEventData;
 
       const newEvent = await createEvent({
@@ -81,12 +93,12 @@ const SubmitStep: FC = () => {
 
   const formValues = getValues();
 
-  // Transform form values to match EventCard expected format
+  // Transform form values to match EventText expected format
   const eventPreview: EventWithLocationAndCategory = {
     id: "preview",
     title: formValues.title || "",
     description: formValues.description || "",
-    imageUrl: formValues.imageUrl || "/images/placeholder-event.jpg",
+    imageUrl: formValues.imageUrl || "/assets/images/handstand_desktop.jpeg",
     startDateTime: formValues.startDateTime
       ? new Date(formValues.startDateTime.toString())
       : new Date(),
@@ -125,13 +137,13 @@ const SubmitStep: FC = () => {
     <section className="wrapper">
       <h1>Review Event</h1>
 
-      {/* Display event preview using actual EventCard */}
+      {/* Display event preview using actual EventText */}
       <div className="my-6">
         <p className="text-sm text-default-500 mb-4">
           This is how your event will appear to students:
         </p>
-        <div className="max-w-[400px]">
-          <EventCard event={eventPreview} />
+        <div className="max-w-full">
+          <EventText event={eventPreview} />
         </div>
       </div>
 
