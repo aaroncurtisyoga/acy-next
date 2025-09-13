@@ -10,6 +10,7 @@ import { CreateEventData } from "@/app/_lib/types/event";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
+import EventPreview from "@/app/admin/events/_components/EventPreview";
 
 const SubmitStep: FC = () => {
   const router = useRouter();
@@ -38,19 +39,37 @@ const SubmitStep: FC = () => {
     await createNewEvent();
   };
 
+  const handleCancel = () => {
+    reset(); // Clear form state
+    router.push("/admin/events"); // Go back to events list
+  };
+
+  const formValues = getValues();
+
   return (
     <section className="wrapper">
       <h1>Review Event</h1>
+
+      {/* Display event preview */}
+      <div className="my-6">
+        <EventPreview event={formValues} />
+      </div>
+
       <form onSubmit={onSubmit}>
         <div className="flex justify-between mt-5">
-          <Button type="button">
-            <HeroUiLink
-              href="/admin/events/create/details"
-              className="text-default-foreground"
-            >
-              Previous
-            </HeroUiLink>
-          </Button>
+          <div className="flex gap-3">
+            <Button type="button" variant="bordered" onPress={handleCancel}>
+              Cancel
+            </Button>
+            <Button type="button">
+              <HeroUiLink
+                href="/admin/events/create/details"
+                className="text-default-foreground"
+              >
+                Previous
+              </HeroUiLink>
+            </Button>
+          </div>
           <Button type="submit" color="primary">
             Create Event
           </Button>
