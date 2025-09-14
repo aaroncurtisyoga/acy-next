@@ -12,11 +12,11 @@ import {
 } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import Category from "@/app/admin/events/_components/EventForm/Fields/Category";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
-import IsHostedExternallyCheckbox from "@/app/admin/events/_components/EventForm/Fields/IsHostedExternallyCheckbox";
-import ExternalRegistrationUrlInput from "@/app/admin/events/_components/EventForm/Fields/ExternalRegistrationUrlInput";
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
 import TitleInput from "@/app/admin/events/_components/EventForm/Fields/TitleInput";
+import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
+import ExternalHostingInput from "@/app/admin/events/_components/EventForm/Fields/ExternalHostingInput";
 
 const BasicInfo: FC = () => {
   const router = useRouter();
@@ -32,7 +32,6 @@ const BasicInfo: FC = () => {
 
   // Watch only specific fields we need instead of all values
   const endDateTime = watch("endDateTime");
-  const isHostedExternally = watch("isHostedExternally");
 
   const setLocationValueInReactHookForm = useCallback(
     (placeDetails: PlaceDetails) => {
@@ -112,17 +111,29 @@ const BasicInfo: FC = () => {
           </span>
         </div>
       )}
-      <div className="grid grid-cols-2 gap-5">
+      {/* Title - Full width */}
+      <div className="mb-5">
         <TitleInput
           control={control}
           isSubmitting={isSubmitting}
           errors={errors}
         />
+      </div>
+
+      <div className="grid grid-cols-2 gap-5">
+        {/* Row 1 */}
         <LocationInput
           control={control}
           setLocationValueInReactHookForm={setLocationValueInReactHookForm}
           errors={errors}
         />
+        <Category
+          control={control}
+          errors={errors}
+          isSubmitting={isSubmitting}
+        />
+
+        {/* Row 2 */}
         <StartDatePickerInput
           control={control}
           errors={errors}
@@ -134,22 +145,18 @@ const BasicInfo: FC = () => {
           errors={errors}
           isSubmitting={isSubmitting}
         />
-        <Category
+
+        {/* Row 3 - Both fields with checkboxes */}
+        <PriceInput
           control={control}
+          isSubmitting={isSubmitting}
           errors={errors}
-          isSubmitting={isSubmitting}
         />
-        <IsHostedExternallyCheckbox
+        <ExternalHostingInput
           control={control}
           isSubmitting={isSubmitting}
+          errors={errors}
         />
-        {isHostedExternally && (
-          <ExternalRegistrationUrlInput
-            control={control}
-            isSubmitting={isSubmitting}
-            errors={errors}
-          />
-        )}
       </div>
       <div className="flex justify-between mt-5">
         <div className="flex gap-2">

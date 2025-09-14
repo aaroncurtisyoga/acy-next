@@ -23,9 +23,11 @@ const ExternalRegistrationUrlInput: FC<ExternalRegistrationUrlInputProps> = ({
           isDisabled={isSubmitting}
           isInvalid={!!errors.externalRegistrationUrl}
           errorMessage={errors.externalRegistrationUrl?.message}
-          label={"External Registration URL"}
+          label={"Registration URL"}
+          placeholder={"https://example.com/register"}
+          description={"The URL where people will sign up for this event"}
           onChange={(e) => field.onChange(e)}
-          type={"text"}
+          type={"url"}
           variant="bordered"
           {...field}
         />

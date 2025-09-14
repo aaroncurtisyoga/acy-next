@@ -87,6 +87,7 @@ const EventText: FC<EventTextProps> = ({ event }) => {
               <Button
                 as={Link}
                 href={signUpHref}
+                target="_blank"
                 color="primary"
                 variant="light"
                 size="md"
@@ -102,6 +103,7 @@ const EventText: FC<EventTextProps> = ({ event }) => {
             <Button
               as={Link}
               href={signUpHref}
+              target="_blank"
               color="primary"
               variant="light"
               size="md"

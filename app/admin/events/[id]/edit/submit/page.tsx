@@ -7,6 +7,11 @@ import { useFormContext } from "react-hook-form";
 import { updateEvent, getEventById } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
+import {
+  parseZonedDateTime,
+  fromDate,
+  getLocalTimeZone,
+} from "@internationalized/date";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 
 const SubmitStep = () => {
@@ -94,6 +99,17 @@ const EditSubmitPage = () => {
                 name: event.location.name,
                 placeId: event.location.placeId,
               }
+            : undefined,
+          // Convert dates to ZonedDateTime objects
+          startDateTime: event.startDateTime
+            ? typeof event.startDateTime === "string"
+              ? parseZonedDateTime(event.startDateTime)
+              : fromDate(new Date(event.startDateTime), getLocalTimeZone())
+            : undefined,
+          endDateTime: event.endDateTime
+            ? typeof event.endDateTime === "string"
+              ? parseZonedDateTime(event.endDateTime)
+              : fromDate(new Date(event.endDateTime), getLocalTimeZone())
             : undefined,
         };
         setDefaultValues(formValues);
