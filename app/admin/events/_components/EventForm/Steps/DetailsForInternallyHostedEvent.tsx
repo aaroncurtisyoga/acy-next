@@ -11,7 +11,6 @@ import {
 import DescriptionRichTextEditor from "@/app/admin/events/_components/EventForm/Fields/DescriptionRichTextEditor";
 import ImagePicker from "@/app/admin/events/_components/EventForm/Fields/ImagePicker";
 import MaxAttendees from "@/app/admin/events/_components/EventForm/Fields/MaxAttendees";
-import PriceInput from "@/app/admin/events/_components/EventForm/Fields/PriceInput";
 
 const DetailsForInternallyHostedEvent: FC = () => {
   const router = useRouter();
@@ -35,19 +34,14 @@ const DetailsForInternallyHostedEvent: FC = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-        <div>
-          <PriceInput
-            control={control}
-            isSubmitting={isSubmitting}
-            errors={errors}
-          />
-        </div>
         <div className="space-y-5">
           <MaxAttendees
             control={control}
             errors={errors}
             isSubmitting={isSubmitting}
           />
+        </div>
+        <div className="space-y-5">
           <ImagePicker errors={errors} setValue={setValue} control={control} />
         </div>
       </div>

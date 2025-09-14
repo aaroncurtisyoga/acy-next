@@ -19,10 +19,13 @@ const IsHostedExternallyCheckbox: FC<IsHostedExternallyCheckboxProps> = ({
       render={({ field: { value, onChange, ...field } }) => (
         <Checkbox
           isDisabled={isSubmitting}
-          size={"lg"}
+          size={"md"}
           onChange={onChange}
           isSelected={value}
           {...field}
+          classNames={{
+            label: "text-sm font-normal",
+          }}
         >
           People sign up on a different app
         </Checkbox>
