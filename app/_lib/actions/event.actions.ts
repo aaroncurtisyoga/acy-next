@@ -230,7 +230,15 @@ export async function updateEvent({
   path: string;
 }) {
   try {
-    const { _id, categoryId, category, location, ...eventData } = event;
+    const {
+      _id,
+      categoryId,
+      category,
+      location,
+      startDateTime,
+      endDateTime,
+      ...eventData
+    } = event;
 
     // Use _id if provided, otherwise use id
     const eventId = _id || event.id;
@@ -238,10 +246,51 @@ export async function updateEvent({
     // Use categoryId if provided, otherwise use category
     const categoryToConnect = categoryId || category;
 
+    // Handle datetime conversion - if it's already a valid ISO string, use it directly
+    // If it's a ZonedDateTime string format, parse and convert to UTC ISO
+    let processedStartDateTime = startDateTime;
+    let processedEndDateTime = endDateTime;
+
+    if (startDateTime && typeof startDateTime === "string") {
+      try {
+        // If it contains timezone info like "[America/New_York]", parse it
+        if (startDateTime.includes("[")) {
+          const zonedDateTime = parseZonedDateTime(startDateTime);
+          processedStartDateTime = zonedDateTime.toAbsoluteString();
+        } else {
+          // If it's already a valid ISO string, use it as is
+          processedStartDateTime = startDateTime;
+        }
+      } catch {
+        // If parsing fails, try to use the original string
+        processedStartDateTime = startDateTime;
+      }
+    }
+
+    if (endDateTime && typeof endDateTime === "string") {
+      try {
+        // If it contains timezone info like "[America/New_York]", parse it
+        if (endDateTime.includes("[")) {
+          const zonedDateTime = parseZonedDateTime(endDateTime);
+          processedEndDateTime = zonedDateTime.toAbsoluteString();
+        } else {
+          // If it's already a valid ISO string, use it as is
+          processedEndDateTime = endDateTime;
+        }
+      } catch {
+        // If parsing fails, try to use the original string
+        processedEndDateTime = endDateTime;
+      }
+    }
+
     const updatedEvent = await prisma.event.update({
       where: { id: eventId },
       data: {
         ...eventData,
+        ...(processedStartDateTime
+          ? { startDateTime: processedStartDateTime }
+          : {}),
+        ...(processedEndDateTime ? { endDateTime: processedEndDateTime } : {}),
         isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
         ...(categoryToConnect
           ? { category: { connect: { id: categoryToConnect } } }
