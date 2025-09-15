@@ -170,6 +170,8 @@ const SubmitStep: FC = () => {
     sourceId: null,
     externalUrl: null,
     lastSynced: null,
+    googleEventId: null,
+    googleEventLink: null,
     category: {
       id: formValues.category || "",
       name: categoryName,
