@@ -15,6 +15,11 @@ import {
   calculateTotalPages,
 } from "@/app/_lib/utils/pagination";
 import { buildEventSearchConditions } from "@/app/_lib/utils/query-builders";
+import {
+  createCalendarEvent,
+  updateCalendarEvent,
+  deleteCalendarEvent,
+} from "@/app/_lib/google-calendar";
 
 export async function createEvent({
   event,
@@ -67,6 +72,39 @@ export async function createEvent({
         locationId: location.id,
       },
     });
+
+    // Sync with Google Calendar
+    console.log("[Event Creation] Syncing new event with Google Calendar...");
+    const calendarResult = await createCalendarEvent({
+      title: event.title,
+      description: event.description,
+      startDateTime: startDateTimeISO,
+      endDateTime: endDateTimeISO,
+      location: location.formattedAddress || location.name || undefined,
+      maxAttendees: event.maxAttendees,
+      price: event.price,
+      isFree: event.isFree,
+      externalRegistrationUrl: event.externalRegistrationUrl,
+    });
+
+    // Update event with Google Calendar details if sync was successful
+    if (calendarResult) {
+      console.log(
+        "[Event Creation] Updating event with Google Calendar details",
+      );
+      await prisma.event.update({
+        where: { id: newEvent.id },
+        data: {
+          googleEventId: calendarResult.googleEventId,
+          googleEventLink: calendarResult.googleEventLink,
+        },
+      });
+    } else {
+      console.warn(
+        "[Event Creation] Google Calendar sync failed, but event was created in database",
+      );
+    }
+
     revalidatePath(path);
     return newEvent;
   } catch (error) {
@@ -79,10 +117,38 @@ export async function deleteEvent(
   eventId: string,
 ): Promise<{ success: boolean }> {
   try {
+    // First, get the event to check for Google Calendar ID
+    const event = await prisma.event.findUnique({
+      where: { id: eventId },
+      select: { googleEventId: true, title: true },
+    });
+
+    if (!event) {
+      console.error("[Event Deletion] Event not found:", eventId);
+      return { success: false };
+    }
+
+    // Delete from Google Calendar if it exists there
+    if (event.googleEventId) {
+      console.log(
+        "[Event Deletion] Deleting event from Google Calendar:",
+        event.title,
+      );
+      const calendarDeleted = await deleteCalendarEvent(event.googleEventId);
+      if (!calendarDeleted) {
+        console.warn(
+          "[Event Deletion] Failed to delete from Google Calendar, but continuing with database deletion",
+        );
+      }
+    }
+
+    // Delete from database
     const deletedEvent = await prisma.event.delete({
       where: { id: eventId },
     });
+
     if (deletedEvent) {
+      console.log("[Event Deletion] Event deleted successfully from database");
       return { success: true };
     }
     return { success: false };
@@ -315,7 +381,74 @@ export async function updateEvent({
             }
           : {}),
       },
+      include: {
+        location: true,
+      },
     });
+
+    // Sync with Google Calendar if the event has a Google Event ID
+    if (updatedEvent.googleEventId) {
+      console.log(
+        "[Event Update] Syncing updated event with Google Calendar...",
+      );
+      const calendarResult = await updateCalendarEvent(
+        updatedEvent.googleEventId,
+        {
+          title: updatedEvent.title,
+          description: updatedEvent.description,
+          startDateTime: updatedEvent.startDateTime,
+          endDateTime: updatedEvent.endDateTime,
+          location:
+            updatedEvent.location?.formattedAddress ||
+            updatedEvent.location?.name ||
+            undefined,
+          maxAttendees: updatedEvent.maxAttendees,
+          price: updatedEvent.price,
+          isFree: updatedEvent.isFree,
+          externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
+        },
+      );
+
+      if (!calendarResult) {
+        console.warn(
+          "[Event Update] Google Calendar sync failed, but event was updated in database",
+        );
+      } else {
+        console.log("[Event Update] Google Calendar sync successful");
+      }
+    } else {
+      // If no Google Event ID exists, try to create it in Google Calendar
+      console.log(
+        "[Event Update] No Google Event ID found, creating new calendar event...",
+      );
+      const calendarResult = await createCalendarEvent({
+        title: updatedEvent.title,
+        description: updatedEvent.description,
+        startDateTime: updatedEvent.startDateTime,
+        endDateTime: updatedEvent.endDateTime,
+        location:
+          updatedEvent.location?.formattedAddress ||
+          updatedEvent.location?.name ||
+          undefined,
+        maxAttendees: updatedEvent.maxAttendees,
+        price: updatedEvent.price,
+        isFree: updatedEvent.isFree,
+        externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
+      });
+
+      if (calendarResult) {
+        console.log(
+          "[Event Update] Updating event with new Google Calendar details",
+        );
+        await prisma.event.update({
+          where: { id: eventId },
+          data: {
+            googleEventId: calendarResult.googleEventId,
+            googleEventLink: calendarResult.googleEventLink,
+          },
+        });
+      }
+    }
 
     revalidatePath(path);
 

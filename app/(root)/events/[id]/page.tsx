@@ -49,6 +49,7 @@ const EventPage: FC<EventPageProps> = async ({ params }) => {
         category={event.category.name}
         id={event.id}
         startDateTime={event.startDateTime}
+        event={event}
       />
       <div className={"wrapper-width flex flex-col md:flex-row"}>
         <div className={"flex-1"}>

@@ -3,6 +3,7 @@ import { Card, CardBody } from "@heroui/react";
 import { Calendar } from "lucide-react";
 import EventText from "@/app/(root)/_components/EventText";
 import Pagination from "@/app/(root)/_components/Pagination";
+import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
@@ -68,6 +69,9 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
           </div>
         </CardBody>
       </Card> */}
+
+      {/* Calendar Subscription */}
+      <CalendarSubscriptionWrapper />
 
       {/* Simple event count display */}
       <div className="mb-6">
