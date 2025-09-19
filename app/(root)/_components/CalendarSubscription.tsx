@@ -10,7 +10,9 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/react";
-import { Calendar, Check, Copy, ChevronDown } from "lucide-react";
+import { Check, ChevronDown, Calendar } from "lucide-react";
+import { FaGoogle } from "react-icons/fa";
+import { HiOutlineLink } from "react-icons/hi";
 
 interface CalendarSubscriptionProps {
   googleCalendarUrl: string;
@@ -42,38 +44,34 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
   };
 
   return (
-    <Card className="mb-6 shadow-sm border border-divider">
-      <CardBody className="px-4 py-3">
-        <div className="flex justify-between items-center">
-          <div className="flex items-center gap-3">
-            <div className="p-2 rounded-full bg-primary-50 text-primary-500">
-              <Calendar size={20} />
-            </div>
-            <div>
-              <p className="font-semibold text-foreground-800">
-                Subscribe to Calendar
-              </p>
-              <p className="text-xs text-foreground-600">
-                Stay updated with all upcoming events
-              </p>
-            </div>
+    <Card className="w-full mb-4 bg-gradient-to-br from-primary-50/50 to-transparent dark:from-primary-900/10 dark:to-transparent border border-primary-100 dark:border-primary-900/20 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
+      <CardBody className="px-4 py-3.5 @sm:px-5 @sm:py-4">
+        <div className="flex flex-col @sm:flex-row @sm:items-center @sm:justify-between gap-3">
+          {/* Content Section */}
+          <div className="flex-1">
+            <p className="text-sm @sm:text-base text-foreground-700 dark:text-foreground-300">
+              Add my upcoming classes to your calendar
+            </p>
           </div>
 
+          {/* Subscribe Button - Same for both mobile and desktop */}
           <Dropdown>
             <DropdownTrigger>
               <Button
                 variant="flat"
                 color="primary"
-                endContent={<ChevronDown size={16} />}
+                startContent={<Calendar className="w-4 h-4" />}
+                endContent={<ChevronDown className="w-4 h-4" />}
                 size="sm"
+                className="font-medium min-w-[140px] @sm:min-w-fit"
               >
-                Add to Calendar
+                Sync Calendar
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Calendar subscription options">
               <DropdownItem
                 key="google"
-                startContent={<Calendar size={16} />}
+                startContent={<FaGoogle className="w-4 h-4" />}
                 description="Subscribe with Google Calendar"
                 onClick={handleGoogleCalendarClick}
               >
@@ -82,7 +80,11 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
               <DropdownItem
                 key="ical"
                 startContent={
-                  copiedIcal ? <Check size={16} /> : <Copy size={16} />
+                  copiedIcal ? (
+                    <Check className="w-4 h-4" />
+                  ) : (
+                    <HiOutlineLink className="w-4 h-4" />
+                  )
                 }
                 description="Copy link for Apple Calendar, Outlook, etc."
                 onClick={handleCopyIcal}
