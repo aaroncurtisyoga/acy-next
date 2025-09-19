@@ -65,7 +65,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
                 size="sm"
                 className="font-medium min-w-[140px] @sm:min-w-fit"
               >
-                Sync Calendar
+                Add to Calendar
               </Button>
             </DropdownTrigger>
             <DropdownMenu aria-label="Calendar subscription options">
