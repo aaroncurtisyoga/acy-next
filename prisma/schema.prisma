@@ -45,15 +45,20 @@ model Event {
   location               Location  @relation(fields: [locationId], references: [id])
   order                  Order[]
   attendees              EventUser[]
-   
+
   // External sync fields
   sourceType      String?   // 'MOMENCE'
   sourceId        String?   // External booking ID
   externalUrl     String?   // Direct booking link
   lastSynced      DateTime?
   isExternal      Boolean   @default(false)
-  
+
+  // Google Calendar sync fields
+  googleEventId   String?   // Google Calendar event ID
+  googleEventLink String?   // Direct link to Google Calendar event
+
   @@index([sourceType, sourceId])
+  @@index([googleEventId])
 }
 
 model User {

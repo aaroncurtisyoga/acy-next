@@ -1,8 +1,9 @@
 import { FC } from "react";
 import { Card, CardBody } from "@heroui/react";
 import { Calendar } from "lucide-react";
-import EventText from "@/app/(root)/_components/EventText";
+import EventCard from "@/app/(root)/_components/EventCard";
 import Pagination from "@/app/(root)/_components/Pagination";
+import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
@@ -69,6 +70,9 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         </CardBody>
       </Card> */}
 
+      {/* Calendar Subscription */}
+      <CalendarSubscriptionWrapper />
+
       {/* Simple event count display */}
       <div className="mb-6">
         <div className="flex items-center gap-2">
@@ -84,7 +88,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         <div className="flex-1">
           <div className="space-y-2">
             {data.map((event) => (
-              <EventText key={event.id} event={event} />
+              <EventCard key={event.id} event={event} />
             ))}
           </div>
 

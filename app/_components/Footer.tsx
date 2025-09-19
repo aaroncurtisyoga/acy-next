@@ -9,13 +9,13 @@ const Footer = () => {
       className="border-t border-slate-200 dark:border-slate-700 py-4 bg-white dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 flex-shrink-0"
     >
       <div className="wrapper-width">
-        <div className="flex items-center justify-between">
-          {/* Theme toggle - left side */}
-          <div>
+        <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-between gap-7 sm:gap-0">
+          {/* Theme toggle - left side on desktop, bottom on mobile */}
+          <div className="sm:block">
             <ThemeToggle />
           </div>
 
-          {/* Social links - right side */}
+          {/* Social links - right side on desktop, top on mobile */}
           <div
             data-testid="footer-social-links"
             className="flex items-center gap-6"

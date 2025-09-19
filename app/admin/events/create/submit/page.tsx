@@ -12,7 +12,7 @@ import {
   useEventFormContext,
 } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
-import EventText from "@/app/(root)/_components/EventText";
+import EventCard from "@/app/(root)/_components/EventCard";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
 
@@ -144,7 +144,7 @@ const SubmitStep: FC = () => {
 
   const formValues = getValues();
 
-  // Transform form values to match EventText expected format
+  // Transform form values to match EventCard expected format
   const eventPreview: EventWithLocationAndCategory = {
     id: "preview",
     title: formValues.title || "",
@@ -170,6 +170,8 @@ const SubmitStep: FC = () => {
     sourceId: null,
     externalUrl: null,
     lastSynced: null,
+    googleEventId: null,
+    googleEventLink: null,
     category: {
       id: formValues.category || "",
       name: categoryName,
@@ -192,13 +194,13 @@ const SubmitStep: FC = () => {
     <section className="wrapper">
       <h1>Review Event</h1>
 
-      {/* Display event preview using actual EventText */}
+      {/* Display event preview using actual EventCard */}
       <div className="my-6">
         <p className="text-sm text-default-500 mb-4">
           This is how your event will appear to students:
         </p>
         <div className="max-w-full">
-          <EventText event={eventPreview} />
+          <EventCard event={eventPreview} />
         </div>
       </div>
 
