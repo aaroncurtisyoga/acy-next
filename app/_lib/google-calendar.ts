@@ -66,11 +66,11 @@ export const createCalendarEvent = async (event: {
       description: eventDescription.trim(),
       start: {
         dateTime: new Date(event.startDateTime).toISOString(),
-        timeZone: "America/Los_Angeles", // You may want to make this configurable
+        timeZone: "America/New_York", // Eastern Time
       },
       end: {
         dateTime: new Date(event.endDateTime).toISOString(),
-        timeZone: "America/Los_Angeles",
+        timeZone: "America/New_York", // Eastern Time
       },
       location: event.location,
       reminders: {
@@ -161,11 +161,11 @@ export const updateCalendarEvent = async (
       description: eventDescription.trim(),
       start: {
         dateTime: new Date(event.startDateTime).toISOString(),
-        timeZone: "America/Los_Angeles",
+        timeZone: "America/New_York", // Eastern Time
       },
       end: {
         dateTime: new Date(event.endDateTime).toISOString(),
-        timeZone: "America/Los_Angeles",
+        timeZone: "America/New_York", // Eastern Time
       },
       location: event.location,
     };
