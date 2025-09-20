@@ -30,6 +30,23 @@ export class EventDatabaseOperations {
       try {
         console.log(`[Cron Sync] Creating new event: ${eventData.title}`);
 
+        // Check for existing events at the same time and location to prevent duplicates
+        const duplicateEvent = await prisma.event.findFirst({
+          where: {
+            startDateTime: eventData.startDateTime,
+            endDateTime: eventData.endDateTime,
+            locationId: eventData.locationId,
+            isActive: true,
+          },
+        });
+
+        if (duplicateEvent) {
+          console.log(
+            `[Cron Sync] Skipping duplicate event: ${eventData.title} - An event already exists at this time and location`,
+          );
+          continue;
+        }
+
         // First create the event in the database
         const newEvent = await prisma.event.create({
           data: eventData,

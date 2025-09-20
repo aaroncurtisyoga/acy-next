@@ -88,9 +88,10 @@ export const adminDashboardLinks = [
 ];
 
 export const TableEventManagementColumns = [
-  "Start Date",
-  "Name",
+  "Date & Time",
+  "Event Details",
   "Category",
+  "Status",
   "Actions",
 ];
 
