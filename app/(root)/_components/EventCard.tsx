@@ -3,9 +3,10 @@
 import { FC } from "react";
 import Link from "next/link";
 import { Card, CardBody, Button } from "@heroui/react";
-import { Clock, MapPin } from "lucide-react";
+import { Clock, MapPin, Edit } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
+import { useUser } from "@clerk/nextjs";
 
 interface EventCardProps {
   event: EventWithLocationAndCategory;
@@ -14,6 +15,8 @@ interface EventCardProps {
 const EventCard: FC<EventCardProps> = ({ event }) => {
   const { id, startDateTime, title, category, isFree } = event;
   const dateTime = formatDateTime(startDateTime);
+  const { user } = useUser();
+  const isAdmin = user?.publicMetadata?.role === "admin";
 
   // Check if the event is today
   const isToday = () => {
@@ -107,21 +110,49 @@ const EventCard: FC<EventCardProps> = ({ event }) => {
 
                 {/* Mobile Sign Up Button - Prominent at bottom */}
                 <div className="@sm:hidden mt-3 pt-3 border-t border-divider">
-                  <Button
-                    as={Link}
-                    href={signUpHref}
-                    target="_blank"
-                    color="primary"
-                    size="md"
-                    className="w-full font-semibold"
-                  >
-                    Sign Up
-                  </Button>
+                  <div className="flex gap-2">
+                    {isAdmin && (
+                      <Button
+                        as={Link}
+                        href={`/admin/events/${id}/edit`}
+                        color="secondary"
+                        variant="flat"
+                        size="md"
+                        className="font-semibold"
+                        startContent={<Edit className="w-4 h-4" />}
+                      >
+                        Edit
+                      </Button>
+                    )}
+                    <Button
+                      as={Link}
+                      href={signUpHref}
+                      target="_blank"
+                      color="primary"
+                      size="md"
+                      className={`font-semibold ${isAdmin ? "" : "w-full"}`}
+                    >
+                      Sign Up
+                    </Button>
+                  </div>
                 </div>
               </div>
 
               {/* Desktop Sign Up Button - vertically centered on right */}
-              <div className="hidden @sm:flex items-center pr-4">
+              <div className="hidden @sm:flex items-center pr-4 gap-2">
+                {isAdmin && (
+                  <Button
+                    as={Link}
+                    href={`/admin/events/${id}/edit`}
+                    color="secondary"
+                    variant="flat"
+                    size="sm"
+                    className="font-semibold"
+                    startContent={<Edit className="w-3.5 h-3.5" />}
+                  >
+                    Edit
+                  </Button>
+                )}
                 <Button
                   as={Link}
                   href={signUpHref}
