@@ -5,10 +5,30 @@ const initializeCalendarClient = () => {
   console.log("[Google Calendar] Initializing calendar client...");
 
   try {
+    // Always use base64 encoded key for consistency between local and production
+    if (!process.env.GOOGLE_PRIVATE_KEY_BASE64) {
+      throw new Error(
+        "GOOGLE_PRIVATE_KEY_BASE64 environment variable is not set",
+      );
+    }
+
+    // Decode base64 encoded private key
+    const privateKey = Buffer.from(
+      process.env.GOOGLE_PRIVATE_KEY_BASE64,
+      "base64",
+    ).toString("utf8");
+    console.log("[Google Calendar] Using base64 encoded private key");
+
+    if (!process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL) {
+      throw new Error(
+        "GOOGLE_SERVICE_ACCOUNT_EMAIL environment variable is not set",
+      );
+    }
+
     const auth = new google.auth.GoogleAuth({
       credentials: {
         client_email: process.env.GOOGLE_SERVICE_ACCOUNT_EMAIL,
-        private_key: process.env.GOOGLE_PRIVATE_KEY?.replace(/\\n/g, "\n"),
+        private_key: privateKey,
       },
       scopes: ["https://www.googleapis.com/auth/calendar"],
     });
