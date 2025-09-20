@@ -1,10 +1,11 @@
 "use client";
 
-import { FC, useCallback } from "react";
+import { FC, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button, addToast } from "@heroui/react";
 import { parseZonedDateTime } from "@internationalized/date";
 import { useFormContext } from "react-hook-form";
+import { X } from "lucide-react";
 import { PlaceDetails } from "@/app/_lib/types";
 import {
   EventFormValues,
@@ -27,8 +28,9 @@ const BasicInfo: FC = () => {
     setValue,
     reset,
     watch,
-    formState: { errors, isSubmitting },
+    formState: { errors, isSubmitting, isDirty },
   } = useFormContext<EventFormValues>();
+  const [isUpdating, setIsUpdating] = useState(false);
 
   // Watch only specific fields we need instead of all values
   const endDateTime = watch("endDateTime");
@@ -80,6 +82,40 @@ const BasicInfo: FC = () => {
 
   // No need for initialization useEffect - handled in EventFormProvider
 
+  const handleUpdateNow = async (data: EventFormValues) => {
+    if (mode !== "edit" || !data.id) return;
+
+    setIsUpdating(true);
+    try {
+      const { updateEvent } = await import("@/app/_lib/actions/event.actions");
+      const updated = await updateEvent({
+        event: data,
+        path: `/admin/events`,
+      });
+      if (updated) {
+        addToast({
+          title: "Success",
+          description: "Event updated successfully",
+          color: "success",
+          timeout: 3000,
+          shouldShowTimeoutProgress: true,
+        });
+        router.push("/admin/events");
+      }
+    } catch (error) {
+      console.error("Failed to update event:", error);
+      addToast({
+        title: "Error",
+        description: "Failed to update event. Please try again.",
+        color: "danger",
+        timeout: 5000,
+        shouldShowTimeoutProgress: true,
+      });
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   const onSubmit = async (data: EventFormValues) => {
     // Go to next step - dynamic based on mode and hosting type
     const eventId = data.id;
@@ -101,81 +137,99 @@ const BasicInfo: FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      {defaultValues?.isExternal && (
-        <div className="mb-4 p-3 bg-default-100 rounded-lg flex items-center gap-2">
-          <span className="text-sm text-default-600">
-            This event was synced from an external source
-            {defaultValues.sourceType && ` (${defaultValues.sourceType})`}. You
-            can still edit all fields including the category.
-          </span>
+    <div className="relative">
+      {/* Close button in top-right corner */}
+      <Button
+        isIconOnly
+        variant="light"
+        className="absolute -top-2 -right-2 z-10"
+        onPress={() => router.push("/admin/events")}
+        aria-label="Close"
+      >
+        <X size={20} />
+      </Button>
+
+      <form onSubmit={handleSubmit(onSubmit)}>
+        {defaultValues?.isExternal && (
+          <div className="mb-4 p-3 bg-default-100 rounded-lg flex items-center gap-2">
+            <span className="text-sm text-default-600">
+              This event was synced from an external source
+              {defaultValues.sourceType && ` (${defaultValues.sourceType})`}.
+              You can still edit all fields including the category.
+            </span>
+          </div>
+        )}
+        {/* Title - Full width */}
+        <div className="mb-5">
+          <TitleInput
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
         </div>
-      )}
-      {/* Title - Full width */}
-      <div className="mb-5">
-        <TitleInput
-          control={control}
-          isSubmitting={isSubmitting}
-          errors={errors}
-        />
-      </div>
 
-      <div className="grid grid-cols-2 gap-5">
-        {/* Row 1 */}
-        <LocationInput
-          control={control}
-          setLocationValueInReactHookForm={setLocationValueInReactHookForm}
-          errors={errors}
-        />
-        <Category
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
+        <div className="grid grid-cols-2 gap-5">
+          {/* Row 1 */}
+          <LocationInput
+            control={control}
+            setLocationValueInReactHookForm={setLocationValueInReactHookForm}
+            errors={errors}
+          />
+          <Category
+            control={control}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
 
-        {/* Row 2 */}
-        <StartDatePickerInput
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-          onChange={handleStartDateChange}
-        />
-        <EndDatePickerInput
-          control={control}
-          errors={errors}
-          isSubmitting={isSubmitting}
-        />
+          {/* Row 2 */}
+          <StartDatePickerInput
+            control={control}
+            errors={errors}
+            isSubmitting={isSubmitting}
+            onChange={handleStartDateChange}
+          />
+          <EndDatePickerInput
+            control={control}
+            errors={errors}
+            isSubmitting={isSubmitting}
+          />
 
-        {/* Row 3 - Both fields with checkboxes */}
-        <PriceInput
-          control={control}
-          isSubmitting={isSubmitting}
-          errors={errors}
-        />
-        <ExternalHostingInput
-          control={control}
-          isSubmitting={isSubmitting}
-          errors={errors}
-        />
-      </div>
-      <div className="flex justify-between mt-5">
-        <div className="flex gap-2">
-          <Button
-            type="button"
-            variant="light"
-            onPress={() => router.push("/admin/events")}
-          >
-            Cancel
-          </Button>
-          <Button type="button" onPress={() => reset()}>
+          {/* Row 3 - Both fields with checkboxes */}
+          <PriceInput
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
+          <ExternalHostingInput
+            control={control}
+            isSubmitting={isSubmitting}
+            errors={errors}
+          />
+        </div>
+        <div className="flex justify-between mt-5">
+          <Button type="button" onPress={() => reset()} variant="flat">
             Reset Form
           </Button>
+          <div className="flex gap-2">
+            {mode === "edit" && (
+              <Button
+                type="button"
+                color="success"
+                variant="flat"
+                onPress={() => handleSubmit(handleUpdateNow)()}
+                isLoading={isUpdating}
+                isDisabled={!isDirty || isSubmitting}
+              >
+                Update Now
+              </Button>
+            )}
+            <Button type="submit" color="primary" isDisabled={isUpdating}>
+              Next
+            </Button>
+          </div>
         </div>
-        <Button type="submit" color="primary">
-          Next
-        </Button>
-      </div>
-    </form>
+      </form>
+    </div>
   );
 };
 

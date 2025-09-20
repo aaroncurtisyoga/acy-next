@@ -2,8 +2,9 @@
 
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button, addToast } from "@heroui/react";
 import { Link as HeroUiLink } from "@heroui/react";
+import { X } from "lucide-react";
 import { createEvent, updateEvent } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import { useEventForm } from "@/app/admin/events/_components/EventForm/useEventForm";
@@ -20,11 +21,18 @@ const SubmitStep = () => {
       if (mode === "edit" && values.id) {
         const updated = await updateEvent({
           event: values,
-          path: `/events/${values.id}`,
+          path: `/admin/events`,
         });
         if (updated) {
           reset();
-          router.push(`/events/${updated.id}`);
+          addToast({
+            title: "Success",
+            description: "Event updated successfully",
+            color: "success",
+            timeout: 3000,
+            shouldShowTimeoutProgress: true,
+          });
+          router.push("/admin/events");
         }
       } else {
         const created = await createEvent({
@@ -33,7 +41,14 @@ const SubmitStep = () => {
         });
         if (created) {
           reset();
-          router.push("/");
+          addToast({
+            title: "Success",
+            description: "Event created successfully",
+            color: "success",
+            timeout: 3000,
+            shouldShowTimeoutProgress: true,
+          });
+          router.push("/admin/events");
         }
       }
     } catch (err) {
@@ -42,7 +57,18 @@ const SubmitStep = () => {
   };
 
   return (
-    <section className="wrapper">
+    <section className="wrapper relative">
+      {/* Close button in top-right corner */}
+      <Button
+        isIconOnly
+        variant="light"
+        className="absolute -top-2 -right-2 z-10"
+        onPress={() => router.push("/admin/events")}
+        aria-label="Close"
+      >
+        <X size={20} />
+      </Button>
+
       <h1>Review Event</h1>
       <form onSubmit={onSubmit}>
         <div className="flex justify-between mt-5">

@@ -55,6 +55,22 @@ export async function createEvent({
       },
     });
 
+    // Check for existing events at the same time and location to prevent duplicates
+    const duplicateEvent = await prisma.event.findFirst({
+      where: {
+        startDateTime: startDateTimeISO,
+        endDateTime: endDateTimeISO,
+        locationId: location.id,
+        isActive: true,
+      },
+    });
+
+    if (duplicateEvent) {
+      throw new Error(
+        `An event already exists at this date/time and location. Please choose a different time or location.`,
+      );
+    }
+
     const newEvent = await prisma.event.create({
       data: {
         title: event.title,
@@ -62,7 +78,8 @@ export async function createEvent({
         startDateTime: startDateTimeISO,
         endDateTime: endDateTimeISO,
         price: event.price,
-        maxAttendees: event.maxAttendees,
+        // Only set maxAttendees for internally hosted events
+        maxAttendees: event.isHostedExternally ? null : event.maxAttendees,
         imageUrl: event.imageUrl,
         externalRegistrationUrl: event.externalRegistrationUrl,
         isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
@@ -81,7 +98,8 @@ export async function createEvent({
       startDateTime: startDateTimeISO,
       endDateTime: endDateTimeISO,
       location: location.formattedAddress || location.name || undefined,
-      maxAttendees: event.maxAttendees,
+      // Only include maxAttendees for internally hosted events
+      maxAttendees: event.isHostedExternally ? undefined : event.maxAttendees,
       price: event.price,
       isFree: event.isFree,
       externalRegistrationUrl: event.externalRegistrationUrl,
@@ -303,6 +321,8 @@ export async function updateEvent({
       location,
       startDateTime,
       endDateTime,
+      maxAttendees,
+      isHostedExternally,
       ...eventData
     } = event;
 
@@ -349,6 +369,31 @@ export async function updateEvent({
       }
     }
 
+    // If datetime or location is being updated, check for duplicates
+    if (processedStartDateTime && processedEndDateTime && location?.placeId) {
+      const existingLocation = await prisma.location.findUnique({
+        where: { placeId: location.placeId },
+      });
+
+      if (existingLocation) {
+        const duplicateEvent = await prisma.event.findFirst({
+          where: {
+            id: { not: eventId }, // Exclude the current event being updated
+            startDateTime: processedStartDateTime,
+            endDateTime: processedEndDateTime,
+            locationId: existingLocation.id,
+            isActive: true,
+          },
+        });
+
+        if (duplicateEvent) {
+          throw new Error(
+            `Another event already exists at this date/time and location. Please choose a different time or location.`,
+          );
+        }
+      }
+    }
+
     const updatedEvent = await prisma.event.update({
       where: { id: eventId },
       data: {
@@ -357,6 +402,15 @@ export async function updateEvent({
           ? { startDateTime: processedStartDateTime }
           : {}),
         ...(processedEndDateTime ? { endDateTime: processedEndDateTime } : {}),
+        // Only set maxAttendees for internally hosted events, null it out for external events
+        ...(isHostedExternally !== undefined
+          ? {
+              isHostedExternally,
+              maxAttendees: isHostedExternally ? null : maxAttendees,
+            }
+          : maxAttendees !== undefined
+            ? { maxAttendees }
+            : {}),
         isFree: event.isFree ?? (!event.price || Number(event.price) === 0),
         ...(categoryToConnect
           ? { category: { connect: { id: categoryToConnect } } }
@@ -402,7 +456,10 @@ export async function updateEvent({
             updatedEvent.location?.formattedAddress ||
             updatedEvent.location?.name ||
             undefined,
-          maxAttendees: updatedEvent.maxAttendees,
+          // Only include maxAttendees for internally hosted events
+          maxAttendees: updatedEvent.isHostedExternally
+            ? undefined
+            : updatedEvent.maxAttendees,
           price: updatedEvent.price,
           isFree: updatedEvent.isFree,
           externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
@@ -430,7 +487,10 @@ export async function updateEvent({
           updatedEvent.location?.formattedAddress ||
           updatedEvent.location?.name ||
           undefined,
-        maxAttendees: updatedEvent.maxAttendees,
+        // Only include maxAttendees for internally hosted events
+        maxAttendees: updatedEvent.isHostedExternally
+          ? undefined
+          : updatedEvent.maxAttendees,
         price: updatedEvent.price,
         isFree: updatedEvent.isFree,
         externalRegistrationUrl: updatedEvent.externalRegistrationUrl,

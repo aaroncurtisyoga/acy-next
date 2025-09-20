@@ -11,7 +11,7 @@ import {
   DropdownItem,
 } from "@heroui/react";
 import { Check, ChevronDown, Calendar } from "lucide-react";
-import { FaGoogle } from "react-icons/fa";
+import { FcGoogle } from "react-icons/fc";
 import { HiOutlineLink } from "react-icons/hi";
 
 interface CalendarSubscriptionProps {
@@ -49,7 +49,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
         <div className="flex flex-col @sm:flex-row @sm:items-center @sm:justify-between gap-3">
           {/* Content Section */}
           <div className="flex-1">
-            <p className="text-sm @sm:text-base text-foreground-700 dark:text-foreground-300">
+            <p className="text-sm @sm:text-base text-foreground font-medium">
               Add my upcoming classes to your calendar
             </p>
           </div>
@@ -71,7 +71,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
             <DropdownMenu aria-label="Calendar subscription options">
               <DropdownItem
                 key="google"
-                startContent={<FaGoogle className="w-4 h-4" />}
+                startContent={<FcGoogle className="w-4 h-4" />}
                 description="Subscribe with Google Calendar"
                 onClick={handleGoogleCalendarClick}
               >
