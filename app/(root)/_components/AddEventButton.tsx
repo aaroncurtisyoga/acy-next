@@ -1,33 +1,49 @@
 "use client";
 
-import { FC } from "react";
-import { useRouter } from "next/navigation";
+import { FC, useState, useEffect } from "react";
+import { useDisclosure } from "@heroui/react";
 import { Button } from "@heroui/react";
 import { Plus } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
+import QuickAddEventModal from "./QuickAddEventModal";
+import { getAllCategories } from "@/app/_lib/actions/category.actions";
 
 const AddEventButton: FC = () => {
   const { user } = useUser();
   const isAdmin = user?.publicMetadata?.role === "admin";
-  const router = useRouter();
+  const { isOpen, onOpen, onOpenChange } = useDisclosure();
+  const [categories, setCategories] = useState<
+    Array<{ id: string; name: string }>
+  >([]);
+
+  useEffect(() => {
+    if (isAdmin) {
+      getAllCategories().then(setCategories);
+    }
+  }, [isAdmin]);
 
   if (!isAdmin) return null;
 
-  const handleAddEvent = () => {
-    router.push("/admin/events/create");
-  };
-
   return (
-    <Button
-      color="primary"
-      variant="solid"
-      startContent={<Plus className="w-4 h-4" />}
-      onPress={handleAddEvent}
-      size="sm"
-      className="font-medium shadow-sm hover:shadow-md transition-shadow"
-    >
-      Add Event
-    </Button>
+    <>
+      <Button
+        isIconOnly
+        color="primary"
+        variant="solid"
+        onPress={onOpen}
+        size="sm"
+        className="rounded-full shadow-sm hover:shadow-md transition-shadow"
+        aria-label="Add Event"
+      >
+        <Plus className="w-4 h-4" />
+      </Button>
+
+      <QuickAddEventModal
+        isOpen={isOpen}
+        onOpenChange={onOpenChange}
+        categories={categories}
+      />
+    </>
   );
 };
 

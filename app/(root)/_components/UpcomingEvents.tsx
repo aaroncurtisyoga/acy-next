@@ -38,13 +38,12 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     <div className="flex flex-col px-5 py-5 pb-8 md:px-8 md:py-8 md:pb-12 lg:px-12 lg:py-10 lg:pb-16">
       {/* Header - Always show */}
       <div className="mb-6 md:mb-8">
-        <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-3 mb-3">
           <h1
             className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
           >
             Practice.
           </h1>
-          <AddEventButton />
         </div>
         <p className="text-lg text-foreground-600 leading-relaxed">
           Join me for upcoming yoga sessions, workshops, and mindful movement
@@ -77,11 +76,14 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
 
       {/* Simple event count display */}
       <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-primary-500"></div>
-          <p className="font-semibold text-foreground-800">
-            {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
-          </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-primary-500"></div>
+            <p className="font-semibold text-foreground-800">
+              {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
+            </p>
+          </div>
+          <AddEventButton />
         </div>
       </div>
 
