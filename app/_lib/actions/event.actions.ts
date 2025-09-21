@@ -19,6 +19,7 @@ import {
   createCalendarEvent,
   updateCalendarEvent,
   deleteCalendarEvent,
+  findCalendarEventByDatabaseId,
 } from "@/app/_lib/google-calendar";
 
 export async function createEvent({
@@ -103,6 +104,7 @@ export async function createEvent({
       price: event.price,
       isFree: event.isFree,
       externalRegistrationUrl: event.externalRegistrationUrl,
+      databaseEventId: newEvent.id, // Add database ID for duplicate prevention
     });
 
     // Update event with Google Calendar details if sync was successful
@@ -474,27 +476,62 @@ export async function updateEvent({
         console.log("[Event Update] Google Calendar sync successful");
       }
     } else {
-      // If no Google Event ID exists, try to create it in Google Calendar
+      // If no Google Event ID exists, check if one already exists in Google Calendar
       console.log(
-        "[Event Update] No Google Event ID found, creating new calendar event...",
+        "[Event Update] No Google Event ID found, checking for existing calendar event...",
       );
-      const calendarResult = await createCalendarEvent({
-        title: updatedEvent.title,
-        description: updatedEvent.description,
-        startDateTime: updatedEvent.startDateTime,
-        endDateTime: updatedEvent.endDateTime,
-        location:
-          updatedEvent.location?.formattedAddress ||
-          updatedEvent.location?.name ||
-          undefined,
-        // Only include maxAttendees for internally hosted events
-        maxAttendees: updatedEvent.isHostedExternally
-          ? undefined
-          : updatedEvent.maxAttendees,
-        price: updatedEvent.price,
-        isFree: updatedEvent.isFree,
-        externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
-      });
+
+      // First check if a Google Calendar event already exists with this database ID
+      const existingGoogleEvent = await findCalendarEventByDatabaseId(eventId);
+
+      let calendarResult;
+      if (existingGoogleEvent) {
+        console.log(
+          "[Event Update] Found existing Google Calendar event, updating...",
+        );
+        // Update the existing Google Calendar event
+        calendarResult = await updateCalendarEvent(
+          existingGoogleEvent.googleEventId,
+          {
+            title: updatedEvent.title,
+            description: updatedEvent.description,
+            startDateTime: updatedEvent.startDateTime,
+            endDateTime: updatedEvent.endDateTime,
+            location:
+              updatedEvent.location?.formattedAddress ||
+              updatedEvent.location?.name ||
+              undefined,
+            // Only include maxAttendees for internally hosted events
+            maxAttendees: updatedEvent.isHostedExternally
+              ? undefined
+              : updatedEvent.maxAttendees,
+            price: updatedEvent.price,
+            isFree: updatedEvent.isFree,
+            externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
+          },
+        );
+      } else {
+        console.log("[Event Update] Creating new calendar event...");
+        // Create a new Google Calendar event
+        calendarResult = await createCalendarEvent({
+          title: updatedEvent.title,
+          description: updatedEvent.description,
+          startDateTime: updatedEvent.startDateTime,
+          endDateTime: updatedEvent.endDateTime,
+          location:
+            updatedEvent.location?.formattedAddress ||
+            updatedEvent.location?.name ||
+            undefined,
+          // Only include maxAttendees for internally hosted events
+          maxAttendees: updatedEvent.isHostedExternally
+            ? undefined
+            : updatedEvent.maxAttendees,
+          price: updatedEvent.price,
+          isFree: updatedEvent.isFree,
+          externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
+          databaseEventId: eventId, // Add database ID for duplicate prevention
+        });
+      }
 
       if (calendarResult) {
         console.log(

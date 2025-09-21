@@ -42,6 +42,54 @@ const initializeCalendarClient = () => {
   }
 };
 
+// Find a Google Calendar event by database event ID
+export const findCalendarEventByDatabaseId = async (
+  databaseEventId: string,
+): Promise<{ googleEventId: string; googleEventLink: string } | null> => {
+  console.log(
+    "[Google Calendar] Searching for event with database ID:",
+    databaseEventId,
+  );
+
+  try {
+    const calendar = initializeCalendarClient();
+    const calendarId = process.env.GOOGLE_CALENDAR_ID;
+
+    if (!calendarId) {
+      console.error(
+        "[Google Calendar] Missing GOOGLE_CALENDAR_ID environment variable",
+      );
+      return null;
+    }
+
+    // Search for events with our database ID in extended properties
+    const response = await calendar.events.list({
+      calendarId,
+      privateExtendedProperty: [`databaseEventId=${databaseEventId}`],
+      showDeleted: false,
+      singleEvents: true,
+    });
+
+    if (response.data.items && response.data.items.length > 0) {
+      const existingEvent = response.data.items[0];
+      console.log("[Google Calendar] Found existing event:", existingEvent.id);
+      return {
+        googleEventId: existingEvent.id!,
+        googleEventLink: existingEvent.htmlLink!,
+      };
+    }
+
+    console.log(
+      "[Google Calendar] No existing event found for database ID:",
+      databaseEventId,
+    );
+    return null;
+  } catch (error) {
+    console.error("[Google Calendar] Error searching for event:", error);
+    return null;
+  }
+};
+
 // Create a Google Calendar event
 export const createCalendarEvent = async (event: {
   title: string;
@@ -53,6 +101,7 @@ export const createCalendarEvent = async (event: {
   price?: string | null;
   isFree?: boolean;
   externalRegistrationUrl?: string | null;
+  databaseEventId?: string; // Add database event ID for duplicate prevention
 }) => {
   console.log("[Google Calendar] Creating calendar event:", {
     title: event.title,
@@ -81,7 +130,7 @@ export const createCalendarEvent = async (event: {
       eventDescription += `\n\nRegister at: ${event.externalRegistrationUrl}`;
     }
 
-    const calendarEvent = {
+    const calendarEvent: any = {
       summary: event.title,
       description: eventDescription.trim(),
       start: {
@@ -101,6 +150,15 @@ export const createCalendarEvent = async (event: {
         ],
       },
     };
+
+    // Add database event ID as extended property for duplicate prevention
+    if (event.databaseEventId) {
+      calendarEvent.extendedProperties = {
+        private: {
+          databaseEventId: event.databaseEventId,
+        },
+      };
+    }
 
     console.log(
       "[Google Calendar] Sending event to Google Calendar:",
