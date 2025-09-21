@@ -8,8 +8,9 @@
 3. [Tech Stack](#tech-stack)
 4. [Features](#features)
 5. [Postgres Database](#postgres)
-6. [Testing](#testing)
-7. [Contact](#contact)
+6. [Analytics & Tracking](#analytics)
+7. [Testing](#testing)
+8. [Contact](#contact)
 
 ## <a name="introduction">Introduction</a>
 
@@ -183,6 +184,151 @@ You can use Prisma Studio to view and manage your Vercel Postgres database schem
   Opens Prisma Studio using the `.env.production` file, connecting to your production database.
 
 > **Tip**: Ensure each environment file has the correct `DATABASE_URL` for seamless connections.
+
+## <a name="analytics">Analytics & Tracking</a>
+
+This application includes comprehensive analytics and user behavior tracking powered by **Vercel Analytics** (free tier).
+
+### **🔍 Viewing Analytics Data**
+
+**Vercel Dashboard:**
+
+1. Go to [vercel.com/dashboard](https://vercel.com/dashboard)
+2. Select your project
+3. Click **"Analytics"** in the left sidebar
+4. View real-time data including:
+   - Page views and unique visitors
+   - Top pages and referrers
+   - Geographic data
+   - Custom events (see tracking details below)
+
+**Analytics Tab Features:**
+
+- **Overview**: Traffic summary, page views, unique visitors
+- **Pages**: Most visited pages, bounce rates
+- **Referrers**: Traffic sources (direct, social, search, etc.)
+- **Events**: Custom click tracking and conversions
+- **Audiences**: User behavior patterns
+
+### **📊 What We Track**
+
+**Comprehensive click tracking across all interactive elements:**
+
+#### **Navigation & User Flow**
+
+- Logo clicks (home navigation)
+- Desktop/mobile navigation menu interactions
+- User dropdown toggles and admin link clicks
+- Authentication actions (sign in/out from various sources)
+- Hamburger menu open/close (mobile)
+
+#### **Event Interactions**
+
+- Event signup button clicks with full event context:
+  - Event ID, title, category
+  - Free vs paid events
+  - External vs internal registration
+  - Source (mobile vs desktop card)
+- Admin event management (edit/delete clicks)
+
+#### **Search & Discovery**
+
+- Search queries and terms
+- Category filter selections
+- Pagination (next/previous page navigation)
+- Calendar subscription interactions (Google Calendar, iCal)
+
+#### **Private Sessions (Key Conversions)**
+
+- Session count adjustments (increment/decrement/presets)
+- Session type selections
+- Purchase button clicks
+- "Sign in to purchase" conversions
+
+#### **Social & External Links**
+
+- Social media clicks (YouTube, Spotify, Instagram)
+- Footer social link interactions
+- Theme changes (light/dark/system)
+
+### **🛠 Analytics Utilities**
+
+**Created utility functions for enhanced tracking:**
+
+**`/app/_lib/analytics.ts`** - Helper functions for:
+
+- Conversion tracking with values
+- E-commerce events
+- Form completion tracking
+- Error tracking
+- Page engagement metrics
+
+**Custom Hooks Created:**
+
+**`/app/_hooks/usePageTracking.ts`** - Automatic page analytics:
+
+- Page view tracking
+- Time on page measurement
+- Scroll depth tracking
+- Session duration
+
+**`/app/_hooks/useFormAnalytics.ts`** - Form behavior tracking:
+
+- Form start/completion/abandonment
+- Field interaction tracking
+- Validation error tracking
+- Form completion time
+
+**`/app/_hooks/useABTest.ts`** - Simple A/B testing:
+
+- Variant assignment based on user ID
+- Conversion tracking per variant
+- Weighted distribution support
+
+**`/app/_components/ErrorBoundary.tsx`** - Error tracking:
+
+- JavaScript error capture
+- React error boundary tracking
+- User-friendly error display
+
+### **📈 Key Events to Monitor**
+
+**High-Value Conversions:**
+
+- `event_signup` - Event registrations
+- `private_session_booking` - Private session purchases
+- `calendar_subscription` - Calendar integrations
+- `newsletter_signup` - Email subscriptions
+
+**User Engagement:**
+
+- `navigation` - Site navigation patterns
+- `search` - Content discovery behavior
+- `filtering` - Event filtering usage
+- `social_media` - External link engagement
+
+**Technical Insights:**
+
+- `page_view` / `page_exit` - Traffic flow
+- `error` - Application issues
+- `form_completion` - Form performance
+
+### **🔧 Implementation Notes**
+
+- All tracking uses Vercel's free Analytics tier
+- No personal data is collected (GDPR friendly)
+- Click tracking includes contextual metadata
+- Error tracking helps identify technical issues
+- A/B testing setup for future optimization
+- Analytics data helps optimize user experience and conversion funnels
+
+### **💡 Analytics Best Practices**
+
+1. **Monitor Weekly**: Check analytics weekly for trends
+2. **Focus on Conversions**: Track event signups and private session bookings
+3. **Optimize High-Traffic Pages**: Use page analytics to improve popular content
+4. **Monitor Errors**: Address technical issues quickly
+5. **Test Changes**: Use A/B testing hook for major UI changes
 
 ## <a name="testing">Testing</a>
 
