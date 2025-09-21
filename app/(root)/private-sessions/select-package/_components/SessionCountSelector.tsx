@@ -14,6 +14,7 @@ import {
   getNextDiscountTier,
 } from "@/app/(root)/private-sessions/_lib/helpers";
 import { SessionType } from "@/app/(root)/private-sessions/_lib/types";
+import { track } from "@vercel/analytics";
 
 interface SessionCountSelectorProps {
   sessionType: SessionType;
@@ -33,17 +34,35 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
 
   const increment = () => {
     if (sessionCount < MAX_SESSIONS) {
+      track("private_sessions", {
+        action: "session_count_increment",
+        session_type: sessionType,
+        from_count: sessionCount,
+        to_count: sessionCount + 1,
+      });
       field.onChange(sessionCount + 1);
     }
   };
 
   const decrement = () => {
     if (sessionCount > MIN_SESSIONS) {
+      track("private_sessions", {
+        action: "session_count_decrement",
+        session_type: sessionType,
+        from_count: sessionCount,
+        to_count: sessionCount - 1,
+      });
       field.onChange(sessionCount - 1);
     }
   };
 
   const setCount = (count: number) => {
+    track("private_sessions", {
+      action: "session_count_preset_select",
+      session_type: sessionType,
+      from_count: sessionCount,
+      to_count: count,
+    });
     field.onChange(count);
   };
 

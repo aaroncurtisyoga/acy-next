@@ -5,6 +5,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Input } from "@heroui/react";
 import { Search as SearchIcon } from "lucide-react";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
+import { track } from "@vercel/analytics";
 
 const SearchEvent = () => {
   const [query, setQuery] = useState("");
@@ -16,6 +17,10 @@ const SearchEvent = () => {
       let newUrl = "";
 
       if (query) {
+        track("search", {
+          action: "search_events",
+          query: query,
+        });
         newUrl = formUrlQuery({
           params: searchParams.toString(),
           key: "query",

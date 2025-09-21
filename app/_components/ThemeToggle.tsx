@@ -3,6 +3,7 @@
 import { FC, useEffect, useState } from "react";
 import { HiSun, HiMoon, HiComputerDesktop } from "react-icons/hi2";
 import { useTheme } from "next-themes";
+import { track } from "@vercel/analytics";
 
 const ThemeToggle: FC = () => {
   const { theme, setTheme } = useTheme();
@@ -46,7 +47,14 @@ const ThemeToggle: FC = () => {
             name="theme"
             value="system"
             checked={theme === "system"}
-            onChange={() => setTheme("system")}
+            onChange={() => {
+              track("theme", {
+                action: "theme_change",
+                theme: "system",
+                previous_theme: theme,
+              });
+              setTheme("system");
+            }}
             className="sr-only peer"
             aria-label="System theme"
           />
@@ -73,7 +81,14 @@ const ThemeToggle: FC = () => {
             name="theme"
             value="light"
             checked={theme === "light"}
-            onChange={() => setTheme("light")}
+            onChange={() => {
+              track("theme", {
+                action: "theme_change",
+                theme: "light",
+                previous_theme: theme,
+              });
+              setTheme("light");
+            }}
             className="sr-only peer"
             aria-label="Light theme"
           />
@@ -100,7 +115,14 @@ const ThemeToggle: FC = () => {
             name="theme"
             value="dark"
             checked={theme === "dark"}
-            onChange={() => setTheme("dark")}
+            onChange={() => {
+              track("theme", {
+                action: "theme_change",
+                theme: "dark",
+                previous_theme: theme,
+              });
+              setTheme("dark");
+            }}
             className="sr-only peer"
             aria-label="Dark theme"
           />

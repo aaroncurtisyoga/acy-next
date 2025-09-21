@@ -17,6 +17,7 @@ import { unauthenticatedLinks } from "@/app/_lib/constants";
 import { useClerk } from "@clerk/nextjs";
 import { type UserResource } from "@clerk/types";
 import AnimatedHamburger from "./AnimatedHamburger";
+import { track } from "@vercel/analytics";
 
 interface MobileNavbarContentProps {
   linksForLoggedInUsers: { href: string; name: string; testId: string }[];
@@ -44,6 +45,10 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   };
 
   const handleSignOut = () => {
+    track("auth", {
+      action: "sign_out",
+      source: "mobile_menu",
+    });
     signOut(() => router.push("/"));
     closeMenu();
   };
@@ -86,7 +91,13 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
       <NavbarContent className="sm:hidden" justify="end">
         <AnimatedHamburger
           isOpen={isMenuOpen}
-          onClick={() => setIsMenuOpen(!isMenuOpen)}
+          onClick={() => {
+            track("navigation", {
+              action: "hamburger_menu_toggle",
+              state: !isMenuOpen ? "open" : "close",
+            });
+            setIsMenuOpen(!isMenuOpen);
+          }}
         />
       </NavbarContent>
 
@@ -120,7 +131,14 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
                 }`}
                 href={link.href}
-                onClick={closeMenu}
+                onClick={() => {
+                  track("navigation", {
+                    action: "mobile_nav_click",
+                    destination: link.name.toLowerCase(),
+                    href: link.href,
+                  });
+                  closeMenu();
+                }}
               >
                 {getIconForLink(link.href)}
                 <span className="text-base">{link.name}</span>
@@ -151,7 +169,14 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
                       : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
                   }`}
                   href={link.href}
-                  onClick={closeMenu}
+                  onClick={() => {
+                    track("navigation", {
+                      action: "mobile_admin_click",
+                      destination: link.name.toLowerCase(),
+                      href: link.href,
+                    });
+                    closeMenu();
+                  }}
                 >
                   <Shield className="w-4 h-4" />
                   <span className="text-base">{link.name}</span>
@@ -228,7 +253,13 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
                   data-testid="navbar-menu-item-login"
                   className="w-full flex items-center justify-center gap-3 px-4 py-3.5 rounded-2xl bg-gradient-to-r from-gray-700 to-gray-800 hover:from-gray-800 hover:to-gray-900 dark:from-gray-600 dark:to-gray-700 dark:hover:from-gray-700 dark:hover:to-gray-800 text-white font-semibold transition-all duration-300 shadow-lg hover:shadow-xl transform hover:scale-[1.02]"
                   href="/sign-in"
-                  onClick={closeMenu}
+                  onClick={() => {
+                    track("auth", {
+                      action: "sign_in_click",
+                      source: "mobile_menu",
+                    });
+                    closeMenu();
+                  }}
                 >
                   <LogIn className="w-5 h-5" />
                   <span>Sign In</span>

@@ -6,6 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { LogOut, Settings, Shield, ChevronRight } from "lucide-react";
+import { track } from "@vercel/analytics";
 
 interface UserDropdownProps {
   linksForLoggedInUsers: { href: string; name: string; testId: string }[];
@@ -40,6 +41,11 @@ const UserDropdown: FC<UserDropdownProps> = ({
         right: window.innerWidth - rect.right,
       });
     }
+    track("user_dropdown", {
+      action: "toggle",
+      state: !isDropdownOpen ? "open" : "close",
+      signed_in: isSignedIn,
+    });
     setIsDropdownOpen((prev) => !prev);
   };
 
@@ -60,6 +66,10 @@ const UserDropdown: FC<UserDropdownProps> = ({
   }, []);
 
   const handleSignOut = () => {
+    track("auth", {
+      action: "sign_out",
+      source: "user_dropdown",
+    });
     signOut(() => router.push("/"));
     setIsDropdownOpen(false);
   };
@@ -172,7 +182,14 @@ const UserDropdown: FC<UserDropdownProps> = ({
                     key={link.name}
                     className="group flex items-center gap-3 px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-primary-50 dark:hover:bg-primary-900/10 hover:text-primary-700 dark:hover:text-primary-400 transition-all duration-200"
                     role="menuitem"
-                    onClick={closeDropdown}
+                    onClick={() => {
+                      track("user_dropdown", {
+                        action: "admin_link_click",
+                        destination: link.name.toLowerCase(),
+                        href: link.href,
+                      });
+                      closeDropdown();
+                    }}
                   >
                     <Settings className="w-4 h-4 text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-colors" />
                     <span className="flex-1">{link.name}</span>
@@ -200,7 +217,13 @@ const UserDropdown: FC<UserDropdownProps> = ({
                     href="/sign-in"
                     className="block w-full text-center px-4 py-2.5 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
                     role="menuitem"
-                    onClick={closeDropdown}
+                    onClick={() => {
+                      track("auth", {
+                        action: "sign_in_click",
+                        source: "user_dropdown",
+                      });
+                      closeDropdown();
+                    }}
                   >
                     Sign in to your account
                   </Link>
