@@ -5,13 +5,7 @@ import { createPortal } from "react-dom";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
-import {
-  CircleUser,
-  LogOut,
-  Settings,
-  Shield,
-  ChevronRight,
-} from "lucide-react";
+import { LogOut, Settings, Shield, ChevronRight } from "lucide-react";
 
 interface UserDropdownProps {
   linksForLoggedInUsers: { href: string; name: string; testId: string }[];
@@ -74,21 +68,33 @@ const UserDropdown: FC<UserDropdownProps> = ({
     setIsDropdownOpen(false);
   };
 
-  // Modern 2025 button styling with micro-interactions
+  // Simple header link styling
   const buttonClasses = isSignedIn
     ? "group cursor-pointer"
-    : "group flex items-center justify-center px-4 py-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:bg-gray-50 dark:hover:bg-gray-750 transition-all duration-300 ease-out shadow-sm hover:shadow-md cursor-pointer";
-
-  // Icon styling with smooth transitions
-  const iconClasses = isSignedIn
-    ? "w-5 h-5 text-primary-600 dark:text-primary-400 group-hover:rotate-12 transition-all duration-300"
-    : "w-5 h-5 text-gray-600 dark:text-gray-400 group-hover:text-primary-600 dark:group-hover:text-primary-400 transition-all duration-300";
+    : "group header-link cursor-pointer";
 
   // Get user initials for avatar
   const userInitials =
     user?.firstName && user?.lastName
       ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
       : user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U";
+
+  // Avatar component that shows image or falls back to initials
+  const AvatarDisplay = ({ className }: { className: string }) => {
+    const [imageError, setImageError] = useState(false);
+
+    if (user?.hasImage && user?.imageUrl && !imageError) {
+      return (
+        <img
+          src={user.imageUrl}
+          alt="Profile"
+          className={className}
+          onError={() => setImageError(true)}
+        />
+      );
+    }
+    return <div className={className}>{userInitials}</div>;
+  };
 
   // Show skeleton while Clerk is loading
   if (!isLoaded) {
@@ -111,16 +117,11 @@ const UserDropdown: FC<UserDropdownProps> = ({
         onClick={toggleMenu}
       >
         {isSignedIn ? (
-          <div className="w-8 h-8 rounded-full bg-gray-600 dark:bg-gray-500 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white dark:border-gray-800 hover:shadow-xl transition-shadow duration-200">
-            {userInitials}
+          <div className="w-8 h-8 rounded-full bg-gray-600 dark:bg-gray-500 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white dark:border-gray-800 hover:shadow-xl transition-shadow duration-200 overflow-hidden">
+            <AvatarDisplay className="w-full h-full rounded-full object-cover flex items-center justify-center text-white font-medium text-sm" />
           </div>
         ) : (
-          <>
-            <CircleUser className={iconClasses} />
-            <span className="ml-2 text-sm font-medium text-gray-700 dark:text-gray-300">
-              Sign In
-            </span>
-          </>
+          <span className="text-sm font-medium">Sign In</span>
         )}
       </button>
 
@@ -142,8 +143,8 @@ const UserDropdown: FC<UserDropdownProps> = ({
             {isSignedIn && user && (
               <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-900/20">
                 <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-gray-600 dark:bg-gray-500 flex items-center justify-center text-white font-medium shadow-lg border-2 border-white dark:border-gray-700">
-                    {userInitials}
+                  <div className="w-10 h-10 rounded-full bg-gray-600 dark:bg-gray-500 flex items-center justify-center text-white font-medium shadow-lg border-2 border-white dark:border-gray-700 overflow-hidden">
+                    <AvatarDisplay className="w-full h-full rounded-full object-cover flex items-center justify-center text-white font-medium" />
                   </div>
                   <div className="flex-1 min-w-0">
                     <p className="text-sm font-medium text-gray-900 dark:text-white truncate">
