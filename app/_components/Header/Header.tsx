@@ -1,8 +1,9 @@
 "use client";
 
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Navbar } from "@heroui/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
+import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
 import UserDropdown from "@/app/_components/Header/UserDropdown";
 import { useUser } from "@clerk/nextjs";
@@ -46,6 +47,7 @@ import { useUser } from "@clerk/nextjs";
 
 const Header: FC = () => {
   const { user, isSignedIn, isLoaded } = useUser();
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   // Define admin links
   const adminLinks = [
@@ -61,6 +63,8 @@ const Header: FC = () => {
         data-testid="navbar"
         isBordered
         maxWidth="2xl"
+        isMenuOpen={isMenuOpen}
+        onMenuOpenChange={setIsMenuOpen}
         className="shadow-sm static border-b border-slate-200 dark:border-slate-700"
         classNames={{
           base: "static",
@@ -99,6 +103,16 @@ const Header: FC = () => {
             isLoaded={isLoaded}
           />
         </DesktopNavbarContent>
+
+        {/* Mobile navigation */}
+        <MobileNavbarContent
+          linksForLoggedInUsers={isAdmin ? adminLinks : []}
+          isMenuOpen={isMenuOpen}
+          setIsMenuOpen={setIsMenuOpen}
+          isSignedIn={isSignedIn || false}
+          isLoaded={isLoaded}
+          user={user}
+        />
       </Navbar>
 
       {/* Progress Bar */}

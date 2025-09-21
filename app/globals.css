@@ -195,3 +195,41 @@ img {
 .dark [data-testid="navbar"] {
   background-color: #0a0a0a !important;
 }
+
+/* Mobile menu animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Prevent body scroll when mobile menu is open */
+body.menu-open {
+  overflow: hidden;
+  position: fixed;
+  width: 100%;
+}
+
+/* Enhanced tap target for mobile */
+@media (max-width: 640px) {
+  .navbar-menu-item a,
+  .navbar-menu-item button {
+    min-height: 48px;
+  }
+}

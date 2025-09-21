@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Card, CardBody } from "@heroui/react";
-import { Calendar } from "lucide-react";
 import EventCard from "@/app/(root)/_components/EventCard";
 import Pagination from "@/app/(root)/_components/Pagination";
 import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
@@ -104,15 +103,12 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         </div>
       ) : (
         // Empty State - Below filter bar
-        <Card className="flex-1 shadow-none border-none">
-          <CardBody className="flex flex-col items-center justify-center text-center py-12 px-6">
-            <div className="p-4 rounded-full bg-primary-50 text-primary-300 mb-4">
-              <Calendar size={48} />
-            </div>
-            <h3 className="text-xl font-semibold text-foreground-800 mb-2">
+        <Card className="flex-1 border border-primary-100 dark:border-primary-900/20 shadow-none rounded-2xl transition-all duration-300 @container">
+          <CardBody className="flex flex-col items-center justify-center text-center py-16 px-6 @sm:py-20 @sm:px-8">
+            <h3 className="text-xl @sm:text-2xl font-bold text-foreground-900 dark:text-foreground-100 mb-3 tracking-tight">
               No Events Found
             </h3>
-            <p className="text-foreground-600 max-w-md leading-relaxed">
+            <p className="text-foreground-700 dark:text-foreground-300 text-base @sm:text-lg leading-relaxed font-medium @sm:px-10">
               {hasFiltersApplied
                 ? "No events match your current filters. Try adjusting them to see more events."
                 : "There aren't any events scheduled at the moment. Check back soon for upcoming yoga sessions and workshops!"}

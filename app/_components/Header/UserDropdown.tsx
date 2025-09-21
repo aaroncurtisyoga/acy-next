@@ -97,7 +97,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
         onClick={toggleMenu}
       >
         {isSignedIn ? (
-          <div className="w-8 h-8 rounded-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white dark:border-gray-800 hover:shadow-xl transition-shadow duration-200">
+          <div className="w-8 h-8 rounded-full bg-gray-600 dark:bg-gray-500 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white dark:border-gray-800 hover:shadow-xl transition-shadow duration-200">
             {userInitials}
           </div>
         ) : (
@@ -122,7 +122,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
           {isSignedIn && user && (
             <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-900/20">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center text-white font-medium shadow-lg border-2 border-white dark:border-gray-700">
+                <div className="w-10 h-10 rounded-full bg-gray-600 dark:bg-gray-500 flex items-center justify-center text-white font-medium shadow-lg border-2 border-white dark:border-gray-700">
                   {userInitials}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -131,8 +131,8 @@ const UserDropdown: FC<UserDropdownProps> = ({
                   </p>
                   {user.publicMetadata?.role === "admin" && (
                     <div className="flex items-center gap-1 mt-0.5">
-                      <Shield className="w-3 h-3 text-primary-600 dark:text-primary-400" />
-                      <span className="text-xs text-primary-600 dark:text-primary-400 font-medium">
+                      <Shield className="w-3 h-3 text-amber-600 dark:text-amber-400" />
+                      <span className="text-xs text-amber-600 dark:text-amber-400 font-medium">
                         Admin
                       </span>
                     </div>
