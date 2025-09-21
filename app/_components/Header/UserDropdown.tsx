@@ -15,12 +15,14 @@ import {
 interface UserDropdownProps {
   linksForLoggedInUsers: { href: string; name: string; testId: string }[];
   isSignedIn?: boolean;
+  isLoaded?: boolean;
   className?: string;
 }
 
 const UserDropdown: FC<UserDropdownProps> = ({
   linksForLoggedInUsers,
   isSignedIn = false,
+  isLoaded = false,
   className = "",
 }) => {
   const { signOut } = useClerk();
@@ -61,8 +63,8 @@ const UserDropdown: FC<UserDropdownProps> = ({
 
   // Modern 2025 button styling with micro-interactions
   const buttonClasses = isSignedIn
-    ? "group flex items-center justify-center p-2.5 rounded-xl bg-gradient-to-br from-primary-50 to-primary-100/50 dark:from-primary-900/20 dark:to-primary-800/10 hover:from-primary-100 hover:to-primary-200/50 dark:hover:from-primary-900/30 dark:hover:to-primary-800/20 transition-all duration-300 ease-out shadow-sm hover:shadow-md"
-    : "group flex items-center justify-center px-4 py-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:bg-gray-50 dark:hover:bg-gray-750 transition-all duration-300 ease-out shadow-sm hover:shadow-md";
+    ? "group cursor-pointer"
+    : "group flex items-center justify-center px-4 py-2.5 rounded-xl bg-white dark:bg-gray-800 border border-gray-200 dark:border-gray-700 hover:border-primary-300 dark:hover:border-primary-700 hover:bg-gray-50 dark:hover:bg-gray-750 transition-all duration-300 ease-out shadow-sm hover:shadow-md cursor-pointer";
 
   // Icon styling with smooth transitions
   const iconClasses = isSignedIn
@@ -75,6 +77,15 @@ const UserDropdown: FC<UserDropdownProps> = ({
       ? `${user.firstName[0]}${user.lastName[0]}`.toUpperCase()
       : user?.emailAddresses?.[0]?.emailAddress?.[0]?.toUpperCase() || "U";
 
+  // Show skeleton while Clerk is loading
+  if (!isLoaded) {
+    return (
+      <div className={`relative ${className}`}>
+        <div className="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 animate-pulse"></div>
+      </div>
+    );
+  }
+
   return (
     <div className={`relative ${className}`} ref={dropdownRef}>
       <button
@@ -86,11 +97,8 @@ const UserDropdown: FC<UserDropdownProps> = ({
         onClick={toggleMenu}
       >
         {isSignedIn ? (
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 flex items-center justify-center text-white font-semibold text-sm shadow-inner">
-              {userInitials}
-            </div>
-            <ChevronRight className="w-4 h-4 text-gray-400 group-hover:translate-x-0.5 transition-transform duration-300" />
+          <div className="w-8 h-8 rounded-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white dark:border-gray-800 hover:shadow-xl transition-shadow duration-200">
+            {userInitials}
           </div>
         ) : (
           <>
@@ -104,16 +112,17 @@ const UserDropdown: FC<UserDropdownProps> = ({
 
       {isDropdownOpen && (
         <div
-          className="absolute right-0 mt-3 w-64 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl shadow-2xl rounded-2xl border border-gray-200/50 dark:border-gray-700/50 z-[9999] overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200"
+          className="absolute right-0 mt-3 w-64 bg-white/95 dark:bg-gray-800/95 backdrop-blur-xl shadow-2xl rounded-2xl border border-gray-200/50 dark:border-gray-700/50 overflow-hidden animate-in fade-in slide-in-from-top-1 duration-200"
           role="menu"
           aria-labelledby="user-menu-button"
           data-testid="user-dropdown-menu"
+          style={{ zIndex: 999999 }}
         >
           {/* User info header for signed-in users */}
           {isSignedIn && user && (
             <div className="px-4 py-3 border-b border-gray-100 dark:border-gray-700/50 bg-gray-50/50 dark:bg-gray-900/20">
               <div className="flex items-center gap-3">
-                <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-primary-400 to-primary-600 dark:from-primary-500 dark:to-primary-700 flex items-center justify-center text-white font-semibold shadow-inner">
+                <div className="w-10 h-10 rounded-full bg-primary-600 dark:bg-primary-500 flex items-center justify-center text-white font-medium shadow-lg border-2 border-white dark:border-gray-700">
                   {userInitials}
                 </div>
                 <div className="flex-1 min-w-0">
@@ -156,10 +165,10 @@ const UserDropdown: FC<UserDropdownProps> = ({
                 <button
                   data-testid="logout-button"
                   onClick={handleSignOut}
-                  className="group flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 transition-all duration-200"
+                  className="group flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-700 dark:hover:text-red-300 transition-all duration-200"
                   role="menuitem"
                 >
-                  <LogOut className="w-4 h-4 group-hover:translate-x-0.5 transition-transform duration-200" />
+                  <LogOut className="w-4 h-4 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors duration-200" />
                   <span className="flex-1">Sign out</span>
                 </button>
               </>

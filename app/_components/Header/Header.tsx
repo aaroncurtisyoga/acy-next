@@ -45,7 +45,7 @@ import { useUser } from "@clerk/nextjs";
 // };
 
 const Header: FC = () => {
-  const { user, isSignedIn } = useUser();
+  const { user, isSignedIn, isLoaded } = useUser();
 
   // Define admin links
   const adminLinks = [
@@ -96,6 +96,7 @@ const Header: FC = () => {
           <UserDropdown
             linksForLoggedInUsers={isAdmin ? adminLinks : []}
             isSignedIn={isSignedIn || false}
+            isLoaded={isLoaded}
           />
         </DesktopNavbarContent>
       </Navbar>
