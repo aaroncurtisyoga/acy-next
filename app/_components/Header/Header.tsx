@@ -4,6 +4,8 @@ import { FC } from "react";
 import { Navbar } from "@heroui/react";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
+import UserDropdown from "@/app/_components/Header/UserDropdown";
+import { useUser } from "@clerk/nextjs";
 
 // HeaderProgressBar Component
 // const HeaderProgressBar: FC = () => {
@@ -43,6 +45,16 @@ import Logo from "@/app/_components/Header/Logo";
 // };
 
 const Header: FC = () => {
+  const { user, isSignedIn, isLoaded } = useUser();
+
+  // Define admin links
+  const adminLinks = [
+    { href: "/admin", name: "Admin Dashboard", testId: "admin-dashboard-link" },
+  ];
+
+  // Check if user is admin
+  const isAdmin = user?.publicMetadata?.role === "admin";
+
   return (
     <div className="relative">
       <Navbar
@@ -80,7 +92,13 @@ const Header: FC = () => {
         <Logo />
 
         {/* Desktop navigation */}
-        <DesktopNavbarContent>{null}</DesktopNavbarContent>
+        <DesktopNavbarContent>
+          <UserDropdown
+            linksForLoggedInUsers={isAdmin ? adminLinks : []}
+            isSignedIn={isSignedIn || false}
+            isLoaded={isLoaded}
+          />
+        </DesktopNavbarContent>
       </Navbar>
 
       {/* Progress Bar */}

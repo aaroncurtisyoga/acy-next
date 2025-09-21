@@ -4,6 +4,7 @@ import { Calendar } from "lucide-react";
 import EventCard from "@/app/(root)/_components/EventCard";
 import Pagination from "@/app/(root)/_components/Pagination";
 import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
+import AddEventButton from "@/app/(root)/_components/AddEventButton";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
@@ -75,11 +76,14 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
 
       {/* Simple event count display */}
       <div className="mb-6">
-        <div className="flex items-center gap-2">
-          <div className="w-2 h-2 rounded-full bg-primary-500"></div>
-          <p className="font-semibold text-foreground-800">
-            {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
-          </p>
+        <div className="flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <div className="w-2 h-2 rounded-full bg-primary-500"></div>
+            <p className="font-semibold text-foreground-800">
+              {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
+            </p>
+          </div>
+          <AddEventButton />
         </div>
       </div>
 

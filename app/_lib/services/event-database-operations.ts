@@ -4,6 +4,7 @@ import {
   createCalendarEvent,
   updateCalendarEvent,
   deleteCalendarEvent,
+  findCalendarEventByDatabaseId,
 } from "@/app/_lib/google-calendar";
 
 export class EventDatabaseOperations {
@@ -71,6 +72,7 @@ export class EventDatabaseOperations {
           price: eventData.price || undefined,
           isFree: eventData.isFree,
           externalRegistrationUrl: eventData.externalUrl || undefined,
+          databaseEventId: newEvent.id, // Add database ID for duplicate prevention
         });
 
         // Update event with Google Calendar details if sync was successful
@@ -155,35 +157,78 @@ export class EventDatabaseOperations {
               );
             }
           } else {
-            // If no Google Event ID exists, create it in Google Calendar
+            // If no Google Event ID exists, check if one already exists in Google Calendar
             console.log(
-              `[Cron Sync] Creating Google Calendar event for existing database event: ${eventData.title}`,
+              `[Cron Sync] Checking for existing Google Calendar event for: ${eventData.title}`,
             );
-            const calendarResult = await createCalendarEvent({
-              title: eventData.title,
-              description: eventData.description || undefined,
-              startDateTime: eventData.startDateTime,
-              endDateTime: eventData.endDateTime,
-              location:
-                updatedEvent.location?.formattedAddress ||
-                updatedEvent.location?.name ||
-                undefined,
-              price: eventData.price || undefined,
-              isFree: eventData.isFree,
-              externalRegistrationUrl: eventData.externalUrl || undefined,
-            });
 
-            if (calendarResult) {
+            // First check if a Google Calendar event already exists with this database ID
+            const existingGoogleEvent = await findCalendarEventByDatabaseId(
+              existingEvent.id,
+            );
+
+            if (existingGoogleEvent) {
+              // Event already exists in Google Calendar, just link it
+              console.log(
+                `[Cron Sync] Found existing Google Calendar event, linking to database: ${eventData.title}`,
+              );
               await prisma.event.update({
                 where: { id: existingEvent.id },
                 data: {
-                  googleEventId: calendarResult.googleEventId,
-                  googleEventLink: calendarResult.googleEventLink,
+                  googleEventId: existingGoogleEvent.googleEventId,
+                  googleEventLink: existingGoogleEvent.googleEventLink,
                 },
               });
+
+              // Now update the existing Google Calendar event with latest data
+              await updateCalendarEvent(existingGoogleEvent.googleEventId, {
+                title: eventData.title,
+                description: eventData.description || undefined,
+                startDateTime: eventData.startDateTime,
+                endDateTime: eventData.endDateTime,
+                location:
+                  updatedEvent.location?.formattedAddress ||
+                  updatedEvent.location?.name ||
+                  undefined,
+                price: eventData.price || undefined,
+                isFree: eventData.isFree,
+                externalRegistrationUrl: eventData.externalUrl || undefined,
+              });
               console.log(
-                `[Cron Sync] Successfully created in Google Calendar: ${eventData.title}`,
+                `[Cron Sync] Successfully linked and updated existing Google Calendar event: ${eventData.title}`,
               );
+            } else {
+              // No existing Google Calendar event found, create a new one
+              console.log(
+                `[Cron Sync] Creating new Google Calendar event for existing database event: ${eventData.title}`,
+              );
+              const calendarResult = await createCalendarEvent({
+                title: eventData.title,
+                description: eventData.description || undefined,
+                startDateTime: eventData.startDateTime,
+                endDateTime: eventData.endDateTime,
+                location:
+                  updatedEvent.location?.formattedAddress ||
+                  updatedEvent.location?.name ||
+                  undefined,
+                price: eventData.price || undefined,
+                isFree: eventData.isFree,
+                externalRegistrationUrl: eventData.externalUrl || undefined,
+                databaseEventId: existingEvent.id, // Add database ID for duplicate prevention
+              });
+
+              if (calendarResult) {
+                await prisma.event.update({
+                  where: { id: existingEvent.id },
+                  data: {
+                    googleEventId: calendarResult.googleEventId,
+                    googleEventLink: calendarResult.googleEventLink,
+                  },
+                });
+                console.log(
+                  `[Cron Sync] Successfully created in Google Calendar: ${eventData.title}`,
+                );
+              }
             }
           }
         } catch (error) {

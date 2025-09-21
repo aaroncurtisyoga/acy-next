@@ -214,8 +214,9 @@ const EditSubmitPage = () => {
       try {
         const event = await getEventById(id);
         // Transform database event to form values
+        const { attendees, ...eventWithoutAttendees } = event;
         const formValues: EventFormValues = {
-          ...event,
+          ...eventWithoutAttendees,
           category:
             typeof event.category === "object"
               ? event.category.id
