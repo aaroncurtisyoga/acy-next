@@ -7,6 +7,7 @@ import { parseZonedDateTime } from "@internationalized/date";
 import { useFormContext } from "react-hook-form";
 import { X } from "lucide-react";
 import { PlaceDetails } from "@/app/_lib/types";
+import { updateEvent } from "@/app/_lib/actions/event.actions";
 import {
   EventFormValues,
   useEventFormContext,
@@ -87,7 +88,6 @@ const BasicInfo: FC = () => {
 
     setIsUpdating(true);
     try {
-      const { updateEvent } = await import("@/app/_lib/actions/event.actions");
       const updated = await updateEvent({
         event: data,
         path: `/admin/events`,
