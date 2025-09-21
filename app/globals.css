@@ -75,7 +75,7 @@ img {
   }
 
   .wrapper-width {
-    @apply w-full max-w-screen-2xl lg:mx-auto px-6;
+    @apply w-full max-w-screen-2xl mx-auto px-6 lg:px-12;
     box-sizing: border-box;
     overflow-x: hidden;
   }
