@@ -3,7 +3,6 @@
 import { FC, useState, useEffect } from "react";
 import { useDisclosure } from "@heroui/react";
 import { Button } from "@heroui/react";
-import { Plus } from "lucide-react";
 import { useUser } from "@clerk/nextjs";
 import QuickAddEventModal from "./QuickAddEventModal";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
@@ -27,15 +26,14 @@ const AddEventButton: FC = () => {
   return (
     <>
       <Button
-        isIconOnly
-        color="primary"
-        variant="solid"
+        color="secondary"
+        variant="flat"
         onPress={onOpen}
         size="sm"
-        className="rounded-full shadow-sm hover:shadow-md transition-shadow"
+        className="shadow-sm hover:shadow-md transition-shadow"
         aria-label="Add Event"
       >
-        <Plus className="w-4 h-4" />
+        New Event
       </Button>
 
       <QuickAddEventModal

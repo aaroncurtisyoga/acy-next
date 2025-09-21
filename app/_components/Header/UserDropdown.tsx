@@ -186,10 +186,10 @@ const UserDropdown: FC<UserDropdownProps> = ({
                   <button
                     data-testid="logout-button"
                     onClick={handleSignOut}
-                    className="group flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm text-red-600 dark:text-red-400 hover:bg-red-50 dark:hover:bg-red-900/10 hover:text-red-700 dark:hover:text-red-300 transition-all duration-200"
+                    className="group flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-gray-100 transition-all duration-200"
                     role="menuitem"
                   >
-                    <LogOut className="w-4 h-4 group-hover:text-red-700 dark:group-hover:text-red-300 transition-colors duration-200" />
+                    <LogOut className="w-4 h-4 text-gray-400 group-hover:text-gray-600 dark:group-hover:text-gray-300 transition-colors duration-200" />
                     <span className="flex-1">Sign out</span>
                   </button>
                 </>
@@ -198,7 +198,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
                   <Link
                     data-testid="login-link"
                     href="/sign-in"
-                    className="block w-full text-center px-4 py-2.5 bg-primary-600 hover:bg-primary-700 text-white font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
+                    className="block w-full text-center px-4 py-2.5 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
                     role="menuitem"
                     onClick={closeDropdown}
                   >
