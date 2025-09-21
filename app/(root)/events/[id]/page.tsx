@@ -53,7 +53,7 @@ const EventPage: FC<EventPageProps> = async ({ params }) => {
       />
       <div className={"wrapper-width flex flex-col md:flex-row"}>
         <div className={"flex-1"}>
-          <div className={"px-5 md:px-0"}>
+          <div>
             <Headline title={event.title} />
             <DateAndTime
               startDateTime={event.startDateTime}

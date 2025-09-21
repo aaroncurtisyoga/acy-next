@@ -8,7 +8,7 @@ const Footer = () => {
       data-testid="footer"
       className="border-t border-slate-200 dark:border-slate-700 py-4 bg-white dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 flex-shrink-0"
     >
-      <div className="wrapper-width">
+      <div className="w-full max-w-screen-2xl mx-auto px-6 lg:px-12">
         <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-between gap-7 sm:gap-0">
           {/* Theme toggle - left side on desktop, bottom on mobile */}
           <div className="sm:block">
