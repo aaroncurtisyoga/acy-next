@@ -4,6 +4,7 @@ import { Calendar } from "lucide-react";
 import EventCard from "@/app/(root)/_components/EventCard";
 import Pagination from "@/app/(root)/_components/Pagination";
 import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
+import AddEventButton from "@/app/(root)/_components/AddEventButton";
 import { getAllEvents } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
 
@@ -37,12 +38,13 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     <div className="flex flex-col px-5 py-5 pb-8 md:px-8 md:py-8 md:pb-12 lg:px-12 lg:py-10 lg:pb-16">
       {/* Header - Always show */}
       <div className="mb-6 md:mb-8">
-        <div className="flex items-center gap-3 mb-3">
+        <div className="flex items-center justify-between mb-3">
           <h1
             className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
           >
             Practice.
           </h1>
+          <AddEventButton />
         </div>
         <p className="text-lg text-foreground-600 leading-relaxed">
           Join me for upcoming yoga sessions, workshops, and mindful movement
