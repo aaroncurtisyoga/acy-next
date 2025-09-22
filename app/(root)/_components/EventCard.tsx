@@ -11,6 +11,7 @@ import EventCardInlineEdit from "./EventCardInlineEdit";
 import BasicModal from "@/app/_components/BasicModal";
 import { deleteEvent } from "@/app/_lib/actions/event.actions";
 import { useRouter } from "next/navigation";
+import { track } from "@vercel/analytics";
 
 interface EventCardProps {
   event: EventWithLocationAndCategory;
@@ -35,6 +36,11 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
 
   const handleDelete = async () => {
     setIsDeleting(true);
+    track("event_management", {
+      action: "delete_event",
+      event_id: event.id,
+      event_title: event.title,
+    });
     try {
       const response = await deleteEvent(event.id);
       if (response.success) {
@@ -87,13 +93,27 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
         {isAdmin && !isEditing && (
           <div className="flex justify-end pr-[30px] -mb-[1px] gap-[1px]">
             <button
-              onClick={() => setIsEditing(true)}
+              onClick={() => {
+                track("event_management", {
+                  action: "edit_event_click",
+                  event_id: event.id,
+                  event_title: event.title,
+                });
+                setIsEditing(true);
+              }}
               className="px-3 py-1 text-xs text-foreground-600 hover:text-foreground-800 bg-white dark:bg-gray-800 border border-divider rounded-tl-lg border-b-0 border-r-0 transition-colors duration-200 cursor-pointer"
             >
               Edit
             </button>
             <button
-              onClick={onOpen}
+              onClick={() => {
+                track("event_management", {
+                  action: "delete_event_click",
+                  event_id: event.id,
+                  event_title: event.title,
+                });
+                onOpen();
+              }}
               className="px-3 py-1 text-xs text-danger-600 hover:text-danger-800 bg-white dark:bg-gray-800 border border-divider rounded-tr-lg border-b-0 transition-colors duration-200 cursor-pointer"
             >
               Delete
@@ -188,6 +208,17 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
                           color="primary"
                           size="md"
                           className="font-semibold w-full"
+                          onClick={() => {
+                            track("event_signup", {
+                              action: "signup_click",
+                              event_id: event.id,
+                              event_title: event.title,
+                              category: event.category.name,
+                              is_free: event.isFree,
+                              is_external: event.isHostedExternally,
+                              source: "mobile_card",
+                            });
+                          }}
                         >
                           Sign Up
                         </Button>
@@ -205,6 +236,17 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
                         color="primary"
                         size="sm"
                         className="font-semibold"
+                        onClick={() => {
+                          track("event_signup", {
+                            action: "signup_click",
+                            event_id: event.id,
+                            event_title: event.title,
+                            category: event.category.name,
+                            is_free: event.isFree,
+                            is_external: event.isHostedExternally,
+                            source: "desktop_card",
+                          });
+                        }}
                       >
                         Sign Up
                       </Button>

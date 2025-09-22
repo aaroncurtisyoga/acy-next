@@ -6,6 +6,7 @@ import { Button } from "@heroui/react";
 import { Category } from "@prisma/client";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
+import { track } from "@vercel/analytics";
 
 const CategoryButtons: FC = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
@@ -14,6 +15,12 @@ const CategoryButtons: FC = () => {
   const searchParams = useSearchParams();
 
   const handleFormUrlQuery = (category) => {
+    track("filtering", {
+      action: "category_filter",
+      category: category,
+      previous_category: selectedCategory,
+    });
+
     let newUrl = "";
     if (category && category !== "All") {
       newUrl = formUrlQuery({

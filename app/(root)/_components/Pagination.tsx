@@ -3,6 +3,7 @@
 import { FC } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { formUrlQuery } from "@/app/_lib/utils";
+import { track } from "@vercel/analytics";
 
 interface PaginationProps {
   page: number | string;
@@ -20,6 +21,13 @@ const Pagination: FC<PaginationProps> = ({
 
   const onClick = (btnType: string) => {
     const pageValue = btnType === "next" ? Number(page) + 1 : Number(page) - 1;
+
+    track("pagination", {
+      action: btnType === "next" ? "next_page" : "previous_page",
+      from_page: Number(page),
+      to_page: pageValue,
+      total_pages: totalPages,
+    });
 
     const newUrl = formUrlQuery({
       params: searchParams.toString(),

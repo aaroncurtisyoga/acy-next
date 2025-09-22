@@ -5,6 +5,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { NavbarContent, NavbarItem } from "@heroui/react";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
+import { track } from "@vercel/analytics";
 // import { HiOutlineMail } from "react-icons/hi";
 // import NewsletterModal from "@/app/_components/NewsletterModal";
 
@@ -34,6 +35,13 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
               href={link.href}
               aria-label={link.name}
               data-testid={`${link.testId}`}
+              onClick={() => {
+                track("navigation", {
+                  action: "desktop_nav_click",
+                  destination: link.name.toLowerCase(),
+                  href: link.href,
+                });
+              }}
             >
               {link.name}
             </Link>

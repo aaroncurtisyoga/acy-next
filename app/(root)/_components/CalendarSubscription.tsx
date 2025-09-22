@@ -13,6 +13,7 @@ import {
 import { Check, ChevronDown, Calendar } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineLink } from "react-icons/hi";
+import { track } from "@vercel/analytics";
 
 interface CalendarSubscriptionProps {
   googleCalendarUrl: string;
@@ -31,6 +32,10 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
       setCopiedIcal(true);
       setTimeout(() => setCopiedIcal(false), 2000);
       console.log("[Calendar Subscription] iCal URL copied to clipboard");
+      track("calendar_subscription", {
+        method: "ical_copy",
+        url: icalUrl,
+      });
     } catch (error) {
       console.error("[Calendar Subscription] Failed to copy iCal URL:", error);
     }
@@ -40,6 +45,10 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
     console.log(
       "[Calendar Subscription] Opening Google Calendar subscription link",
     );
+    track("calendar_subscription", {
+      method: "google_calendar",
+      url: googleCalendarUrl,
+    });
     window.open(googleCalendarUrl, "_blank");
   };
 
