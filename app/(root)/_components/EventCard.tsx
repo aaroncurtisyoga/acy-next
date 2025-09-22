@@ -91,7 +91,7 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
       <div className="w-full mb-4">
         {/* Edit and Delete Badges - positioned above card on the right */}
         {isAdmin && !isEditing && (
-          <div className="flex justify-end pr-2 @sm:pr-[30px] -mb-[1px] gap-[1px]">
+          <div className="flex justify-end pr-[30px] -mb-[1px] gap-[1px]">
             <button
               onClick={() => {
                 track("event_management", {
