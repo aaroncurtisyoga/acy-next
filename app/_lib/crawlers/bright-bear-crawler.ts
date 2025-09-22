@@ -387,10 +387,62 @@ export class BrightBearCrawler {
         // "Tuesday, September 9, 2025 6:30 AM" (with year)
         let dateTimeStr = rawClass.dateTime.trim();
 
-        // Clean up common prefixes
-        dateTimeStr = dateTimeStr
-          .replace(/^(NEXT\s+|TUESDAY,?\s*)/i, "")
-          .trim();
+        // Handle relative date references first
+        const tomorrow = new Date();
+        tomorrow.setDate(tomorrow.getDate() + 1);
+
+        const today = new Date();
+
+        // Replace TOMORROW with actual date
+        if (dateTimeStr.match(/^TOMORROW\s/i)) {
+          const timeMatch = dateTimeStr.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
+          if (timeMatch) {
+            // Create date string with tomorrow's date
+            const monthNames = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            dateTimeStr = `${monthNames[tomorrow.getMonth()]} ${tomorrow.getDate()}, ${tomorrow.getFullYear()} ${timeMatch[1]}`;
+          }
+        }
+        // Replace TODAY with actual date
+        else if (dateTimeStr.match(/^TODAY\s/i)) {
+          const timeMatch = dateTimeStr.match(/(\d{1,2}:\d{2}\s*[AP]M)/i);
+          if (timeMatch) {
+            const monthNames = [
+              "January",
+              "February",
+              "March",
+              "April",
+              "May",
+              "June",
+              "July",
+              "August",
+              "September",
+              "October",
+              "November",
+              "December",
+            ];
+            dateTimeStr = `${monthNames[today.getMonth()]} ${today.getDate()}, ${today.getFullYear()} ${timeMatch[1]}`;
+          }
+        }
+        // Handle "THIS" prefix (e.g., "THIS Friday, September 26")
+        else if (dateTimeStr.match(/^THIS\s/i)) {
+          dateTimeStr = dateTimeStr.replace(/^THIS\s+/i, "").trim();
+        }
+
+        // Clean up other common prefixes
+        dateTimeStr = dateTimeStr.replace(/^(NEXT\s+)/i, "").trim();
 
         // If the date doesn't include a year, add the current year or next year
         if (!dateTimeStr.match(/\d{4}/)) {
