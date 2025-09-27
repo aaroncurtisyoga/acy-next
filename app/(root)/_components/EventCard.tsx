@@ -12,12 +12,17 @@ import BasicModal from "@/app/_components/BasicModal";
 import { deleteEvent } from "@/app/_lib/actions/event.actions";
 import { useRouter } from "next/navigation";
 import { track } from "@vercel/analytics";
+import ShareButton from "./ShareButton";
 
 interface EventCardProps {
   event: EventWithLocationAndCategory;
+  isHighlighted?: boolean;
 }
 
-const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
+const EventCard: FC<EventCardProps> = ({
+  event: initialEvent,
+  isHighlighted = false,
+}) => {
   const [event, setEvent] = useState(initialEvent);
   const [isEditing, setIsEditing] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
@@ -120,7 +125,10 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
             </button>
           </div>
         )}
-        <Card className="w-full border border-divider shadow-none hover:shadow-sm transition-shadow duration-200 rounded-2xl @container">
+        <Card
+          id={`event-${event.id}`}
+          className={`w-full border ${isHighlighted ? "border-2 border-primary-400 bg-primary-50/10 shadow-lg" : "border-divider"} shadow-none hover:shadow-sm transition-shadow duration-200 rounded-2xl @container`}
+        >
           <CardBody className="p-0">
             <div className="flex flex-col gap-3">
               {/* Mobile: Compact date + title row, Desktop: Date badge + details */}
@@ -194,6 +202,19 @@ const EventCard: FC<EventCardProps> = ({ event: initialEvent }) => {
                               </span>
                             )}
                           </div>
+
+                          {/* Action buttons row - bottom of content */}
+                          {!isEditing && (
+                            <div className="flex items-center gap-1 mt-3">
+                              <ShareButton
+                                event={event}
+                                variant="icon"
+                                size="sm"
+                                className="text-foreground-500 hover:text-foreground-700"
+                              />
+                              {/* Space for future buttons like "More Details" */}
+                            </div>
+                          )}
                         </>
                       )}
                     </div>
