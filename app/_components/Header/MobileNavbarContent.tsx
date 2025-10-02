@@ -3,7 +3,12 @@
 import { FC, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
-import { NavbarContent, NavbarMenu, NavbarMenuItem } from "@heroui/react";
+import {
+  NavbarContent,
+  NavbarMenu,
+  NavbarMenuItem,
+  NavbarMenuToggle,
+} from "@heroui/react";
 import {
   LogOut,
   LogIn,
@@ -16,7 +21,6 @@ import {
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 import { useClerk } from "@clerk/nextjs";
 import { type UserResource } from "@clerk/types";
-import AnimatedHamburger from "./AnimatedHamburger";
 import { track } from "@vercel/analytics";
 
 interface MobileNavbarContentProps {
@@ -89,14 +93,13 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   return (
     <>
       <NavbarContent className="sm:hidden" justify="end">
-        <AnimatedHamburger
-          isOpen={isMenuOpen}
+        <NavbarMenuToggle
+          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           onClick={() => {
             track("navigation", {
               action: "hamburger_menu_toggle",
               state: !isMenuOpen ? "open" : "close",
             });
-            setIsMenuOpen(!isMenuOpen);
           }}
         />
       </NavbarContent>
@@ -106,15 +109,51 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
         className="bg-white dark:bg-slate-900 shadow-xl px-6 py-4"
       >
         {/* Navigation links */}
-        <div className="space-y-1">
-          {unauthenticatedLinks.map((link, index) => (
+        {unauthenticatedLinks.map((link, index) => (
+          <NavbarMenuItem
+            key={`${link.name}-${index}`}
+            isActive={pathname.includes(link.href)}
+            className="list-none"
+            style={{
+              animation: isMenuOpen
+                ? `fadeInUp 0.4s ease-out ${index * 0.05}s both`
+                : "",
+            }}
+          >
+            <Link
+              data-testid={`navbar-menu-item-${link.testId}`}
+              className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ${
+                pathname.includes(link.href)
+                  ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium"
+                  : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
+              }`}
+              href={link.href}
+              onClick={() => {
+                track("navigation", {
+                  action: "mobile_nav_click",
+                  destination: link.name.toLowerCase(),
+                  href: link.href,
+                });
+                closeMenu();
+              }}
+            >
+              {getIconForLink(link.href)}
+              <span className="text-base">{link.name}</span>
+            </Link>
+          </NavbarMenuItem>
+        ))}
+
+        {/* User links */}
+        {isSignedIn &&
+          linksForLoggedInUsers.length > 0 &&
+          linksForLoggedInUsers.map((link, index) => (
             <NavbarMenuItem
               key={`${link.name}-${index}`}
               isActive={pathname.includes(link.href)}
               className="list-none"
               style={{
                 animation: isMenuOpen
-                  ? `fadeInUp 0.4s ease-out ${index * 0.05}s both`
+                  ? `fadeInUp 0.4s ease-out ${(unauthenticatedLinks.length + index) * 0.05}s both`
                   : "",
               }}
             >
@@ -128,58 +167,18 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
                 href={link.href}
                 onClick={() => {
                   track("navigation", {
-                    action: "mobile_nav_click",
+                    action: "mobile_admin_click",
                     destination: link.name.toLowerCase(),
                     href: link.href,
                   });
                   closeMenu();
                 }}
               >
-                {getIconForLink(link.href)}
+                <Shield className="w-4 h-4" />
                 <span className="text-base">{link.name}</span>
               </Link>
             </NavbarMenuItem>
           ))}
-        </div>
-
-        {/* User links */}
-        {isSignedIn && linksForLoggedInUsers.length > 0 && (
-          <div className="space-y-1 mt-2">
-            {linksForLoggedInUsers.map((link, index) => (
-              <NavbarMenuItem
-                key={`${link.name}-${index}`}
-                isActive={pathname.includes(link.href)}
-                className="list-none"
-                style={{
-                  animation: isMenuOpen
-                    ? `fadeInUp 0.4s ease-out ${(unauthenticatedLinks.length + index) * 0.05}s both`
-                    : "",
-                }}
-              >
-                <Link
-                  data-testid={`navbar-menu-item-${link.testId}`}
-                  className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ${
-                    pathname.includes(link.href)
-                      ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium"
-                      : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
-                  }`}
-                  href={link.href}
-                  onClick={() => {
-                    track("navigation", {
-                      action: "mobile_admin_click",
-                      destination: link.name.toLowerCase(),
-                      href: link.href,
-                    });
-                    closeMenu();
-                  }}
-                >
-                  <Shield className="w-4 h-4" />
-                  <span className="text-base">{link.name}</span>
-                </Link>
-              </NavbarMenuItem>
-            ))}
-          </div>
-        )}
 
         {/* User Info & Auth Section */}
         {isLoaded && (
