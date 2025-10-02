@@ -6,6 +6,7 @@ import withPlaiceholder from "@plaiceholder/next";
  */
 
 const nextConfig = {
+  allowedDevOrigins: ["192.168.1.166"],
   images: {
     remotePatterns: [{ hostname: "*.public.blob.vercel-storage.com" }],
     qualities: [50, 75, 80, 90, 100],

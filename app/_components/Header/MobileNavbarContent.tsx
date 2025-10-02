@@ -62,7 +62,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
     };
     document.addEventListener("keydown", handleEscape);
     return () => document.removeEventListener("keydown", handleEscape);
-  }, [isMenuOpen]);
+  }, [isMenuOpen, closeMenu]);
 
   // Lock body scroll when menu is open
   useEffect(() => {
@@ -103,12 +103,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
 
       <NavbarMenu
         data-testid="navbar-menu-mobile"
-        className={`bg-white dark:bg-slate-900 shadow-xl transition-all duration-300 ease-out transform ${
-          isMenuOpen ? "translate-x-0" : "translate-x-full"
-        } fixed right-0 top-[63px] w-full h-[calc(100vh-63px)] overflow-y-auto z-50 px-6 py-4`}
-        style={{
-          animation: isMenuOpen ? "slideIn 0.3s ease-out" : "",
-        }}
+        className="bg-white dark:bg-slate-900 shadow-xl px-6 py-4"
       >
         {/* Navigation links */}
         <div className="space-y-1">
