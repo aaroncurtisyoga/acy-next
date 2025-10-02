@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useEffect } from "react";
+import { FC, useCallback, useEffect } from "react";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import {
@@ -44,9 +44,9 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
   const router = useRouter();
   const { signOut } = useClerk();
 
-  const closeMenu = () => {
+  const closeMenu = useCallback(() => {
     setIsMenuOpen(false);
-  };
+  }, [setIsMenuOpen]);
 
   const handleSignOut = () => {
     track("auth", {
