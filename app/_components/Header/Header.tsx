@@ -7,6 +7,7 @@ import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 import Logo from "@/app/_components/Header/Logo";
 import UserDropdown from "@/app/_components/Header/UserDropdown";
 import { useUser } from "@clerk/nextjs";
+import { track } from "@vercel/analytics";
 
 // HeaderProgressBar Component
 // const HeaderProgressBar: FC = () => {
@@ -64,7 +65,13 @@ const Header: FC = () => {
         isBordered
         maxWidth="2xl"
         isMenuOpen={isMenuOpen}
-        onMenuOpenChange={setIsMenuOpen}
+        onMenuOpenChange={(open) => {
+          setIsMenuOpen(open);
+          track("navigation", {
+            action: "hamburger_menu_toggle",
+            state: open ? "open" : "close",
+          });
+        }}
         className="shadow-sm static border-b border-slate-200 dark:border-slate-700"
         classNames={{
           base: "static",

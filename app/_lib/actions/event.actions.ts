@@ -56,19 +56,18 @@ export async function createEvent({
       },
     });
 
-    // Check for existing events at the same time and location to prevent duplicates
+    // Check for existing events at the same time to prevent duplicates
+    // Since you can only be in one place at once, we only check startDateTime
     const duplicateEvent = await prisma.event.findFirst({
       where: {
         startDateTime: startDateTimeISO,
-        endDateTime: endDateTimeISO,
-        locationId: location.id,
         isActive: true,
       },
     });
 
     if (duplicateEvent) {
       throw new Error(
-        `An event already exists at this date/time and location. Please choose a different time or location.`,
+        `An event already exists at this time. Please choose a different time.`,
       );
     }
 
@@ -371,28 +370,21 @@ export async function updateEvent({
       }
     }
 
-    // If datetime or location is being updated, check for duplicates
-    if (processedStartDateTime && processedEndDateTime && location?.placeId) {
-      const existingLocation = await prisma.location.findUnique({
-        where: { placeId: location.placeId },
+    // If datetime is being updated, check for duplicates
+    // Since you can only be in one place at once, we only check startDateTime
+    if (processedStartDateTime) {
+      const duplicateEvent = await prisma.event.findFirst({
+        where: {
+          id: { not: eventId }, // Exclude the current event being updated
+          startDateTime: processedStartDateTime,
+          isActive: true,
+        },
       });
 
-      if (existingLocation) {
-        const duplicateEvent = await prisma.event.findFirst({
-          where: {
-            id: { not: eventId }, // Exclude the current event being updated
-            startDateTime: processedStartDateTime,
-            endDateTime: processedEndDateTime,
-            locationId: existingLocation.id,
-            isActive: true,
-          },
-        });
-
-        if (duplicateEvent) {
-          throw new Error(
-            `Another event already exists at this date/time and location. Please choose a different time or location.`,
-          );
-        }
+      if (duplicateEvent) {
+        throw new Error(
+          `Another event already exists at this time. Please choose a different time.`,
+        );
       }
     }
 

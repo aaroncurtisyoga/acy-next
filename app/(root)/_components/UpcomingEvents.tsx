@@ -4,14 +4,17 @@ import EventCard from "@/app/(root)/_components/EventCard";
 import Pagination from "@/app/(root)/_components/Pagination";
 import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
 import AddEventButton from "@/app/(root)/_components/AddEventButton";
-import { getAllEvents } from "@/app/_lib/actions/event.actions";
+import HighlightedEventScroller from "@/app/(root)/_components/HighlightedEventScroller";
+import { getAllEvents, getEventById } from "@/app/_lib/actions/event.actions";
 import { merriweather } from "@/app/fonts";
+import { EventWithLocationAndCategory } from "@/app/_lib/types";
 
 interface UpcomingEventsProps {
   searchParams: Promise<{
     page?: string;
     query?: string;
     category?: string;
+    event?: string;
   }>;
 }
 
@@ -22,6 +25,17 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const page = Number(resolvedParams?.page) || 1;
   const searchText = (resolvedParams?.query as string) || "";
   const category = (resolvedParams?.category as string) || "";
+  const highlightedEventId = (resolvedParams?.event as string) || "";
+
+  // Fetch highlighted event if ID is provided
+  let highlightedEvent: EventWithLocationAndCategory | null = null;
+  if (highlightedEventId) {
+    try {
+      highlightedEvent = await getEventById(highlightedEventId);
+    } catch (error) {
+      console.error("Failed to fetch highlighted event:", error);
+    }
+  }
 
   const { data, hasFiltersApplied, totalPages, totalCount } =
     await getAllEvents({
@@ -31,10 +45,19 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       query: searchText,
     });
 
-  const hasEvents = data.length > 0;
+  // Filter out the highlighted event from regular data to avoid duplication
+  const filteredData = highlightedEvent
+    ? data.filter((event) => event.id !== highlightedEventId)
+    : data;
+
+  const hasEvents = filteredData.length > 0 || highlightedEvent !== null;
 
   return (
     <div className="flex flex-col px-6 py-5 pb-8 lg:px-12 lg:py-10 lg:pb-16">
+      {/* Client component to handle scrolling */}
+      {highlightedEventId && (
+        <HighlightedEventScroller eventId={highlightedEventId} />
+      )}
       {/* Header - Always show */}
       <div className="mb-6 md:mb-8">
         <div className="flex items-center gap-3 mb-3">
@@ -90,8 +113,26 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {hasEvents ? (
         <div className="flex-1">
           <div className="space-y-2">
-            {data.map((event) => (
-              <EventCard key={event.id} event={event} />
+            {/* Show highlighted event first if it exists */}
+            {highlightedEvent && (
+              <>
+                <div className="text-sm text-primary-600 dark:text-primary-400 font-medium mb-2">
+                  Shared Event
+                </div>
+                <EventCard
+                  key={`highlighted-${highlightedEvent.id}`}
+                  event={highlightedEvent}
+                  isHighlighted={true}
+                />
+                {filteredData.length > 0 && (
+                  <div className="border-b border-divider my-6" />
+                )}
+              </>
+            )}
+
+            {/* Show regular events */}
+            {filteredData.map((event) => (
+              <EventCard key={event.id} event={event} isHighlighted={false} />
             ))}
           </div>
 

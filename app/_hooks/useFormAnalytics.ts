@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useCallback, useEffect, useRef } from "react";
 import { track } from "@vercel/analytics";
 
 interface FormAnalyticsOptions {
@@ -40,7 +40,7 @@ export const useFormAnalytics = ({
     });
   };
 
-  const trackFormAbandon = () => {
+  const trackFormAbandon = useCallback(() => {
     const formTime = formStartTimeRef.current
       ? Date.now() - formStartTimeRef.current
       : null;
@@ -51,7 +51,7 @@ export const useFormAnalytics = ({
       field_interactions: Object.keys(fieldInteractionsRef.current).length,
       timestamp: new Date().toISOString(),
     });
-  };
+  }, [formName]);
 
   const trackFieldInteraction = (fieldName: string) => {
     if (!trackFieldInteractions) return;

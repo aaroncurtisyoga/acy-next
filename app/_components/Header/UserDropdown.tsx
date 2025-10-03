@@ -3,6 +3,7 @@
 import { FC, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import Link from "next/link";
+import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useClerk, useUser } from "@clerk/nextjs";
 import { LogOut, Settings, Shield, ChevronRight } from "lucide-react";
@@ -95,10 +96,12 @@ const UserDropdown: FC<UserDropdownProps> = ({
 
     if (user?.hasImage && user?.imageUrl && !imageError) {
       return (
-        <img
+        <Image
           src={user.imageUrl}
           alt="Profile"
           className={className}
+          width={40}
+          height={40}
           onError={() => setImageError(true)}
         />
       );
