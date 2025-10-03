@@ -58,43 +58,23 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {highlightedEventId && (
         <HighlightedEventScroller eventId={highlightedEventId} />
       )}
-      {/* Header - Always show */}
+      {/* Header with integrated calendar subscription */}
       <div className="mb-6 md:mb-8">
         <div className="flex items-center gap-3 mb-3">
           <h1
             className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
           >
-            Practice.
+            Let&#39;s Practice
           </h1>
         </div>
-        <p className="text-lg text-foreground-600 leading-relaxed">
-          Join me for upcoming yoga sessions, workshops, and mindful movement
-          experiences.
-        </p>
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+          <p className="text-lg text-foreground-600 leading-relaxed">
+            ✌🏾 All my upcoming classes and events – subscribe to add them to
+            your calendar
+          </p>
+          <CalendarSubscriptionWrapper inline />
+        </div>
       </div>
-
-      {/* Filter bar - Always show */}
-      {/* <Card className="mb-6 shadow-sm border border-divider">
-        <CardBody className="px-4 py-3">
-          <div className="flex justify-between items-center">
-            <div className="flex items-center gap-2">
-              <div className="w-2 h-2 rounded-full bg-primary-500"></div>
-              <p className="font-semibold text-foreground-800">
-                {data.length} upcoming event{data.length !== 1 ? "s" : ""}
-              </p>
-              {hasFiltersApplied && (
-                <div className="px-2 py-1 bg-primary-100 text-primary-700 rounded-full text-xs font-medium">
-                  Filtered
-                </div>
-              )}
-            </div>
-            <FilterEventsModal hasFiltersApplied={hasFiltersApplied} />
-          </div>
-        </CardBody>
-      </Card> */}
-
-      {/* Calendar Subscription */}
-      <CalendarSubscriptionWrapper />
 
       {/* Simple event count display */}
       <div className="mb-6">

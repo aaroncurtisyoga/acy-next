@@ -1,7 +1,13 @@
 import { getPublicCalendarLink } from "@/app/_lib/google-calendar";
 import CalendarSubscription from "./CalendarSubscription";
 
-const CalendarSubscriptionWrapper = () => {
+interface CalendarSubscriptionWrapperProps {
+  inline?: boolean;
+}
+
+const CalendarSubscriptionWrapper = ({
+  inline = false,
+}: CalendarSubscriptionWrapperProps = {}) => {
   const calendarLinks = getPublicCalendarLink();
 
   if (!calendarLinks) {
@@ -15,6 +21,7 @@ const CalendarSubscriptionWrapper = () => {
     <CalendarSubscription
       googleCalendarUrl={calendarLinks.googleCalendarUrl}
       icalUrl={calendarLinks.icalUrl}
+      inline={inline}
     />
   );
 };

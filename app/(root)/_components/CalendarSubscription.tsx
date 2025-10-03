@@ -18,11 +18,13 @@ import { track } from "@vercel/analytics";
 interface CalendarSubscriptionProps {
   googleCalendarUrl: string;
   icalUrl: string;
+  inline?: boolean;
 }
 
 const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
   googleCalendarUrl,
   icalUrl,
+  inline = false,
 }) => {
   const [copiedIcal, setCopiedIcal] = useState(false);
 
@@ -52,6 +54,53 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
     window.open(googleCalendarUrl, "_blank");
   };
 
+  const dropdownButton = (
+    <Dropdown>
+      <DropdownTrigger>
+        <Button
+          variant="flat"
+          color="primary"
+          startContent={<Calendar className="w-4 h-4" />}
+          endContent={<ChevronDown className="w-4 h-4" />}
+          size="sm"
+          className="font-medium min-w-[140px] @sm:min-w-fit"
+        >
+          Add to Calendar
+        </Button>
+      </DropdownTrigger>
+      <DropdownMenu aria-label="Calendar subscription options">
+        <DropdownItem
+          key="google"
+          startContent={<FcGoogle className="w-4 h-4" />}
+          description="Subscribe with Google Calendar"
+          onClick={handleGoogleCalendarClick}
+        >
+          Google Calendar
+        </DropdownItem>
+        <DropdownItem
+          key="ical"
+          startContent={
+            copiedIcal ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <HiOutlineLink className="w-4 h-4" />
+            )
+          }
+          description="Copy link for Apple Calendar, Outlook, etc."
+          onClick={handleCopyIcal}
+        >
+          {copiedIcal ? "Copied!" : "Copy iCal Link"}
+        </DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
+  );
+
+  // If inline mode, return just the button
+  if (inline) {
+    return dropdownButton;
+  }
+
+  // Otherwise, return with Card wrapper
   return (
     <Card className="w-full mb-4 bg-gradient-to-br from-primary-50/50 to-transparent dark:from-primary-900/10 dark:to-transparent border border-primary-100 dark:border-primary-900/20 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
       <CardBody className="px-4 py-3.5 @sm:px-5 @sm:py-4">
@@ -64,44 +113,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
           </div>
 
           {/* Subscribe Button - Same for both mobile and desktop */}
-          <Dropdown>
-            <DropdownTrigger>
-              <Button
-                variant="flat"
-                color="primary"
-                startContent={<Calendar className="w-4 h-4" />}
-                endContent={<ChevronDown className="w-4 h-4" />}
-                size="sm"
-                className="font-medium min-w-[140px] @sm:min-w-fit"
-              >
-                Add to Calendar
-              </Button>
-            </DropdownTrigger>
-            <DropdownMenu aria-label="Calendar subscription options">
-              <DropdownItem
-                key="google"
-                startContent={<FcGoogle className="w-4 h-4" />}
-                description="Subscribe with Google Calendar"
-                onClick={handleGoogleCalendarClick}
-              >
-                Google Calendar
-              </DropdownItem>
-              <DropdownItem
-                key="ical"
-                startContent={
-                  copiedIcal ? (
-                    <Check className="w-4 h-4" />
-                  ) : (
-                    <HiOutlineLink className="w-4 h-4" />
-                  )
-                }
-                description="Copy link for Apple Calendar, Outlook, etc."
-                onClick={handleCopyIcal}
-              >
-                {copiedIcal ? "Copied!" : "Copy iCal Link"}
-              </DropdownItem>
-            </DropdownMenu>
-          </Dropdown>
+          {dropdownButton}
         </div>
       </CardBody>
     </Card>
