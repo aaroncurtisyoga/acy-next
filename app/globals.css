@@ -81,11 +81,11 @@ img {
   }
 
   .error-headline {
-    @apply text-3xl md:text-5xl font-extrabold;
+    @apply text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100;
   }
 
   .error-subHeadline {
-    @apply text-xl md:text-2xl text-gray-500;
+    @apply text-xl md:text-2xl text-gray-600 dark:text-gray-400;
   }
 
   .menu-item {
