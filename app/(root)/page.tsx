@@ -1,11 +1,11 @@
 import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
 import UpcomingEvents from "@/app/(root)/_components/UpcomingEvents";
 
-interface EventsPageProps {
+interface HomePageProps {
   searchParams: Promise<any>;
 }
 
-const EventsPage = async ({ searchParams }: EventsPageProps) => {
+const HomePage = async ({ searchParams }: HomePageProps) => {
   const resolvedParams = await searchParams;
 
   return (
@@ -24,4 +24,4 @@ const EventsPage = async ({ searchParams }: EventsPageProps) => {
   );
 };
 
-export default EventsPage;
+export default HomePage;
