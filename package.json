@@ -106,5 +106,11 @@
     "prettier-plugin-tailwindcss": "^0.6.14",
     "prisma": "^6.14.0",
     "typescript": "^5.9.2"
-  }
+  },
+  "browserslist": [
+    "last 2 chrome versions",
+    "last 2 firefox versions",
+    "last 2 safari versions",
+    "last 2 edge versions"
+  ]
 }

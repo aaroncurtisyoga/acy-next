@@ -135,12 +135,12 @@ const EventCard: FC<EventCardProps> = ({
               <div className="flex flex-row items-stretch gap-0">
                 {/* Desktop Date Badge - Full height */}
                 <div className="hidden @sm:flex">
-                  <div className="bg-primary-50 dark:bg-primary-900/20 rounded-l-2xl px-4 py-4 flex flex-col items-center justify-center min-w-[75px]">
-                    <div className="text-[11px] font-semibold text-primary-600 dark:text-primary-400 tracking-wider mb-3">
+                  <div className="bg-primary-50 dark:bg-gray-800/50 rounded-l-2xl px-4 py-4 flex flex-col items-center justify-center min-w-[75px]">
+                    <div className="text-[11px] font-semibold text-primary-700 dark:text-primary-400 tracking-wider mb-3">
                       {dayLabel}
                     </div>
                     <div className="flex flex-col items-center">
-                      <div className="text-xs font-medium text-foreground-600 dark:text-foreground-400 mb-0.5">
+                      <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-0.5">
                         {dateTime.monthShort}
                       </div>
                       <div className="text-3xl font-bold text-foreground leading-none">
@@ -197,7 +197,7 @@ const EventCard: FC<EventCardProps> = ({
                             </div>
 
                             {isFree && (
-                              <span className="inline-flex items-center px-2 py-0.5 bg-success-50 text-success-700 dark:bg-success-900/20 dark:text-success-400 rounded-full text-xs font-semibold">
+                              <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs font-semibold">
                                 FREE
                               </span>
                             )}
