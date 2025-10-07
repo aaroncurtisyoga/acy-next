@@ -102,7 +102,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
 
   // Otherwise, return with Card wrapper
   return (
-    <Card className="w-full mb-4 bg-gradient-to-br from-primary-50/50 to-transparent dark:from-primary-900/10 dark:to-transparent border border-primary-100 dark:border-primary-900/20 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
+    <Card className="w-full mb-4 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-gray-800/20 dark:to-transparent border border-gray-200 dark:border-gray-800 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
       <CardBody className="px-4 py-3.5 @sm:px-5 @sm:py-4">
         <div className="flex flex-col @sm:flex-row @sm:items-center @sm:justify-between gap-3">
           {/* Content Section */}

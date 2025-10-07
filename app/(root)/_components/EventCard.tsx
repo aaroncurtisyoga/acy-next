@@ -127,7 +127,7 @@ const EventCard: FC<EventCardProps> = ({
         )}
         <Card
           id={`event-${event.id}`}
-          className={`w-full border ${isHighlighted ? "border-2 border-primary-400 bg-primary-50/10 shadow-lg" : "border-divider"} shadow-none hover:shadow-sm transition-shadow duration-200 rounded-2xl @container`}
+          className={`w-full border ${isHighlighted ? "border-2 border-primary bg-blue-50/50 dark:bg-primary/5 shadow-lg" : "border-divider"} shadow-none hover:shadow-sm transition-shadow duration-200 rounded-2xl @container`}
         >
           <CardBody className="p-0">
             <div className="flex flex-col gap-3">
@@ -135,8 +135,8 @@ const EventCard: FC<EventCardProps> = ({
               <div className="flex flex-row items-stretch gap-0">
                 {/* Desktop Date Badge - Full height */}
                 <div className="hidden @sm:flex">
-                  <div className="bg-primary-50 dark:bg-gray-800/50 rounded-l-2xl px-4 py-4 flex flex-col items-center justify-center min-w-[75px]">
-                    <div className="text-[11px] font-semibold text-primary-700 dark:text-primary-400 tracking-wider mb-3">
+                  <div className="bg-gray-50 dark:bg-gray-800/50 rounded-l-2xl px-4 py-4 flex flex-col items-center justify-center min-w-[75px]">
+                    <div className="text-[11px] font-semibold text-primary dark:text-primary-300 tracking-wider mb-3">
                       {dayLabel}
                     </div>
                     <div className="flex flex-col items-center">
@@ -178,21 +178,21 @@ const EventCard: FC<EventCardProps> = ({
                             </div>
 
                             <div className="flex items-center gap-1.5 text-foreground-700">
-                              <Clock className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" />
+                              <Clock className="w-3.5 h-3.5 text-primary flex-shrink-0" />
                               <span className="font-medium">
                                 {dateTime.timeOnly}
                               </span>
                             </div>
 
                             <div className="flex items-center gap-1.5 text-foreground-600">
-                              <MapPin className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" />
+                              <MapPin className="w-3.5 h-3.5 text-primary flex-shrink-0" />
                               <span className="line-clamp-1">
                                 {event.location.name}
                               </span>
                             </div>
 
                             <div className="flex items-center gap-1.5 text-foreground-600">
-                              <div className="w-2 h-2 rounded-full bg-primary-400 flex-shrink-0"></div>
+                              <div className="w-2 h-2 rounded-full bg-primary flex-shrink-0"></div>
                               <span>{category.name}</span>
                             </div>
 
