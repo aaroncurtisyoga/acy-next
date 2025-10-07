@@ -80,7 +80,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       <div className="mb-6">
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary-500"></div>
+            <div className="w-2 h-2 rounded-full bg-primary"></div>
             <p className="font-semibold text-foreground-800">
               {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
             </p>
@@ -96,7 +96,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
             {/* Show highlighted event first if it exists */}
             {highlightedEvent && (
               <>
-                <div className="text-sm text-primary-600 dark:text-primary-400 font-medium mb-2">
+                <div className="text-sm text-primary dark:text-primary-300 font-medium mb-2">
                   Shared Event
                 </div>
                 <EventCard
@@ -124,7 +124,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         </div>
       ) : (
         // Empty State - Below filter bar
-        <Card className="flex-1 border border-primary-100 dark:border-primary-900/20 shadow-none rounded-2xl transition-all duration-300 @container">
+        <Card className="flex-1 border border-gray-200 dark:border-gray-800 shadow-none rounded-2xl transition-all duration-300 @container">
           <CardBody className="flex flex-col items-center justify-center text-center py-16 px-6 @sm:py-20 @sm:px-8">
             <h3 className="text-xl @sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
               No Events Found
