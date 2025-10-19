@@ -10,7 +10,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/react";
-import { Check, ChevronDown, Calendar } from "lucide-react";
+import { Check, Calendar } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineLink } from "react-icons/hi";
 import { track } from "@vercel/analytics";
@@ -61,7 +61,6 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
           variant="solid"
           color="primary"
           startContent={<Calendar className="w-4 h-4" />}
-          endContent={<ChevronDown className="w-4 h-4" />}
           size="sm"
           className="font-medium min-w-[140px] @sm:min-w-fit"
         >
