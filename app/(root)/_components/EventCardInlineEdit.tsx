@@ -153,7 +153,7 @@ const EventCardInlineEdit: FC<EventCardInlineEditProps> = ({
           size="sm"
           color="primary"
           startContent={!isLoading && <Check className="w-3.5 h-3.5" />}
-          onClick={handleSave}
+          onPress={handleSave}
           isLoading={isLoading}
           disabled={isLoading}
         >
@@ -163,7 +163,7 @@ const EventCardInlineEdit: FC<EventCardInlineEditProps> = ({
           size="sm"
           variant="flat"
           startContent={<X className="w-3.5 h-3.5" />}
-          onClick={onCancel}
+          onPress={onCancel}
           disabled={isLoading}
         >
           Cancel

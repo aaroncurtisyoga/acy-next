@@ -3,16 +3,16 @@
 import { FC, useState } from "react";
 import Link from "next/link";
 import { Card, CardBody, Button, useDisclosure } from "@heroui/react";
-import { Clock, MapPin } from "lucide-react";
+import { Clock } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
 import { useUser } from "@clerk/nextjs";
-import EventCardInlineEdit from "./EventCardInlineEdit";
+import EventCardInlineEdit from "@/app/(root)/_components/EventCardInlineEdit";
 import BasicModal from "@/app/_components/BasicModal";
 import { deleteEvent } from "@/app/_lib/actions/event.actions";
 import { useRouter } from "next/navigation";
 import { track } from "@vercel/analytics";
-import ShareButton from "./ShareButton";
+// import ShareButton from "./ShareButton";
 
 interface EventCardProps {
   event: EventWithLocationAndCategory;
@@ -127,23 +127,23 @@ const EventCard: FC<EventCardProps> = ({
         )}
         <Card
           id={`event-${event.id}`}
-          className={`w-full border ${isHighlighted ? "border-2 border-primary-400 bg-primary-50/10 shadow-lg" : "border-divider"} shadow-none hover:shadow-sm transition-shadow duration-200 rounded-2xl @container`}
+          className={`w-full border ${isHighlighted ? "border-2 border-primary bg-blue-50/50 dark:bg-primary/5 shadow-lg" : "border-divider"} shadow-none hover:shadow-sm transition-shadow duration-200 rounded-2xl @container`}
         >
           <CardBody className="p-0">
-            <div className="flex flex-col gap-3">
+            <div className="flex flex-col gap-0">
               {/* Mobile: Compact date + title row, Desktop: Date badge + details */}
               <div className="flex flex-row items-stretch gap-0">
                 {/* Desktop Date Badge - Full height */}
                 <div className="hidden @sm:flex">
-                  <div className="bg-primary-50 dark:bg-gray-800/50 rounded-l-2xl px-4 py-4 flex flex-col items-center justify-center min-w-[75px]">
-                    <div className="text-[11px] font-semibold text-primary-700 dark:text-primary-400 tracking-wider mb-3">
+                  <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-l-2xl px-3 py-3 flex flex-col items-center justify-center min-w-[50px]">
+                    <div className="text-[10px] font-medium text-foreground-500 dark:text-foreground-400 tracking-wide mb-2">
                       {dayLabel}
                     </div>
                     <div className="flex flex-col items-center">
-                      <div className="text-xs font-medium text-gray-700 dark:text-gray-300 mb-0.5">
+                      <div className="text-xs font-normal text-foreground-600 dark:text-foreground-400 mb-0.5">
                         {dateTime.monthShort}
                       </div>
-                      <div className="text-3xl font-bold text-foreground leading-none">
+                      <div className="text-xl font-semibold text-foreground leading-none">
                         {dateTime.dayNumber}
                       </div>
                     </div>
@@ -152,8 +152,8 @@ const EventCard: FC<EventCardProps> = ({
 
                 {/* Event Details */}
                 <div className="flex-1 @sm:flex @sm:items-center">
-                  <div className="flex-1 px-4 py-3 @sm:py-4">
-                    <div className="space-y-2.5">
+                  <div className="flex-1 px-4 py-2.5 @sm:py-3">
+                    <div className="space-y-2">
                       {/* Title and inline edit */}
                       {isEditing ? (
                         <EventCardInlineEdit
@@ -163,12 +163,12 @@ const EventCard: FC<EventCardProps> = ({
                         />
                       ) : (
                         <>
-                          <h3 className="text-lg @sm:text-xl font-semibold text-foreground leading-tight">
+                          <h3 className="text-base @sm:text-lg font-medium text-foreground leading-tight">
                             {title}
                           </h3>
 
                           {/* Event metadata with mobile date inline */}
-                          <div className="flex flex-wrap items-center gap-x-3 @sm:gap-x-4 gap-y-2 text-sm">
+                          <div className="flex flex-wrap items-center gap-x-2.5 @sm:gap-x-3 gap-y-1.5 text-sm">
                             {/* Mobile date - shown first in metadata */}
                             <div className="@sm:hidden flex items-center">
                               <span className="font-semibold text-foreground">
@@ -178,23 +178,23 @@ const EventCard: FC<EventCardProps> = ({
                             </div>
 
                             <div className="flex items-center gap-1.5 text-foreground-700">
-                              <Clock className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" />
-                              <span className="font-medium">
+                              <Clock className="w-3.5 h-3.5 text-foreground-500 flex-shrink-0" />
+                              <span className="font-normal">
                                 {dateTime.timeOnly}
                               </span>
                             </div>
 
-                            <div className="flex items-center gap-1.5 text-foreground-600">
-                              <MapPin className="w-3.5 h-3.5 text-primary-500 flex-shrink-0" />
-                              <span className="line-clamp-1">
-                                {event.location.name}
-                              </span>
-                            </div>
+                            <span className="text-foreground-400">•</span>
 
-                            <div className="flex items-center gap-1.5 text-foreground-600">
-                              <div className="w-2 h-2 rounded-full bg-primary-400 flex-shrink-0"></div>
-                              <span>{category.name}</span>
-                            </div>
+                            <span className="text-foreground-600 line-clamp-1">
+                              {event.location.name}
+                            </span>
+
+                            <span className="text-foreground-400">•</span>
+
+                            <span className="text-foreground-600">
+                              {category.name}
+                            </span>
 
                             {isFree && (
                               <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs font-semibold">
@@ -204,24 +204,24 @@ const EventCard: FC<EventCardProps> = ({
                           </div>
 
                           {/* Action buttons row - bottom of content */}
-                          {!isEditing && (
-                            <div className="flex items-center gap-1 mt-3">
-                              <ShareButton
-                                event={event}
-                                variant="icon"
-                                size="sm"
-                                className="text-foreground-500 hover:text-foreground-700"
-                              />
-                              {/* Space for future buttons like "More Details" */}
-                            </div>
-                          )}
+                          {/*{!isEditing && (*/}
+                          {/*  <div className="flex items-center gap-1 mt-3">*/}
+                          {/*    <ShareButton*/}
+                          {/*      event={event}*/}
+                          {/*      variant="icon"*/}
+                          {/*      size="sm"*/}
+                          {/*      className="text-foreground-500 hover:text-foreground-700"*/}
+                          {/*    />*/}
+                          {/*    /!* Space for future buttons like "More Details" *!/*/}
+                          {/*  </div>*/}
+                          {/*)}*/}
                         </>
                       )}
                     </div>
 
                     {/* Mobile Sign Up Button - Prominent at bottom */}
                     {!isEditing && (
-                      <div className="@sm:hidden mt-3 pt-3 border-t border-divider">
+                      <div className="@sm:hidden mt-2 pt-2 border-t border-divider">
                         <Button
                           as={Link}
                           href={signUpHref}
@@ -229,7 +229,7 @@ const EventCard: FC<EventCardProps> = ({
                           color="primary"
                           size="md"
                           className="font-semibold w-full"
-                          onClick={() => {
+                          onPress={() => {
                             track("event_signup", {
                               action: "signup_click",
                               event_id: event.id,
@@ -257,7 +257,7 @@ const EventCard: FC<EventCardProps> = ({
                         color="primary"
                         size="sm"
                         className="font-semibold"
-                        onClick={() => {
+                        onPress={() => {
                           track("event_signup", {
                             action: "signup_click",
                             event_id: event.id,

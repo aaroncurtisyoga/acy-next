@@ -10,7 +10,7 @@ import {
   DropdownMenu,
   DropdownItem,
 } from "@heroui/react";
-import { Check, ChevronDown, Calendar } from "lucide-react";
+import { Check, Calendar } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineLink } from "react-icons/hi";
 import { track } from "@vercel/analytics";
@@ -58,10 +58,9 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
     <Dropdown>
       <DropdownTrigger>
         <Button
-          variant="flat"
+          variant="solid"
           color="primary"
           startContent={<Calendar className="w-4 h-4" />}
-          endContent={<ChevronDown className="w-4 h-4" />}
           size="sm"
           className="font-medium min-w-[140px] @sm:min-w-fit"
         >
@@ -73,7 +72,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
           key="google"
           startContent={<FcGoogle className="w-4 h-4" />}
           description="Subscribe with Google Calendar"
-          onClick={handleGoogleCalendarClick}
+          onPress={handleGoogleCalendarClick}
         >
           Google Calendar
         </DropdownItem>
@@ -87,7 +86,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
             )
           }
           description="Copy link for Apple Calendar, Outlook, etc."
-          onClick={handleCopyIcal}
+          onPress={handleCopyIcal}
         >
           {copiedIcal ? "Copied!" : "Copy iCal Link"}
         </DropdownItem>
@@ -102,7 +101,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
 
   // Otherwise, return with Card wrapper
   return (
-    <Card className="w-full mb-4 bg-gradient-to-br from-primary-50/50 to-transparent dark:from-primary-900/10 dark:to-transparent border border-primary-100 dark:border-primary-900/20 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
+    <Card className="w-full mb-4 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-gray-800/20 dark:to-transparent border border-gray-200 dark:border-gray-800 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
       <CardBody className="px-4 py-3.5 @sm:px-5 @sm:py-4">
         <div className="flex flex-col @sm:flex-row @sm:items-center @sm:justify-between gap-3">
           {/* Content Section */}

@@ -22,7 +22,7 @@ const CheckoutButton: FC = () => {
             fullWidth={true}
             color="primary"
             className="font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
-            onClick={() => {
+            onPress={() => {
               track("private_sessions", {
                 action: "sign_in_to_purchase_click",
                 step: "select_package",
@@ -40,7 +40,7 @@ const CheckoutButton: FC = () => {
           className="text-base font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
           fullWidth={true}
           color="primary"
-          onClick={() => {
+          onPress={() => {
             track("private_sessions", {
               action: "purchase_click",
               step: "select_package",
