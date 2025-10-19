@@ -7,7 +7,7 @@ import { Clock, MapPin } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
 import { useUser } from "@clerk/nextjs";
-import EventCardInlineEdit from "./EventCardInlineEdit";
+import EventCardInlineEdit from "@/app/(root)/_components/EventCardInlineEdit";
 import BasicModal from "@/app/_components/BasicModal";
 import { deleteEvent } from "@/app/_lib/actions/event.actions";
 import { useRouter } from "next/navigation";
