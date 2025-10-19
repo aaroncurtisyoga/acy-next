@@ -127,21 +127,21 @@ const AddToCalendarButtons: FC<AddToCalendarButtonsProps> = ({ event }) => {
         <DropdownItem
           key="google"
           description="Add to Google Calendar"
-          onClick={() => handleAddToCalendar("google")}
+          onPress={() => handleAddToCalendar("google")}
         >
           Google Calendar
         </DropdownItem>
         <DropdownItem
           key="outlook"
           description="Add to Outlook/Office 365"
-          onClick={() => handleAddToCalendar("outlook")}
+          onPress={() => handleAddToCalendar("outlook")}
         >
           Outlook Calendar
         </DropdownItem>
         <DropdownItem
           key="apple"
           description="Download .ics file for Apple Calendar"
-          onClick={() => handleAddToCalendar("apple")}
+          onPress={() => handleAddToCalendar("apple")}
         >
           Apple Calendar
         </DropdownItem>

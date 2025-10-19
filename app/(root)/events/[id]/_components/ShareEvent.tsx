@@ -27,7 +27,7 @@ const ShareEvent: FC<ShareEventProps> = ({ eventId }) => {
     <Tooltip content={`Copy link to event`}>
       <Button
         isIconOnly
-        onClick={handleClick}
+        onPress={handleClick}
         radius={"full"}
         variant={"light"}
       >

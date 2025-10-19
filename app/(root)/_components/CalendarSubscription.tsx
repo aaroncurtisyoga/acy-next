@@ -73,7 +73,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
           key="google"
           startContent={<FcGoogle className="w-4 h-4" />}
           description="Subscribe with Google Calendar"
-          onClick={handleGoogleCalendarClick}
+          onPress={handleGoogleCalendarClick}
         >
           Google Calendar
         </DropdownItem>
@@ -87,7 +87,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
             )
           }
           description="Copy link for Apple Calendar, Outlook, etc."
-          onClick={handleCopyIcal}
+          onPress={handleCopyIcal}
         >
           {copiedIcal ? "Copied!" : "Copy iCal Link"}
         </DropdownItem>

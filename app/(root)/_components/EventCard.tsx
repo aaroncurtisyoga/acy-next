@@ -229,7 +229,7 @@ const EventCard: FC<EventCardProps> = ({
                           color="primary"
                           size="md"
                           className="font-semibold w-full"
-                          onClick={() => {
+                          onPress={() => {
                             track("event_signup", {
                               action: "signup_click",
                               event_id: event.id,
@@ -257,7 +257,7 @@ const EventCard: FC<EventCardProps> = ({
                         color="primary"
                         size="sm"
                         className="font-semibold"
-                        onClick={() => {
+                        onPress={() => {
                           track("event_signup", {
                             action: "signup_click",
                             event_id: event.id,

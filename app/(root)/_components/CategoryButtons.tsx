@@ -60,7 +60,7 @@ const CategoryButtons: FC = () => {
         <Button
           className={"font-semibold"}
           color={selectedCategory === "All" ? "primary" : "default"}
-          onClick={() => handleFormUrlQuery("All")}
+          onPress={() => handleFormUrlQuery("All")}
           variant={selectedCategory === "All" ? "solid" : "flat"}
         >
           All
@@ -72,7 +72,7 @@ const CategoryButtons: FC = () => {
               key={category.id}
               className={"font-semibold"}
               color={isActive ? "primary" : "default"}
-              onClick={() => handleFormUrlQuery(category.name)}
+              onPress={() => handleFormUrlQuery(category.name)}
               variant={isActive ? "solid" : "flat"}
             >
               {category.name}
