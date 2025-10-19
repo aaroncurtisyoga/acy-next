@@ -58,7 +58,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
     <Dropdown>
       <DropdownTrigger>
         <Button
-          variant="flat"
+          variant="solid"
           color="primary"
           startContent={<Calendar className="w-4 h-4" />}
           endContent={<ChevronDown className="w-4 h-4" />}
