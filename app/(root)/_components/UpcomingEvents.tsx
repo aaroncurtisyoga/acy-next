@@ -69,8 +69,8 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         </div>
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
           <p className="text-lg text-foreground-600 leading-relaxed">
-            ✌🏾 All my upcoming classes and events – subscribe to add them to
-            your calendar
+            All my upcoming classes and events – subscribe to add them to your
+            calendar
           </p>
           <CalendarSubscriptionWrapper inline />
         </div>

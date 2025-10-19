@@ -114,8 +114,8 @@ const AddToCalendarButtons: FC<AddToCalendarButtonsProps> = ({ event }) => {
     <Dropdown>
       <DropdownTrigger>
         <Button
-          color="primary"
-          variant="flat"
+          color="default"
+          variant="bordered"
           startContent={
             addedToCalendar ? <Check size={18} /> : <Calendar size={18} />
           }

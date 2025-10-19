@@ -12,7 +12,7 @@ import BasicModal from "@/app/_components/BasicModal";
 import { deleteEvent } from "@/app/_lib/actions/event.actions";
 import { useRouter } from "next/navigation";
 import { track } from "@vercel/analytics";
-import ShareButton from "./ShareButton";
+// import ShareButton from "./ShareButton";
 
 interface EventCardProps {
   event: EventWithLocationAndCategory;
@@ -204,17 +204,17 @@ const EventCard: FC<EventCardProps> = ({
                           </div>
 
                           {/* Action buttons row - bottom of content */}
-                          {!isEditing && (
-                            <div className="flex items-center gap-1 mt-3">
-                              <ShareButton
-                                event={event}
-                                variant="icon"
-                                size="sm"
-                                className="text-foreground-500 hover:text-foreground-700"
-                              />
-                              {/* Space for future buttons like "More Details" */}
-                            </div>
-                          )}
+                          {/*{!isEditing && (*/}
+                          {/*  <div className="flex items-center gap-1 mt-3">*/}
+                          {/*    <ShareButton*/}
+                          {/*      event={event}*/}
+                          {/*      variant="icon"*/}
+                          {/*      size="sm"*/}
+                          {/*      className="text-foreground-500 hover:text-foreground-700"*/}
+                          {/*    />*/}
+                          {/*    /!* Space for future buttons like "More Details" *!/*/}
+                          {/*  </div>*/}
+                          {/*)}*/}
                         </>
                       )}
                     </div>
