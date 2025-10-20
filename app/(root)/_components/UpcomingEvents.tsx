@@ -40,7 +40,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const { data, hasFiltersApplied, totalPages, totalCount } =
     await getAllEvents({
       category,
-      limit: 3,
+      limit: 5,
       page,
       query: searchText,
     });
