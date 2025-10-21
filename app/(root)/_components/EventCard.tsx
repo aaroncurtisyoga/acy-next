@@ -2,7 +2,7 @@
 
 import { FC, useState } from "react";
 import Link from "next/link";
-import { Card, CardBody, Button, useDisclosure } from "@heroui/react";
+import { Card, CardBody, useDisclosure } from "@heroui/react";
 import { Clock } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
@@ -219,17 +219,13 @@ const EventCard: FC<EventCardProps> = ({
                       )}
                     </div>
 
-                    {/* Mobile Sign Up Button - Prominent at bottom */}
+                    {/* Mobile Sign Up Link - Subtle text link */}
                     {!isEditing && (
                       <div className="@sm:hidden mt-2 pt-2 border-t border-divider">
-                        <Button
-                          as={Link}
+                        <Link
                           href={signUpHref}
                           target="_blank"
-                          color="primary"
-                          size="md"
-                          className="font-semibold w-full"
-                          onPress={() => {
+                          onClick={() => {
                             track("event_signup", {
                               action: "signup_click",
                               event_id: event.id,
@@ -240,24 +236,21 @@ const EventCard: FC<EventCardProps> = ({
                               source: "mobile_card",
                             });
                           }}
+                          className="inline-block text-sm text-foreground-600 hover:text-foreground-900 font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic"
                         >
                           Sign Up
-                        </Button>
+                        </Link>
                       </div>
                     )}
                   </div>
 
-                  {/* Desktop Sign Up Button - vertically centered on right */}
+                  {/* Desktop Sign Up Link - vertically centered on right */}
                   {!isEditing && (
                     <div className="hidden @sm:flex items-center pr-4">
-                      <Button
-                        as={Link}
+                      <Link
                         href={signUpHref}
                         target="_blank"
-                        color="primary"
-                        size="sm"
-                        className="font-semibold"
-                        onPress={() => {
+                        onClick={() => {
                           track("event_signup", {
                             action: "signup_click",
                             event_id: event.id,
@@ -268,9 +261,10 @@ const EventCard: FC<EventCardProps> = ({
                             source: "desktop_card",
                           });
                         }}
+                        className="text-sm text-black dark:text-foreground-600 hover:text-foreground-900 font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic whitespace-nowrap"
                       >
                         Sign Up
-                      </Button>
+                      </Link>
                     </div>
                   )}
                 </div>
