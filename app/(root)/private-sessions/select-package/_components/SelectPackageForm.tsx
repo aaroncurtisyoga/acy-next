@@ -55,7 +55,7 @@ const SelectPackageForm: FC = () => {
   const currentPackages = packages[sessionType];
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="max-w-4xl mx-auto px-2 sm:px-0">
       <div>
         {/* Step Indicator - Left-aligned to match content */}
         <div className="text-left mb-6">
@@ -197,8 +197,8 @@ const SelectPackageForm: FC = () => {
                   ))}
                 </div>
 
-                {/* Desktop: Netflix-style Side by Side */}
-                <div className="hidden md:grid md:grid-cols-3 gap-3">
+                {/* Desktop: Side by Side Grid */}
+                <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-3">
                   {currentPackages.map((pkg) => (
                     <div
                       key={pkg.id}
