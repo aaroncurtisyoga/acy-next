@@ -1,5 +1,11 @@
 import qs from "query-string";
+import { clsx, type ClassValue } from "clsx";
+import { twMerge } from "tailwind-merge";
 import { RemoveUrlQueryParams, UrlQueryParams } from "@/app/_lib/types";
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export const formatDateTime = (dateInput: Date | string) => {
   // Handle different input types - convert to Date object

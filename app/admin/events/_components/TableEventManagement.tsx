@@ -9,16 +9,15 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  Tooltip,
-  useDisclosure,
-  addToast,
-  Chip,
-  Button,
-  Input,
-  Select,
-  SelectItem,
-  Pagination,
-} from "@heroui/react";
+} from "@heroui/table";
+import { Tooltip } from "@heroui/tooltip";
+import { useDisclosure } from "@heroui/modal";
+import { addToast } from "@heroui/toast";
+import { Chip } from "@heroui/chip";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Select, SelectItem } from "@heroui/select";
+import { Pagination } from "@heroui/pagination";
 import {
   Eye,
   Pencil,

@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, CardBody } from "@heroui/react";
+import { Card, CardBody } from "@heroui/card";
 import EventCard from "@/app/(root)/_components/EventCard";
 import Pagination from "@/app/(root)/_components/Pagination";
 import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";

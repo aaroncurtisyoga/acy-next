@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 
 type SyncSource = "bright-bear" | "dcbp";
 

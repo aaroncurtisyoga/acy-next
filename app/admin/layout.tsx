@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode } from "react";
+import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import SidebarMenu from "@/app/admin/_components/SidebarMenu";
 import AdminProtection from "@/app/admin/_components/AdminProtection";

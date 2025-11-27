@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import ManageUsersTable from "@/app/admin/users/_components/ManageUsersTable";
 
 const Users: FC = () => {

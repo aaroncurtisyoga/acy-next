@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
-import { Spinner } from "@heroui/react";
+import { Spinner } from "@heroui/spinner";
 
 interface AdminProtectionProps {
   children: ReactNode;

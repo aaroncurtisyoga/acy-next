@@ -1,7 +1,7 @@
-import React, { FC, useState } from "react";
+import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { Check, CheckCircle, User, Users, DollarSign } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";

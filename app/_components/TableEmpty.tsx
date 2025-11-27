@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Table, TableBody, TableColumn, TableHeader } from "@heroui/react";
+import { FC } from "react";
+import { Table, TableBody, TableColumn, TableHeader } from "@heroui/table";
 
 interface EmptyTableProps {
   columns: Array<string>;

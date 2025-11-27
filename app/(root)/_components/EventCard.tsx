@@ -2,7 +2,8 @@
 
 import { FC, useState } from "react";
 import Link from "next/link";
-import { Card, CardBody, useDisclosure } from "@heroui/react";
+import { Card, CardBody } from "@heroui/card";
+import { useDisclosure } from "@heroui/modal";
 import { Clock } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";

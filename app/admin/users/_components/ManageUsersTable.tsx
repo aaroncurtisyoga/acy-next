@@ -8,9 +8,9 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-  Tooltip,
-  useDisclosure,
-} from "@heroui/react";
+} from "@heroui/table";
+import { Tooltip } from "@heroui/tooltip";
+import { useDisclosure } from "@heroui/modal";
 import { Trash2 } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";

@@ -1,13 +1,13 @@
 "use client";
 
 import { FC, useState } from "react";
+import { Button } from "@heroui/button";
 import {
-  Button,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-} from "@heroui/react";
+} from "@heroui/dropdown";
 import { Calendar, Check } from "lucide-react";
 
 interface AddToCalendarButtonsProps {

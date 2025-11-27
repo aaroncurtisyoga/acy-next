@@ -6,18 +6,18 @@ import { track } from "@vercel/analytics";
 
 export const usePageTracking = () => {
   const pathname = usePathname();
-  const startTimeRef = useRef<number>(Date.now());
+  const startTimeRef = useRef<number | null>(null);
   const scrollDepthRef = useRef<number>(0);
 
   useEffect(() => {
+    // Initialize start time on mount/route change
+    startTimeRef.current = Date.now();
+
     // Track page view
     track("page_view", {
       path: pathname,
       timestamp: new Date().toISOString(),
     });
-
-    // Reset start time for new page
-    startTimeRef.current = Date.now();
     scrollDepthRef.current = 0;
 
     // Track scroll depth
@@ -34,7 +34,7 @@ export const usePageTracking = () => {
 
     // Track time on page when leaving
     const handleBeforeUnload = () => {
-      const timeOnPage = Date.now() - startTimeRef.current;
+      const timeOnPage = Date.now() - (startTimeRef.current ?? Date.now());
       track("page_exit", {
         path: pathname,
         time_on_page_ms: timeOnPage,
@@ -50,7 +50,7 @@ export const usePageTracking = () => {
       window.removeEventListener("beforeunload", handleBeforeUnload);
 
       // Track page exit when component unmounts (route change)
-      const timeOnPage = Date.now() - startTimeRef.current;
+      const timeOnPage = Date.now() - (startTimeRef.current ?? Date.now());
       track("page_exit", {
         path: pathname,
         time_on_page_ms: timeOnPage,

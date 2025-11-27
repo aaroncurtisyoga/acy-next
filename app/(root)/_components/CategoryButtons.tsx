@@ -2,17 +2,17 @@
 
 import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { Category } from "@prisma/client";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
 import { track } from "@vercel/analytics";
 
 const CategoryButtons: FC = () => {
-  const [selectedCategory, setSelectedCategory] = useState("");
   const [categories, setCategories] = useState<Category[]>([]);
   const router = useRouter();
   const searchParams = useSearchParams();
+  const selectedCategory = searchParams.get("category") || "All";
 
   const handleFormUrlQuery = (category) => {
     track("filtering", {
@@ -38,18 +38,11 @@ const CategoryButtons: FC = () => {
   };
 
   useEffect(() => {
-    const getCategories = async () => {
+    void (async () => {
       const categoryList = await getAllCategories();
       categoryList && setCategories(categoryList as Category[]);
-    };
-
-    getCategories();
+    })();
   }, []);
-
-  useEffect(() => {
-    const category = searchParams.get("category");
-    setSelectedCategory(category || "All");
-  }, [searchParams]);
 
   if (!categories.length) return null;
 

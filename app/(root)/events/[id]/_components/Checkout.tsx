@@ -1,8 +1,8 @@
 "use client";
 
-import React, { FC } from "react";
+import { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { Event } from "@prisma/client";
 import CheckoutButton from "@/app/(root)/events/[id]/_components/CheckoutButton";
 import CheckoutSkeleton from "@/app/(root)/events/[id]/_components/CheckoutSkeleton";

@@ -176,6 +176,7 @@ export const EventFormProvider = ({
   // Auto-save form data when it changes (only in create mode)
   useEffect(() => {
     if (mode === "create") {
+      // eslint-disable-next-line react-hooks/incompatible-library -- react-hook-form watch is safe here
       const subscription = methods.watch((data) => {
         // Only save if we have valid data
         if (data && typeof data === "object") {

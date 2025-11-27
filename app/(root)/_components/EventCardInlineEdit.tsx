@@ -1,7 +1,10 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Input, Button, DatePicker, addToast } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { DatePicker } from "@heroui/date-picker";
+import { addToast } from "@heroui/toast";
 import { Check, X } from "lucide-react";
 import { parseAbsoluteToLocal } from "@internationalized/date";
 import { updateEvent } from "@/app/_lib/actions/event.actions";

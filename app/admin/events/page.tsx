@@ -1,6 +1,8 @@
+"use client";
+
 import { FC } from "react";
 import Link from "next/link";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { Plus } from "lucide-react";
 import TableEventManagement from "@/app/admin/events/_components/TableEventManagement";
 

@@ -1,7 +1,8 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Button, Tooltip } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Tooltip } from "@heroui/tooltip";
 import { Check, Share } from "lucide-react";
 
 interface ShareEventProps {

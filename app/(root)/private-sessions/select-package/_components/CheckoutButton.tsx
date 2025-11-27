@@ -1,8 +1,8 @@
 "use client";
 
-import React, { FC } from "react";
+import { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 import { track } from "@vercel/analytics";
 

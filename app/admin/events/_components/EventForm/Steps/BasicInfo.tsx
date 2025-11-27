@@ -2,7 +2,8 @@
 
 import { FC, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, addToast } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { addToast } from "@heroui/toast";
 import { parseZonedDateTime } from "@internationalized/date";
 import { useFormContext } from "react-hook-form";
 import { X } from "lucide-react";

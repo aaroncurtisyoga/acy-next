@@ -1,4 +1,4 @@
-import { Card, CardHeader } from "@heroui/react";
+import { Card, CardHeader } from "@heroui/card";
 import { CalendarX } from "lucide-react";
 
 export default function NoEventsCard() {

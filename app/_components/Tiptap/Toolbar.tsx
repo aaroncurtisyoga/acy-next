@@ -1,6 +1,8 @@
 "use client";
 
-import { Button, Tooltip, Divider } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Tooltip } from "@heroui/tooltip";
+import { Divider } from "@heroui/divider";
 import { type Editor } from "@tiptap/react";
 import {
   Bold,

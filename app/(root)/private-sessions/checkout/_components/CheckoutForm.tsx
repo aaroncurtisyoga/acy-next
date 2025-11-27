@@ -1,8 +1,8 @@
 "use client";
 
-import React, { useState } from "react";
+import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import {
   useStripe,
   useElements,

@@ -1,4 +1,4 @@
-import { Navbar } from "@heroui/react";
+import { Navbar } from "@heroui/navbar";
 import Logo from "@/app/_components/Header/Logo";
 
 const SimpleNav = () => {

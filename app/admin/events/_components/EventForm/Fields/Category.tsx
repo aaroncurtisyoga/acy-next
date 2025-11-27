@@ -1,5 +1,5 @@
-import React, { FC, useEffect, useState } from "react";
-import { Select, SelectItem } from "@heroui/react";
+import { FC, useEffect, useState } from "react";
+import { Select, SelectItem } from "@heroui/select";
 import { Category } from "@prisma/client";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
@@ -17,13 +17,12 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
   isSubmitting,
 }) => {
   const [categories, setCategories] = useState<Category[]>([]);
-  const getCategories = async () => {
-    const categoryList = await getAllCategories();
-    categoryList && setCategories(categoryList as Category[]);
-  };
 
   useEffect(() => {
-    getCategories();
+    void (async () => {
+      const categoryList = await getAllCategories();
+      categoryList && setCategories(categoryList as Category[]);
+    })();
   }, []);
 
   return (

@@ -1,11 +1,6 @@
 import { FC } from "react";
-import {
-  Table,
-  TableBody,
-  TableColumn,
-  TableHeader,
-  Spinner,
-} from "@heroui/react";
+import { Table, TableBody, TableColumn, TableHeader } from "@heroui/table";
+import { Spinner } from "@heroui/spinner";
 
 interface EmptyTableProps {
   columns: Array<string>;

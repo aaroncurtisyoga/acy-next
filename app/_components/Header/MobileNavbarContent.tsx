@@ -8,7 +8,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-} from "@heroui/react";
+} from "@heroui/navbar";
 import {
   LogOut,
   LogIn,

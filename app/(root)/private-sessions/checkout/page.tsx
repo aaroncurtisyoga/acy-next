@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Spinner } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Spinner } from "@heroui/spinner";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";

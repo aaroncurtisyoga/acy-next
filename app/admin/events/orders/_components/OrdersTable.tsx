@@ -8,7 +8,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@heroui/react";
+} from "@heroui/table";
 import { Order, User, Event } from "@prisma/client";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 

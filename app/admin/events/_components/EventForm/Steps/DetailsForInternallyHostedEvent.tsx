@@ -2,7 +2,9 @@
 
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Link as HeroUiLink, addToast } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Link as HeroUiLink } from "@heroui/link";
+import { addToast } from "@heroui/toast";
 import { useFormContext } from "react-hook-form";
 import { X } from "lucide-react";
 import {

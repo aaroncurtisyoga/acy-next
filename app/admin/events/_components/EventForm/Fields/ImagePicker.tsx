@@ -1,21 +1,20 @@
 "use client";
 
-import React, { FC, useState, useCallback } from "react";
+import { FC, useState, useCallback } from "react";
 import Image from "next/image";
+import { Button } from "@heroui/button";
+import { cn } from "@/app/_lib/utils";
 import {
-  Button,
-  cn,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
   useDisclosure,
-  Chip,
-  Progress,
-  Card,
-  CardBody,
-} from "@heroui/react";
+} from "@heroui/modal";
+import { Chip } from "@heroui/chip";
+import { Progress } from "@heroui/progress";
+import { Card, CardBody } from "@heroui/card";
 import { ImagePlus, Check, Upload, Image as ImageIcon } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FieldErrors, useWatch } from "react-hook-form";

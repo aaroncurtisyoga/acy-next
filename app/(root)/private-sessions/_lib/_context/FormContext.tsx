@@ -1,14 +1,6 @@
 "use client";
 
-import {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  FC,
-  useEffect,
-  useMemo,
-} from "react";
+import { createContext, useContext, useState, ReactNode, FC } from "react";
 import { usePathname } from "next/navigation";
 import { useAuth } from "@clerk/nextjs";
 import { SessionPurchase, SessionType } from "../types";
@@ -51,7 +43,6 @@ const WizardFormContext = createContext<WizardFormContextProps | undefined>(
 export const WizardFormProvider: FC<{ children: ReactNode }> = ({
   children,
 }) => {
-  const [currentStep, setCurrentStep] = useState(1);
   const [formData, setFormData] = useState<PrivateSessionFormData>(() => {
     // Initialize from localStorage if available
     if (typeof window !== "undefined") {
@@ -71,35 +62,23 @@ export const WizardFormProvider: FC<{ children: ReactNode }> = ({
 
   const totalSteps = 4; // Welcome -> Sign-in -> Package Selection -> Checkout
 
-  // Map routes to steps - memoized to prevent useEffect dependency issues
-  const stepRoutes = useMemo(
-    () => ({
-      "/private-sessions/welcome": 1,
-      "/private-sessions/sign-in": 2,
-      "/private-sessions/select-package": 3,
-      "/private-sessions/checkout": 4,
-      "/private-sessions/confirmation": 5,
-    }),
-    [],
-  );
-
-  // Update current step based on pathname
-  useEffect(() => {
-    const step = stepRoutes[pathname as keyof typeof stepRoutes];
-    if (step) {
-      setCurrentStep(step);
-    }
-  }, [pathname, stepRoutes]);
-
-  const goToNextStep = () =>
-    setCurrentStep((prev) => Math.min(totalSteps, prev + 1));
-  const goToPreviousStep = () =>
-    setCurrentStep((prev) => Math.max(1, prev - 1));
-  const goToStep = (step: number) => {
-    if (step >= 1 && step <= totalSteps) {
-      setCurrentStep(step);
-    }
+  // Map routes to steps
+  const stepRoutes: Record<string, number> = {
+    "/private-sessions/welcome": 1,
+    "/private-sessions/sign-in": 2,
+    "/private-sessions/select-package": 3,
+    "/private-sessions/checkout": 4,
+    "/private-sessions/confirmation": 5,
   };
+
+  // Derive currentStep from pathname
+  const currentStep = stepRoutes[pathname] || 1;
+
+  // Navigation functions are no-ops since step is derived from route
+  // These are kept for API compatibility but consumers should use router.push
+  const goToNextStep = () => {};
+  const goToPreviousStep = () => {};
+  const goToStep = (_step: number) => {};
   const updateFormData = (data: Partial<PrivateSessionFormData>) => {
     const newData = (prev: PrivateSessionFormData) => ({ ...prev, ...data });
     setFormData(newData);

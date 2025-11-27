@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Accordion, AccordionItem } from "@heroui/react";
+import { Accordion, AccordionItem } from "@heroui/accordion";
 import { Location as LocationPrisma } from "@prisma/client";
 import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
 import DirectionLinks from "@/app/(root)/events/[id]/_components/DirectionLinks";

@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useSyncExternalStore } from "react";
 import { track } from "@vercel/analytics";
 
 interface ABTestConfig {
@@ -20,54 +20,72 @@ const hashString = (str: string): number => {
   return Math.abs(hash);
 };
 
-export const useABTest = ({ testName, variants, weights }: ABTestConfig) => {
-  const [variant, setVariant] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+// Compute variant from localStorage and config
+const computeVariant = (
+  testName: string,
+  variants: string[],
+  weights?: number[],
+): { variant: string; userId: string } => {
+  let userId = localStorage.getItem("ab_user_id");
+  if (!userId) {
+    userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
+    localStorage.setItem("ab_user_id", userId);
+  }
 
-  useEffect(() => {
-    // Get or create user ID (you might want to use Clerk user ID instead)
-    let userId = localStorage.getItem("ab_user_id");
-    if (!userId) {
-      userId = `user_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      localStorage.setItem("ab_user_id", userId);
-    }
+  const hash = hashString(`${userId}_${testName}`);
+  let selectedVariant: string;
 
-    // Determine variant based on hash of user ID + test name
-    const hash = hashString(`${userId}_${testName}`);
+  if (weights && weights.length === variants.length) {
+    const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
+    const randomValue = (hash % 10000) / 10000;
+    let cumulativeWeight = 0;
+    selectedVariant = variants[variants.length - 1];
 
-    let selectedVariant: string;
-
-    if (weights && weights.length === variants.length) {
-      // Use weighted distribution
-      const totalWeight = weights.reduce((sum, weight) => sum + weight, 0);
-      const randomValue = (hash % 10000) / 10000; // Normalize to 0-1
-
-      let cumulativeWeight = 0;
-      selectedVariant = variants[variants.length - 1]; // Default to last variant
-
-      for (let i = 0; i < variants.length; i++) {
-        cumulativeWeight += weights[i] / totalWeight;
-        if (randomValue <= cumulativeWeight) {
-          selectedVariant = variants[i];
-          break;
-        }
+    for (let i = 0; i < variants.length; i++) {
+      cumulativeWeight += weights[i] / totalWeight;
+      if (randomValue <= cumulativeWeight) {
+        selectedVariant = variants[i];
+        break;
       }
-    } else {
-      // Equal distribution
-      const variantIndex = hash % variants.length;
-      selectedVariant = variants[variantIndex];
     }
+  } else {
+    const variantIndex = hash % variants.length;
+    selectedVariant = variants[variantIndex];
+  }
 
-    setVariant(selectedVariant);
-    setIsLoading(false);
+  return { variant: selectedVariant, userId };
+};
 
-    // Track variant assignment
-    track("ab_test_assignment", {
-      test_name: testName,
-      variant: selectedVariant,
-      user_id: userId,
-    });
-  }, [testName, variants, weights]);
+// useSyncExternalStore for hydration-safe client detection
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
+export const useABTest = ({ testName, variants, weights }: ABTestConfig) => {
+  const isClient = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
+  const hasTracked = useRef(false);
+
+  // Compute variant only on client
+  const result = isClient ? computeVariant(testName, variants, weights) : null;
+
+  const variant = result?.variant ?? null;
+  const isLoading = !isClient;
+
+  // Track variant assignment once
+  useEffect(() => {
+    if (result && !hasTracked.current) {
+      hasTracked.current = true;
+      track("ab_test_assignment", {
+        test_name: testName,
+        variant: result.variant,
+        user_id: result.userId,
+      });
+    }
+  }, [result, testName]);
 
   const trackConversion = (conversionType: string, value?: number) => {
     if (variant) {

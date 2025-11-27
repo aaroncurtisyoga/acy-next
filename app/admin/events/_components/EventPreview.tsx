@@ -1,13 +1,8 @@
-import {
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Divider,
-  Link,
-  Image,
-  Spacer,
-} from "@heroui/react";
+import { Card, CardHeader, CardBody, CardFooter } from "@heroui/card";
+import { Divider } from "@heroui/divider";
+import { Link } from "@heroui/link";
+import { Image } from "@heroui/image";
+import { Spacer } from "@heroui/spacer";
 
 const EventPreview = ({ event }) => {
   const {

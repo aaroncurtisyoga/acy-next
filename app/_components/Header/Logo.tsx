@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { NavbarBrand } from "@heroui/react";
+import { NavbarBrand } from "@heroui/navbar";
 import { merriweather } from "@/app/fonts";
 import { track } from "@vercel/analytics";
 
