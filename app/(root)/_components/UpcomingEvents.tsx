@@ -27,7 +27,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const category = (resolvedParams?.category as string) || "";
   const highlightedEventId = (resolvedParams?.event as string) || "";
 
-  // Fetch highlighted event if ID is provided
+  // Fetch a highlighted event if ID is provided
   let highlightedEvent: EventWithLocationAndCategory | null = null;
   if (highlightedEventId) {
     try {
@@ -37,13 +37,12 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     }
   }
 
-  const { data, hasFiltersApplied, totalPages, totalCount } =
-    await getAllEvents({
-      category,
-      limit: 5,
-      page,
-      query: searchText,
-    });
+  const { data, hasFiltersApplied, totalPages } = await getAllEvents({
+    category,
+    limit: 5,
+    page,
+    query: searchText,
+  });
 
   // Filter out the highlighted event from regular data to avoid duplication
   const filteredData = highlightedEvent
@@ -58,34 +57,21 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {highlightedEventId && (
         <HighlightedEventScroller eventId={highlightedEventId} />
       )}
-      {/* Header with integrated calendar subscription */}
+      {/* Header */}
       <div className="mb-6 md:mb-8">
-        <div className="flex items-center gap-3 mb-3">
-          <h1
-            className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
-          >
-            Let&#39;s Practice
-          </h1>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-lg text-foreground-600 leading-relaxed">
-            All my upcoming classes and events – subscribe to add them to your
-            calendar
+        <h1
+          className={`text-3xl lg:text-4xl font-bold text-foreground-900 mb-3 ${merriweather.className}`}
+        >
+          Let&#39;s Practice
+        </h1>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-lg text-foreground-600">
+            Upcoming classes & events
           </p>
-          <CalendarSubscriptionWrapper inline />
-        </div>
-      </div>
-
-      {/* Simple event count display */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary"></div>
-            <p className="font-semibold text-foreground-800">
-              {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
-            </p>
+            <CalendarSubscriptionWrapper inline />
+            <AddEventButton />
           </div>
-          <AddEventButton />
         </div>
       </div>
 
@@ -93,7 +79,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {hasEvents ? (
         <div className="flex-1">
           <div className="space-y-2">
-            {/* Show highlighted event first if it exists */}
+            {/* Show the highlighted event first if it exists */}
             {highlightedEvent && (
               <>
                 <div className="text-sm text-primary dark:text-primary-300 font-medium mb-2">

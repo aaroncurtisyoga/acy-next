@@ -57,7 +57,7 @@ model Event {
   googleEventId   String?   // Google Calendar event ID
   googleEventLink String?   // Direct link to Google Calendar event
 
-  @@index([sourceType, sourceId])
+  @@unique([sourceType, sourceId]) // Prevent duplicate synced events
   @@index([googleEventId])
 }
 

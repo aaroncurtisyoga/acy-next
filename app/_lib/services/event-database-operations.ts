@@ -7,38 +7,76 @@ import {
   findCalendarEventByDatabaseId,
 } from "@/app/_lib/google-calendar";
 
+// Concurrency limit to avoid overwhelming Google Calendar API
+const GOOGLE_CALENDAR_CONCURRENCY = 5;
+
+// Helper to process array in batches with concurrency limit
+async function processInBatches<T, R>(
+  items: T[],
+  processor: (item: T) => Promise<R>,
+  concurrency: number,
+): Promise<PromiseSettledResult<R>[]> {
+  const results: PromiseSettledResult<R>[] = [];
+
+  for (let i = 0; i < items.length; i += concurrency) {
+    const batch = items.slice(i, i + concurrency);
+    const batchResults = await Promise.allSettled(batch.map(processor));
+    results.push(...batchResults);
+  }
+
+  return results;
+}
+
 export class EventDatabaseOperations {
   async batchUpsertEvents(eventUpdates: SyncEventData[], sourceType: string) {
+    // Deduplicate input array by sourceId (crawler may return same event multiple times
+    // when it appears in multiple month views, e.g., as a padding day)
+    const uniqueEventUpdates = Array.from(
+      new Map(eventUpdates.map((e) => [e.sourceId, e])).values(),
+    );
+
+    if (uniqueEventUpdates.length < eventUpdates.length) {
+      console.log(
+        `[Cron Sync] Deduplicated ${eventUpdates.length - uniqueEventUpdates.length} duplicate events from crawler input`,
+      );
+    }
+
     const existingEvents = await prisma.event.findMany({
       where: {
         sourceType,
-        sourceId: { in: eventUpdates.map((e) => e.sourceId) },
+        sourceId: { in: uniqueEventUpdates.map((e) => e.sourceId) },
       },
       select: { id: true, sourceId: true, googleEventId: true },
     });
 
     const existingMap = new Map(existingEvents.map((e) => [e.sourceId, e]));
 
-    const eventsToCreate = eventUpdates.filter(
+    const eventsToCreate = uniqueEventUpdates.filter(
       (e) => !existingMap.has(e.sourceId),
     );
-    const eventsToUpdate = eventUpdates.filter((e) =>
+    const eventsToUpdate = uniqueEventUpdates.filter((e) =>
       existingMap.has(e.sourceId),
     );
 
-    // Create new events with Google Calendar sync
-    for (const eventData of eventsToCreate) {
-      try {
-        console.log(`[Cron Sync] Creating new event: ${eventData.title}`);
+    // Process creates and updates in parallel
+    await Promise.all([
+      this.createNewEvents(eventsToCreate),
+      this.updateExistingEvents(eventsToUpdate, existingMap),
+    ]);
+  }
 
-        // Check for existing events at the same time to prevent duplicates
-        // This check will catch manually created events that occur at the same time,
-        // regardless of their location, source type or other metadata
-        const duplicateEvent = await prisma.event.findFirst({
+  private async createNewEvents(eventsToCreate: SyncEventData[]) {
+    if (eventsToCreate.length === 0) return;
+
+    console.log(`[Cron Sync] Creating ${eventsToCreate.length} new events...`);
+
+    // Step 1: Check for time-based duplicates in parallel
+    const duplicateChecks = await Promise.all(
+      eventsToCreate.map(async (eventData) => {
+        const duplicate = await prisma.event.findFirst({
           where: {
             startDateTime: eventData.startDateTime,
             isActive: true,
-            // Exclude events from the same source to allow updates
             NOT: {
               AND: [
                 { sourceType: eventData.sourceType },
@@ -46,42 +84,64 @@ export class EventDatabaseOperations {
               ],
             },
           },
-          select: {
-            id: true,
-            title: true,
-            sourceType: true,
-            createdAt: true,
-            endDateTime: true,
-            location: {
-              select: {
-                name: true,
-              },
-            },
-          },
+          select: { id: true, title: true, sourceType: true },
         });
+        return { eventData, isDuplicate: !!duplicate, duplicate };
+      }),
+    );
 
-        if (duplicateEvent) {
-          console.log(
-            `[Cron Sync] Skipping duplicate event: "${eventData.title}" at ${new Date(eventData.startDateTime).toISOString()}`,
-          );
-          console.log(
-            `  -> Existing event: "${duplicateEvent.title}" at ${duplicateEvent.location?.name || "unknown location"} (${duplicateEvent.sourceType || "manually created"}) already scheduled at this time`,
-          );
-          continue;
-        }
+    const nonDuplicateEvents = duplicateChecks.filter((c) => !c.isDuplicate);
+    const duplicateEvents = duplicateChecks.filter((c) => c.isDuplicate);
 
-        // First create the event in the database
+    // Log duplicates
+    for (const { eventData, duplicate } of duplicateEvents) {
+      console.log(
+        `[Cron Sync] Skipping duplicate: "${eventData.title}" - conflicts with "${duplicate?.title}" (${duplicate?.sourceType || "manual"})`,
+      );
+    }
+
+    if (nonDuplicateEvents.length === 0) {
+      console.log("[Cron Sync] No new events to create after duplicate check");
+      return;
+    }
+
+    // Step 2: Create all events in database (parallel)
+    const createResults = await Promise.allSettled(
+      nonDuplicateEvents.map(async ({ eventData }) => {
         const newEvent = await prisma.event.create({
           data: eventData,
-          include: {
-            location: true,
-          },
+          include: { location: true },
         });
+        return { eventData, newEvent };
+      }),
+    );
 
-        // Then sync with Google Calendar
-        console.log(
-          `[Cron Sync] Syncing new event to Google Calendar: ${eventData.title}`,
-        );
+    const createdEvents = createResults
+      .filter(
+        (
+          r,
+        ): r is PromiseFulfilledResult<{
+          eventData: SyncEventData;
+          newEvent: any;
+        }> => r.status === "fulfilled",
+      )
+      .map((r) => r.value);
+
+    const createFailures = createResults.filter((r) => r.status === "rejected");
+    if (createFailures.length > 0) {
+      console.error(
+        `[Cron Sync] Failed to create ${createFailures.length} events in database`,
+      );
+    }
+
+    console.log(
+      `[Cron Sync] Created ${createdEvents.length} events in database`,
+    );
+
+    // Step 3: Sync to Google Calendar in parallel (with concurrency limit)
+    const calendarResults = await processInBatches(
+      createdEvents,
+      async ({ eventData, newEvent }) => {
         const calendarResult = await createCalendarEvent({
           title: eventData.title,
           description: eventData.description || undefined,
@@ -94,229 +154,319 @@ export class EventDatabaseOperations {
           price: eventData.price || undefined,
           isFree: eventData.isFree,
           externalRegistrationUrl: eventData.externalUrl || undefined,
-          databaseEventId: newEvent.id, // Add database ID for duplicate prevention
+          databaseEventId: newEvent.id,
         });
+        return { newEvent, calendarResult };
+      },
+      GOOGLE_CALENDAR_CONCURRENCY,
+    );
 
-        // Update event with Google Calendar details if sync was successful
-        if (calendarResult) {
-          await prisma.event.update({
+    // Step 4: Update database with Google Calendar IDs (parallel)
+    const successfulCalendarSyncs = calendarResults
+      .filter(
+        (
+          r,
+        ): r is PromiseFulfilledResult<{
+          newEvent: any;
+          calendarResult: { googleEventId: string; googleEventLink: string };
+        }> => r.status === "fulfilled" && r.value.calendarResult !== null,
+      )
+      .map((r) => r.value);
+
+    if (successfulCalendarSyncs.length > 0) {
+      await Promise.all(
+        successfulCalendarSyncs.map(({ newEvent, calendarResult }) =>
+          prisma.event.update({
             where: { id: newEvent.id },
             data: {
               googleEventId: calendarResult.googleEventId,
               googleEventLink: calendarResult.googleEventLink,
             },
-          });
-          console.log(
-            `[Cron Sync] Successfully synced to Google Calendar: ${eventData.title}`,
-          );
-        } else {
-          console.warn(
-            `[Cron Sync] Failed to sync to Google Calendar: ${eventData.title}`,
-          );
-        }
-      } catch (error) {
-        console.error(
-          `[Cron Sync] Error creating event ${eventData.title}:`,
-          error,
-        );
-      }
+          }),
+        ),
+      );
     }
 
-    // Update existing events with Google Calendar sync
-    for (const eventData of eventsToUpdate) {
-      const existingEvent = existingMap.get(eventData.sourceId);
-      if (existingEvent) {
-        try {
-          console.log(`[Cron Sync] Updating event: ${eventData.title}`);
+    const calendarFailures = calendarResults.filter(
+      (r) =>
+        r.status === "rejected" ||
+        (r.status === "fulfilled" && !r.value.calendarResult),
+    );
 
-          // Update in database
-          const updatedEvent = await prisma.event.update({
+    console.log(
+      `[Cron Sync] Synced ${successfulCalendarSyncs.length}/${createdEvents.length} events to Google Calendar` +
+        (calendarFailures.length > 0
+          ? ` (${calendarFailures.length} failed)`
+          : ""),
+    );
+  }
+
+  private async updateExistingEvents(
+    eventsToUpdate: SyncEventData[],
+    existingMap: Map<
+      string,
+      { id: string; sourceId: string; googleEventId: string | null }
+    >,
+  ) {
+    if (eventsToUpdate.length === 0) return;
+
+    console.log(
+      `[Cron Sync] Updating ${eventsToUpdate.length} existing events...`,
+    );
+
+    // Step 1: Update all events in database (parallel)
+    const updateResults = await Promise.allSettled(
+      eventsToUpdate.map(async (eventData) => {
+        const existingEvent = existingMap.get(eventData.sourceId)!;
+        const updatedEvent = await prisma.event.update({
+          where: { id: existingEvent.id },
+          data: {
+            title: eventData.title,
+            startDateTime: eventData.startDateTime,
+            endDateTime: eventData.endDateTime,
+            externalUrl: eventData.externalUrl,
+            lastSynced: eventData.lastSynced,
+            price: eventData.price,
+            description: eventData.description,
+            isActive: eventData.isActive,
+          },
+          include: { location: true },
+        });
+        return { eventData, existingEvent, updatedEvent };
+      }),
+    );
+
+    const updatedEvents = updateResults
+      .filter(
+        (
+          r,
+        ): r is PromiseFulfilledResult<{
+          eventData: SyncEventData;
+          existingEvent: {
+            id: string;
+            sourceId: string;
+            googleEventId: string | null;
+          };
+          updatedEvent: any;
+        }> => r.status === "fulfilled",
+      )
+      .map((r) => r.value);
+
+    console.log(
+      `[Cron Sync] Updated ${updatedEvents.length} events in database`,
+    );
+
+    // Step 2: Categorize events by Google Calendar status
+    const eventsWithGoogleId = updatedEvents.filter(
+      (e) => e.existingEvent.googleEventId,
+    );
+    const eventsWithoutGoogleId = updatedEvents.filter(
+      (e) => !e.existingEvent.googleEventId,
+    );
+
+    // Step 3: Update Google Calendar events (parallel with concurrency limit)
+    if (eventsWithGoogleId.length > 0) {
+      const gcalUpdateResults = await processInBatches(
+        eventsWithGoogleId,
+        async ({ eventData, existingEvent, updatedEvent }) => {
+          return updateCalendarEvent(existingEvent.googleEventId!, {
+            title: eventData.title,
+            description: eventData.description || undefined,
+            startDateTime: eventData.startDateTime,
+            endDateTime: eventData.endDateTime,
+            location:
+              updatedEvent.location?.formattedAddress ||
+              updatedEvent.location?.name ||
+              undefined,
+            price: eventData.price || undefined,
+            isFree: eventData.isFree,
+            externalRegistrationUrl: eventData.externalUrl || undefined,
+          });
+        },
+        GOOGLE_CALENDAR_CONCURRENCY,
+      );
+
+      const successCount = gcalUpdateResults.filter(
+        (r) => r.status === "fulfilled" && r.value,
+      ).length;
+      console.log(
+        `[Cron Sync] Updated ${successCount}/${eventsWithGoogleId.length} events in Google Calendar`,
+      );
+    }
+
+    // Step 4: Handle events without Google Calendar IDs (need to find or create)
+    if (eventsWithoutGoogleId.length > 0) {
+      await this.linkOrCreateGoogleCalendarEvents(eventsWithoutGoogleId);
+    }
+  }
+
+  private async linkOrCreateGoogleCalendarEvents(
+    events: Array<{
+      eventData: SyncEventData;
+      existingEvent: {
+        id: string;
+        sourceId: string;
+        googleEventId: string | null;
+      };
+      updatedEvent: any;
+    }>,
+  ) {
+    console.log(
+      `[Cron Sync] Linking/creating Google Calendar events for ${events.length} events...`,
+    );
+
+    // Process in batches to respect API limits
+    const results = await processInBatches(
+      events,
+      async ({ eventData, existingEvent, updatedEvent }) => {
+        // Check if Google Calendar event exists
+        const existingGoogleEvent = await findCalendarEventByDatabaseId(
+          existingEvent.id,
+        );
+
+        if (existingGoogleEvent) {
+          // Link existing Google Calendar event
+          await prisma.event.update({
             where: { id: existingEvent.id },
             data: {
-              title: eventData.title,
-              startDateTime: eventData.startDateTime,
-              endDateTime: eventData.endDateTime,
-              externalUrl: eventData.externalUrl,
-              lastSynced: eventData.lastSynced,
-              price: eventData.price,
-              description: eventData.description,
-              isActive: eventData.isActive,
-            },
-            include: {
-              location: true,
+              googleEventId: existingGoogleEvent.googleEventId,
+              googleEventLink: existingGoogleEvent.googleEventLink,
             },
           });
 
-          // Sync with Google Calendar if it has a Google Event ID
-          if (existingEvent.googleEventId) {
-            console.log(
-              `[Cron Sync] Updating event in Google Calendar: ${eventData.title}`,
-            );
-            const calendarResult = await updateCalendarEvent(
-              existingEvent.googleEventId,
-              {
-                title: eventData.title,
-                description: eventData.description || undefined,
-                startDateTime: eventData.startDateTime,
-                endDateTime: eventData.endDateTime,
-                location:
-                  updatedEvent.location?.formattedAddress ||
-                  updatedEvent.location?.name ||
-                  undefined,
-                price: eventData.price || undefined,
-                isFree: eventData.isFree,
-                externalRegistrationUrl: eventData.externalUrl || undefined,
+          // Update the Google Calendar event
+          await updateCalendarEvent(existingGoogleEvent.googleEventId, {
+            title: eventData.title,
+            description: eventData.description || undefined,
+            startDateTime: eventData.startDateTime,
+            endDateTime: eventData.endDateTime,
+            location:
+              updatedEvent.location?.formattedAddress ||
+              updatedEvent.location?.name ||
+              undefined,
+            price: eventData.price || undefined,
+            isFree: eventData.isFree,
+            externalRegistrationUrl: eventData.externalUrl || undefined,
+          });
+
+          return { action: "linked", title: eventData.title };
+        } else {
+          // Create new Google Calendar event
+          const calendarResult = await createCalendarEvent({
+            title: eventData.title,
+            description: eventData.description || undefined,
+            startDateTime: eventData.startDateTime,
+            endDateTime: eventData.endDateTime,
+            location:
+              updatedEvent.location?.formattedAddress ||
+              updatedEvent.location?.name ||
+              undefined,
+            price: eventData.price || undefined,
+            isFree: eventData.isFree,
+            externalRegistrationUrl: eventData.externalUrl || undefined,
+            databaseEventId: existingEvent.id,
+          });
+
+          if (calendarResult) {
+            await prisma.event.update({
+              where: { id: existingEvent.id },
+              data: {
+                googleEventId: calendarResult.googleEventId,
+                googleEventLink: calendarResult.googleEventLink,
               },
-            );
-
-            if (calendarResult) {
-              console.log(
-                `[Cron Sync] Successfully updated in Google Calendar: ${eventData.title}`,
-              );
-            } else {
-              console.warn(
-                `[Cron Sync] Failed to update in Google Calendar: ${eventData.title}`,
-              );
-            }
-          } else {
-            // If no Google Event ID exists, check if one already exists in Google Calendar
-            console.log(
-              `[Cron Sync] Checking for existing Google Calendar event for: ${eventData.title}`,
-            );
-
-            // First check if a Google Calendar event already exists with this database ID
-            const existingGoogleEvent = await findCalendarEventByDatabaseId(
-              existingEvent.id,
-            );
-
-            if (existingGoogleEvent) {
-              // Event already exists in Google Calendar, just link it
-              console.log(
-                `[Cron Sync] Found existing Google Calendar event, linking to database: ${eventData.title}`,
-              );
-              await prisma.event.update({
-                where: { id: existingEvent.id },
-                data: {
-                  googleEventId: existingGoogleEvent.googleEventId,
-                  googleEventLink: existingGoogleEvent.googleEventLink,
-                },
-              });
-
-              // Now update the existing Google Calendar event with latest data
-              await updateCalendarEvent(existingGoogleEvent.googleEventId, {
-                title: eventData.title,
-                description: eventData.description || undefined,
-                startDateTime: eventData.startDateTime,
-                endDateTime: eventData.endDateTime,
-                location:
-                  updatedEvent.location?.formattedAddress ||
-                  updatedEvent.location?.name ||
-                  undefined,
-                price: eventData.price || undefined,
-                isFree: eventData.isFree,
-                externalRegistrationUrl: eventData.externalUrl || undefined,
-              });
-              console.log(
-                `[Cron Sync] Successfully linked and updated existing Google Calendar event: ${eventData.title}`,
-              );
-            } else {
-              // No existing Google Calendar event found, create a new one
-              console.log(
-                `[Cron Sync] Creating new Google Calendar event for existing database event: ${eventData.title}`,
-              );
-              const calendarResult = await createCalendarEvent({
-                title: eventData.title,
-                description: eventData.description || undefined,
-                startDateTime: eventData.startDateTime,
-                endDateTime: eventData.endDateTime,
-                location:
-                  updatedEvent.location?.formattedAddress ||
-                  updatedEvent.location?.name ||
-                  undefined,
-                price: eventData.price || undefined,
-                isFree: eventData.isFree,
-                externalRegistrationUrl: eventData.externalUrl || undefined,
-                databaseEventId: existingEvent.id, // Add database ID for duplicate prevention
-              });
-
-              if (calendarResult) {
-                await prisma.event.update({
-                  where: { id: existingEvent.id },
-                  data: {
-                    googleEventId: calendarResult.googleEventId,
-                    googleEventLink: calendarResult.googleEventLink,
-                  },
-                });
-                console.log(
-                  `[Cron Sync] Successfully created in Google Calendar: ${eventData.title}`,
-                );
-              }
-            }
+            });
+            return { action: "created", title: eventData.title };
           }
-        } catch (error) {
-          console.error(
-            `[Cron Sync] Error updating event ${eventData.title}:`,
-            error,
-          );
+          return { action: "failed", title: eventData.title };
         }
-      }
-    }
+      },
+      GOOGLE_CALENDAR_CONCURRENCY,
+    );
+
+    const successful = results.filter(
+      (r) =>
+        r.status === "fulfilled" &&
+        (r.value.action === "linked" || r.value.action === "created"),
+    );
+    console.log(
+      `[Cron Sync] Linked/created ${successful.length}/${events.length} Google Calendar events`,
+    );
   }
 
   async deactivateOldEvents(sourceType: string): Promise<number> {
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
-    // First, find events that need to be deactivated with their Google Calendar IDs
+    // Find events that need to be deactivated
     const eventsToDeactivate = await prisma.event.findMany({
       where: {
         sourceType,
-        lastSynced: {
-          lt: oneHourAgo,
-        },
-        startDateTime: {
-          gt: new Date(),
-        },
+        lastSynced: { lt: oneHourAgo },
+        startDateTime: { gt: new Date() },
         isActive: true,
       },
-      select: {
-        id: true,
-        title: true,
-        googleEventId: true,
-      },
+      select: { id: true, title: true, googleEventId: true },
     });
 
     if (eventsToDeactivate.length === 0) {
-      console.log("✅ No old events to deactivate");
+      console.log("[Cron Sync] No old events to deactivate");
       return 0;
     }
 
-    // Delete from Google Calendar if they have Google Event IDs
-    for (const event of eventsToDeactivate) {
-      if (event.googleEventId) {
-        console.log(
-          `[Cron Sync] Removing deactivated event from Google Calendar: ${event.title}`,
-        );
-        try {
-          await deleteCalendarEvent(event.googleEventId);
-          console.log(
-            `[Cron Sync] Successfully removed from Google Calendar: ${event.title}`,
-          );
-        } catch (error) {
-          console.error(
-            `[Cron Sync] Failed to remove from Google Calendar: ${event.title}`,
-            error,
-          );
-        }
-      }
+    console.log(
+      `[Cron Sync] Deactivating ${eventsToDeactivate.length} old events...`,
+    );
+
+    // Separate events with and without Google Calendar IDs
+    const eventsWithGoogleId = eventsToDeactivate.filter(
+      (e) => e.googleEventId,
+    );
+    const eventsWithoutGoogleId = eventsToDeactivate.filter(
+      (e) => !e.googleEventId,
+    );
+
+    // Delete from Google Calendar in parallel (with concurrency limit)
+    const googleDeleteResults = await processInBatches(
+      eventsWithGoogleId,
+      async (event) => {
+        await deleteCalendarEvent(event.googleEventId!);
+        return event.id;
+      },
+      GOOGLE_CALENDAR_CONCURRENCY,
+    );
+
+    // Only deactivate events that successfully deleted from Google Calendar
+    // (or never had a Google Calendar ID)
+    const successfullyDeletedIds = googleDeleteResults
+      .filter(
+        (r): r is PromiseFulfilledResult<string> => r.status === "fulfilled",
+      )
+      .map((r) => r.value);
+
+    const failedDeletes = googleDeleteResults.filter(
+      (r) => r.status === "rejected",
+    );
+    if (failedDeletes.length > 0) {
+      console.warn(
+        `[Cron Sync] Failed to delete ${failedDeletes.length} events from Google Calendar - skipping deactivation to prevent orphans`,
+      );
     }
 
-    // Now deactivate them in the database
+    // Combine: events without Google ID + events successfully deleted from Google
+    const idsToDeactivate = [
+      ...eventsWithoutGoogleId.map((e) => e.id),
+      ...successfullyDeletedIds,
+    ];
+
+    if (idsToDeactivate.length === 0) {
+      console.log(
+        "[Cron Sync] No events to deactivate after Google Calendar cleanup",
+      );
+      return 0;
+    }
+
+    // Deactivate in database
     const deletedCount = await prisma.event.updateMany({
-      where: {
-        id: {
-          in: eventsToDeactivate.map((e) => e.id),
-        },
-      },
+      where: { id: { in: idsToDeactivate } },
       data: {
         isActive: false,
         googleEventId: null,
@@ -324,9 +474,9 @@ export class EventDatabaseOperations {
       },
     });
 
-    if (deletedCount.count > 0) {
-      console.log(`Deactivated ${deletedCount.count} old ${sourceType} events`);
-    }
+    console.log(
+      `[Cron Sync] Deactivated ${deletedCount.count} old ${sourceType} events`,
+    );
 
     return deletedCount.count;
   }

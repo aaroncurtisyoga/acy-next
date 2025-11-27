@@ -15,6 +15,7 @@ import {
   calculateTotalPages,
 } from "@/app/_lib/utils/pagination";
 import { buildEventSearchConditions } from "@/app/_lib/utils/query-builders";
+import { generateMockEvents } from "@/app/_lib/utils/mock-events";
 import {
   createCalendarEvent,
   updateCalendarEvent,
@@ -201,6 +202,27 @@ export async function getAllEvents({
   isActive = true,
 }: GetAllEventsParams): Promise<GetAllEventsResponse> {
   try {
+    // In dev mode with MOCK_EVENTS=true, return mock events for UI testing
+    const useMockEvents =
+      process.env.NODE_ENV === "development" &&
+      process.env.MOCK_EVENTS === "true";
+
+    if (useMockEvents) {
+      const mockEvents = generateMockEvents(20);
+      const skipAmount = calculateSkipAmount(Number(page), limit);
+      const paginatedMockEvents = mockEvents.slice(
+        skipAmount,
+        skipAmount + limit,
+      );
+
+      return {
+        data: paginatedMockEvents,
+        hasFiltersApplied: false,
+        totalPages: calculateTotalPages(mockEvents.length, limit),
+        totalCount: mockEvents.length,
+      };
+    }
+
     const whereConditions = buildEventSearchConditions(
       query,
       category,
