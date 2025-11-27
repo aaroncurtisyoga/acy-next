@@ -1,17 +1,22 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
+import { FC, useSyncExternalStore } from "react";
 import { HiSun, HiMoon, HiComputerDesktop } from "react-icons/hi2";
 import { useTheme } from "next-themes";
 import { track } from "@vercel/analytics";
 
+// Hydration-safe mounted check using useSyncExternalStore
+const subscribe = () => () => {};
+const getSnapshot = () => true;
+const getServerSnapshot = () => false;
+
 const ThemeToggle: FC = () => {
   const { theme, setTheme } = useTheme();
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useSyncExternalStore(
+    subscribe,
+    getSnapshot,
+    getServerSnapshot,
+  );
 
   if (!mounted) {
     return (
