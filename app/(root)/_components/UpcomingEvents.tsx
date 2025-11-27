@@ -27,7 +27,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const category = (resolvedParams?.category as string) || "";
   const highlightedEventId = (resolvedParams?.event as string) || "";
 
-  // Fetch highlighted event if ID is provided
+  // Fetch a highlighted event if ID is provided
   let highlightedEvent: EventWithLocationAndCategory | null = null;
   if (highlightedEventId) {
     try {
@@ -37,13 +37,12 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
     }
   }
 
-  const { data, hasFiltersApplied, totalPages, totalCount } =
-    await getAllEvents({
-      category,
-      limit: 5,
-      page,
-      query: searchText,
-    });
+  const { data, hasFiltersApplied, totalPages } = await getAllEvents({
+    category,
+    limit: 5,
+    page,
+    query: searchText,
+  });
 
   // Filter out the highlighted event from regular data to avoid duplication
   const filteredData = highlightedEvent
@@ -67,7 +66,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
         </h1>
         <div className="flex items-center justify-between gap-3">
           <p className="text-lg text-foreground-600">
-            {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
+            Upcoming classes & events
           </p>
           <div className="flex items-center gap-2">
             <CalendarSubscriptionWrapper inline />
@@ -80,7 +79,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {hasEvents ? (
         <div className="flex-1">
           <div className="space-y-2">
-            {/* Show highlighted event first if it exists */}
+            {/* Show the highlighted event first if it exists */}
             {highlightedEvent && (
               <>
                 <div className="text-sm text-primary dark:text-primary-300 font-medium mb-2">
