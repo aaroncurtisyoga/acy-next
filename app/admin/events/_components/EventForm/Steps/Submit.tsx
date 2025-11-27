@@ -2,8 +2,9 @@
 
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Button, addToast } from "@heroui/react";
-import { Link as HeroUiLink } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { addToast } from "@heroui/toast";
+import { Link as HeroUiLink } from "@heroui/link";
 import { X } from "lucide-react";
 import { createEvent, updateEvent } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";

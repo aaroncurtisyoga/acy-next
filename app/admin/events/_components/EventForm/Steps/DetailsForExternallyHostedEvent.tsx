@@ -2,7 +2,8 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { Button, Link as HeroUiLink } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Link as HeroUiLink } from "@heroui/link";
 import { useFormContext } from "react-hook-form";
 import {
   EventFormValues,

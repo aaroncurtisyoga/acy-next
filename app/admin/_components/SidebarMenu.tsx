@@ -1,7 +1,7 @@
 "use client";
 
 import { usePathname, useRouter } from "next/navigation";
-import { Listbox, ListboxItem } from "@heroui/react";
+import { Listbox, ListboxItem } from "@heroui/listbox";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 import ThemeToggle from "@/app/_components/ThemeToggle";
 

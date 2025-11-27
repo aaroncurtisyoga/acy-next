@@ -1,12 +1,12 @@
 import { FC } from "react";
+import { Button } from "@heroui/button";
 import {
-  Button,
   Modal,
   ModalBody,
   ModalContent,
   ModalFooter,
   ModalHeader,
-} from "@heroui/react";
+} from "@heroui/modal";
 
 interface BasicModalProps {
   children?: React.ReactNode;

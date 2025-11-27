@@ -1,8 +1,8 @@
 "use client";
 
 import { FC, useState, useEffect } from "react";
-import { useDisclosure } from "@heroui/react";
-import { Button } from "@heroui/react";
+import { useDisclosure } from "@heroui/modal";
+import { Button } from "@heroui/button";
 import { useUser } from "@clerk/nextjs";
 import QuickAddEventModal from "./QuickAddEventModal";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";

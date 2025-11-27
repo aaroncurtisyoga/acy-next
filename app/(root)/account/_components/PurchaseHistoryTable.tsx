@@ -9,7 +9,7 @@ import {
   TableColumn,
   TableHeader,
   TableRow,
-} from "@heroui/react";
+} from "@heroui/table";
 import { OrderResponse } from "@/app/(root)/account/page";
 import TableEmpty from "@/app/_components/TableEmpty";
 import {

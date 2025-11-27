@@ -8,13 +8,12 @@ import {
   ModalHeader,
   ModalBody,
   ModalFooter,
-  Button,
-  Input,
-  Select,
-  SelectItem,
-  Checkbox,
-  addToast,
-} from "@heroui/react";
+} from "@heroui/modal";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Select, SelectItem } from "@heroui/select";
+import { Checkbox } from "@heroui/checkbox";
+import { addToast } from "@heroui/toast";
 import { Controller, useForm } from "react-hook-form";
 import { now, getLocalTimeZone } from "@internationalized/date";
 import { PlaceDetails } from "@/app/_lib/types";

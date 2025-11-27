@@ -4,7 +4,8 @@ import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { HeroUIProvider, ToastProvider } from "@heroui/react";
+import { HeroUIProvider } from "@heroui/system";
+import { ToastProvider } from "@heroui/toast";
 import { ThemeProvider, useTheme } from "next-themes";
 
 interface ProvidersProps {

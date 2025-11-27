@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@heroui/react";
+import { Input } from "@heroui/input";
 import { Search as SearchIcon } from "lucide-react";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
 import { track } from "@vercel/analytics";

@@ -1,5 +1,6 @@
-import React, { FC } from "react";
-import { Input, Switch } from "@heroui/react";
+import { FC } from "react";
+import { Input } from "@heroui/input";
+import { Switch } from "@heroui/switch";
 import { Control, Controller, FieldErrors, useWatch } from "react-hook-form";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 

@@ -1,6 +1,6 @@
 "use client";
 
-import React, { ReactNode, useEffect } from "react";
+import { ReactNode, useEffect } from "react";
 import { usePathname } from "next/navigation";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";

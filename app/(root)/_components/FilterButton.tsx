@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { SlidersHorizontal } from "lucide-react";
 
 interface FilterButtonProps {

@@ -1,15 +1,14 @@
 "use client";
 
 import { FC, useState } from "react";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
 import {
-  Button,
-  Card,
-  CardBody,
   Dropdown,
   DropdownTrigger,
   DropdownMenu,
   DropdownItem,
-} from "@heroui/react";
+} from "@heroui/dropdown";
 import { Check, Calendar } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineLink } from "react-icons/hi";

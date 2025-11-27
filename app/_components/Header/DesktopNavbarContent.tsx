@@ -3,7 +3,7 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavbarContent, NavbarItem } from "@heroui/react";
+import { NavbarContent, NavbarItem } from "@heroui/navbar";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 import { track } from "@vercel/analytics";
 // import { HiOutlineMail } from "react-icons/hi";

@@ -2,7 +2,10 @@
 
 import { FC, useEffect, useState, useRef } from "react";
 import { Category } from "@prisma/client";
-import { Button, Input, Card, CardBody, CardHeader, Chip } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Chip } from "@heroui/chip";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";

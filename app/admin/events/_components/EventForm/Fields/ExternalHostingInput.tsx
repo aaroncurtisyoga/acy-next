@@ -1,5 +1,6 @@
-import React, { FC } from "react";
-import { Input, Checkbox } from "@heroui/react";
+import { FC } from "react";
+import { Input } from "@heroui/input";
+import { Checkbox } from "@heroui/checkbox";
 import {
   Control,
   Controller,

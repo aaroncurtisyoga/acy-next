@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Skeleton } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Skeleton } from "@heroui/skeleton";
 
 const CheckoutSkeleton: React.FC = () => {
   return (

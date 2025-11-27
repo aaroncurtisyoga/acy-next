@@ -1,6 +1,7 @@
 "use client";
 
-import { Card, CardHeader, CardBody, Button } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 import { useRouter } from "next/navigation";
 import { Plus } from "lucide-react";

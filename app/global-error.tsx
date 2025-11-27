@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import Link from "next/link";
 import { Home, RefreshCw, ServerCrash } from "lucide-react";
 import Header from "@/app/_components/Header/Header";

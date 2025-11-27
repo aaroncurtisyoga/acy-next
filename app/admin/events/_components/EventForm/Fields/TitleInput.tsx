@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Input } from "@heroui/react";
+import { FC } from "react";
+import { Input } from "@heroui/input";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 

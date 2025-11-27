@@ -1,4 +1,5 @@
-import { Radio, cn } from "@heroui/react";
+import { Radio } from "@heroui/radio";
+import { cn } from "@/app/_lib/utils";
 
 export const CustomRadio = (props) => {
   const { children, ...otherProps } = props;

@@ -1,7 +1,7 @@
 "use client";
 
-import React, { FC } from "react";
-import { Autocomplete, AutocompleteItem } from "@heroui/react";
+import { FC, useState, useCallback } from "react";
+import { Autocomplete, AutocompleteItem } from "@heroui/autocomplete";
 import { Control, Controller, FieldErrors } from "react-hook-form";
 import { placeDetails } from "@/app/_lib/actions/google.actions";
 import useAutocompleteSuggestions from "@/app/_lib/hooks/useAutocompleteSuggestions";
@@ -25,7 +25,7 @@ const LocationInput: FC<LocationInputProps> = ({
 }) => {
   const { setSearchValue, suggestions, isLoading } =
     useAutocompleteSuggestions();
-  const [isLoadingDetails, setIsLoadingDetails] = React.useState(false);
+  const [isLoadingDetails, setIsLoadingDetails] = useState(false);
 
   const handleSelectLocation = async (placeId: string) => {
     if (!placeId || isLoadingDetails) return;
@@ -49,7 +49,7 @@ const LocationInput: FC<LocationInputProps> = ({
     }
   };
 
-  const onInputChange = React.useCallback(
+  const onInputChange = useCallback(
     (value: string) => {
       setSearchValue(value);
     },

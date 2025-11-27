@@ -1,16 +1,16 @@
 "use client";
 
 import { Dispatch, FC, SetStateAction, useState } from "react";
+import { Button } from "@heroui/button";
 import {
-  Button,
   Table,
   TableBody,
   TableCell,
   TableColumn,
   TableHeader,
   TableRow,
-  useDisclosure,
-} from "@heroui/react";
+} from "@heroui/table";
+import { useDisclosure } from "@heroui/modal";
 import { Category } from "@prisma/client";
 import BasicModal from "@/app/_components/BasicModal";
 import { deleteCategory } from "@/app/_lib/actions/category.actions";

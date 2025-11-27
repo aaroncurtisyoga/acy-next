@@ -2,7 +2,8 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Input, Button } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
 import { addNewsletterEntry } from "@/app/_lib/actions/newsletter.actions";
 import { NewsletterFormSchema } from "@/app/_lib/schema";
 import { z } from "zod";

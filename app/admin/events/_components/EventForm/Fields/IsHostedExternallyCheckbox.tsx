@@ -1,5 +1,5 @@
-import React, { FC } from "react";
-import { Checkbox } from "@heroui/react";
+import { FC } from "react";
+import { Checkbox } from "@heroui/checkbox";
 import { Control, Controller } from "react-hook-form";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 

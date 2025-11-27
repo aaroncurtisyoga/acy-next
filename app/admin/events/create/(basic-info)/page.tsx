@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { X } from "lucide-react";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import BasicInfo from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";

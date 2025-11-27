@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Avatar, AvatarGroup } from "@heroui/react";
+import { Avatar, AvatarGroup } from "@heroui/avatar";
 import { User } from "@prisma/client";
 
 interface AttendeesProps {

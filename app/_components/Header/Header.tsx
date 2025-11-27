@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Navbar } from "@heroui/react";
+import { Navbar } from "@heroui/navbar";
 import DesktopNavbarContent from "@/app/_components/Header/DesktopNavbarContent";
 import MobileNavbarContent from "@/app/_components/Header/MobileNavbarContent";
 import Logo from "@/app/_components/Header/Logo";

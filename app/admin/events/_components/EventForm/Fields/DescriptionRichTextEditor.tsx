@@ -1,4 +1,4 @@
-import React, { FC } from "react";
+import { FC } from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
 import Tiptap from "@/app/_components/Tiptap";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";

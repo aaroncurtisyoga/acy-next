@@ -1,6 +1,6 @@
 "use client";
 
-import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/react";
+import { Modal, ModalContent, ModalHeader, ModalBody } from "@heroui/modal";
 import NewsletterForm from "@/app/_components/NewsletterForm";
 
 interface NewsletterModalProps {

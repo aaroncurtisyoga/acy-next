@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Link as HeroUiLink } from "@heroui/react";
+import { Link as HeroUiLink } from "@heroui/link";
 import { instructorEmailAddress } from "@/app/_lib/constants";
 const RefundPolicy: FC = () => {
   return (

@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { SignIn, useAuth, useUser, SignOutButton } from "@clerk/nextjs";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { User } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";

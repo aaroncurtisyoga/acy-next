@@ -1,7 +1,8 @@
 "use client";
 
-import React, { FC } from "react";
-import { Button, Card, CardBody } from "@heroui/react";
+import { FC } from "react";
+import { Button } from "@heroui/button";
+import { Card, CardBody } from "@heroui/card";
 import { Minus, Plus } from "lucide-react";
 import { useController, useFormContext } from "react-hook-form";
 import {

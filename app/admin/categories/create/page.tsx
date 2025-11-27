@@ -1,7 +1,9 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Button, Input, Card, CardBody, CardHeader } from "@heroui/react";
+import { Button } from "@heroui/button";
+import { Input } from "@heroui/input";
+import { Card, CardBody, CardHeader } from "@heroui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";

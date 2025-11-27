@@ -1,5 +1,7 @@
+"use client";
+
 import Link from "next/link";
-import { Button } from "@heroui/react";
+import { Button } from "@heroui/button";
 import { Home, Search } from "lucide-react";
 
 export default function NotFound() {
