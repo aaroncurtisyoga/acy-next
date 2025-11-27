@@ -1,6 +1,6 @@
 "use client";
 
-import { ReactNode } from "react";
+import { ReactNode, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
@@ -16,15 +16,16 @@ interface ProvidersProps {
 function ThemedClerkProvider({ children }: { children: ReactNode }) {
   const { resolvedTheme } = useTheme();
 
-  return (
-    <ClerkProvider
-      appearance={{
-        baseTheme: resolvedTheme === "dark" ? dark : undefined,
-      }}
-    >
-      {children}
-    </ClerkProvider>
+  // Memoize appearance to prevent unnecessary re-renders
+  // resolvedTheme is undefined during SSR, so dark theme only applies client-side
+  const appearance = useMemo(
+    () => ({
+      baseTheme: resolvedTheme === "dark" ? dark : undefined,
+    }),
+    [resolvedTheme],
   );
+
+  return <ClerkProvider appearance={appearance}>{children}</ClerkProvider>;
 }
 
 export function Providers({ children }: ProvidersProps) {

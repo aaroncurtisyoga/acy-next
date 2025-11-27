@@ -33,10 +33,9 @@ export default function AdminDashboard() {
           return (
             <Card
               key={item.path}
-              isPressable
               isHoverable
               className="p-4 transition-all duration-200 cursor-pointer border border-divider hover:shadow-lg relative flex flex-col h-full"
-              onPress={() => handleCardClick(item.path)}
+              onClick={() => handleCardClick(item.path)}
             >
               <CardHeader className="flex flex-col items-center pb-2">
                 <div className="p-3 rounded-full bg-primary/10 mb-3">
@@ -51,24 +50,24 @@ export default function AdminDashboard() {
                   {getCardDescription(item.name)}
                 </p>
                 {(item.name === "Events" || item.name === "Categories") && (
-                  <div onClick={(e) => e.stopPropagation()}>
-                    <Button
-                      size="sm"
-                      color="primary"
-                      variant="flat"
-                      startContent={<Plus size={16} />}
-                      className="w-full mt-auto"
-                      onPress={() => {
-                        router.push(
-                          item.name === "Events"
-                            ? "/admin/events/create"
-                            : "/admin/categories/create",
-                        );
-                      }}
-                    >
-                      New
-                    </Button>
-                  </div>
+                  <Button
+                    size="sm"
+                    color="primary"
+                    variant="flat"
+                    startContent={<Plus size={16} />}
+                    className="w-full mt-auto"
+                    onPress={(e) => {
+                      e.continuePropagation?.();
+                      router.push(
+                        item.name === "Events"
+                          ? "/admin/events/create"
+                          : "/admin/categories/create",
+                      );
+                    }}
+                    onClick={(e) => e.stopPropagation()}
+                  >
+                    New
+                  </Button>
                 )}
               </CardBody>
             </Card>
