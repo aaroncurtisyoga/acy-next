@@ -9,20 +9,32 @@ import {
 
 export class EventDatabaseOperations {
   async batchUpsertEvents(eventUpdates: SyncEventData[], sourceType: string) {
+    // Deduplicate input array by sourceId (crawler may return same event multiple times
+    // when it appears in multiple month views, e.g., as a padding day)
+    const uniqueEventUpdates = Array.from(
+      new Map(eventUpdates.map((e) => [e.sourceId, e])).values(),
+    );
+
+    if (uniqueEventUpdates.length < eventUpdates.length) {
+      console.log(
+        `[Cron Sync] Deduplicated ${eventUpdates.length - uniqueEventUpdates.length} duplicate events from crawler input`,
+      );
+    }
+
     const existingEvents = await prisma.event.findMany({
       where: {
         sourceType,
-        sourceId: { in: eventUpdates.map((e) => e.sourceId) },
+        sourceId: { in: uniqueEventUpdates.map((e) => e.sourceId) },
       },
       select: { id: true, sourceId: true, googleEventId: true },
     });
 
     const existingMap = new Map(existingEvents.map((e) => [e.sourceId, e]));
 
-    const eventsToCreate = eventUpdates.filter(
+    const eventsToCreate = uniqueEventUpdates.filter(
       (e) => !existingMap.has(e.sourceId),
     );
-    const eventsToUpdate = eventUpdates.filter((e) =>
+    const eventsToUpdate = uniqueEventUpdates.filter((e) =>
       existingMap.has(e.sourceId),
     );
 
