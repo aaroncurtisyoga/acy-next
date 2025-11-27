@@ -23,46 +23,13 @@ This app is designed to help current and future yoga students:
 
 ## <a name="quick-start">Quick Start</a>
 
-Before getting started, create a `.env` file in the root of your project and set up the environment variables:
+### Environment Configuration
 
-```env
-[//]: # (Vercel Blob Storage for Images)
-BLOB_READ_WRITE_TOKEN=
-
-CLERK_SECRET_KEY=
-
-MAILCHIMP_API_KEY=
-MAILCHIMP_AUDIENCE_ID=
-MAILCHIMP_API_SERVER=
-
-MONGODB_URI=
-
-NEXT_PUBLIC_CLERK_AFTER_SIGN_IN_URL=/
-NEXT_PUBLIC_CLERK_AFTER_SIGN_UP_URL=/
-NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY=
-NEXT_PUBLIC_CLERK_SIGN_IN_URL=/sign-in
-NEXT_PUBLIC_CLERK_SIGN_UP_URL=/sign-up
-
-[//]: # (For Clerk)
-WEBHOOK_SECRET=
-
-[//]: # (For Stripe) https://dashboard.stripe.com/apikeys
-NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=
-STRIPE_SECRET_KEY=
-STRIPE_WEBHOOK_SECRET=
-
-NEXT_PUBLIC_SERVER_URL=
-
-[//]: # (For Cron Jobs)
-CRON_SECRET=
-
-[//]: # (For Browserless - Required for web scraping)
-BROWSERLESS_API_TOKEN=
-
-[//]: # (For ZoomShift - Required for DCBP class scraping)
-ZOOMSHIFT_EMAIL=your-zoomshift-email@example.com
-ZOOMSHIFT_PASSWORD=your-zoomshift-password
+```bash
+cp .env.example .env
 ```
+
+> For complete environment variable documentation, see [Environment Variables Reference Guide](docs/ENVIRONMENT_VARIABLES.md)
 
 ### Common Scripts
 
