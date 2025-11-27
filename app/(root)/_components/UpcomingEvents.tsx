@@ -58,34 +58,21 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
       {highlightedEventId && (
         <HighlightedEventScroller eventId={highlightedEventId} />
       )}
-      {/* Header with integrated calendar subscription */}
+      {/* Header */}
       <div className="mb-6 md:mb-8">
-        <div className="flex items-center gap-3 mb-3">
-          <h1
-            className={`text-3xl lg:text-4xl font-bold text-foreground-900 ${merriweather.className}`}
-          >
-            Let&#39;s Practice
-          </h1>
-        </div>
-        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
-          <p className="text-lg text-foreground-600 leading-relaxed">
-            All my upcoming classes and events – subscribe to add them to your
-            calendar
+        <h1
+          className={`text-3xl lg:text-4xl font-bold text-foreground-900 mb-3 ${merriweather.className}`}
+        >
+          Let&#39;s Practice
+        </h1>
+        <div className="flex items-center justify-between gap-3">
+          <p className="text-lg text-foreground-600">
+            {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
           </p>
-          <CalendarSubscriptionWrapper inline />
-        </div>
-      </div>
-
-      {/* Simple event count display */}
-      <div className="mb-6">
-        <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <div className="w-2 h-2 rounded-full bg-primary"></div>
-            <p className="font-semibold text-foreground-800">
-              {totalCount} upcoming event{totalCount !== 1 ? "s" : ""}
-            </p>
+            <CalendarSubscriptionWrapper inline />
+            <AddEventButton />
           </div>
-          <AddEventButton />
         </div>
       </div>
 

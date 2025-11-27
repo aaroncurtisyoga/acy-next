@@ -29,7 +29,7 @@ const SidebarMenu = () => {
             startContent={<link.icon size={18} />}
             textValue={link.name}
             variant="bordered"
-            className={`mb-2 ${pathname === link.path ? "bg-primary-100" : ""}`}
+            className={`mb-2 ${pathname === link.path ? "bg-primary-100 dark:bg-primary-800 dark:text-white" : ""}`}
             onPress={() => handleNavigation(link.path)}
           >
             {link.name}
