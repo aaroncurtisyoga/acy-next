@@ -112,7 +112,7 @@ const EventCardContent: FC<EventCardContentProps> = ({
 
           {/* Mobile Sign Up Link */}
           {!isEditing && (
-            <div className="@sm:hidden mt-2 pt-2 border-t border-divider">
+            <div className="@sm:hidden mt-2 pt-2 border-t border-divider text-right">
               <Link
                 href={signUpHref}
                 target="_blank"
