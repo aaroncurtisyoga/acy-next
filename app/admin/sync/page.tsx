@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Button } from "@heroui/button";
 
 type SyncSource = "bright-bear" | "dcbp";
@@ -11,9 +11,49 @@ interface SyncResult {
   isError: boolean;
 }
 
+interface SyncStatus {
+  brightBear: string | null;
+  dcbp: string | null;
+}
+
+function formatTimeAgo(dateString: string | null): string {
+  if (!dateString) return "Never";
+
+  const date = new Date(dateString);
+  const now = new Date();
+  const diffMs = now.getTime() - date.getTime();
+  const diffMins = Math.floor(diffMs / 60000);
+  const diffHours = Math.floor(diffMins / 60);
+  const diffDays = Math.floor(diffHours / 24);
+
+  if (diffMins < 1) return "Just now";
+  if (diffMins < 60)
+    return `${diffMins} minute${diffMins === 1 ? "" : "s"} ago`;
+  if (diffHours < 24)
+    return `${diffHours} hour${diffHours === 1 ? "" : "s"} ago`;
+  return `${diffDays} day${diffDays === 1 ? "" : "s"} ago`;
+}
+
 export default function SyncPage() {
   const [loading, setLoading] = useState<SyncSource | null>(null);
   const [results, setResults] = useState<SyncResult[]>([]);
+  const [syncStatus, setSyncStatus] = useState<SyncStatus | null>(null);
+
+  const fetchSyncStatus = useCallback(async () => {
+    try {
+      const response = await fetch("/api/admin/sync/status");
+      if (response.ok) {
+        const data = await response.json();
+        setSyncStatus(data);
+      }
+    } catch (error) {
+      console.error("Failed to fetch sync status:", error);
+    }
+  }, []);
+
+  useEffect(() => {
+    fetchSyncStatus();
+  }, [fetchSyncStatus]);
 
   const handleSync = async (source: SyncSource) => {
     setLoading(source);
@@ -26,7 +66,7 @@ export default function SyncPage() {
       const result: SyncResult = {
         source,
         message: data.success
-          ? data.message || "Sync completed successfully"
+          ? data.message || "Sync started"
           : `Error: ${data.error || "Sync failed"}`,
         isError: !data.success,
       };
@@ -35,6 +75,13 @@ export default function SyncPage() {
         const filtered = prev.filter((r) => r.source !== source);
         return [...filtered, result];
       });
+
+      // Refresh sync status after a delay to show updated "last synced" time
+      if (data.success) {
+        setTimeout(() => {
+          fetchSyncStatus();
+        }, 45000); // Check after 45 seconds (typical sync time)
+      }
     } catch (error: unknown) {
       const errorMessage =
         error instanceof Error ? error.message : "Unknown error";
@@ -63,9 +110,14 @@ export default function SyncPage() {
       <div className="max-w-2xl space-y-4">
         {/* Bright Bear Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">
-            Bright Bear Yoga Classes
-          </h2>
+          <div className="flex justify-between items-start mb-4">
+            <h2 className="text-xl font-semibold">Bright Bear Yoga Classes</h2>
+            {syncStatus && (
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Last synced: {formatTimeAgo(syncStatus.brightBear)}
+              </span>
+            )}
+          </div>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Sync Aaron Curtis&apos;s classes from Bright Bear Yoga DC. This will
             fetch the latest schedule from their Momence booking system and
@@ -78,7 +130,7 @@ export default function SyncPage() {
             size="lg"
           >
             {loading === "bright-bear"
-              ? "Syncing..."
+              ? "Starting..."
               : "Sync Bright Bear Classes"}
           </Button>
 
@@ -97,9 +149,16 @@ export default function SyncPage() {
 
         {/* DCBP Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
-          <h2 className="text-xl font-semibold mb-4">
-            DC Bouldering Project Classes
-          </h2>
+          <div className="flex justify-between items-start mb-4">
+            <h2 className="text-xl font-semibold">
+              DC Bouldering Project Classes
+            </h2>
+            {syncStatus && (
+              <span className="text-sm text-gray-500 dark:text-gray-400">
+                Last synced: {formatTimeAgo(syncStatus.dcbp)}
+              </span>
+            )}
+          </div>
           <p className="text-gray-600 dark:text-gray-400 mb-4">
             Sync Aaron Curtis&apos;s yoga classes from DC Bouldering Project.
             This will fetch the latest schedule from their ZoomShift system and
@@ -111,7 +170,7 @@ export default function SyncPage() {
             isLoading={loading === "dcbp"}
             size="lg"
           >
-            {loading === "dcbp" ? "Syncing..." : "Sync DCBP Classes"}
+            {loading === "dcbp" ? "Starting..." : "Sync DCBP Classes"}
           </Button>
 
           {getResult("dcbp") && (

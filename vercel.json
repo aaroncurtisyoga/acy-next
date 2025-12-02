@@ -1,5 +1,11 @@
 {
   "functions": {
+    "app/api/admin/sync/bright-bear/route.ts": {
+      "maxDuration": 60
+    },
+    "app/api/admin/sync/dcbp/route.ts": {
+      "maxDuration": 60
+    },
     "app/api/cron/sync-bright-bear/route.ts": {
       "maxDuration": 60
     },
