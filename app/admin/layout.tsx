@@ -3,6 +3,7 @@
 import { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 import SidebarMenu from "@/app/admin/_components/SidebarMenu";
+import ThemeToggle from "@/app/_components/ThemeToggle";
 import AdminProtection from "@/app/admin/_components/AdminProtection";
 
 interface AdminLayoutProps {
@@ -29,8 +30,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </aside>
 
         {/* Main content */}
-        <main className="flex-1 p-4 bg-background text-foreground">
-          {children}
+        <main className="flex-1 p-4 bg-background text-foreground flex flex-col">
+          <div className="flex-1">{children}</div>
+          <div className="mt-8 pt-4 border-t border-divider md:hidden">
+            <div className="flex justify-center">
+              <ThemeToggle />
+            </div>
+          </div>
         </main>
       </div>
     </AdminProtection>

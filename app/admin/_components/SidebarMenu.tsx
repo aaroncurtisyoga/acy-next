@@ -37,7 +37,7 @@ const SidebarMenu = () => {
         ))}
       </Listbox>
 
-      <div className="mt-auto pt-4 border-t border-divider">
+      <div className="mt-auto pt-4 border-t border-divider hidden md:block">
         <div className="flex justify-center">
           <ThemeToggle />
         </div>
