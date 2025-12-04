@@ -10,6 +10,10 @@ interface MomenceClass {
   price?: string;
 }
 
+interface ParsedClass extends MomenceClass {
+  dateParsingFailed?: boolean;
+}
+
 export class BrightBearCrawler {
   private baseUrl = "https://www.brightbearyogadc.com/book-a-class";
 
@@ -198,16 +202,20 @@ export class BrightBearCrawler {
           // Extract date from the date label preceding this article
           let dateTime = "";
 
-          // Look for preceding date label with stable class
-          const precedingTimeEl = article.previousElementSibling;
-          if (
-            precedingTimeEl &&
-            precedingTimeEl.classList.contains(
-              "momence-host_schedule-session_list-date_label",
-            )
-          ) {
-            const dateText = precedingTimeEl.textContent?.trim() || "";
-            dateTime = dateText.replace(/^(NEXT\s+|TUESDAY,\s*)/i, "").trim();
+          // Search backwards through siblings to find the nearest date label
+          // (Multiple classes on the same day share the same date label)
+          let sibling = article.previousElementSibling;
+          while (sibling) {
+            if (
+              sibling.classList.contains(
+                "momence-host_schedule-session_list-date_label",
+              )
+            ) {
+              const dateText = sibling.textContent?.trim() || "";
+              dateTime = dateText;
+              break;
+            }
+            sibling = sibling.previousElementSibling;
           }
 
           // Get the time from within the article using stable class
@@ -347,12 +355,30 @@ export class BrightBearCrawler {
         console.log("📅 Parsing class dates and times...");
       }
 
-      const aaronClasses = aaronRawClasses.map((cls, index) => {
+      const parsedClasses = aaronRawClasses.map((cls, index) => {
         console.log(
           `  [${index + 1}/${aaronRawClasses.length}] Parsing: ${cls.title} on ${cls.dateTime}`,
         );
         return this.parseClassData(cls);
       });
+
+      // Filter out classes where date parsing failed
+      const aaronClasses = parsedClasses.filter((cls) => {
+        if (cls.dateParsingFailed) {
+          console.warn(
+            `⚠️ Skipping class "${cls.title}" due to failed date parsing`,
+          );
+          return false;
+        }
+        return true;
+      });
+
+      const skippedCount = parsedClasses.length - aaronClasses.length;
+      if (skippedCount > 0) {
+        console.warn(
+          `⚠️ Skipped ${skippedCount} class(es) due to date parsing failures`,
+        );
+      }
 
       console.log(
         `🎯 Successfully parsed ${aaronClasses.length} Aaron Curtis classes`,
@@ -370,10 +396,10 @@ export class BrightBearCrawler {
     }
   }
 
-  private parseClassData(rawClass: any): MomenceClass {
-    const now = new Date();
-    let startDateTime = now;
-    let endDateTime = new Date(now.getTime() + 45 * 60 * 1000); // Default 45 min
+  private parseClassData(rawClass: any): ParsedClass {
+    let startDateTime: Date | null = null;
+    let endDateTime: Date | null = null;
+    let dateParsingFailed = true;
 
     // Instructor is already cleaned
     const instructor = rawClass.instructor || "Aaron Curtis";
@@ -495,6 +521,7 @@ export class BrightBearCrawler {
 
         if (!isNaN(parsedDate.getTime()) && parsedDate >= oneYearAgo) {
           startDateTime = parsedDate;
+          dateParsingFailed = false;
           console.log(
             `    ✅ Parsed start time: ${startDateTime.toLocaleString()}`,
           );
@@ -540,6 +567,7 @@ export class BrightBearCrawler {
             if (!isNaN(attemptParse.getTime())) {
               startDateTime = attemptParse;
               endDateTime = new Date(startDateTime.getTime() + 45 * 60 * 1000);
+              dateParsingFailed = false;
             }
           }
         }
@@ -551,6 +579,18 @@ export class BrightBearCrawler {
           rawClass.dateTime,
         );
       }
+    } else {
+      console.warn(`    ⚠️ No dateTime found for class: ${rawClass.title}`);
+    }
+
+    // If date parsing failed, use fallback values that will be filtered out
+    if (dateParsingFailed) {
+      console.warn(
+        `    ❌ Date parsing failed for class: ${rawClass.title}, will be filtered out`,
+      );
+      const now = new Date();
+      startDateTime = now;
+      endDateTime = new Date(now.getTime() + 45 * 60 * 1000);
     }
 
     // Use session ID for unique identification if available
@@ -568,10 +608,11 @@ export class BrightBearCrawler {
       id,
       title,
       instructor,
-      startDateTime,
-      endDateTime,
+      startDateTime: startDateTime!,
+      endDateTime: endDateTime!,
       bookingUrl: rawClass.bookingUrl || this.baseUrl,
       price: rawClass.price,
+      dateParsingFailed,
     };
   }
 }
