@@ -1,19 +1,8 @@
-"use client";
-
-import { Button } from "@heroui/button";
+import Link from "next/link";
 import { Card, CardBody, CardHeader } from "@heroui/card";
 import { adminDashboardLinks } from "@/app/_lib/constants";
-import { useRouter } from "next/navigation";
-import { Plus } from "lucide-react";
 
 export default function AdminDashboard() {
-  const router = useRouter();
-
-  const handleCardClick = (path: string) => {
-    router.push(path);
-  };
-
-  // Show all admin links as cards
   const dashboardCards = adminDashboardLinks;
 
   return (
@@ -31,46 +20,26 @@ export default function AdminDashboard() {
         {dashboardCards.map((item) => {
           const IconComponent = item.icon;
           return (
-            <Card
-              key={item.path}
-              isHoverable
-              className="p-4 transition-all duration-200 cursor-pointer border border-divider hover:shadow-lg relative flex flex-col h-full"
-              onClick={() => handleCardClick(item.path)}
-            >
-              <CardHeader className="flex flex-col items-center pb-2">
-                <div className="p-3 rounded-full bg-primary/10 mb-3">
-                  <IconComponent size={32} className="text-primary" />
-                </div>
-                <h3 className="text-xl font-semibold text-foreground">
-                  {item.name}
-                </h3>
-              </CardHeader>
-              <CardBody className="pt-0 flex flex-col flex-grow">
-                <p className="text-sm text-foreground-500 text-center mb-3 flex-grow">
-                  {getCardDescription(item.name)}
-                </p>
-                {(item.name === "Events" || item.name === "Categories") && (
-                  <Button
-                    size="sm"
-                    color="primary"
-                    variant="flat"
-                    startContent={<Plus size={16} />}
-                    className="w-full mt-auto"
-                    onPress={(e) => {
-                      e.continuePropagation?.();
-                      router.push(
-                        item.name === "Events"
-                          ? "/admin/events/create"
-                          : "/admin/categories/create",
-                      );
-                    }}
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    New
-                  </Button>
-                )}
-              </CardBody>
-            </Card>
+            <Link key={item.path} href={item.path} className="block">
+              <Card
+                isHoverable
+                className="p-4 transition-all duration-200 cursor-pointer border border-divider hover:shadow-lg relative flex flex-col h-full"
+              >
+                <CardHeader className="flex flex-col items-center pb-2">
+                  <div className="p-3 rounded-full bg-primary/10 mb-3">
+                    <IconComponent size={32} className="text-primary" />
+                  </div>
+                  <h3 className="text-xl font-semibold text-foreground">
+                    {item.name}
+                  </h3>
+                </CardHeader>
+                <CardBody className="pt-0 flex flex-col flex-grow">
+                  <p className="text-sm text-foreground-500 text-center flex-grow">
+                    {getCardDescription(item.name)}
+                  </p>
+                </CardBody>
+              </Card>
+            </Link>
           );
         })}
       </div>

@@ -216,3 +216,20 @@ export * from "./validation";
 export const isDate = (date: any): date is Date => {
   return date instanceof Date;
 };
+
+export const isToday = (dateInput: Date | string): boolean => {
+  const today = new Date();
+  const eventDate =
+    typeof dateInput === "string" ? new Date(dateInput) : dateInput;
+  const todayET = new Date(
+    today.toLocaleString("en-US", { timeZone: "America/New_York" }),
+  );
+  const eventET = new Date(
+    eventDate.toLocaleString("en-US", { timeZone: "America/New_York" }),
+  );
+  return (
+    todayET.getDate() === eventET.getDate() &&
+    todayET.getMonth() === eventET.getMonth() &&
+    todayET.getFullYear() === eventET.getFullYear()
+  );
+};
