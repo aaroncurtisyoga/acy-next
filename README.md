@@ -310,8 +310,16 @@ This application uses [Playwright](https://playwright.dev/) for end-to-end testi
 
   > **Note**: The development server must be running prior to executing this command.
 
-- **Automated Testing**:
-  A GitHub Action is set up to automatically run these tests whenever the application is deployed to both development and production environments.
+- **CI Smoke Tests**:
+  GitHub Actions run a focused smoke test on every push to `dev` and on PRs to `main`. The smoke test verifies:
+  - The landing page loads without server errors (no 500s)
+  - The page title is correct
+  - At least one event is displayed
+
+  This lightweight test runs in ~15-25 seconds and catches critical runtime errors before they reach production. A separate workflow runs the same smoke test after production deployments to verify the live site.
+
+- **Full Test Suite**:
+  Additional tests for header navigation, footer, and other components are available locally but not run in CI to keep deployment times fast.
 
 - **IDE Recommendation**:
   Regardless of your preferred IDE, it is recommended to leverage the [Playwright Test extension for Visual Studio Code](https://marketplace.visualstudio.com/items?itemName=ms-playwright.playwright). This extension provides a comprehensive set of tools for efficiently running and monitoring tests.
