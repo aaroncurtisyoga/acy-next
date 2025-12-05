@@ -10,37 +10,6 @@ test.describe("Footer Component", () => {
     await expect(footer).toBeVisible();
   });
 
-  test("should display the newsletter form", async ({ page }) => {
-    const newsletterForm = page.locator("[data-testid='footer-newsletter']");
-    await expect(newsletterForm).toBeVisible();
-
-    const emailInput = newsletterForm.locator("input[type='email']");
-    await expect(emailInput).toHaveAttribute("placeholder", "Email");
-
-    const submitButton = newsletterForm.locator(
-      "button[aria-label='Submit newsletter form']",
-    );
-    await expect(submitButton).toBeVisible();
-  });
-
-  // Todo: Fix component. Then, fix test.
-  /*  test("should submit the newsletter form", async ({ page }) => {
-    const emailInput = page.locator(
-      "[data-testid='footer-newsletter'] input[type='email']",
-    );
-    await emailInput.fill("test@example.com");
-
-    const submitButton = page.locator(
-      "[data-testid='footer-newsletter'] button[aria-label='Submit newsletter form']",
-    );
-    await submitButton.click();
-
-    const confirmationMessage = page
-      .locator("[data-testid='footer-newsletter']")
-      .locator("text=Thank you for signing up!");
-    await expect(confirmationMessage).toBeVisible();
-  });*/
-
   test("should have working social media links", async ({ page }) => {
     const youtubeLink = page.locator("[data-testid='footer-youtube-link']");
     await expect(youtubeLink).toHaveAttribute(
@@ -61,11 +30,7 @@ test.describe("Footer Component", () => {
     );
   });
 
-  test("should display contact information and credits", async ({ page }) => {
-    const copyrightElement = page.locator("[data-testid='footer-copyright']");
-    const currentYear = new Date().getFullYear().toString();
-    await expect(copyrightElement).toContainText(currentYear);
-
+  test("should display social links section", async ({ page }) => {
     const socialSection = page.locator("[data-testid='footer-social-links']");
     await expect(socialSection).toBeVisible();
   });

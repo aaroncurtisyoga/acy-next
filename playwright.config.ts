@@ -44,11 +44,13 @@ export default defineConfig({
     //   use: { ...devices["iPhone 12"] },
     // },
   ],
-  /* Run your local dev server before starting the tests */
-  webServer: {
-    command: "npm run dev",
-    url: "http://localhost:3000",
-    reuseExistingServer: !process.env.CI,
-  },
+  /* Run your local dev server before starting the tests (skip in CI when testing against deployed URL) */
+  webServer: process.env.CI
+    ? undefined
+    : {
+        command: "npm run dev",
+        url: "http://localhost:3000",
+        reuseExistingServer: true,
+      },
   globalSetup: require.resolve("./e2e/global.setup.ts"),
 });
