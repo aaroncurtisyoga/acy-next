@@ -13,6 +13,7 @@ import {
 import { useDisclosure } from "@heroui/modal";
 import { Category } from "@prisma/client";
 import BasicModal from "@/app/_components/BasicModal";
+import CategoryCard from "@/app/admin/categories/_components/CategoryCard";
 import { deleteCategory } from "@/app/_lib/actions/category.actions";
 import { handleError } from "@/app/_lib/utils";
 import { Trash2 } from "lucide-react";
@@ -43,11 +44,28 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
     }
   };
 
+  const handleCategoryDeleteClick = (category: Category) => {
+    setCategoryToDelete(category);
+    onOpen();
+  };
+
   return (
     <>
+      {/* Mobile: Cards */}
+      <div className="md:hidden space-y-3 mt-2">
+        {categories.map((category: Category) => (
+          <CategoryCard
+            key={category.id}
+            category={category}
+            onDeleteClick={handleCategoryDeleteClick}
+          />
+        ))}
+      </div>
+
+      {/* Desktop: Table */}
       <Table
         aria-label={"Table for Managing Event Categories"}
-        className={"mt-2"}
+        className={"mt-2 hidden md:table"}
       >
         <TableHeader>
           <TableColumn>Category Name</TableColumn>
@@ -63,10 +81,7 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
                   size="sm"
                   color="danger"
                   variant="light"
-                  onPress={() => {
-                    onOpen();
-                    setCategoryToDelete(category);
-                  }}
+                  onPress={() => handleCategoryDeleteClick(category)}
                   aria-label={`Delete ${category.name}`}
                 >
                   <Trash2 className="w-4 h-4" />
