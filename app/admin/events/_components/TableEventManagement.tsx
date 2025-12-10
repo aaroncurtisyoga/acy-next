@@ -29,6 +29,7 @@ import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
 import TableLoading from "@/app/_components/TableLoading";
 import EventTableToolbar from "@/app/admin/events/_components/EventTableToolbar";
+import EventManagementCard from "@/app/admin/events/_components/EventManagementCard";
 import { useEventTableFilters } from "@/app/admin/events/_components/hooks/useEventTableFilters";
 import { useEventTableData } from "@/app/admin/events/_components/hooks/useEventTableData";
 import { TableEventManagementColumns } from "@/app/_lib/constants";
@@ -121,144 +122,160 @@ const TableEventManagement: FC = () => {
           }
         />
       ) : (
-        <Table
-          aria-label="Table for Managing Events"
-          classNames={{ wrapper: "min-h-[400px]" }}
-        >
-          <TableHeader>
-            {TableEventManagementColumns.map((column) => (
-              <TableColumn key={column}>{column}</TableColumn>
-            ))}
-          </TableHeader>
-          <TableBody>
+        <>
+          {/* Mobile: Cards */}
+          <div className="md:hidden space-y-3">
             {events.map((event) => (
-              <TableRow key={event.id} className="hover:bg-default-50">
-                <TableCell>
-                  <div className="space-y-1">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={14} className="text-default-400" />
-                      <span className="font-medium">
-                        {formatDateTime(event.startDateTime).dateOnly}
-                      </span>
-                    </div>
-                    <p className="text-xs text-default-400">
-                      {formatDateTime(event.startDateTime).timeOnly}
-                    </p>
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="space-y-2">
-                    <div className="flex items-start gap-2">
-                      <p className="font-medium">{event.title}</p>
-                      {event.isExternal && (
-                        <Tooltip content="Synced from external source">
-                          <ExternalLink
-                            size={14}
-                            className="text-default-400 mt-0.5"
-                          />
-                        </Tooltip>
-                      )}
-                    </div>
-                    {event.location && (
-                      <div className="flex items-center gap-1">
-                        <MapPin size={12} className="text-default-400" />
-                        <p className="text-xs text-default-500">
-                          {event.location.name ||
-                            event.location.formattedAddress}
+              <EventManagementCard
+                key={event.id}
+                event={event}
+                onDeleteClick={onDeleteClick}
+              />
+            ))}
+          </div>
+
+          {/* Desktop: Table */}
+          <div className="hidden md:block">
+            <Table
+              aria-label="Table for Managing Events"
+              classNames={{ wrapper: "min-h-[400px]" }}
+            >
+              <TableHeader>
+                {TableEventManagementColumns.map((column) => (
+                  <TableColumn key={column}>{column}</TableColumn>
+                ))}
+              </TableHeader>
+              <TableBody>
+                {events.map((event) => (
+                  <TableRow key={event.id} className="hover:bg-default-50">
+                    <TableCell>
+                      <div className="space-y-1">
+                        <div className="flex items-center gap-2">
+                          <Calendar size={14} className="text-default-400" />
+                          <span className="font-medium">
+                            {formatDateTime(event.startDateTime).dateOnly}
+                          </span>
+                        </div>
+                        <p className="text-xs text-default-400">
+                          {formatDateTime(event.startDateTime).timeOnly}
                         </p>
                       </div>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <Chip variant="flat" color="primary" size="sm">
-                    {event.category.name}
-                  </Chip>
-                </TableCell>
-                <TableCell>
-                  <div className="flex flex-wrap gap-2">
-                    <Chip
-                      variant="dot"
-                      color={event.isActive ? "success" : "default"}
-                      size="sm"
-                    >
-                      {event.isActive ? "Active" : "Inactive"}
-                    </Chip>
-                    {event.isFree ? (
-                      <Chip variant="flat" color="success" size="sm">
-                        Free
+                    </TableCell>
+                    <TableCell>
+                      <div className="space-y-2">
+                        <div className="flex items-start gap-2">
+                          <p className="font-medium">{event.title}</p>
+                          {event.isExternal && (
+                            <Tooltip content="Synced from external source">
+                              <ExternalLink
+                                size={14}
+                                className="text-default-400 mt-0.5"
+                              />
+                            </Tooltip>
+                          )}
+                        </div>
+                        {event.location && (
+                          <div className="flex items-center gap-1">
+                            <MapPin size={12} className="text-default-400" />
+                            <p className="text-xs text-default-500">
+                              {event.location.name ||
+                                event.location.formattedAddress}
+                            </p>
+                          </div>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <Chip variant="flat" color="primary" size="sm">
+                        {event.category.name}
                       </Chip>
-                    ) : (
-                      event.price && (
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex flex-wrap gap-2">
                         <Chip
-                          variant="flat"
-                          color="warning"
+                          variant="dot"
+                          color={event.isActive ? "success" : "default"}
                           size="sm"
-                          startContent={<DollarSign size={12} />}
                         >
-                          {event.price}
+                          {event.isActive ? "Active" : "Inactive"}
                         </Chip>
-                      )
-                    )}
-                    {event.maxAttendees && (
-                      <Chip
-                        variant="flat"
-                        color="default"
-                        size="sm"
-                        startContent={<Users size={12} />}
-                      >
-                        {event.maxAttendees}
-                      </Chip>
-                    )}
-                  </div>
-                </TableCell>
-                <TableCell>
-                  <div className="flex items-center gap-1">
-                    {!event.isExternal && (
-                      <Tooltip content="View">
-                        <Button
-                          as={Link}
-                          href={`/events/${event.id}`}
-                          isIconOnly
-                          size="sm"
-                          variant="light"
-                          aria-label="View event"
-                        >
-                          <Eye size={18} />
-                        </Button>
-                      </Tooltip>
-                    )}
-                    <Tooltip content="Edit">
-                      <Button
-                        as={Link}
-                        href={`/admin/events/${event.id}/edit`}
-                        isIconOnly
-                        size="sm"
-                        variant="light"
-                        color="primary"
-                        aria-label="Edit event"
-                      >
-                        <Pencil size={18} />
-                      </Button>
-                    </Tooltip>
-                    <Tooltip content="Delete">
-                      <Button
-                        isIconOnly
-                        size="sm"
-                        variant="light"
-                        color="danger"
-                        aria-label="Delete event"
-                        onPress={() => onDeleteClick(event)}
-                      >
-                        <Trash2 size={18} />
-                      </Button>
-                    </Tooltip>
-                  </div>
-                </TableCell>
-              </TableRow>
-            ))}
-          </TableBody>
-        </Table>
+                        {event.isFree ? (
+                          <Chip variant="flat" color="success" size="sm">
+                            Free
+                          </Chip>
+                        ) : (
+                          event.price && (
+                            <Chip
+                              variant="flat"
+                              color="warning"
+                              size="sm"
+                              startContent={<DollarSign size={12} />}
+                            >
+                              {event.price}
+                            </Chip>
+                          )
+                        )}
+                        {event.maxAttendees && (
+                          <Chip
+                            variant="flat"
+                            color="default"
+                            size="sm"
+                            startContent={<Users size={12} />}
+                          >
+                            {event.maxAttendees}
+                          </Chip>
+                        )}
+                      </div>
+                    </TableCell>
+                    <TableCell>
+                      <div className="flex items-center gap-1">
+                        {!event.isExternal && (
+                          <Tooltip content="View">
+                            <Button
+                              as={Link}
+                              href={`/events/${event.id}`}
+                              isIconOnly
+                              size="sm"
+                              variant="light"
+                              aria-label="View event"
+                            >
+                              <Eye size={18} />
+                            </Button>
+                          </Tooltip>
+                        )}
+                        <Tooltip content="Edit">
+                          <Button
+                            as={Link}
+                            href={`/admin/events/${event.id}/edit`}
+                            isIconOnly
+                            size="sm"
+                            variant="light"
+                            color="primary"
+                            aria-label="Edit event"
+                          >
+                            <Pencil size={18} />
+                          </Button>
+                        </Tooltip>
+                        <Tooltip content="Delete">
+                          <Button
+                            isIconOnly
+                            size="sm"
+                            variant="light"
+                            color="danger"
+                            aria-label="Delete event"
+                            onPress={() => onDeleteClick(event)}
+                          >
+                            <Trash2 size={18} />
+                          </Button>
+                        </Tooltip>
+                      </div>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </div>
+        </>
       )}
 
       {totalPages > 1 && (

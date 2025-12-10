@@ -15,6 +15,7 @@ import { Trash2 } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
 import TableLoading from "@/app/_components/TableLoading";
+import UserManagementCard from "@/app/admin/users/_components/UserManagementCard";
 import { deleteUser, getAllUsers } from "@/app/_lib/actions/user.actions";
 import { TableManageUsersColumns } from "@/app/_lib/constants";
 import { handleError } from "@/app/_lib/utils";
@@ -61,6 +62,11 @@ const ManageUsersTable: FC = () => {
     return <TableLoading columns={TableManageUsersColumns} />;
   }
 
+  const handleUserDeleteClick = (user: any) => {
+    setSelectedUser(user);
+    onOpen();
+  };
+
   if (!users.length) {
     return (
       <TableEmpty
@@ -72,7 +78,22 @@ const ManageUsersTable: FC = () => {
 
   return (
     <>
-      <Table aria-label={"Table for Managing Users"} className={"mt-5"}>
+      {/* Mobile: Cards */}
+      <div className="md:hidden space-y-3 mt-5">
+        {users.map((user) => (
+          <UserManagementCard
+            key={user.id}
+            user={user}
+            onDeleteClick={handleUserDeleteClick}
+          />
+        ))}
+      </div>
+
+      {/* Desktop: Table */}
+      <Table
+        aria-label={"Table for Managing Users"}
+        className={"mt-5 hidden md:table"}
+      >
         <TableHeader>
           {TableManageUsersColumns.map((column) => (
             <TableColumn key={column}>{column}</TableColumn>
@@ -90,10 +111,7 @@ const ManageUsersTable: FC = () => {
                   <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
                     <Trash2
                       size={16}
-                      onClick={() => {
-                        setSelectedUser(user);
-                        onOpen();
-                      }}
+                      onClick={() => handleUserDeleteClick(user)}
                     />
                   </span>
                 </Tooltip>

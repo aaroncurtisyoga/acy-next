@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@heroui/table";
 import { Order, User, Event } from "@prisma/client";
+import OrderCard from "@/app/admin/events/orders/_components/OrderCard";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 
 type OrderWithEventFieldsAndUserFields = Order & {
@@ -21,18 +22,34 @@ interface OrdersTableProps {
   orders: OrderWithEventFieldsAndUserFields[];
 }
 const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
+  if (!orders.length) {
+    return (
+      <p className="text-default-500 text-center py-8">
+        No orders have been placed just yet.
+      </p>
+    );
+  }
+
   return (
-    <Table aria-label={"Table for Orders"}>
-      <TableHeader>
-        <TableColumn>Order ID</TableColumn>
-        <TableColumn>Event Title</TableColumn>
-        <TableColumn>Buyer</TableColumn>
-        <TableColumn>Date</TableColumn>
-        <TableColumn>Amount</TableColumn>
-      </TableHeader>
-      <TableBody>
-        {orders.length ? (
-          orders.map((order) => (
+    <>
+      {/* Mobile: Cards */}
+      <div className="md:hidden space-y-3">
+        {orders.map((order) => (
+          <OrderCard key={order.id} order={order} />
+        ))}
+      </div>
+
+      {/* Desktop: Table */}
+      <Table aria-label={"Table for Orders"} className="hidden md:table">
+        <TableHeader>
+          <TableColumn>Order ID</TableColumn>
+          <TableColumn>Event Title</TableColumn>
+          <TableColumn>Buyer</TableColumn>
+          <TableColumn>Date</TableColumn>
+          <TableColumn>Amount</TableColumn>
+        </TableHeader>
+        <TableBody>
+          {orders.map((order) => (
             <TableRow key={order.id}>
               <TableCell>{order.id}</TableCell>
               <TableCell>{order.event.title}</TableCell>
@@ -44,16 +61,10 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
               </TableCell>
               <TableCell>{formatPrice(order.totalAmount)}</TableCell>
             </TableRow>
-          ))
-        ) : (
-          <TableRow>
-            <TableCell colSpan={5}>
-              No orders have been placed just yet.
-            </TableCell>
-          </TableRow>
-        )}
-      </TableBody>
-    </Table>
+          ))}
+        </TableBody>
+      </Table>
+    </>
   );
 };
 
