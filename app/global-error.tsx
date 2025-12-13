@@ -6,7 +6,6 @@ import { Home, RefreshCw, ServerCrash } from "lucide-react";
 import Header from "@/app/_components/Header/Header";
 import Footer from "@/app/_components/Footer";
 import { instructorEmailAddress } from "@/app/_lib/constants";
-import { robotoFlex } from "@/app/fonts";
 import { Providers } from "@/app/providers";
 import "./globals.css";
 
@@ -19,7 +18,7 @@ export default function GlobalError({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${robotoFlex.className}`} suppressHydrationWarning>
+      <body className="font-sans" suppressHydrationWarning>
         <Providers>
           <div className="min-h-screen flex flex-col bg-white dark:bg-[#0a0a0a]">
             <Header />
