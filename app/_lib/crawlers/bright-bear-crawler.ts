@@ -160,6 +160,7 @@ export class BrightBearCrawler {
           articlesWithDate: 0,
           articlesWithPrice: 0,
           articlesProcessed: 0,
+          cancelledClasses: 0,
         };
 
         // Target the specific class article elements in the Momence session list
@@ -171,6 +172,29 @@ export class BrightBearCrawler {
         console.log(`Found ${classElements.length} class articles`);
 
         classElements.forEach((article: any) => {
+          // Check if the class is cancelled
+          // Cancelled classes have "cancel" in their text/HTML or disabled book buttons
+          const fullText = article.textContent?.toLowerCase() || "";
+          const outerHTML = article.outerHTML?.toLowerCase() || "";
+          const isCancelled =
+            fullText.includes("cancel") || outerHTML.includes("cancel");
+
+          // Also check if book button is disabled (another indicator of cancelled class)
+          const bookButton = article.querySelector('a[href*="momence.com/s/"]');
+          const isBookButtonDisabled =
+            bookButton?.classList?.contains("disabled") ||
+            bookButton?.getAttribute("disabled") !== null ||
+            bookButton?.getAttribute("aria-disabled") === "true";
+
+          if (isCancelled || isBookButtonDisabled) {
+            const sessionId = article.getAttribute("data-session_id") || "";
+            console.log(
+              `Skipping cancelled class (session ${sessionId}): cancel=${isCancelled}, buttonDisabled=${isBookButtonDisabled}`,
+            );
+            debugInfo.cancelledClasses++;
+            return; // Skip this class
+          }
+
           // Extract class title - use stable momence class and fallback to h4
           const titleEl = article.querySelector(
             ".momence-host_schedule-session_list-item-title, h4",
@@ -322,6 +346,9 @@ export class BrightBearCrawler {
         );
         console.log(`  - Articles with date: ${debugInfo.articlesWithDate}`);
         console.log(`  - Articles with price: ${debugInfo.articlesWithPrice}`);
+        console.log(
+          `  - Cancelled classes skipped: ${debugInfo.cancelledClasses}`,
+        );
       }
       if (Array.isArray(extractedClasses) && extractedClasses.length > 0) {
         console.log("📝 Sample class data:", extractedClasses[0]);
