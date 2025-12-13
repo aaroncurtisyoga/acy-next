@@ -9,6 +9,10 @@ module.exports = {
   ],
   theme: {
     extend: {
+      fontFamily: {
+        sans: ["var(--font-roboto-flex)", "sans-serif"],
+        serif: ["var(--font-merriweather)", "serif"],
+      },
       screens: {
         md: "768px",
         lg: "1024px",
