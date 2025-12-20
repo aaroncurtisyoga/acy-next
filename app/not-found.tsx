@@ -6,7 +6,7 @@ import { Home, Search } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="min-h-screen flex items-center justify-center px-6 py-12">
+    <div className="min-h-screen flex items-center justify-center px-4 md:px-6 py-12">
       <div className="max-w-2xl w-full text-center">
         {/* 404 Display */}
         <div className="mb-8">

@@ -46,7 +46,7 @@ const UpcomingEvents: FC<UpcomingEventsProps> = async ({ searchParams }) => {
   const hasEvents = filteredData.length > 0 || highlightedEvent !== null;
 
   return (
-    <div className="flex flex-col px-6 py-5 pb-8 lg:px-12 lg:py-10 lg:pb-16">
+    <div className="flex flex-col px-4 md:px-6 py-5 pb-8 lg:px-12 lg:py-10 lg:pb-16">
       {highlightedEventId && (
         <HighlightedEventScroller eventId={highlightedEventId} />
       )}

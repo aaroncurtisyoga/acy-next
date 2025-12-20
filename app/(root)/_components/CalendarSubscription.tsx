@@ -53,44 +53,67 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
     window.open(googleCalendarUrl, "_blank");
   };
 
+  const dropdownMenu = (
+    <DropdownMenu aria-label="Calendar subscription options">
+      <DropdownItem
+        key="google"
+        startContent={<FcGoogle className="w-4 h-4" />}
+        description="Subscribe with Google Calendar"
+        onPress={handleGoogleCalendarClick}
+      >
+        Google Calendar
+      </DropdownItem>
+      <DropdownItem
+        key="ical"
+        startContent={
+          copiedIcal ? (
+            <Check className="w-4 h-4" />
+          ) : (
+            <HiOutlineLink className="w-4 h-4" />
+          )
+        }
+        description="Copy link for Apple Calendar, Outlook, etc."
+        onPress={handleCopyIcal}
+      >
+        {copiedIcal ? "Copied!" : "Copy iCal Link"}
+      </DropdownItem>
+    </DropdownMenu>
+  );
+
   const dropdownButton = (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button
-          variant="solid"
-          color="primary"
-          startContent={<Calendar className="w-4 h-4" />}
-          size="sm"
-          className="font-medium min-w-[140px] @sm:min-w-fit"
-        >
-          Sync Calendar
-        </Button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Calendar subscription options">
-        <DropdownItem
-          key="google"
-          startContent={<FcGoogle className="w-4 h-4" />}
-          description="Subscribe with Google Calendar"
-          onPress={handleGoogleCalendarClick}
-        >
-          Google Calendar
-        </DropdownItem>
-        <DropdownItem
-          key="ical"
-          startContent={
-            copiedIcal ? (
-              <Check className="w-4 h-4" />
-            ) : (
-              <HiOutlineLink className="w-4 h-4" />
-            )
-          }
-          description="Copy link for Apple Calendar, Outlook, etc."
-          onPress={handleCopyIcal}
-        >
-          {copiedIcal ? "Copied!" : "Copy iCal Link"}
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+    <>
+      {/* Mobile: Compact button with "Sync" */}
+      <Dropdown>
+        <DropdownTrigger>
+          <Button
+            variant="solid"
+            color="primary"
+            size="sm"
+            startContent={<Calendar className="w-4 h-4" />}
+            className="md:hidden"
+          >
+            Sync
+          </Button>
+        </DropdownTrigger>
+        {dropdownMenu}
+      </Dropdown>
+
+      {/* Desktop: Full button with text */}
+      <Dropdown>
+        <DropdownTrigger>
+          <Button
+            variant="solid"
+            color="primary"
+            startContent={<Calendar className="w-4 h-4" />}
+            size="sm"
+            className="hidden md:flex font-medium"
+          >
+            Sync Calendar
+          </Button>
+        </DropdownTrigger>
+        {dropdownMenu}
+      </Dropdown>
+    </>
   );
 
   // If inline mode, return just the button

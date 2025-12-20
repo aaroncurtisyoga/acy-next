@@ -75,7 +75,7 @@ const Header: FC = () => {
         className="shadow-sm static border-b border-slate-200 dark:border-slate-700"
         classNames={{
           base: "static",
-          wrapper: "px-6 lg:px-12 py-4",
+          wrapper: "px-4 md:px-6 lg:px-12 py-4",
           item: [
             "flex",
             "relative",
