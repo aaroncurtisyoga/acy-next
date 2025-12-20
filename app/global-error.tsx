@@ -23,7 +23,7 @@ export default function GlobalError({
           <div className="min-h-screen flex flex-col bg-white dark:bg-[#0a0a0a]">
             <Header />
             <main className="flex-1 flex items-center justify-center bg-white dark:bg-[#0a0a0a]">
-              <div className="max-w-2xl w-full text-center px-6 py-12">
+              <div className="max-w-2xl w-full text-center px-4 md:px-6 py-12">
                 {/* Error Display */}
                 <div className="mb-8">
                   <div className="flex justify-center mb-6">

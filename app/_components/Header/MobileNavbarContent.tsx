@@ -50,7 +50,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
 
       <NavbarMenu
         data-testid="navbar-menu-mobile"
-        className="bg-white dark:bg-black shadow-xl px-6 py-4 overflow-y-auto"
+        className="bg-white dark:bg-black shadow-xl px-4 py-4 overflow-y-auto"
       >
         <MobileNavUserSection
           isSignedIn={isSignedIn}
