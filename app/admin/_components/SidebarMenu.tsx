@@ -5,14 +5,18 @@ import { Listbox, ListboxItem } from "@heroui/listbox";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 import ThemeToggle from "@/app/_components/ThemeToggle";
 
-const SidebarMenu = () => {
+interface SidebarMenuProps {
+  onClose?: () => void;
+}
+
+const SidebarMenu = ({ onClose }: SidebarMenuProps) => {
   const pathname = usePathname();
   const router = useRouter();
 
   // Function to handle navigation
   const handleNavigation = (path: string) => {
-    console.log("Navigating to:", path);
     router.push(path);
+    onClose?.();
   };
 
   return (
