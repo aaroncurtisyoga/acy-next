@@ -1,15 +1,29 @@
 "use server";
 
+import { list } from "@vercel/blob";
+import { auth, currentUser } from "@clerk/nextjs/server";
+
 export const getImages = async () => {
   try {
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_SERVER_URL}/api/get-blobs`,
-    );
-    if (!response.ok) throw new Error("Error fetching images");
-    return await response.json();
+    const { userId } = await auth();
+
+    if (!userId) {
+      throw new Error("Unauthorized");
+    }
+
+    const user = await currentUser();
+    const isAdmin = user?.publicMetadata?.role === "admin";
+
+    if (!isAdmin) {
+      throw new Error("Forbidden");
+    }
+
+    const { blobs } = await list();
+    return blobs;
   } catch (e) {
     if (e instanceof Error) {
       console.error(e.message);
     }
+    return [];
   }
 };
