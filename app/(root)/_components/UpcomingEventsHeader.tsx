@@ -1,6 +1,5 @@
 import { FC } from "react";
 import CalendarSubscriptionWrapper from "@/app/(root)/_components/CalendarSubscriptionWrapper";
-import AddEventButton from "@/app/(root)/_components/AddEventButton";
 
 const UpcomingEventsHeader: FC = () => {
   return (
@@ -10,7 +9,6 @@ const UpcomingEventsHeader: FC = () => {
       </h1>
       <div className="flex items-center gap-2">
         <CalendarSubscriptionWrapper inline />
-        <AddEventButton />
       </div>
     </div>
   );
