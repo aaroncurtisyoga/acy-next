@@ -281,12 +281,14 @@ export class DCBPCrawler {
 
         console.log(`📊 ${monthText} extraction results:`);
         console.log(
-          `  - Schedule items found: ${monthResult.debugInfo.scheduleItems}`,
+          `  - All schedule items in DOM: ${monthResult.debugInfo.scheduleItems}`,
         );
         console.log(
-          `  - Shift elements found: ${monthResult.debugInfo.shiftElements}`,
+          `  - Items in "Yours" view: ${monthResult.debugInfo.shiftElements}`,
         );
-        console.log(`  - Aaron's shifts: ${monthResult.debugInfo.aaronShifts}`);
+        console.log(
+          `  - Items processed: ${monthResult.debugInfo.aaronShifts}`,
+        );
         console.log(
           `  - Classes extracted: ${monthResult.debugInfo.totalResults}`,
         );
@@ -439,7 +441,9 @@ export class DCBPCrawler {
       });
 
       // Find all shift items (classes I'm teaching)
-      const shiftElements = document.querySelectorAll("a.schedule-item.shift");
+      // Use broader selector since we're in "Yours" view - all items here are Aaron's
+      // Some shifts may not have the .shift class depending on how they were created
+      const shiftElements = document.querySelectorAll("a.schedule-item");
 
       debugInfo.shiftElements = shiftElements.length;
 
@@ -585,9 +589,9 @@ export class DCBPCrawler {
           shiftId: shift.getAttribute("data-id"),
         });
 
-        // Parse time range (e.g., "4:30pm - 5:30pm")
+        // Parse time range (e.g., "4:30pm - 5:30pm" or "12pm - 1pm")
         const timeMatch = timeText.match(
-          /(\d{1,2}:\d{2}[ap]m)\s*-\s*(\d{1,2}:\d{2}[ap]m)/i,
+          /(\d{1,2}(?::\d{2})?[ap]m)\s*-\s*(\d{1,2}(?::\d{2})?[ap]m)/i,
         );
 
         let startTime = "";
@@ -623,6 +627,9 @@ export class DCBPCrawler {
         });
 
         if (startTime && day) {
+          console.log(
+            `✅ Adding class: ${classType} on ${month + 1}/${day}/${year} at ${startTime}`,
+          );
           results.push({
             id: shiftId,
             day,
@@ -636,6 +643,10 @@ export class DCBPCrawler {
             rawDetails: finalDetailsText,
             rawTime: timeText,
           });
+        } else {
+          console.log(
+            `⚠️ Skipping item - missing data: day=${day}, startTime=${startTime}, details="${finalDetailsText}"`,
+          );
         }
       });
 
@@ -646,6 +657,40 @@ export class DCBPCrawler {
     console.log(
       `Found ${extractionResult.results.length} scheduled classes in current view`,
     );
+
+    // Log details about each item found for debugging
+    if (extractionResult.debugInfo.items.length > 0) {
+      console.log(`\n📋 Schedule items found in DOM:`);
+      extractionResult.debugInfo.items.forEach((item: any) => {
+        console.log(
+          `  [${item.index}] classes: "${item.classes}" | text: "${item.text.substring(0, 100)}..."`,
+        );
+      });
+    }
+
+    // Log parse issues to understand why items might be skipped
+    const skippedItems = extractionResult.debugInfo.parseIssues.filter(
+      (issue: any) => issue.step === "final_check" && !issue.willAdd,
+    );
+    if (skippedItems.length > 0) {
+      console.log(`\n⚠️ Items skipped due to missing data:`);
+      skippedItems.forEach((item: any) => {
+        console.log(
+          `  - day=${item.day}, startTime="${item.startTime}", instructor="${item.instructorName}"`,
+        );
+      });
+    }
+
+    // Log successfully extracted items
+    if (extractionResult.results.length > 0) {
+      console.log(`\n✅ Classes extracted:`);
+      extractionResult.results.forEach((cls: any) => {
+        console.log(
+          `  - ${cls.classType} on ${cls.month + 1}/${cls.day}/${cls.year} at ${cls.startTime}`,
+        );
+      });
+    }
+
     return extractionResult;
   }
 
@@ -682,9 +727,9 @@ export class DCBPCrawler {
     day: number,
     timeStr: string,
   ): Date {
-    // Parse time string like "4:30pm" or "5:30pm"
+    // Parse time string like "4:30pm", "5:30pm", or "12pm" (without minutes)
     const timeLower = timeStr.toLowerCase();
-    const match = timeLower.match(/(\d{1,2}):(\d{2})([ap]m)/);
+    const match = timeLower.match(/(\d{1,2})(?::(\d{2}))?([ap]m)/);
 
     if (!match) {
       console.warn(`Failed to parse time string: ${timeStr}`);
@@ -693,7 +738,7 @@ export class DCBPCrawler {
     }
 
     let hours = parseInt(match[1]);
-    const minutes = parseInt(match[2]);
+    const minutes = match[2] ? parseInt(match[2]) : 0; // Default to 0 if no minutes
     const isPM = match[3] === "pm";
 
     // Convert to 24-hour format
