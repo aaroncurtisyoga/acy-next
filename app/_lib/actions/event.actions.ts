@@ -311,7 +311,7 @@ export async function getEventsWithSameCategory({
 
 export async function getEventById(eventId: string) {
   try {
-    return await prisma.event.findUnique({
+    const event = await prisma.event.findUnique({
       where: { id: eventId },
       include: {
         attendees: {
@@ -323,6 +323,12 @@ export async function getEventById(eventId: string) {
         location: true,
       },
     });
+
+    if (!event) return null;
+
+    // Convert Prisma objects to plain JavaScript objects to avoid serialization issues
+    // when passing from server actions to client components
+    return JSON.parse(JSON.stringify(event));
   } catch (error) {
     handleError(error);
     return null;
