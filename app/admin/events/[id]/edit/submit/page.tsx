@@ -5,19 +5,20 @@ import { useParams, useRouter } from "next/navigation";
 import { Button } from "@heroui/button";
 import { Link as HeroUiLink } from "@heroui/link";
 import { useFormContext } from "react-hook-form";
-import { updateEvent, getEventById } from "@/app/_lib/actions/event.actions";
+import { updateEvent } from "@/app/_lib/actions/event.actions";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
-import { handleError } from "@/app/_lib/utils";
 import {
   EventFormValues,
   useEventFormContext,
 } from "@/app/admin/events/_components/EventForm/EventFormProvider";
-import { fromDate, getLocalTimeZone } from "@internationalized/date";
-import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import EventCard from "@/app/(root)/_components/EventCard";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 
-const SubmitStep = () => {
+/**
+ * Edit event - Submit/Review step
+ * Data is fetched once in the layout and passed via EventFormProvider context
+ */
+export default function EditSubmitPage() {
   const router = useRouter();
   const { id } = useParams<{ id: string }>();
   const { getValues, reset } = useFormContext<EventFormValues>();
@@ -33,7 +34,8 @@ const SubmitStep = () => {
         try {
           const categories = await getAllCategories();
           const category = categories?.find(
-            (cat: any) => cat.id === formValues.category,
+            (cat: { id: string; name: string }) =>
+              cat.id === formValues.category,
           );
           if (category) {
             setCategoryName(category.name);
@@ -197,61 +199,4 @@ const SubmitStep = () => {
       </form>
     </section>
   );
-};
-
-const EditSubmitPage = () => {
-  const { id } = useParams<{ id: string }>();
-  const router = useRouter();
-  const [defaultValues, setDefaultValues] = useState<EventFormValues | null>(
-    null,
-  );
-
-  useEffect(() => {
-    const loadEvent = async () => {
-      try {
-        const event = await getEventById(id);
-        // Transform database event to form values
-        const { attendees, ...eventWithoutAttendees } = event;
-        const formValues: EventFormValues = {
-          ...eventWithoutAttendees,
-          category:
-            typeof event.category === "object"
-              ? event.category.id
-              : event.category,
-          location: event.location
-            ? {
-                formattedAddress: event.location.formattedAddress,
-                lat: event.location.lat,
-                lng: event.location.lng,
-                name: event.location.name,
-                placeId: event.location.placeId,
-              }
-            : undefined,
-          // Convert dates to ZonedDateTime objects
-          startDateTime: event.startDateTime
-            ? fromDate(new Date(event.startDateTime), getLocalTimeZone())
-            : undefined,
-          endDateTime: event.endDateTime
-            ? fromDate(new Date(event.endDateTime), getLocalTimeZone())
-            : undefined,
-        };
-        setDefaultValues(formValues);
-      } catch (err) {
-        handleError(err);
-        router.push("/");
-      }
-    };
-
-    loadEvent();
-  }, [id, router]);
-
-  if (!defaultValues) return null;
-
-  return (
-    <EventFormWrapper mode="edit" defaultValues={defaultValues}>
-      <SubmitStep />
-    </EventFormWrapper>
-  );
-};
-
-export default EditSubmitPage;
+}

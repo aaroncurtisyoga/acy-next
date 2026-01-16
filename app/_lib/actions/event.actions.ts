@@ -127,7 +127,7 @@ export async function createEvent({
     }
 
     revalidatePath(path);
-    return newEvent;
+    return serialize(newEvent);
   } catch (error) {
     handleError(error);
     return null;
