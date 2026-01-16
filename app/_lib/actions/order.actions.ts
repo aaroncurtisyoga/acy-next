@@ -16,6 +16,7 @@ import {
   calculateTotalPages,
 } from "@/app/_lib/utils/pagination";
 import { buildOrderSearchConditions } from "@/app/_lib/utils/query-builders";
+import { serialize } from "@/app/_lib/utils/serialize";
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
   const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
@@ -68,9 +69,10 @@ export const createOrder = async (order: CreateOrderParams) => {
   };
 
   try {
-    return await prisma.order.create({
+    const order = await prisma.order.create({
       data,
     });
+    return serialize(order);
   } catch (error) {
     handleError(error);
     return null;
@@ -84,7 +86,7 @@ export async function getOrdersByEvent({
   try {
     const whereConditions = buildOrderSearchConditions(searchString, eventId);
 
-    return await prisma.order.findMany({
+    const orders = await prisma.order.findMany({
       where: whereConditions,
       include: {
         event: {
@@ -95,6 +97,7 @@ export async function getOrdersByEvent({
         },
       },
     });
+    return serialize(orders);
   } catch (error) {
     handleError(error);
     return [];
@@ -124,7 +127,7 @@ export async function getOrdersByUser({
     ]);
 
     return {
-      data: orders,
+      data: serialize(orders),
       totalPages: calculateTotalPages(totalOrders, limit),
     };
   } catch (error) {
