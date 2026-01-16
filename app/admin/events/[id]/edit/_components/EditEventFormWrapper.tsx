@@ -6,7 +6,7 @@ import {
   EventFormProvider,
   EventFormValues,
 } from "@/app/admin/events/_components/EventForm/EventFormProvider";
-import type { SerializedEventData } from "../layout";
+import type { SerializedEventData } from "../_types";
 
 interface EditEventFormWrapperProps {
   children: ReactNode;
