@@ -3,6 +3,8 @@
 import prisma from "@/app/_lib/prisma";
 import { CreateCategoryParams } from "@/app/_lib/types";
 import { handleError } from "@/app/_lib/utils";
+import { serialize } from "@/app/_lib/utils/serialize";
+
 export const createCategory = async ({
   categoryName,
 }: CreateCategoryParams) => {
@@ -14,7 +16,7 @@ export const createCategory = async ({
     });
     return {
       status: true,
-      newCategory,
+      newCategory: serialize(newCategory),
     };
   } catch (error) {
     handleError(error);
@@ -29,7 +31,7 @@ export const deleteCategory = async (categoryId: string) => {
         id: categoryId,
       },
     });
-    return { status: true, deletedCategory };
+    return { status: true, deletedCategory: serialize(deletedCategory) };
   } catch (error) {
     handleError(error);
     return { status: false };
@@ -38,7 +40,8 @@ export const deleteCategory = async (categoryId: string) => {
 
 export const getAllCategories = async () => {
   try {
-    return await prisma.category.findMany();
+    const categories = await prisma.category.findMany();
+    return serialize(categories);
   } catch (error) {
     handleError(error);
     return [];

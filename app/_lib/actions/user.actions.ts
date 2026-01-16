@@ -7,6 +7,7 @@ import {
   calculateTotalPages,
 } from "@/app/_lib/utils/pagination";
 import { buildUserSearchConditions } from "@/app/_lib/utils/query-builders";
+import { serialize } from "@/app/_lib/utils/serialize";
 
 export async function getAllUsers({ query, limit = 8, page = 1 }) {
   try {
@@ -26,7 +27,7 @@ export async function getAllUsers({ query, limit = 8, page = 1 }) {
     ]);
 
     return {
-      data: users,
+      data: serialize(users),
       totalPages: calculateTotalPages(totalUsers, limit),
     };
   } catch (error) {

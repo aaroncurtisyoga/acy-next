@@ -7,11 +7,7 @@ import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import BasicInfo from "@/app/admin/events/_components/EventForm/Steps/BasicInfo";
-import {
-  parseZonedDateTime,
-  fromDate,
-  getLocalTimeZone,
-} from "@internationalized/date";
+import { fromDate, getLocalTimeZone } from "@internationalized/date";
 
 const EditBasicInfoPage = () => {
   const { id } = useParams<{ id: string }>();
@@ -41,20 +37,11 @@ const EditBasicInfoPage = () => {
               }
             : undefined,
           // Convert dates to ZonedDateTime objects
-          // Handle both ZonedDateTime strings (with [timezone]) and ISO strings
           startDateTime: event.startDateTime
-            ? typeof event.startDateTime === "string"
-              ? event.startDateTime.includes("[")
-                ? parseZonedDateTime(event.startDateTime)
-                : fromDate(new Date(event.startDateTime), getLocalTimeZone())
-              : fromDate(new Date(event.startDateTime), getLocalTimeZone())
+            ? fromDate(new Date(event.startDateTime), getLocalTimeZone())
             : undefined,
           endDateTime: event.endDateTime
-            ? typeof event.endDateTime === "string"
-              ? event.endDateTime.includes("[")
-                ? parseZonedDateTime(event.endDateTime)
-                : fromDate(new Date(event.endDateTime), getLocalTimeZone())
-              : fromDate(new Date(event.endDateTime), getLocalTimeZone())
+            ? fromDate(new Date(event.endDateTime), getLocalTimeZone())
             : undefined,
         };
         setDefaultValues(formValues);
