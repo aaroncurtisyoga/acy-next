@@ -41,14 +41,19 @@ const EditBasicInfoPage = () => {
               }
             : undefined,
           // Convert dates to ZonedDateTime objects
+          // Handle both ZonedDateTime strings (with [timezone]) and ISO strings
           startDateTime: event.startDateTime
             ? typeof event.startDateTime === "string"
-              ? parseZonedDateTime(event.startDateTime)
+              ? event.startDateTime.includes("[")
+                ? parseZonedDateTime(event.startDateTime)
+                : fromDate(new Date(event.startDateTime), getLocalTimeZone())
               : fromDate(new Date(event.startDateTime), getLocalTimeZone())
             : undefined,
           endDateTime: event.endDateTime
             ? typeof event.endDateTime === "string"
-              ? parseZonedDateTime(event.endDateTime)
+              ? event.endDateTime.includes("[")
+                ? parseZonedDateTime(event.endDateTime)
+                : fromDate(new Date(event.endDateTime), getLocalTimeZone())
               : fromDate(new Date(event.endDateTime), getLocalTimeZone())
             : undefined,
         };
