@@ -12,11 +12,7 @@ import {
   EventFormValues,
   useEventFormContext,
 } from "@/app/admin/events/_components/EventForm/EventFormProvider";
-import {
-  parseZonedDateTime,
-  fromDate,
-  getLocalTimeZone,
-} from "@internationalized/date";
+import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import EventCard from "@/app/(root)/_components/EventCard";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
@@ -232,20 +228,11 @@ const EditSubmitPage = () => {
               }
             : undefined,
           // Convert dates to ZonedDateTime objects
-          // Handle both ZonedDateTime strings (with [timezone]) and ISO strings
           startDateTime: event.startDateTime
-            ? typeof event.startDateTime === "string"
-              ? event.startDateTime.includes("[")
-                ? parseZonedDateTime(event.startDateTime)
-                : fromDate(new Date(event.startDateTime), getLocalTimeZone())
-              : fromDate(new Date(event.startDateTime), getLocalTimeZone())
+            ? fromDate(new Date(event.startDateTime), getLocalTimeZone())
             : undefined,
           endDateTime: event.endDateTime
-            ? typeof event.endDateTime === "string"
-              ? event.endDateTime.includes("[")
-                ? parseZonedDateTime(event.endDateTime)
-                : fromDate(new Date(event.endDateTime), getLocalTimeZone())
-              : fromDate(new Date(event.endDateTime), getLocalTimeZone())
+            ? fromDate(new Date(event.endDateTime), getLocalTimeZone())
             : undefined,
         };
         setDefaultValues(formValues);

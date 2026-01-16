@@ -10,6 +10,7 @@ import {
 } from "@/app/_lib/types";
 import { CreateEventData, UpdateEventData } from "@/app/_lib/types/event";
 import { handleError } from "@/app/_lib/utils";
+import { serialize } from "@/app/_lib/utils/serialize";
 import {
   calculateSkipAmount,
   calculateTotalPages,
@@ -249,7 +250,7 @@ export async function getAllEvents({
     const hasFiltersApplied: boolean = !!query || !!category;
 
     return {
-      data: events,
+      data: serialize(events),
       hasFiltersApplied,
       totalPages: calculateTotalPages(eventsCount, limit),
       totalCount: eventsCount,
@@ -326,9 +327,7 @@ export async function getEventById(eventId: string) {
 
     if (!event) return null;
 
-    // Convert Prisma objects to plain JavaScript objects to avoid serialization issues
-    // when passing from server actions to client components
-    return JSON.parse(JSON.stringify(event));
+    return serialize(event);
   } catch (error) {
     handleError(error);
     return null;
@@ -569,7 +568,7 @@ export async function updateEvent({
 
     revalidatePath(path);
 
-    return updatedEvent;
+    return serialize(updatedEvent);
   } catch (error) {
     handleError(error);
     return null;

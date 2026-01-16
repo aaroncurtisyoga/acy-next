@@ -6,11 +6,7 @@ import { useFormContext, useWatch } from "react-hook-form";
 import { getEventById } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
-import {
-  parseZonedDateTime,
-  fromDate,
-  getLocalTimeZone,
-} from "@internationalized/date";
+import { fromDate, getLocalTimeZone } from "@internationalized/date";
 import EventFormWrapper from "@/app/admin/events/_components/EventForm/EventFormWrapper";
 import DetailsForExternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForExternallyHostedEvent";
 import DetailsForInternallyHostedEvent from "@/app/admin/events/_components/EventForm/Steps/DetailsForInternallyHostedEvent";
@@ -54,20 +50,11 @@ const EditDetailsPage = () => {
               }
             : undefined,
           // Convert dates to ZonedDateTime objects
-          // Handle both ZonedDateTime strings (with [timezone]) and ISO strings
           startDateTime: event.startDateTime
-            ? typeof event.startDateTime === "string"
-              ? event.startDateTime.includes("[")
-                ? parseZonedDateTime(event.startDateTime)
-                : fromDate(new Date(event.startDateTime), getLocalTimeZone())
-              : fromDate(new Date(event.startDateTime), getLocalTimeZone())
+            ? fromDate(new Date(event.startDateTime), getLocalTimeZone())
             : undefined,
           endDateTime: event.endDateTime
-            ? typeof event.endDateTime === "string"
-              ? event.endDateTime.includes("[")
-                ? parseZonedDateTime(event.endDateTime)
-                : fromDate(new Date(event.endDateTime), getLocalTimeZone())
-              : fromDate(new Date(event.endDateTime), getLocalTimeZone())
+            ? fromDate(new Date(event.endDateTime), getLocalTimeZone())
             : undefined,
         };
         setDefaultValues(formValues);
