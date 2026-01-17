@@ -312,6 +312,19 @@ export async function getEventsWithSameCategory({
 
 export async function getEventById(eventId: string) {
   try {
+    // In dev mode with MOCK_EVENTS=true, return mock event for UI testing
+    const useMockEvents =
+      process.env.NODE_ENV === "development" &&
+      process.env.MOCK_EVENTS === "true";
+
+    if (useMockEvents && eventId.startsWith("mock-event-")) {
+      const mockEvents = generateMockEvents(20);
+      const mockEvent = mockEvents.find((e) => e.id === eventId);
+      if (mockEvent) {
+        return serialize({ ...mockEvent, attendees: [] });
+      }
+    }
+
     const event = await prisma.event.findUnique({
       where: { id: eventId },
       include: {
@@ -356,6 +369,17 @@ export async function updateEvent({
 
     // Use _id if provided, otherwise use id
     const eventId = _id || event.id;
+
+    // In dev mode with MOCK_EVENTS=true, simulate successful update for mock events
+    const useMockEvents =
+      process.env.NODE_ENV === "development" &&
+      process.env.MOCK_EVENTS === "true";
+
+    if (useMockEvents && eventId?.startsWith("mock-event-")) {
+      console.log("[Mock] Simulating event update for:", eventId, event);
+      revalidatePath(path);
+      return { success: true, id: eventId };
+    }
 
     // Use categoryId if provided, otherwise use category
     const categoryToConnect = categoryId || category;

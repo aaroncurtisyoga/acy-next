@@ -239,6 +239,7 @@ export default function EditEventPage() {
             control={control}
             isSubmitting={isSubmitting}
             errors={errors}
+            rules={{ required: "Event name is required" }}
           />
 
           {/* Location & Category */}
@@ -247,6 +248,7 @@ export default function EditEventPage() {
               control={control}
               setLocationValueInReactHookForm={setLocationValue}
               errors={errors}
+              isDisabled={isSubmitting}
             />
             <Category
               control={control}
@@ -262,6 +264,7 @@ export default function EditEventPage() {
               errors={errors}
               isSubmitting={isSubmitting}
               onChange={handleStartDateChange}
+              rules={{ required: "Start date/time is required" }}
             />
             <EndDatePickerInput
               control={control}
@@ -271,45 +274,48 @@ export default function EditEventPage() {
           </div>
 
           {/* Price */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
-            <div className="space-y-2">
-              <Controller
-                name="price"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    label="Price"
-                    placeholder="0.00"
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    isDisabled={isFree || isSubmitting}
-                    startContent={
-                      <span className="text-default-400 text-sm">$</span>
+          <div className="max-w-xs">
+            <Controller
+              name="price"
+              control={control}
+              render={({ field }) => (
+                <Input
+                  label="Price"
+                  placeholder="0.00"
+                  type="number"
+                  min="0"
+                  step="0.01"
+                  variant="bordered"
+                  isDisabled={isFree || isSubmitting}
+                  value={field.value ?? ""}
+                  onChange={(e) => field.onChange(e.target.value)}
+                  onBlur={field.onBlur}
+                  name={field.name}
+                  startContent={
+                    <span className="text-default-400 text-sm">$</span>
+                  }
+                />
+              )}
+            />
+            <Controller
+              name="isFree"
+              control={control}
+              render={({ field }) => (
+                <Switch
+                  isSelected={field.value ?? false}
+                  onValueChange={(checked) => {
+                    field.onChange(checked);
+                    if (checked) {
+                      setValue("price", "0");
                     }
-                  />
-                )}
-              />
-              <Controller
-                name="isFree"
-                control={control}
-                render={({ field }) => (
-                  <Switch
-                    isSelected={field.value}
-                    onValueChange={(checked) => {
-                      field.onChange(checked);
-                      if (checked) {
-                        setValue("price", "0");
-                      }
-                    }}
-                    size="sm"
-                  >
-                    Free event
-                  </Switch>
-                )}
-              />
-            </div>
+                  }}
+                  size="sm"
+                  className="mt-2"
+                >
+                  Free event
+                </Switch>
+              )}
+            />
           </div>
 
           {/* Hosting Toggle */}
@@ -319,7 +325,7 @@ export default function EditEventPage() {
               control={control}
               render={({ field }) => (
                 <Switch
-                  isSelected={field.value}
+                  isSelected={field.value ?? false}
                   onValueChange={field.onChange}
                   size="md"
                 >
@@ -353,13 +359,18 @@ export default function EditEventPage() {
                 }}
                 render={({ field }) => (
                   <Input
-                    {...field}
                     label="External Registration URL"
                     placeholder="https://..."
                     type="url"
+                    variant="bordered"
                     isRequired
+                    isDisabled={isSubmitting}
                     isInvalid={!!errors.externalRegistrationUrl}
                     errorMessage={errors.externalRegistrationUrl?.message}
+                    value={field.value ?? ""}
+                    onChange={(e) => field.onChange(e.target.value)}
+                    onBlur={field.onBlur}
+                    name={field.name}
                   />
                 )}
               />
@@ -368,28 +379,33 @@ export default function EditEventPage() {
             // Internal hosting fields
             <div className="space-y-6">
               {/* Max Attendees */}
-              <Controller
-                name="maxAttendees"
-                control={control}
-                render={({ field }) => (
-                  <Input
-                    {...field}
-                    value={field.value?.toString() ?? ""}
-                    onChange={(e) =>
-                      field.onChange(
-                        e.target.value
-                          ? parseInt(e.target.value, 10)
-                          : undefined,
-                      )
-                    }
-                    label="Maximum Attendees"
-                    placeholder="Leave empty for unlimited"
-                    type="number"
-                    min="1"
-                    description="Set a limit on the number of registrations"
-                  />
-                )}
-              />
+              <div className="max-w-xs">
+                <Controller
+                  name="maxAttendees"
+                  control={control}
+                  render={({ field }) => (
+                    <Input
+                      label="Maximum Attendees"
+                      placeholder="Leave empty for unlimited"
+                      type="number"
+                      min="1"
+                      variant="bordered"
+                      isDisabled={isSubmitting}
+                      description="Set a limit on the number of registrations"
+                      value={field.value?.toString() ?? ""}
+                      onChange={(e) =>
+                        field.onChange(
+                          e.target.value
+                            ? parseInt(e.target.value, 10)
+                            : undefined,
+                        )
+                      }
+                      onBlur={field.onBlur}
+                      name={field.name}
+                    />
+                  )}
+                />
+              </div>
 
               {/* Image */}
               <ImagePicker
@@ -399,7 +415,11 @@ export default function EditEventPage() {
               />
 
               {/* Description */}
-              <DescriptionRichTextEditor control={control} errors={errors} />
+              <DescriptionRichTextEditor
+                control={control}
+                errors={errors}
+                isDisabled={isSubmitting}
+              />
             </div>
           )}
 

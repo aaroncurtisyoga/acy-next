@@ -11,6 +11,7 @@ import {
 } from "@heroui/table";
 import { Tooltip } from "@heroui/tooltip";
 import { useDisclosure } from "@heroui/modal";
+import { Button } from "@heroui/button";
 import { Trash2 } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
@@ -107,13 +108,17 @@ const ManageUsersTable: FC = () => {
               <TableCell>{user.email}</TableCell>
               <TableCell>{user.id}</TableCell>
               <TableCell>
-                <Tooltip content={"Delete"}>
-                  <span className="text-lg text-danger-600 cursor-pointer active:opacity-50">
-                    <Trash2
-                      size={16}
-                      onClick={() => handleUserDeleteClick(user)}
-                    />
-                  </span>
+                <Tooltip content="Delete">
+                  <Button
+                    isIconOnly
+                    size="sm"
+                    variant="light"
+                    color="danger"
+                    aria-label="Delete user"
+                    onPress={() => handleUserDeleteClick(user)}
+                  >
+                    <Trash2 size={16} />
+                  </Button>
                 </Tooltip>
               </TableCell>
             </TableRow>

@@ -18,17 +18,20 @@ const MaxAttendees: FC<MaxAttendeesProps> = ({
     <Controller
       control={control}
       name={"maxAttendees" satisfies keyof EventFormValues}
-      render={({ field: { onChange, ...field } }) => (
+      render={({ field }) => (
         <Input
           isDisabled={isSubmitting}
           errorMessage={errors.maxAttendees?.message}
           isInvalid={!!errors.maxAttendees}
           label={"Max Attendees"}
-          onChange={(e) => onChange(Number(e.target.value))}
           type={"number"}
           variant="bordered"
-          {...field}
-          value={field.value?.toString() || ""}
+          value={field.value?.toString() ?? ""}
+          onChange={(e) =>
+            field.onChange(e.target.value ? Number(e.target.value) : undefined)
+          }
+          onBlur={field.onBlur}
+          name={field.name}
         />
       )}
     />

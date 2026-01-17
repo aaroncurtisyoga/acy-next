@@ -36,10 +36,12 @@ const EventManagementCard: FC<EventManagementCardProps> = ({
             <p className="font-medium text-base truncate">{event.title}</p>
             {event.isExternal && (
               <Tooltip content="Synced from external source">
-                <ExternalLink
-                  size={14}
-                  className="text-default-400 mt-0.5 flex-shrink-0"
-                />
+                <span role="img" aria-label="Synced from external source">
+                  <ExternalLink
+                    size={14}
+                    className="text-default-400 mt-0.5 flex-shrink-0"
+                  />
+                </span>
               </Tooltip>
             )}
           </div>

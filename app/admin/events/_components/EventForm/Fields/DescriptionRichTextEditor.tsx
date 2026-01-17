@@ -6,11 +6,13 @@ import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventF
 interface DescriptionRichTextEditorProps {
   control: Control<EventFormValues>;
   errors: FieldErrors<EventFormValues>;
+  isDisabled?: boolean;
 }
 
 const DescriptionRichTextEditor: FC<DescriptionRichTextEditorProps> = ({
   control,
   errors,
+  isDisabled = false,
 }) => {
   return (
     <Controller
@@ -23,6 +25,7 @@ const DescriptionRichTextEditor: FC<DescriptionRichTextEditorProps> = ({
           errorMessage={errors.description?.message}
           onChange={field.onChange}
           initialContent={field.value || ""}
+          isDisabled={isDisabled}
         />
       )}
     />

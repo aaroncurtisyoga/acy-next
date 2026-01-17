@@ -11,6 +11,7 @@ interface LocationInputProps {
   control: Control<EventFormValues>;
   setLocationValueInReactHookForm: any;
   errors: FieldErrors<EventFormValues>;
+  isDisabled?: boolean;
 }
 
 interface LocationSuggestion {
@@ -22,10 +23,12 @@ const LocationInput: FC<LocationInputProps> = ({
   control,
   setLocationValueInReactHookForm,
   errors,
+  isDisabled = false,
 }) => {
   const { setSearchValue, suggestions, isLoading } =
     useAutocompleteSuggestions();
   const [isLoadingDetails, setIsLoadingDetails] = useState(false);
+  const [inputValue, setInputValue] = useState<string | undefined>(undefined);
 
   const handleSelectLocation = async (placeId: string) => {
     if (!placeId || isLoadingDetails) return;
@@ -41,6 +44,8 @@ const LocationInput: FC<LocationInputProps> = ({
           name: place.name,
           placeId: place.place_id,
         });
+        // Update display value to show selected location
+        setInputValue(place.name || place.formatted_address);
       }
     } catch (error) {
       console.error("Failed to get place details:", error);
@@ -51,41 +56,51 @@ const LocationInput: FC<LocationInputProps> = ({
 
   const onInputChange = useCallback(
     (value: string) => {
+      setInputValue(value);
       setSearchValue(value);
     },
     [setSearchValue],
   );
 
-  // No need for placeIdMap anymore since we use the key directly
-
   return (
     <Controller
       control={control}
       name={"location" satisfies keyof EventFormValues}
-      render={() => (
-        <Autocomplete
-          errorMessage={errors.location?.message}
-          isInvalid={!!errors.location}
-          label="Location"
-          placeholder="Search for a location"
-          variant={"bordered"}
-          isLoading={isLoading || isLoadingDetails}
-          onInputChange={onInputChange}
-          onSelectionChange={(key) => {
-            // The key is already the place_id, use it directly
-            const placeId = key?.toString();
-            if (placeId) {
-              handleSelectLocation(placeId);
-            }
-          }}
-        >
-          {suggestions?.map((location: LocationSuggestion) => (
-            <AutocompleteItem key={location.place_id} id={location.place_id}>
-              {location.description}
-            </AutocompleteItem>
-          ))}
-        </Autocomplete>
-      )}
+      render={({ field }) => {
+        // Determine display value: use local inputValue if set, otherwise show current location
+        const displayValue =
+          inputValue !== undefined
+            ? inputValue
+            : field.value?.name || field.value?.formattedAddress || "";
+
+        return (
+          <Autocomplete
+            errorMessage={errors.location?.message}
+            isInvalid={!!errors.location}
+            label="Location"
+            placeholder="Search for a location"
+            variant={"bordered"}
+            isLoading={isLoading || isLoadingDetails}
+            isDisabled={isDisabled}
+            inputValue={displayValue}
+            onInputChange={onInputChange}
+            allowsCustomValue
+            onSelectionChange={(key) => {
+              // The key is already the place_id, use it directly
+              const placeId = key?.toString();
+              if (placeId) {
+                handleSelectLocation(placeId);
+              }
+            }}
+          >
+            {suggestions?.map((location: LocationSuggestion) => (
+              <AutocompleteItem key={location.place_id} id={location.place_id}>
+                {location.description}
+              </AutocompleteItem>
+            ))}
+          </Autocomplete>
+        );
+      }}
     />
   );
 };

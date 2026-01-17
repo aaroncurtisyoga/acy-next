@@ -167,10 +167,15 @@ const TableEventManagement: FC = () => {
                           <p className="font-medium">{event.title}</p>
                           {event.isExternal && (
                             <Tooltip content="Synced from external source">
-                              <ExternalLink
-                                size={14}
-                                className="text-default-400 mt-0.5"
-                              />
+                              <span
+                                role="img"
+                                aria-label="Synced from external source"
+                              >
+                                <ExternalLink
+                                  size={14}
+                                  className="text-default-400 mt-0.5"
+                                />
+                              </span>
                             </Tooltip>
                           )}
                         </div>
@@ -281,6 +286,7 @@ const TableEventManagement: FC = () => {
       {totalPages > 1 && (
         <div className="flex justify-center mt-6">
           <Pagination
+            aria-label="Events pagination"
             total={totalPages}
             page={filters.page}
             onChange={handlePageChange}

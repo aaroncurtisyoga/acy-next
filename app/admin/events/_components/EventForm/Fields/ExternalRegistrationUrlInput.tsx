@@ -26,10 +26,12 @@ const ExternalRegistrationUrlInput: FC<ExternalRegistrationUrlInputProps> = ({
           label={"Registration URL"}
           placeholder={"https://example.com/register"}
           description={"The URL where people will sign up for this event"}
-          onChange={(e) => field.onChange(e)}
           type={"url"}
           variant="bordered"
-          {...field}
+          value={field.value ?? ""}
+          onChange={(e) => field.onChange(e.target.value)}
+          onBlur={field.onBlur}
+          name={field.name}
         />
       )}
     />
