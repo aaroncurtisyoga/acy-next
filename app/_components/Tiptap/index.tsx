@@ -3,9 +3,11 @@
 import { Link } from "@tiptap/extension-link";
 import Placeholder from "@tiptap/extension-placeholder";
 import Underline from "@tiptap/extension-underline";
+import CharacterCount from "@tiptap/extension-character-count";
 import { useEditor, EditorContent } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect, useCallback, memo } from "react";
+import { useEffect, useCallback, useMemo, memo } from "react";
+import DOMPurify from "dompurify";
 import styles from "@/app/_components/Tiptap/index.module.css";
 import Toolbar from "@/app/_components/Tiptap/Toolbar";
 
@@ -15,6 +17,9 @@ interface TiptapProps {
   errorMessage?: string;
   onChange: (richText: string) => void;
   initialContent?: string;
+  isDisabled?: boolean;
+  maxLength?: number;
+  showCharacterCount?: boolean;
 }
 
 const Tiptap = memo(
@@ -24,21 +29,25 @@ const Tiptap = memo(
     errorMessage,
     onChange,
     initialContent = "",
+    isDisabled = false,
+    maxLength,
+    showCharacterCount = true,
   }: TiptapProps) => {
     const handleUpdate = useCallback(
       ({ editor }: { editor: any }) => {
         const html = editor.getHTML();
-        onChange(html);
+        // Sanitize HTML before passing to parent
+        const sanitizedHtml =
+          typeof window !== "undefined" ? DOMPurify.sanitize(html) : html;
+        onChange(sanitizedHtml);
       },
       [onChange],
     );
 
-    const editor = useEditor({
-      immediatelyRender: false,
-      shouldRerenderOnTransaction: false,
-      extensions: [
+    // Memoize extensions to prevent duplicate registration warnings
+    const extensions = useMemo(
+      () => [
         StarterKit.configure({
-          underline: false, // Disable built-in underline to use our custom one
           bulletList: {
             HTMLAttributes: { class: "list-disc pl-4 my-2" },
             keepMarks: true,
@@ -70,6 +79,8 @@ const Tiptap = memo(
           openOnClick: false,
           HTMLAttributes: {
             class: "text-primary underline cursor-pointer",
+            target: "_blank",
+            rel: "noopener noreferrer",
           },
           validate: (href) => /^https?:\/\//.test(href),
         }),
@@ -78,18 +89,39 @@ const Tiptap = memo(
           placeholder,
           emptyEditorClass: "is-editor-empty",
         }),
+        CharacterCount.configure({
+          limit: maxLength,
+        }),
       ],
+      [placeholder, maxLength],
+    );
+
+    const editor = useEditor({
+      immediatelyRender: false,
+      shouldRerenderOnTransaction: false,
+      extensions,
       content: initialContent,
       editorProps: {
         attributes: {
-          class: `${styles.tiptap} rounded-md border min-h-[200px] border-default-200 p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent prose prose-sm max-w-none`,
+          class: `${styles.tiptap} rounded-md border min-h-[200px] border-default-200 p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent prose prose-sm max-w-none ${
+            errorMessage ? styles.hasError : ""
+          } ${isDisabled ? styles.disabled : ""}`,
         },
+        editable: () => !isDisabled,
       },
       onUpdate: handleUpdate,
       autofocus: false,
-      editable: true,
+      editable: !isDisabled,
     });
 
+    // Sync editable state when isDisabled changes
+    useEffect(() => {
+      if (editor) {
+        editor.setEditable(!isDisabled);
+      }
+    }, [editor, isDisabled]);
+
+    // Sync initial content
     useEffect(() => {
       if (!editor) return;
 
@@ -103,24 +135,43 @@ const Tiptap = memo(
       }
     }, [initialContent, editor]);
 
-    useEffect(() => {
-      return () => {
-        editor?.destroy();
-      };
-    }, [editor]);
+    const characterCount = editor?.storage.characterCount.characters() ?? 0;
+    const wordCount = editor?.storage.characterCount.words() ?? 0;
 
     if (!editor) {
       return (
-        <div className="min-h-[200px] rounded-md border border-default-200 p-4" />
+        <div
+          className={`min-h-[200px] rounded-md border border-default-200 p-4 ${styles.editorContainer}`}
+        />
       );
     }
 
     return (
       <div className={styles.editorContainer}>
         {description && <div className={styles.description}>{description}</div>}
-        <Toolbar editor={editor} />
+        <Toolbar editor={editor} isDisabled={isDisabled} />
         <EditorContent editor={editor} />
-        {errorMessage && <p className={styles.errorMessage}>{errorMessage}</p>}
+        <div className={styles.footer}>
+          {errorMessage && (
+            <p className={styles.errorMessage}>{errorMessage}</p>
+          )}
+          {showCharacterCount && (
+            <div className={styles.characterCount}>
+              {wordCount} {wordCount === 1 ? "word" : "words"}
+              {maxLength && (
+                <span
+                  className={
+                    characterCount > maxLength ? styles.overLimit : undefined
+                  }
+                >
+                  {" "}
+                  · {characterCount}/{maxLength} characters
+                </span>
+              )}
+              {!maxLength && <span> · {characterCount} characters</span>}
+            </div>
+          )}
+        </div>
       </div>
     );
   },

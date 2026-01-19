@@ -42,6 +42,7 @@ const EventTableToolbar: FC<EventTableToolbarProps> = ({
         <Input
           isClearable={!disabled}
           placeholder="Search events..."
+          aria-label="Search events"
           value={searchText}
           onValueChange={onSearchChange}
           startContent={<Search className="text-default-400" size={18} />}
@@ -52,6 +53,7 @@ const EventTableToolbar: FC<EventTableToolbarProps> = ({
       <div className="flex flex-wrap gap-3">
         <Select
           placeholder="All Categories"
+          aria-label="Filter by category"
           className="w-44"
           selectedKeys={category ? [category] : []}
           onSelectionChange={(keys) => {
@@ -66,6 +68,7 @@ const EventTableToolbar: FC<EventTableToolbarProps> = ({
         </Select>
         <Select
           placeholder="Status"
+          aria-label="Filter by status"
           className="w-36"
           selectedKeys={[statusFilter]}
           onSelectionChange={(keys) => {

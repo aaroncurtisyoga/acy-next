@@ -24,7 +24,6 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
             errorMessage={errors.price?.message}
             isInvalid={!!errors.price}
             label={"Price"}
-            onChange={field.onChange}
             placeholder={isFree ? "Free" : "0.00"}
             startContent={
               !isFree && (
@@ -35,8 +34,10 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
             }
             type={"number"}
             variant="bordered"
-            {...field}
-            value={isFree ? "" : field.value?.toString() || ""}
+            value={isFree ? "" : (field.value ?? "")}
+            onChange={(e) => field.onChange(e.target.value)}
+            onBlur={field.onBlur}
+            name={field.name}
           />
         )}
       />
@@ -47,7 +48,7 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
         render={({ field }) => (
           <Switch
             isDisabled={isSubmitting}
-            isSelected={field.value}
+            isSelected={field.value ?? false}
             onValueChange={(value) => {
               field.onChange(value);
               // Clear price when marking as free

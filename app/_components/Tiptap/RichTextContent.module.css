@@ -1,0 +1,143 @@
+/* Rich text content display styles - matches Tiptap editor output */
+.richTextContent {
+  line-height: 1.6;
+}
+
+.richTextContent :global(:first-child) {
+  margin-top: 0;
+}
+
+.richTextContent :global(:last-child) {
+  margin-bottom: 0;
+}
+
+/* Paragraphs */
+.richTextContent :global(p) {
+  margin: 0.75rem 0;
+}
+
+/* List styles */
+.richTextContent :global(ul) {
+  list-style-type: disc;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.richTextContent :global(ol) {
+  list-style-type: decimal;
+  padding-left: 1.5rem;
+  margin: 1rem 0;
+}
+
+.richTextContent :global(li) {
+  margin: 0.25rem 0;
+}
+
+.richTextContent :global(li p) {
+  margin: 0.25em 0;
+}
+
+/* Heading styles */
+.richTextContent :global(h1),
+.richTextContent :global(h2),
+.richTextContent :global(h3),
+.richTextContent :global(h4),
+.richTextContent :global(h5),
+.richTextContent :global(h6) {
+  font-weight: 700;
+  line-height: 1.2;
+  margin-top: 1.5rem;
+  margin-bottom: 0.75rem;
+}
+
+.richTextContent :global(h1) {
+  font-size: 1.5rem;
+}
+
+.richTextContent :global(h2) {
+  font-size: 1.25rem;
+}
+
+.richTextContent :global(h3) {
+  font-size: 1.1rem;
+}
+
+.richTextContent :global(h4),
+.richTextContent :global(h5),
+.richTextContent :global(h6) {
+  font-size: 1rem;
+}
+
+/* Inline formatting */
+.richTextContent :global(strong),
+.richTextContent :global(b) {
+  font-weight: 700;
+}
+
+.richTextContent :global(em),
+.richTextContent :global(i) {
+  font-style: italic;
+}
+
+.richTextContent :global(u) {
+  text-decoration: underline;
+}
+
+.richTextContent :global(s),
+.richTextContent :global(strike) {
+  text-decoration: line-through;
+}
+
+/* Links */
+.richTextContent :global(a) {
+  color: hsl(var(--heroui-primary));
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.richTextContent :global(a:hover) {
+  opacity: 0.8;
+}
+
+/* Code and preformatted text */
+.richTextContent :global(code) {
+  background-color: rgba(157, 142, 208, 0.2);
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  padding: 0.2em 0.4em;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.richTextContent :global(pre) {
+  background: #1a1a1a;
+  border-radius: 0.5rem;
+  color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.875rem;
+  margin: 1rem 0;
+  padding: 1rem;
+  overflow-x: auto;
+}
+
+.richTextContent :global(pre code) {
+  background: none;
+  color: inherit;
+  font-size: inherit;
+  padding: 0;
+}
+
+/* Blockquote */
+.richTextContent :global(blockquote) {
+  border-left: 3px solid hsl(var(--heroui-default-300));
+  margin: 1rem 0;
+  padding-left: 1rem;
+  font-style: italic;
+  color: hsl(var(--heroui-default-600));
+}
+
+/* Horizontal rule */
+.richTextContent :global(hr) {
+  border: none;
+  border-top: 1px solid hsl(var(--heroui-default-200));
+  margin: 1.5rem 0;
+}

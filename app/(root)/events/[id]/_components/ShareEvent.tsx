@@ -31,6 +31,7 @@ const ShareEvent: FC<ShareEventProps> = ({ eventId }) => {
         onPress={handleClick}
         radius={"full"}
         variant={"light"}
+        aria-label="Copy link to event"
       >
         {isRecentlyCopied ? <Check /> : <Share />}
       </Button>

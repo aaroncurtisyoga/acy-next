@@ -65,7 +65,7 @@
 
 /* Code and preformatted text styles */
 .tiptap :global(code) {
-  background-color: rgba(157, 142, 208, 0.2); /* light purple fallback */
+  background-color: rgba(157, 142, 208, 0.2);
   border-radius: 0.4rem;
   color: #000;
   font-size: 0.85rem;
@@ -89,20 +89,20 @@
 }
 
 .tiptap :global(blockquote) {
-  border-left: 3px solid #d1d5db; /* gray-300 */
+  border-left: 3px solid #d1d5db;
   margin: 1.5rem 0;
   padding-left: 1rem;
 }
 
 .tiptap :global(hr) {
   border: none;
-  border-top: 1px solid #e5e7eb; /* gray-200 */
+  border-top: 1px solid #e5e7eb;
   margin: 2rem 0;
 }
 
 /* Placeholder */
 .tiptap :global(.is-editor-empty:first-child::before) {
-  color: #9ca3af; /* gray-400 */
+  color: #9ca3af;
   content: attr(data-placeholder);
   float: left;
   height: 0;
@@ -114,6 +114,26 @@
   border-color: transparent;
 }
 
+/* Error state */
+.hasError {
+  border-color: hsl(var(--heroui-danger)) !important;
+}
+
+.hasError:focus-within {
+  --tw-ring-color: hsl(var(--heroui-danger)) !important;
+}
+
+/* Disabled state */
+.disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background-color: hsl(var(--heroui-default-100));
+}
+
+.disabled :global(*) {
+  cursor: not-allowed;
+}
+
 /* Styles for the editor container */
 .editorContainer {
   display: flex;
@@ -122,15 +142,36 @@
 }
 
 .description {
-  color: #6b7280; /* gray-500 */
+  color: #6b7280;
   font-size: 0.875rem;
   margin-bottom: 0.5rem;
   font-weight: 500;
 }
 
+/* Footer with error and character count */
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-top: 0.5rem;
+  min-height: 1.25rem;
+  gap: 1rem;
+}
+
 .errorMessage {
-  color: #ef4444; /* red-500 */
+  color: hsl(var(--heroui-danger));
   font-size: 0.75rem;
-  margin-top: 0.25rem;
-  padding: 0.25rem 0;
+  flex-shrink: 0;
+}
+
+.characterCount {
+  color: #9ca3af;
+  font-size: 0.75rem;
+  text-align: right;
+  margin-left: auto;
+}
+
+.overLimit {
+  color: hsl(var(--heroui-danger));
+  font-weight: 500;
 }
