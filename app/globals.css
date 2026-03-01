@@ -7,7 +7,6 @@ html {
   background-color: #ffffff;
 }
 
-.dark html,
 html.dark {
   background-color: #0a0a0a;
 }
