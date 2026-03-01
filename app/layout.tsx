@@ -1,4 +1,5 @@
 import { ReactNode } from "react";
+import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
 import { Merriweather, Roboto_Flex } from "next/font/google";
 import { Providers } from "@/app/providers";
@@ -22,12 +23,27 @@ export const metadata: Metadata = {
     default: "Aaron Curtis Yoga",
   },
   description: "Yoga Events & Education",
+  manifest: "/manifest.webmanifest",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "black-translucent",
+    title: "AC Yoga",
+  },
+  icons: {
+    icon: "/favicon.ico",
+    apple: "/apple-touch-icon.png",
+  },
 };
 
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,
+  viewportFit: "cover",
+  themeColor: [
+    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
+    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
+  ],
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
@@ -41,6 +57,11 @@ export default function RootLayout({ children }: { children: ReactNode }) {
           {children}
           <Analytics />
         </Providers>
+        <Script id="sw-register" strategy="afterInteractive">
+          {`if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sw.js');
+          }`}
+        </Script>
       </body>
     </html>
   );

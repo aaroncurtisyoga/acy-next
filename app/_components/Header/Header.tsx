@@ -73,6 +73,7 @@ const Header: FC = () => {
           });
         }}
         className="shadow-sm static border-b border-slate-200 dark:border-slate-700"
+        style={{ paddingTop: "env(safe-area-inset-top, 0px)" }}
         classNames={{
           base: "static",
           wrapper: "px-4 md:px-6 lg:px-12 py-4",

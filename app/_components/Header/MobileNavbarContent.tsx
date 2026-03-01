@@ -51,6 +51,7 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
       <NavbarMenu
         data-testid="navbar-menu-mobile"
         className="bg-white dark:bg-black shadow-xl px-4 py-4 overflow-y-auto"
+        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
       >
         <MobileNavUserSection
           isSignedIn={isSignedIn}
