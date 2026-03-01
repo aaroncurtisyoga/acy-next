@@ -40,11 +40,6 @@ module.exports = {
           "100%": { opacity: "1", transform: "translateY(0)" },
         },
       },
-      colors: {
-        gray: {
-          750: "#374151",
-        },
-      },
     },
   },
   darkMode: "class",

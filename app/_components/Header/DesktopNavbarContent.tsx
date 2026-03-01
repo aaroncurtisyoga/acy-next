@@ -6,8 +6,6 @@ import { usePathname } from "next/navigation";
 import { NavbarContent, NavbarItem } from "@heroui/navbar";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 import { track } from "@vercel/analytics";
-// import { HiOutlineMail } from "react-icons/hi";
-// import NewsletterModal from "@/app/_components/NewsletterModal";
 
 interface DesktopNavbarContentProps {
   children: ReactNode;
@@ -62,9 +60,6 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
         {/* User dropdown */}
         {children}
       </NavbarContent>
-
-      {/* Newsletter Modal */}
-      {/*<NewsletterModal isOpen={isOpen} onOpenChange={onOpenChange} />*/}
     </>
   );
 };

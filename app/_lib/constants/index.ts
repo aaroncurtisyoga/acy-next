@@ -27,37 +27,6 @@ export const authenticatedLinks = [
   { name: "Account", href: "/account", testId: "account-link" },
 ];
 
-export const eventFormBasicInfoDefaultValues = {
-  category: "",
-  endDateTime: "",
-  isHostedExternally: false,
-  location: {
-    formattedAddress: "",
-    lat: 0,
-    lng: 0,
-    name: "",
-    placeId: "",
-  },
-  startDateTime: "",
-  title: "",
-};
-
-export const eventFormDetailsForInternallyHostedEventDefaultValues = {
-  description: "",
-  imageUrl: "",
-  price: "",
-  maxAttendees: 0,
-};
-export const eventFormDetailsForExternallyHostedEventDefaultValues = {
-  externalRegistrationUrl: "",
-};
-
-export const eventFormDefaultValues = {
-  ...eventFormBasicInfoDefaultValues,
-  ...eventFormDetailsForInternallyHostedEventDefaultValues,
-  ...eventFormDetailsForExternallyHostedEventDefaultValues,
-};
-
 export const travelOptions: TravelOption[] = [
   {
     travelMode: "driving",
@@ -114,11 +83,4 @@ export const EventHistoryTableColumns = [
 export const orderTypeLabels = {
   EVENT: "Event",
   PRIVATE_SESSION: "Private Session",
-};
-
-export const selectedPackageDetailsDefaultValues = {
-  title: "",
-  price: "",
-  description: "",
-  features: [],
 };
