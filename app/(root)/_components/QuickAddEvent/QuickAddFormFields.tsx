@@ -2,10 +2,18 @@
 
 import { FC } from "react";
 import { Controller, Control, FieldErrors } from "react-hook-form";
-import { ModalBody } from "@heroui/modal";
-import { Input } from "@heroui/input";
-import { Select, SelectItem } from "@heroui/select";
-import { Checkbox } from "@heroui/checkbox";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { FormField } from "@/components/ui/form-field";
+import { cn } from "@/app/_lib/utils";
 import LocationInput from "@/app/admin/events/_components/EventForm/Fields/LocationInput";
 import StartDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/StartDatePickerInput";
 import EndDatePickerInput from "@/app/admin/events/_components/EventForm/Fields/EndDatePickerInput";
@@ -34,20 +42,19 @@ const QuickAddFormFields: FC<QuickAddFormFieldsProps> = ({
   onStartDateChange,
 }) => {
   return (
-    <ModalBody className="gap-4">
+    <div className="space-y-4 px-6 py-4">
       <Controller
         name="title"
         control={control}
         rules={{ required: "Event title is required" }}
         render={({ field }) => (
-          <Input
-            {...field}
-            label="Event Title"
-            placeholder="Enter event title"
-            isRequired
-            errorMessage={errors.title?.message}
-            isInvalid={!!errors.title}
-          />
+          <FormField label="Event Title" error={errors.title?.message} required>
+            <Input
+              {...field}
+              placeholder="Enter event title"
+              className={cn(errors.title && "border-destructive")}
+            />
+          </FormField>
         )}
       />
 
@@ -62,18 +69,20 @@ const QuickAddFormFields: FC<QuickAddFormFieldsProps> = ({
         control={control}
         rules={{ required: "Category is required" }}
         render={({ field }) => (
-          <Select
-            {...field}
-            label="Category"
-            placeholder="Select a category"
-            isRequired
-            errorMessage={errors.category?.message}
-            isInvalid={!!errors.category}
-          >
-            {categories.map((category) => (
-              <SelectItem key={category.id}>{category.name}</SelectItem>
-            ))}
-          </Select>
+          <FormField label="Category" error={errors.category?.message} required>
+            <Select value={field.value || ""} onValueChange={field.onChange}>
+              <SelectTrigger>
+                <SelectValue placeholder="Select a category" />
+              </SelectTrigger>
+              <SelectContent>
+                {categories.map((category) => (
+                  <SelectItem key={category.id} value={category.id}>
+                    {category.name}
+                  </SelectItem>
+                ))}
+              </SelectContent>
+            </Select>
+          </FormField>
         )}
       />
 
@@ -96,18 +105,26 @@ const QuickAddFormFields: FC<QuickAddFormFieldsProps> = ({
           name="isFree"
           control={control}
           render={({ field }) => (
-            <Checkbox isSelected={field.value} onValueChange={field.onChange}>
-              Free Event
-            </Checkbox>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <Label className="text-sm">Free Event</Label>
+            </div>
           )}
         />
         <Controller
           name="isHostedExternally"
           control={control}
           render={({ field }) => (
-            <Checkbox isSelected={field.value} onValueChange={field.onChange}>
-              External Event
-            </Checkbox>
+            <div className="flex items-center gap-2">
+              <Checkbox
+                checked={field.value}
+                onCheckedChange={field.onChange}
+              />
+              <Label className="text-sm">External Event</Label>
+            </div>
           )}
         />
       </div>
@@ -124,16 +141,19 @@ const QuickAddFormFields: FC<QuickAddFormFieldsProps> = ({
             },
           }}
           render={({ field }) => (
-            <Input
-              {...field}
-              type="text"
-              label="Price"
-              placeholder="0.00"
-              startContent="$"
-              isRequired={!isFree}
-              errorMessage={errors.price?.message}
-              isInvalid={!!errors.price}
-            />
+            <FormField label="Price" error={errors.price?.message} required>
+              <div className="relative">
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                  $
+                </span>
+                <Input
+                  {...field}
+                  type="text"
+                  placeholder="0.00"
+                  className={cn("pl-7", errors.price && "border-destructive")}
+                />
+              </div>
+            </FormField>
           )}
         />
       )}
@@ -144,29 +164,31 @@ const QuickAddFormFields: FC<QuickAddFormFieldsProps> = ({
             name="externalUrl"
             control={control}
             render={({ field }) => (
-              <Input
-                {...field}
-                type="url"
-                label="Event Website URL"
-                placeholder="https://example.com/event"
-              />
+              <FormField label="Event Website URL">
+                <Input
+                  {...field}
+                  type="url"
+                  placeholder="https://example.com/event"
+                />
+              </FormField>
             )}
           />
           <Controller
             name="externalRegistrationUrl"
             control={control}
             render={({ field }) => (
-              <Input
-                {...field}
-                type="url"
-                label="Registration URL"
-                placeholder="https://example.com/register"
-              />
+              <FormField label="Registration URL">
+                <Input
+                  {...field}
+                  type="url"
+                  placeholder="https://example.com/register"
+                />
+              </FormField>
             )}
           />
         </>
       )}
-    </ModalBody>
+    </div>
   );
 };
 

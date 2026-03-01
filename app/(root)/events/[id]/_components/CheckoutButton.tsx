@@ -1,7 +1,7 @@
 "use client";
 
 import { FC, FormEvent, useEffect } from "react";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { Event, OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { checkoutOrder } from "@/app/_lib/actions/order.actions";
@@ -42,7 +42,7 @@ const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
 
   return (
     <form onSubmit={(e) => onCheckout(e)} method="post">
-      <Button type="submit" fullWidth={true} color={"primary"}>
+      <Button type="submit" className="w-full">
         {event.isFree ? "Get Ticket" : "Buy Ticket"}
       </Button>
     </form>

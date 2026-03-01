@@ -1,8 +1,8 @@
 "use client";
 
 import { FC } from "react";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import { Minus, Plus } from "lucide-react";
 import { useController, useFormContext } from "react-hook-form";
 import {
@@ -78,10 +78,9 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
           {POPULAR_SESSION_COUNTS.map((count) => (
             <Button
               key={count}
-              variant={sessionCount === count ? "solid" : "bordered"}
-              color={sessionCount === count ? "primary" : "default"}
+              variant={sessionCount === count ? "default" : "outline"}
               size="sm"
-              onPress={() => setCount(count)}
+              onClick={() => setCount(count)}
               className="min-w-12"
             >
               {count}
@@ -92,13 +91,13 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
 
       {/* Custom counter */}
       <Card className="bg-white dark:bg-gray-800 border-gray-200 dark:border-gray-700">
-        <CardBody className="p-6">
+        <CardContent className="p-6">
           <div className="flex items-center justify-center gap-4 mb-4">
             <Button
-              isIconOnly
-              variant="bordered"
-              onPress={decrement}
-              isDisabled={sessionCount <= MIN_SESSIONS}
+              size="icon"
+              variant="outline"
+              onClick={decrement}
+              disabled={sessionCount <= MIN_SESSIONS}
               className="border-gray-200 dark:border-gray-700"
             >
               <Minus size={16} />
@@ -114,10 +113,10 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
             </div>
 
             <Button
-              isIconOnly
-              variant="bordered"
-              onPress={increment}
-              isDisabled={sessionCount >= MAX_SESSIONS}
+              size="icon"
+              variant="outline"
+              onClick={increment}
+              disabled={sessionCount >= MAX_SESSIONS}
               className="border-gray-200 dark:border-gray-700"
             >
               <Plus size={16} />
@@ -145,7 +144,7 @@ const SessionCountSelector: FC<SessionCountSelectorProps> = ({
               </div>
             )}
           </div>
-        </CardBody>
+        </CardContent>
       </Card>
     </div>
   );

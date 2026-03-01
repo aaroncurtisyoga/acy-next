@@ -1,6 +1,5 @@
 import { FC } from "react";
-import { Button } from "@heroui/button";
-import { Skeleton } from "@heroui/skeleton";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const CheckoutSkeleton: FC = () => {
   return (
@@ -11,17 +10,8 @@ const CheckoutSkeleton: FC = () => {
         " md:max-w-[360px]"
       }
     >
-      <Skeleton className={"mb-3"}>
-        <p className={"text-center text-lg"}>$</p>
-      </Skeleton>
-      <Skeleton>
-        <Button
-          type="button"
-          fullWidth={true}
-          color={"primary"}
-          className={"rounded-xl"}
-        ></Button>
-      </Skeleton>
+      <Skeleton className="mb-3 h-7 w-20 mx-auto" />
+      <Skeleton className="h-10 w-full rounded-xl" />
     </div>
   );
 };

@@ -88,9 +88,3 @@ export interface GetAllEventsResponse {
   hasFiltersApplied: boolean;
   totalCount: number;
 }
-
-export type NavbarLink = {
-  name: string;
-  href: string;
-  testId: string;
-};

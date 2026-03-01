@@ -8,7 +8,7 @@ interface DirectionLinksProps extends Pick<Location, "lat" | "lng"> {}
 const DirectionLinks: FC<DirectionLinksProps> = ({ lat, lng }) => {
   return (
     <div className={"w-full py-4 border-b"}>
-      <p className={"text-center font-semibold text-default-700 mb-6"}>
+      <p className={"text-center font-semibold text-foreground mb-6"}>
         How to get there
       </p>
       <div className="text-primary">

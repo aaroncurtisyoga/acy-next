@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 import { track } from "@vercel/analytics";
 
@@ -19,10 +19,8 @@ const CheckoutButton: FC = () => {
         <SignInButton>
           <Button
             type="button"
-            fullWidth={true}
-            color="primary"
-            className="font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
-            onPress={() => {
+            className="w-full font-medium rounded-lg"
+            onClick={() => {
               track("private_sessions", {
                 action: "sign_in_to_purchase_click",
                 step: "select_package",
@@ -36,11 +34,8 @@ const CheckoutButton: FC = () => {
       <SignedIn>
         <Button
           type="submit"
-          radius="sm"
-          className="text-base font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
-          fullWidth={true}
-          color="primary"
-          onPress={() => {
+          className="w-full text-base font-medium rounded-lg"
+          onClick={() => {
             track("private_sessions", {
               action: "purchase_click",
               step: "select_package",

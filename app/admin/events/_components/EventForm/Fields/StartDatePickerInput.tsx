@@ -1,11 +1,11 @@
 import { FC } from "react";
-import { DatePicker } from "@heroui/date-picker";
 import {
   Control,
   Controller,
   FieldErrors,
   RegisterOptions,
 } from "react-hook-form";
+import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface StartDatePickerInputProps {
@@ -28,23 +28,22 @@ const StartDatePickerInput: FC<StartDatePickerInputProps> = ({
       control={control}
       name={"startDateTime" satisfies keyof EventFormValues}
       rules={rules}
-      render={({ field }) => {
-        return (
-          <div className={"w-full flex flex-col"}>
-            <DatePicker
-              errorMessage={errors.startDateTime?.message as string}
-              isDisabled={isSubmitting}
-              isInvalid={!!errors.startDateTime}
-              hideTimeZone
-              onChange={onChange || field.onChange}
-              variant={"bordered"}
-              label={"Start Date/Time"}
-              value={field.value}
-              isRequired={!!rules?.required}
-            />
-          </div>
-        );
-      }}
+      render={({ field }) => (
+        <DateTimePicker
+          label="Start Date/Time"
+          value={
+            field.value instanceof Date
+              ? field.value
+              : field.value
+                ? new Date(field.value)
+                : undefined
+          }
+          onChange={onChange || field.onChange}
+          disabled={isSubmitting}
+          error={errors.startDateTime?.message as string}
+          required={!!rules?.required}
+        />
+      )}
     />
   );
 };

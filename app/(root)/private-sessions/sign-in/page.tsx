@@ -3,7 +3,7 @@
 import React from "react";
 import { useRouter } from "next/navigation";
 import { SignIn, useAuth, useUser, SignOutButton } from "@clerk/nextjs";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { User } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
@@ -28,8 +28,8 @@ const SignInPage: React.FC = () => {
         </div>
 
         <div className="text-center mb-8">
-          <div className="w-16 h-16 bg-primary-100 rounded-full flex items-center justify-center mx-auto mb-4">
-            <User className="w-8 h-8 text-primary-600" />
+          <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
+            <User className="w-8 h-8 text-primary" />
           </div>
           <h2 className="text-2xl font-bold mb-4 dark:text-gray-200">
             Welcome back!
@@ -42,10 +42,9 @@ const SignInPage: React.FC = () => {
         <div className="space-y-4">
           <div className="flex justify-center">
             <Button
-              color="primary"
               size="lg"
-              className="w-full max-w-[340px] font-medium bg-primary text-primary-foreground hover:bg-primary-700 hover:text-primary-foreground transition-colors rounded-lg"
-              onPress={handleContinue}
+              className="w-full max-w-[340px] font-medium rounded-lg"
+              onClick={handleContinue}
             >
               Continue
             </Button>
@@ -54,7 +53,7 @@ const SignInPage: React.FC = () => {
           <div className="text-center">
             <SignOutButton redirectUrl="/private-sessions/sign-in">
               <Button
-                variant="light"
+                variant="ghost"
                 size="sm"
                 className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline underline-offset-2 transition-colors duration-200 rounded-lg"
               >
@@ -91,7 +90,7 @@ const SignInPage: React.FC = () => {
             formFieldLabel:
               "text-gray-700 dark:text-gray-300 text-sm font-medium",
             formButtonPrimary:
-              "w-full max-w-[440px] font-medium bg-primary hover:bg-primary-700 text-primary-foreground transition-colors duration-200 border-none shadow-none rounded-lg py-3 px-4 text-base",
+              "w-full max-w-[440px] font-medium bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 border-none shadow-none rounded-lg py-3 px-4 text-base",
             footer: "bg-white dark:bg-transparent",
             footerAction: "bg-white dark:bg-transparent",
             form: "shadow-none border-none",
@@ -100,11 +99,11 @@ const SignInPage: React.FC = () => {
               "bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-md dark:text-white",
             formFieldAction__password: "shadow-none",
             formFieldLabelRow: "font-medium",
-            formResendCodeLink: "text-primary-600 dark:text-primary-400",
-            footerActionLink: "text-primary-600 dark:text-primary-400",
+            formResendCodeLink: "text-primary",
+            footerActionLink: "text-primary",
             identityPreview: "border-none shadow-none",
             identityPreviewText: "font-normal dark:text-gray-300",
-            identityPreviewEditButton: "text-primary-600 dark:text-primary-400",
+            identityPreviewEditButton: "text-primary",
             otpCodeFieldInput:
               "shadow-none dark:bg-gray-900 dark:border-gray-700 dark:text-white",
             socialButtonsBlockButton:

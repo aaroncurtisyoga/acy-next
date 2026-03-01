@@ -1,6 +1,9 @@
 import { FC } from "react";
-import { Input } from "@heroui/input";
-import { Switch } from "@heroui/switch";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { FormField } from "@/components/ui/form-field";
+import { cn } from "@/app/_lib/utils";
 import { Control, Controller, FieldErrors, useWatch } from "react-hook-form";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
@@ -19,26 +22,28 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
         control={control}
         name={"price" satisfies keyof EventFormValues}
         render={({ field }) => (
-          <Input
-            isDisabled={isSubmitting || isFree}
-            errorMessage={errors.price?.message}
-            isInvalid={!!errors.price}
-            label={"Price"}
-            placeholder={isFree ? "Free" : "0.00"}
-            startContent={
-              !isFree && (
-                <div className="pointer-events-none flex items-center">
-                  <span className="text-default-400 text-small">$</span>
-                </div>
-              )
-            }
-            type={"number"}
-            variant="bordered"
-            value={isFree ? "" : (field.value ?? "")}
-            onChange={(e) => field.onChange(e.target.value)}
-            onBlur={field.onBlur}
-            name={field.name}
-          />
+          <FormField label="Price" error={errors.price?.message}>
+            <div className="relative">
+              {!isFree && (
+                <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                  $
+                </span>
+              )}
+              <Input
+                disabled={isSubmitting || isFree}
+                className={cn(
+                  !isFree && "pl-7",
+                  errors.price && "border-destructive",
+                )}
+                placeholder={isFree ? "Free" : "0.00"}
+                type="number"
+                value={isFree ? "" : (field.value ?? "")}
+                onChange={(e) => field.onChange(e.target.value)}
+                onBlur={field.onBlur}
+                name={field.name}
+              />
+            </div>
+          </FormField>
         )}
       />
 
@@ -46,22 +51,19 @@ const PriceInput: FC<PriceInputProps> = ({ control, isSubmitting, errors }) => {
         control={control}
         name={"isFree" satisfies keyof EventFormValues}
         render={({ field }) => (
-          <Switch
-            isDisabled={isSubmitting}
-            isSelected={field.value ?? false}
-            onValueChange={(value) => {
-              field.onChange(value);
-              // Clear price when marking as free
-              if (value) {
-                control._formValues.price = "";
-              }
-            }}
-            classNames={{
-              wrapper: "group-data-[selected=true]:bg-success",
-            }}
-          >
-            <span className="text-sm">This is a free event</span>
-          </Switch>
+          <div className="flex items-center gap-2">
+            <Switch
+              disabled={isSubmitting}
+              checked={field.value ?? false}
+              onCheckedChange={(value) => {
+                field.onChange(value);
+                if (value) {
+                  control._formValues.price = "";
+                }
+              }}
+            />
+            <Label className="text-sm">This is a free event</Label>
+          </div>
         )}
       />
     </div>

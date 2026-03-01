@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   useStripe,
   useElements,
@@ -83,15 +83,11 @@ const CheckoutForm: React.FC = () => {
 
         <Button
           type="submit"
-          color="primary"
           size="lg"
-          fullWidth
-          isDisabled={!stripe || isLoading}
-          startContent={
-            isLoading ? <Loader2 className="animate-spin" size={16} /> : null
-          }
-          className="font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
+          className="w-full font-medium rounded-lg"
+          disabled={!stripe || isLoading}
         >
+          {isLoading && <Loader2 className="animate-spin" size={16} />}
           {isLoading ? "Processing..." : "Complete Payment"}
         </Button>
       </form>

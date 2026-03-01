@@ -2,9 +2,9 @@
 
 import { FormEvent } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
-import { addToast } from "@heroui/toast";
-import { Link as HeroUiLink } from "@heroui/link";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import Link from "next/link";
 import { X } from "lucide-react";
 import { createEvent, updateEvent } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
@@ -26,13 +26,7 @@ const SubmitStep = () => {
         });
         if (updated) {
           reset();
-          addToast({
-            title: "Success",
-            description: "Event updated successfully",
-            color: "success",
-            timeout: 3000,
-            shouldShowTimeoutProgress: true,
-          });
+          toast.success("Event updated successfully");
           router.push("/admin/events");
         }
       } else {
@@ -42,13 +36,7 @@ const SubmitStep = () => {
         });
         if (created) {
           reset();
-          addToast({
-            title: "Success",
-            description: "Event created successfully",
-            color: "success",
-            timeout: 3000,
-            shouldShowTimeoutProgress: true,
-          });
+          toast.success("Event created successfully");
           router.push("/admin/events");
         }
       }
@@ -61,10 +49,10 @@ const SubmitStep = () => {
     <section className="wrapper relative">
       {/* Close button in top-right corner */}
       <Button
-        isIconOnly
-        variant="light"
+        size="icon"
+        variant="ghost"
         className="absolute -top-2 -right-2 z-10"
-        onPress={() => router.push("/admin/events")}
+        onClick={() => router.push("/admin/events")}
         aria-label="Close"
       >
         <X size={20} />
@@ -73,19 +61,18 @@ const SubmitStep = () => {
       <h1>Review Event</h1>
       <form onSubmit={onSubmit}>
         <div className="flex justify-between mt-5">
-          <Button type="button">
-            <HeroUiLink
+          <Button type="button" asChild>
+            <Link
               href={
                 mode === "edit"
                   ? `/events/${values.id}/edit/details`
                   : "/events/create/details"
               }
-              className="text-default-foreground"
             >
               Previous
-            </HeroUiLink>
+            </Link>
           </Button>
-          <Button type="submit" color="primary">
+          <Button type="submit">
             {mode === "edit" ? "Update Event" : "Create Event"}
           </Button>
         </div>

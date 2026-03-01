@@ -1,9 +1,12 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import { Input } from "@/components/ui/input";
+import { FormField } from "@/components/ui/form-field";
+import { cn } from "@/app/_lib/utils";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { Controller, SubmitHandler, useForm } from "react-hook-form";
 import { z } from "zod";
@@ -59,19 +62,19 @@ const CreateCategory: FC = () => {
         <h1 className="text-3xl font-bold text-foreground mb-2">
           Create Category
         </h1>
-        <p className="text-default-500">
+        <p className="text-muted-foreground">
           Add a new category to organize your events
         </p>
       </div>
 
       <Card className="shadow-lg">
-        <CardHeader className="flex gap-3 pb-0">
+        <CardHeader className="flex flex-row gap-3 space-y-0 pb-0">
           <div className="flex items-center gap-2">
             <Tag className="w-5 h-5 text-primary" />
             <p className="text-lg font-semibold">New Category</p>
           </div>
         </CardHeader>
-        <CardBody className="pt-6">
+        <CardContent className="pt-6">
           <form
             onSubmit={handleSubmit(handleAddCategory)}
             className="space-y-6"
@@ -82,28 +85,26 @@ const CreateCategory: FC = () => {
               rules={{ required: true }}
               render={({ field }) => {
                 return (
-                  <Input
-                    isDisabled={isSubmitting}
+                  <FormField
                     label="Category Name"
-                    placeholder="Enter category name (e.g., Workshop, Social, Training)"
-                    variant="bordered"
-                    size="lg"
-                    errorMessage={errors.category?.message}
-                    isInvalid={!!errors.category}
-                    classNames={{
-                      label: "text-default-700 font-medium",
-                      input: "text-foreground",
-                      inputWrapper:
-                        "hover:border-primary data-[hover=true]:border-primary",
-                    }}
-                    {...field}
-                  />
+                    error={errors.category?.message}
+                  >
+                    <Input
+                      disabled={isSubmitting}
+                      placeholder="Enter category name (e.g., Workshop, Social, Training)"
+                      className={cn(errors.category && "border-destructive")}
+                      value={field.value}
+                      onChange={field.onChange}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                    />
+                  </FormField>
                 );
               }}
             />
 
             {showSuccess && (
-              <div className="flex items-center gap-2 p-3 bg-success-50 text-success-700 rounded-lg">
+              <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
                 <CheckCircle className="w-5 h-5" />
                 <span className="font-medium">
                   Category created successfully!
@@ -114,27 +115,26 @@ const CreateCategory: FC = () => {
             <div className="flex gap-3 pt-4">
               <Button
                 type="submit"
-                color="primary"
                 size="lg"
-                isLoading={isSubmitting}
+                disabled={isSubmitting}
                 className="font-medium"
               >
+                {isSubmitting && <Loader2 className="animate-spin" />}
                 {isSubmitting ? "Creating..." : "Create Category"}
               </Button>
               <Button
                 type="button"
-                color="default"
-                variant="flat"
+                variant="secondary"
                 size="lg"
-                onPress={() => router.push("/admin/categories")}
-                isDisabled={isSubmitting}
+                onClick={() => router.push("/admin/categories")}
+                disabled={isSubmitting}
                 className="font-medium"
               >
                 Cancel
               </Button>
             </div>
           </form>
-        </CardBody>
+        </CardContent>
       </Card>
     </div>
   );

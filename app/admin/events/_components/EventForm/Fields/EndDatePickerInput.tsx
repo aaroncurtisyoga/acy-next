@@ -1,6 +1,6 @@
 import { FC } from "react";
-import { DatePicker } from "@heroui/date-picker";
 import { Control, Controller, FieldErrors } from "react-hook-form";
+import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface EndDatePickerInputProps {
@@ -19,18 +19,19 @@ const EndDatePickerInput: FC<EndDatePickerInputProps> = ({
       control={control}
       name={"endDateTime" satisfies keyof EventFormValues}
       render={({ field }) => (
-        <div className={"w-full flex flex-col"}>
-          <DatePicker
-            isDisabled={isSubmitting}
-            hideTimeZone
-            isInvalid={!!errors.endDateTime}
-            errorMessage={errors.endDateTime?.message as string}
-            onChange={field.onChange}
-            variant={"bordered"}
-            label={"End Date/Time"}
-            value={field.value}
-          />
-        </div>
+        <DateTimePicker
+          label="End Date/Time"
+          value={
+            field.value instanceof Date
+              ? field.value
+              : field.value
+                ? new Date(field.value)
+                : undefined
+          }
+          onChange={field.onChange}
+          disabled={isSubmitting}
+          error={errors.endDateTime?.message as string}
+        />
       )}
     />
   );

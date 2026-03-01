@@ -1,15 +1,10 @@
-import { Card, CardHeader } from "@heroui/card";
+import { Card, CardHeader } from "@/components/ui/card";
 import { CalendarX } from "lucide-react";
 
 export default function NoEventsCard() {
   return (
-    <Card
-      className="mx-auto text-center bg-slate-50/30"
-      shadow="sm"
-      radius="sm"
-      isHoverable
-    >
-      <CardHeader className="flex items-center gap-3">
+    <Card className="mx-auto text-center bg-slate-50/30 shadow-sm rounded-sm hover:shadow-md transition-shadow">
+      <CardHeader className="flex flex-row items-center gap-3 space-y-0">
         <div className="flex-shrink-0">
           <CalendarX className="w-10 h-10 text-primary" size={40} />
         </div>

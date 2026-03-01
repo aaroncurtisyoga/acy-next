@@ -2,15 +2,16 @@
 
 import { FC, useState, useCallback } from "react";
 import {
-  Modal,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-} from "@heroui/modal";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { Switch } from "@heroui/switch";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 interface LinkDialogProps {
   isOpen: boolean;
@@ -80,15 +81,17 @@ const LinkDialog: FC<LinkDialogProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onOpenChange={handleOpenChange} size="sm">
-      <ModalContent>
-        <ModalHeader>
-          {hasExistingLink ? "Edit Link" : "Insert Link"}
-        </ModalHeader>
-        <ModalBody>
-          <div className="space-y-4">
+    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
+      <DialogContent className="sm:max-w-sm">
+        <DialogHeader>
+          <DialogTitle>
+            {hasExistingLink ? "Edit Link" : "Insert Link"}
+          </DialogTitle>
+        </DialogHeader>
+        <div className="space-y-4">
+          <div className="space-y-2">
+            <Label>URL</Label>
             <Input
-              label="URL"
               placeholder="https://example.com"
               value={url}
               onChange={(e) => {
@@ -96,41 +99,42 @@ const LinkDialog: FC<LinkDialogProps> = ({
                 if (error) validateUrl(e.target.value);
               }}
               onKeyDown={handleKeyDown}
-              isInvalid={!!error}
-              errorMessage={error}
+              className={error ? "border-destructive" : ""}
               autoFocus
               type="url"
             />
-            <Switch
-              isSelected={openInNewTab}
-              onValueChange={setOpenInNewTab}
-              size="sm"
-            >
-              Open in new tab
-            </Switch>
+            {error && <p className="text-sm text-destructive">{error}</p>}
           </div>
-        </ModalBody>
-        <ModalFooter>
+          <div className="flex items-center gap-2">
+            <Switch checked={openInNewTab} onCheckedChange={setOpenInNewTab} />
+            <Label className="text-sm">Open in new tab</Label>
+          </div>
+        </div>
+        <DialogFooter>
           <div className="flex justify-between w-full">
             <div>
               {hasExistingLink && (
-                <Button color="danger" variant="light" onPress={handleRemove}>
+                <Button
+                  variant="ghost"
+                  className="text-destructive hover:text-destructive"
+                  onClick={handleRemove}
+                >
                   Remove Link
                 </Button>
               )}
             </div>
             <div className="flex gap-2">
-              <Button variant="light" onPress={onClose}>
+              <Button variant="ghost" onClick={onClose}>
                 Cancel
               </Button>
-              <Button color="primary" onPress={handleSubmit}>
+              <Button onClick={handleSubmit}>
                 {hasExistingLink ? "Update" : "Insert"}
               </Button>
             </div>
           </div>
-        </ModalFooter>
-      </ModalContent>
-    </Modal>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -1,8 +1,8 @@
 "use client";
 
 import { FC } from "react";
-import { Button } from "@heroui/button";
-import { Tooltip } from "@heroui/tooltip";
+import { Button } from "@/components/ui/button";
+import { SimpleTooltip } from "@/components/ui/simple-tooltip";
 import { Trash2, Mail, User } from "lucide-react";
 import AdminCard from "@/app/admin/_components/AdminCard";
 
@@ -21,33 +21,32 @@ const UserManagementCard: FC<UserManagementCardProps> = ({
         {/* Name */}
         <div className="flex items-center justify-between">
           <div className="flex items-center gap-2">
-            <User size={16} className="text-default-400" />
+            <User size={16} className="text-muted-foreground" />
             <p className="font-medium">
               {user.firstName} {user.lastName}
             </p>
           </div>
-          <Tooltip content="Delete">
+          <SimpleTooltip content="Delete">
             <Button
-              isIconOnly
-              size="sm"
-              variant="light"
-              color="danger"
+              size="icon"
+              variant="ghost"
+              className="h-8 w-8 text-destructive hover:text-destructive"
               aria-label="Delete user"
-              onPress={() => onDeleteClick(user)}
+              onClick={() => onDeleteClick(user)}
             >
               <Trash2 size={16} />
             </Button>
-          </Tooltip>
+          </SimpleTooltip>
         </div>
 
         {/* Email */}
         <div className="flex items-center gap-2 text-sm">
-          <Mail size={14} className="text-default-400" />
-          <p className="text-default-600 truncate">{user.email}</p>
+          <Mail size={14} className="text-muted-foreground" />
+          <p className="text-muted-foreground truncate">{user.email}</p>
         </div>
 
         {/* User ID */}
-        <p className="text-xs text-default-400 truncate">ID: {user.id}</p>
+        <p className="text-xs text-muted-foreground truncate">ID: {user.id}</p>
       </div>
     </AdminCard>
   );

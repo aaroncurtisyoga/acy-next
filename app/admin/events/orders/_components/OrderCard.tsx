@@ -22,10 +22,10 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
         {/* Event title */}
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2 flex-1 min-w-0">
-            <Ticket size={16} className="text-default-400 flex-shrink-0" />
+            <Ticket size={16} className="text-muted-foreground flex-shrink-0" />
             <p className="font-medium truncate">{order.event.title}</p>
           </div>
-          <div className="flex items-center gap-1 text-success-600 font-semibold flex-shrink-0">
+          <div className="flex items-center gap-1 text-green-600 font-semibold flex-shrink-0">
             <DollarSign size={14} />
             <span>{formatPrice(order.totalAmount)}</span>
           </div>
@@ -33,22 +33,24 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
 
         {/* Buyer */}
         <div className="flex items-center gap-2 text-sm">
-          <User size={14} className="text-default-400" />
-          <p className="text-default-600">
+          <User size={14} className="text-muted-foreground" />
+          <p className="text-muted-foreground">
             {order.buyer.firstName} {order.buyer.lastName}
           </p>
         </div>
 
         {/* Date */}
         <div className="flex items-center gap-2 text-sm">
-          <Calendar size={14} className="text-default-400" />
-          <p className="text-default-500">
+          <Calendar size={14} className="text-muted-foreground" />
+          <p className="text-muted-foreground">
             {formatDateTime(new Date(order.createdAt)).dateOnly}
           </p>
         </div>
 
         {/* Order ID */}
-        <p className="text-xs text-default-400 truncate">Order: {order.id}</p>
+        <p className="text-xs text-muted-foreground truncate">
+          Order: {order.id}
+        </p>
       </div>
     </AdminCard>
   );

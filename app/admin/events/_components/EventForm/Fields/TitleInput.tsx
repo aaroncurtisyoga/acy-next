@@ -1,5 +1,7 @@
 import { FC } from "react";
-import { Input } from "@heroui/input";
+import { Input } from "@/components/ui/input";
+import { FormField } from "@/components/ui/form-field";
+import { cn } from "@/app/_lib/utils";
 import {
   Control,
   Controller,
@@ -27,19 +29,21 @@ const TitleInput: FC<TitleInputProps> = ({
       name={"title" satisfies keyof EventFormValues}
       rules={rules}
       render={({ field }) => (
-        <Input
-          isDisabled={isSubmitting}
-          isInvalid={!!errors.title}
-          errorMessage={errors.title?.message}
-          label={"Event Name"}
-          type={"text"}
-          variant="bordered"
-          isRequired={!!rules?.required}
-          value={field.value ?? ""}
-          onChange={(e) => field.onChange(e.target.value)}
-          onBlur={field.onBlur}
-          name={field.name}
-        />
+        <FormField
+          label="Event Name"
+          error={errors.title?.message}
+          required={!!rules?.required}
+        >
+          <Input
+            disabled={isSubmitting}
+            className={cn(errors.title && "border-destructive")}
+            type="text"
+            value={field.value ?? ""}
+            onChange={(e) => field.onChange(e.target.value)}
+            onBlur={field.onBlur}
+            name={field.name}
+          />
+        </FormField>
       )}
     />
   );

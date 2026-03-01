@@ -1,14 +1,14 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Button } from "@heroui/button";
-import { Card, CardBody } from "@heroui/card";
+import { Button } from "@/components/ui/button";
+import { Card, CardContent } from "@/components/ui/card";
 import {
-  Dropdown,
-  DropdownTrigger,
   DropdownMenu,
-  DropdownItem,
-} from "@heroui/dropdown";
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Check, Calendar } from "lucide-react";
 import { FcGoogle } from "react-icons/fc";
 import { HiOutlineLink } from "react-icons/hi";
@@ -53,66 +53,75 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
     window.open(googleCalendarUrl, "_blank");
   };
 
-  const dropdownMenu = (
-    <DropdownMenu aria-label="Calendar subscription options">
-      <DropdownItem
-        key="google"
-        startContent={<FcGoogle className="w-4 h-4" />}
-        description="Subscribe with Google Calendar"
-        onPress={handleGoogleCalendarClick}
-      >
-        Google Calendar
-      </DropdownItem>
-      <DropdownItem
-        key="ical"
-        startContent={
-          copiedIcal ? (
-            <Check className="w-4 h-4" />
-          ) : (
-            <HiOutlineLink className="w-4 h-4" />
-          )
-        }
-        description="Copy link for Apple Calendar, Outlook, etc."
-        onPress={handleCopyIcal}
-      >
-        {copiedIcal ? "Copied!" : "Copy iCal Link"}
-      </DropdownItem>
-    </DropdownMenu>
-  );
-
   const dropdownButton = (
     <>
       {/* Mobile: Compact button with "Sync" */}
-      <Dropdown>
-        <DropdownTrigger>
-          <Button
-            variant="solid"
-            color="primary"
-            size="sm"
-            startContent={<Calendar className="w-4 h-4" />}
-            className="md:hidden"
-          >
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button size="sm" className="md:hidden">
+            <Calendar className="w-4 h-4" />
             Sync
           </Button>
-        </DropdownTrigger>
-        {dropdownMenu}
-      </Dropdown>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleGoogleCalendarClick}>
+            <FcGoogle className="w-4 h-4" />
+            <div>
+              <div>Google Calendar</div>
+              <div className="text-xs text-muted-foreground">
+                Subscribe with Google Calendar
+              </div>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleCopyIcal}>
+            {copiedIcal ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <HiOutlineLink className="w-4 h-4" />
+            )}
+            <div>
+              <div>{copiedIcal ? "Copied!" : "Copy iCal Link"}</div>
+              <div className="text-xs text-muted-foreground">
+                Copy link for Apple Calendar, Outlook, etc.
+              </div>
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
 
       {/* Desktop: Full button with text */}
-      <Dropdown>
-        <DropdownTrigger>
-          <Button
-            variant="solid"
-            color="primary"
-            startContent={<Calendar className="w-4 h-4" />}
-            size="sm"
-            className="hidden md:flex font-medium"
-          >
+      <DropdownMenu>
+        <DropdownMenuTrigger asChild>
+          <Button size="sm" className="hidden md:flex font-medium">
+            <Calendar className="w-4 h-4" />
             Sync Calendar
           </Button>
-        </DropdownTrigger>
-        {dropdownMenu}
-      </Dropdown>
+        </DropdownMenuTrigger>
+        <DropdownMenuContent align="end">
+          <DropdownMenuItem onClick={handleGoogleCalendarClick}>
+            <FcGoogle className="w-4 h-4" />
+            <div>
+              <div>Google Calendar</div>
+              <div className="text-xs text-muted-foreground">
+                Subscribe with Google Calendar
+              </div>
+            </div>
+          </DropdownMenuItem>
+          <DropdownMenuItem onClick={handleCopyIcal}>
+            {copiedIcal ? (
+              <Check className="w-4 h-4" />
+            ) : (
+              <HiOutlineLink className="w-4 h-4" />
+            )}
+            <div>
+              <div>{copiedIcal ? "Copied!" : "Copy iCal Link"}</div>
+              <div className="text-xs text-muted-foreground">
+                Copy link for Apple Calendar, Outlook, etc.
+              </div>
+            </div>
+          </DropdownMenuItem>
+        </DropdownMenuContent>
+      </DropdownMenu>
     </>
   );
 
@@ -124,7 +133,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
   // Otherwise, return with Card wrapper
   return (
     <Card className="w-full mb-4 bg-gradient-to-br from-blue-50/50 to-transparent dark:from-gray-800/20 dark:to-transparent border border-gray-200 dark:border-gray-800 shadow-none hover:shadow-sm transition-all duration-300 rounded-2xl @container">
-      <CardBody className="px-4 py-3.5 @sm:px-5 @sm:py-4">
+      <CardContent className="px-4 py-3.5 @sm:px-5 @sm:py-4">
         <div className="flex flex-col @sm:flex-row @sm:items-center @sm:justify-between gap-3">
           {/* Content Section */}
           <div className="flex-1">
@@ -136,7 +145,7 @@ const CalendarSubscription: FC<CalendarSubscriptionProps> = ({
           {/* Subscribe Button - Same for both mobile and desktop */}
           {dropdownButton}
         </div>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

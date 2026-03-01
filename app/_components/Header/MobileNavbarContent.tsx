@@ -2,11 +2,11 @@
 
 import { FC } from "react";
 import { useRouter } from "next/navigation";
-import { NavbarContent, NavbarMenu, NavbarMenuToggle } from "@heroui/navbar";
 import { useClerk } from "@clerk/nextjs";
 import { track } from "@vercel/analytics";
 import type { UserResource } from "@clerk/types";
-import { useMobileMenuEffects } from "@/app/_components/Header/hooks/useMobileMenuEffects";
+import { Sheet, SheetContent, SheetTitle } from "@/components/ui/sheet";
+import AnimatedHamburger from "@/app/_components/Header/AnimatedHamburger";
 import MobileNavUserSection from "@/app/_components/Header/MobileNavUserSection";
 import MobileNavLinks from "@/app/_components/Header/MobileNavLinks";
 
@@ -29,7 +29,8 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
 }) => {
   const router = useRouter();
   const { signOut } = useClerk();
-  const { closeMenu } = useMobileMenuEffects(isMenuOpen, setIsMenuOpen);
+
+  const closeMenu = () => setIsMenuOpen(false);
 
   const handleSignOut = () => {
     track("auth", {
@@ -42,32 +43,48 @@ const MobileNavbarContent: FC<MobileNavbarContentProps> = ({
 
   return (
     <>
-      <NavbarContent className="sm:hidden" justify="end">
-        <NavbarMenuToggle
-          aria-label={isMenuOpen ? "Close menu" : "Open menu"}
+      {/* Hamburger toggle - visible on mobile only */}
+      <div className="sm:hidden ml-auto">
+        <AnimatedHamburger
+          isOpen={isMenuOpen}
+          onClick={() => {
+            const newState = !isMenuOpen;
+            setIsMenuOpen(newState);
+            track("navigation", {
+              action: "hamburger_menu_toggle",
+              state: newState ? "open" : "close",
+            });
+          }}
         />
-      </NavbarContent>
+      </div>
 
-      <NavbarMenu
-        data-testid="navbar-menu-mobile"
-        className="bg-white dark:bg-black shadow-xl px-4 py-4 overflow-y-auto"
-        style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
-      >
-        <MobileNavUserSection
-          isSignedIn={isSignedIn}
-          isLoaded={isLoaded}
-          user={user}
-          onSignOut={handleSignOut}
-          onClose={closeMenu}
-        />
+      {/* Mobile slide-out menu */}
+      <Sheet open={isMenuOpen} onOpenChange={setIsMenuOpen}>
+        <SheetContent
+          side="right"
+          data-testid="navbar-menu-mobile"
+          className="bg-white dark:bg-black shadow-xl px-4 py-4 overflow-y-auto w-[85%] sm:max-w-sm"
+          style={{
+            paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))",
+          }}
+        >
+          <SheetTitle className="sr-only">Navigation Menu</SheetTitle>
+          <MobileNavUserSection
+            isSignedIn={isSignedIn}
+            isLoaded={isLoaded}
+            user={user}
+            onSignOut={handleSignOut}
+            onClose={closeMenu}
+          />
 
-        <MobileNavLinks
-          adminLinks={linksForLoggedInUsers}
-          isSignedIn={isSignedIn}
-          isMenuOpen={isMenuOpen}
-          onClose={closeMenu}
-        />
-      </NavbarMenu>
+          <MobileNavLinks
+            adminLinks={linksForLoggedInUsers}
+            isSignedIn={isSignedIn}
+            isMenuOpen={isMenuOpen}
+            onClose={closeMenu}
+          />
+        </SheetContent>
+      </Sheet>
     </>
   );
 };

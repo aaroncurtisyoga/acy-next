@@ -1,6 +1,9 @@
 import { FC } from "react";
-import { Input } from "@heroui/input";
-import { Checkbox } from "@heroui/checkbox";
+import { Input } from "@/components/ui/input";
+import { Checkbox } from "@/components/ui/checkbox";
+import { Label } from "@/components/ui/label";
+import { FormField } from "@/components/ui/form-field";
+import { cn } from "@/app/_lib/utils";
 import {
   Control,
   Controller,
@@ -30,27 +33,32 @@ const ExternalHostingInput: FC<ExternalHostingInputProps> = ({
         control={control}
         name={"externalRegistrationUrl" satisfies keyof EventFormValues}
         render={({ field }) => (
-          <Input
-            isDisabled={isSubmitting || !isHostedExternally}
-            isInvalid={!!errors.externalRegistrationUrl}
-            errorMessage={errors.externalRegistrationUrl?.message}
-            label={"Registration URL"}
-            placeholder={
-              isHostedExternally
-                ? "https://example.com/register"
-                : "Internal registration"
-            }
-            description={
-              isHostedExternally
+          <FormField
+            label="Registration URL"
+            error={errors.externalRegistrationUrl?.message}
+          >
+            <Input
+              disabled={isSubmitting || !isHostedExternally}
+              className={cn(
+                errors.externalRegistrationUrl && "border-destructive",
+              )}
+              placeholder={
+                isHostedExternally
+                  ? "https://example.com/register"
+                  : "Internal registration"
+              }
+              type="url"
+              value={isHostedExternally ? field.value || "" : ""}
+              onChange={(e) => field.onChange(e.target.value)}
+              onBlur={field.onBlur}
+              name={field.name}
+            />
+            <p className="text-xs text-muted-foreground">
+              {isHostedExternally
                 ? "The URL where people will sign up for this event"
-                : "Registration handled internally"
-            }
-            onChange={(e) => field.onChange(e)}
-            type={"url"}
-            variant="bordered"
-            {...field}
-            value={isHostedExternally ? field.value || "" : ""}
-          />
+                : "Registration handled internally"}
+            </p>
+          </FormField>
         )}
       />
 
@@ -58,24 +66,22 @@ const ExternalHostingInput: FC<ExternalHostingInputProps> = ({
         control={control}
         name={"isHostedExternally" satisfies keyof EventFormValues}
         render={({ field: { value, onChange, ...field } }) => (
-          <Checkbox
-            isDisabled={isSubmitting}
-            size={"md"}
-            onChange={(checked) => {
-              onChange(checked);
-              // Clear the URL when unchecking
-              if (!checked) {
-                setValue("externalRegistrationUrl", "");
-              }
-            }}
-            isSelected={value}
-            {...field}
-            classNames={{
-              label: "text-sm font-normal",
-            }}
-          >
-            People sign up on a different app
-          </Checkbox>
+          <div className="flex items-center gap-2">
+            <Checkbox
+              disabled={isSubmitting}
+              checked={value}
+              onCheckedChange={(checked) => {
+                onChange(checked);
+                if (!checked) {
+                  setValue("externalRegistrationUrl", "");
+                }
+              }}
+              {...field}
+            />
+            <Label className="text-sm font-normal">
+              People sign up on a different app
+            </Label>
+          </div>
         )}
       />
     </div>

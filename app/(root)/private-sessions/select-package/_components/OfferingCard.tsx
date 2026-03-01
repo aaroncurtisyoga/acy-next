@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, CardBody, CardHeader } from "@heroui/card";
+import { Card, CardContent, CardHeader } from "@/components/ui/card";
 import { Check } from "lucide-react";
 import { OfferingType } from "@/app/(root)/private-sessions/_lib/types";
 
@@ -25,11 +25,10 @@ const OfferingCard: FC<PurchaseCardProps> = ({
           ? "bg-blue-50/50 dark:bg-blue-900/20 hover:bg-blue-50 dark:hover:bg-blue-900/30 shadow-md ring-2 ring-blue-600 dark:ring-blue-400"
           : "hover:bg-gray-50 dark:hover:bg-gray-800 hover:shadow-md bg-white dark:bg-gray-900"
       }`}
-      onPress={handleCardClick}
-      isPressable
+      onClick={handleCardClick}
       data-selected={isSelected ? "true" : "false"}
     >
-      <CardHeader className="flex flex-row justify-between items-start gap-2 pointer-events-none">
+      <CardHeader className="flex flex-row justify-between items-start gap-2 pointer-events-none space-y-0">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-gray-200">
             {offering.title}
@@ -54,33 +53,29 @@ const OfferingCard: FC<PurchaseCardProps> = ({
           )}
         </div>
       </CardHeader>
-      <CardBody className={"pt-1 px-7 pointer-events-none"}>
-        <p
-          className={"text-4xl font-semibold text-gray-900 dark:text-gray-200"}
-        >
+      <CardContent className="pt-1 px-7 pointer-events-none">
+        <p className="text-4xl font-semibold text-gray-900 dark:text-gray-200">
           ${offering.price}
         </p>
-        <p className={"text-sm mt-4 mb-1 text-gray-700 dark:text-gray-400"}>
+        <p className="text-sm mt-4 mb-1 text-gray-700 dark:text-gray-400">
           This includes:
         </p>
         <ul>
           {offering.features.map((feature) => (
             <li
               key={feature}
-              className={
-                "flex text-sm items-center text-gray-700 dark:text-gray-400"
-              }
+              className="flex text-sm items-center text-gray-700 dark:text-gray-400"
             >
               <Check
                 strokeWidth={1.5}
-                className={"mr-2 text-green-600 dark:text-green-400"}
+                className="mr-2 text-green-600 dark:text-green-400"
                 size={14}
               />
               {feature}
             </li>
           ))}
         </ul>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

@@ -1,9 +1,15 @@
 "use client";
 
 import { FC } from "react";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { Select, SelectItem } from "@heroui/select";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
 import { Search, X } from "lucide-react";
 
 interface Category {
@@ -38,59 +44,61 @@ const EventTableToolbar: FC<EventTableToolbarProps> = ({
 }) => {
   return (
     <div className="flex flex-col lg:flex-row gap-4 mb-6">
-      <div className="flex-1">
+      <div className="flex-1 max-w-xs relative">
+        <Search
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+          size={18}
+        />
         <Input
-          isClearable={!disabled}
           placeholder="Search events..."
           aria-label="Search events"
           value={searchText}
-          onValueChange={onSearchChange}
-          startContent={<Search className="text-default-400" size={18} />}
-          className="max-w-xs"
+          onChange={(e) => onSearchChange(e.target.value)}
+          className="pl-9"
           disabled={disabled}
         />
       </div>
       <div className="flex flex-wrap gap-3">
         <Select
-          placeholder="All Categories"
-          aria-label="Filter by category"
-          className="w-44"
-          selectedKeys={category ? [category] : []}
-          onSelectionChange={(keys) => {
-            const selected = Array.from(keys)[0] as string;
-            onCategoryChange(selected || "");
-          }}
-          isDisabled={disabled}
+          value={category || "all"}
+          onValueChange={(value) =>
+            onCategoryChange(value === "all" ? "" : value)
+          }
+          disabled={disabled}
         >
-          {categories.map((cat) => (
-            <SelectItem key={cat.id}>{cat.name}</SelectItem>
-          ))}
+          <SelectTrigger className="w-44">
+            <SelectValue placeholder="All Categories" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Categories</SelectItem>
+            {categories.map((cat) => (
+              <SelectItem key={cat.id} value={cat.id}>
+                {cat.name}
+              </SelectItem>
+            ))}
+          </SelectContent>
         </Select>
         <Select
-          placeholder="Status"
-          aria-label="Filter by status"
-          className="w-36"
-          selectedKeys={[statusFilter]}
-          onSelectionChange={(keys) => {
-            const selected = Array.from(keys)[0] as string;
-            onStatusChange(selected);
-          }}
-          isDisabled={disabled}
+          value={statusFilter}
+          onValueChange={onStatusChange}
+          disabled={disabled}
         >
-          <SelectItem key="all">All Events</SelectItem>
-          <SelectItem key="active">Active</SelectItem>
-          <SelectItem key="inactive">Inactive</SelectItem>
+          <SelectTrigger className="w-36">
+            <SelectValue placeholder="Status" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Events</SelectItem>
+            <SelectItem value="active">Active</SelectItem>
+            <SelectItem value="inactive">Inactive</SelectItem>
+          </SelectContent>
         </Select>
         {hasActiveFilters && (
           <Button
-            color="default"
-            variant="flat"
-            size="md"
-            startContent={<X size={16} />}
-            onPress={onClearFilters}
-            isDisabled={disabled}
+            variant="secondary"
+            onClick={onClearFilters}
+            disabled={disabled}
           >
-            Clear Filters
+            <X size={16} /> Clear Filters
           </Button>
         )}
       </div>

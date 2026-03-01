@@ -2,7 +2,6 @@
 
 import { FC } from "react";
 import Link from "next/link";
-import { NavbarMenuItem } from "@heroui/navbar";
 import { LogOut, LogIn, Shield } from "lucide-react";
 import { track } from "@vercel/analytics";
 import type { UserResource } from "@clerk/types";
@@ -27,7 +26,7 @@ const MobileNavUserSection: FC<MobileNavUserSectionProps> = ({
   if (isSignedIn && user) {
     return (
       <>
-        <NavbarMenuItem className="list-none mb-3">
+        <div className="mb-3">
           <div className="flex items-center gap-3 px-4 py-3 rounded-2xl bg-gradient-to-br from-gray-50 to-gray-100 dark:from-gray-800 dark:to-gray-900 shadow-inner">
             <div className="relative">
               <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-gray-600 to-gray-700 dark:from-gray-500 dark:to-gray-600 flex items-center justify-center text-white font-semibold shadow-lg text-lg">
@@ -52,9 +51,9 @@ const MobileNavUserSection: FC<MobileNavUserSectionProps> = ({
               </p>
             </div>
           </div>
-        </NavbarMenuItem>
+        </div>
 
-        <NavbarMenuItem className="list-none mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
           <button
             data-testid="navbar-menu-item-logout"
             className="w-full flex items-center justify-center gap-3 px-4 py-3 rounded-xl bg-gray-100 hover:bg-gray-200 dark:bg-gray-800 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 font-medium transition-all duration-200"
@@ -63,13 +62,13 @@ const MobileNavUserSection: FC<MobileNavUserSectionProps> = ({
             <LogOut className="w-4 h-4" />
             <span>Sign Out</span>
           </button>
-        </NavbarMenuItem>
+        </div>
       </>
     );
   }
 
   return (
-    <NavbarMenuItem className="list-none mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
+    <div className="mb-4 pb-4 border-b border-gray-200 dark:border-gray-700">
       <Link
         data-testid="navbar-menu-item-login"
         className="flex items-center gap-3 px-4 py-3 text-gray-700 dark:text-gray-300 hover:text-gray-900 dark:hover:text-white"
@@ -85,7 +84,7 @@ const MobileNavUserSection: FC<MobileNavUserSectionProps> = ({
         <LogIn className="w-4 h-4" />
         <span>Sign In</span>
       </Link>
-    </NavbarMenuItem>
+    </div>
   );
 };
 

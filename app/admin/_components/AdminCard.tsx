@@ -1,5 +1,5 @@
 import { FC, ReactNode } from "react";
-import { Card, CardBody } from "@heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface AdminCardProps {
   children: ReactNode;
@@ -9,7 +9,7 @@ interface AdminCardProps {
 const AdminCard: FC<AdminCardProps> = ({ children, className = "" }) => {
   return (
     <Card className={`shadow-sm ${className}`}>
-      <CardBody className="p-4">{children}</CardBody>
+      <CardContent className="p-4">{children}</CardContent>
     </Card>
   );
 };

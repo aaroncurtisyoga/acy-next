@@ -1,8 +1,15 @@
 "use client";
 
 import { FC } from "react";
-import { Modal, ModalContent, ModalHeader, ModalFooter } from "@heroui/modal";
-import { Button } from "@heroui/button";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 import QuickAddFormFields from "@/app/(root)/_components/QuickAddEvent/QuickAddFormFields";
 import { useQuickAddForm } from "@/app/(root)/_components/QuickAddEvent/useQuickAddForm";
 
@@ -35,45 +42,43 @@ const QuickAddEventModal: FC<QuickAddEventModalProps> = ({
   } = form;
 
   return (
-    <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      size="2xl"
-      scrollBehavior="inside"
-    >
-      <ModalContent>
-        {(onClose) => (
-          <form onSubmit={handleSubmit(onSubmit)}>
-            <ModalHeader className="flex flex-col gap-1">
-              Quick Add Event
-            </ModalHeader>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="sm:max-w-2xl max-h-[85vh] overflow-y-auto">
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <DialogHeader>
+            <DialogTitle>Quick Add Event</DialogTitle>
+          </DialogHeader>
 
-            <QuickAddFormFields
-              control={control}
-              errors={errors}
-              categories={categories}
-              isSubmitting={isSubmitting}
-              isFree={isFree}
-              isHostedExternally={isHostedExternally}
-              setLocationValue={setLocationValue}
-              onStartDateChange={handleStartDateChange}
-            />
+          <QuickAddFormFields
+            control={control}
+            errors={errors}
+            categories={categories}
+            isSubmitting={isSubmitting}
+            isFree={isFree}
+            isHostedExternally={isHostedExternally}
+            setLocationValue={setLocationValue}
+            onStartDateChange={handleStartDateChange}
+          />
 
-            <ModalFooter>
-              <Button variant="flat" onPress={handleAdvancedCreate}>
-                Create Advanced
-              </Button>
-              <Button color="danger" variant="light" onPress={onClose}>
-                Cancel
-              </Button>
-              <Button color="primary" type="submit" isLoading={isSubmitting}>
-                Create Event
-              </Button>
-            </ModalFooter>
-          </form>
-        )}
-      </ModalContent>
-    </Modal>
+          <DialogFooter className="mt-4">
+            <Button variant="secondary" onClick={handleAdvancedCreate}>
+              Create Advanced
+            </Button>
+            <Button
+              variant="ghost"
+              className="text-destructive hover:text-destructive"
+              onClick={() => onOpenChange()}
+            >
+              Cancel
+            </Button>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="animate-spin" size={16} />}
+              {isSubmitting ? "Creating..." : "Create Event"}
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

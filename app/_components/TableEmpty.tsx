@@ -1,22 +1,40 @@
 import { FC } from "react";
-import { Table, TableBody, TableColumn, TableHeader } from "@heroui/table";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
 
 interface EmptyTableProps {
   columns: Array<string>;
   message: string;
 }
 
-const TableLoading: FC<EmptyTableProps> = ({ columns, message }) => {
+const TableEmpty: FC<EmptyTableProps> = ({ columns, message }) => {
   return (
-    <Table aria-label={"Table Empty"}>
+    <Table aria-label="Table Empty">
       <TableHeader>
-        {columns.map((column, index) => (
-          <TableColumn key={index}>{column}</TableColumn>
-        ))}
+        <TableRow>
+          {columns.map((column, index) => (
+            <TableHead key={index}>{column}</TableHead>
+          ))}
+        </TableRow>
       </TableHeader>
-      <TableBody emptyContent={`${message}`}>{[]}</TableBody>
+      <TableBody>
+        <TableRow>
+          <TableCell
+            colSpan={columns.length}
+            className="h-24 text-center text-muted-foreground"
+          >
+            {message}
+          </TableCell>
+        </TableRow>
+      </TableBody>
     </Table>
   );
 };
 
-export default TableLoading;
+export default TableEmpty;

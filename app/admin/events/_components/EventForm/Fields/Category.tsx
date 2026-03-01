@@ -1,6 +1,13 @@
 import { FC, useEffect, useState } from "react";
-import { Select, SelectItem } from "@heroui/select";
-import { Category } from "@prisma/client";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { FormField } from "@/components/ui/form-field";
+import { Category as CategoryType } from "@prisma/client";
 import {
   Control,
   Controller,
@@ -23,12 +30,12 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
   isSubmitting,
   rules,
 }) => {
-  const [categories, setCategories] = useState<Category[]>([]);
+  const [categories, setCategories] = useState<CategoryType[]>([]);
 
   useEffect(() => {
     void (async () => {
       const categoryList = await getAllCategories();
-      categoryList && setCategories(categoryList as Category[]);
+      categoryList && setCategories(categoryList as CategoryType[]);
     })();
   }, []);
 
@@ -37,25 +44,30 @@ const CategoryDropdown: FC<CategoryDropdownProps> = ({
       control={control}
       name={"category"}
       rules={rules}
-      render={({ field }) => {
-        return (
+      render={({ field }) => (
+        <FormField
+          label="Category"
+          error={errors.category?.message}
+          required={!!rules?.required}
+        >
           <Select
-            onChange={(e) => field.onChange(e.target.value)}
-            isDisabled={isSubmitting}
-            selectedKeys={field.value ? [field.value] : []}
-            errorMessage={errors.category?.message}
-            label={"Category"}
-            isInvalid={!!errors.category}
-            variant={"bordered"}
-            isRequired={!!rules?.required}
+            value={field.value || ""}
+            onValueChange={field.onChange}
+            disabled={isSubmitting}
           >
-            {categories.length > 0 &&
-              categories.map((category) => (
-                <SelectItem key={category.id}>{category.name}</SelectItem>
+            <SelectTrigger>
+              <SelectValue placeholder="Select a category" />
+            </SelectTrigger>
+            <SelectContent>
+              {categories.map((category) => (
+                <SelectItem key={category.id} value={category.id}>
+                  {category.name}
+                </SelectItem>
               ))}
+            </SelectContent>
           </Select>
-        );
-      }}
+        </FormField>
+      )}
     />
   );
 };

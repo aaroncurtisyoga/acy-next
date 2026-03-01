@@ -1,8 +1,12 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Button } from "@heroui/button";
-import { Tooltip } from "@heroui/tooltip";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 import { Copy, Check } from "lucide-react";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { formatDateTime } from "@/app/_lib/utils";
@@ -14,6 +18,12 @@ interface ShareButtonProps {
   size?: "sm" | "md" | "lg";
   className?: string;
 }
+
+const sizeMap = {
+  sm: "sm" as const,
+  md: "default" as const,
+  lg: "lg" as const,
+};
 
 const ShareButton: FC<ShareButtonProps> = ({
   event,
@@ -28,7 +38,6 @@ const ShareButton: FC<ShareButtonProps> = ({
     const dateTime = formatDateTime(event.startDateTime);
     const eventUrl = `${window.location.origin}/?event=${event.id}`;
 
-    // Format the share text in a clean, professional way
     const lines = [
       event.title,
       "",
@@ -70,10 +79,9 @@ const ShareButton: FC<ShareButtonProps> = ({
       event_id: event.id,
       event_title: event.title,
       category: event.category.name,
-      method: "unknown", // Will be updated based on share method
+      method: "unknown",
     });
 
-    // Check if Web Share API is available and mobile
     if (navigator.share && /mobile|android|iphone/i.test(navigator.userAgent)) {
       try {
         await navigator.share(shareData);
@@ -83,15 +91,12 @@ const ShareButton: FC<ShareButtonProps> = ({
           method: "native_share",
         });
       } catch (err) {
-        // User cancelled share or error occurred
         if ((err as Error).name !== "AbortError") {
           console.error("Error sharing:", err);
-          // Fallback to clipboard
           await copyToClipboard(shareText);
         }
       }
     } else {
-      // Fallback to clipboard for desktop
       await copyToClipboard(shareText);
     }
   };
@@ -108,18 +113,15 @@ const ShareButton: FC<ShareButtonProps> = ({
         method: "clipboard_copy",
       });
 
-      // Reset copied state after 2 seconds
       setTimeout(() => {
         setCopied(false);
       }, 2000);
 
-      // Hide tooltip after 2.5 seconds
       setTimeout(() => {
         setShowTooltip(false);
       }, 2500);
     } catch (err) {
       console.error("Failed to copy to clipboard:", err);
-      // Fallback for older browsers
       const textArea = document.createElement("textarea");
       textArea.value = text;
       textArea.style.position = "fixed";
@@ -146,52 +148,47 @@ const ShareButton: FC<ShareButtonProps> = ({
 
   if (variant === "icon") {
     return (
-      <Tooltip
-        content={copied ? "Copied!" : "Copy event details"}
-        isOpen={showTooltip || undefined}
-        placement="top"
-        className="text-xs"
-      >
-        <Button
-          isIconOnly
-          size={size}
-          variant="light"
-          className={`text-foreground-600 hover:text-primary-500 ${className}`}
-          onPress={handleShare}
-          aria-label="Share event"
-        >
-          {copied ? (
-            <Check className="w-4 h-4 text-success-500 animate-in fade-in-0 zoom-in-50" />
-          ) : (
-            <Copy className="w-4 h-4" />
-          )}
-        </Button>
+      <Tooltip open={showTooltip || undefined}>
+        <TooltipTrigger asChild>
+          <Button
+            size="icon"
+            variant="ghost"
+            className={`text-muted-foreground hover:text-primary ${className}`}
+            onClick={handleShare}
+            aria-label="Share event"
+          >
+            {copied ? (
+              <Check className="w-4 h-4 text-green-500 animate-in fade-in-0 zoom-in-50" />
+            ) : (
+              <Copy className="w-4 h-4" />
+            )}
+          </Button>
+        </TooltipTrigger>
+        <TooltipContent className="text-xs">
+          {copied ? "Copied!" : "Copy event details"}
+        </TooltipContent>
       </Tooltip>
     );
   }
 
   return (
-    <Tooltip
-      content="Copied to clipboard!"
-      isOpen={showTooltip}
-      placement="top"
-      className="text-xs"
-    >
-      <Button
-        size={size}
-        variant="flat"
-        className={`font-medium ${className}`}
-        onPress={handleShare}
-        startContent={
-          copied ? (
-            <Check className="w-4 h-4 text-success-500 animate-in fade-in-0 zoom-in-50" />
+    <Tooltip open={showTooltip || undefined}>
+      <TooltipTrigger asChild>
+        <Button
+          size={sizeMap[size]}
+          variant="secondary"
+          className={`font-medium ${className}`}
+          onClick={handleShare}
+        >
+          {copied ? (
+            <Check className="w-4 h-4 text-green-500 animate-in fade-in-0 zoom-in-50" />
           ) : (
             <Copy className="w-4 h-4" />
-          )
-        }
-      >
-        {copied ? "Copied!" : "Share"}
-      </Button>
+          )}
+          {copied ? "Copied!" : "Share"}
+        </Button>
+      </TooltipTrigger>
+      <TooltipContent className="text-xs">Copied to clipboard!</TooltipContent>
     </Tooltip>
   );
 };

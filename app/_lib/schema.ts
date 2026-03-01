@@ -1,4 +1,3 @@
-import { ZonedDateTime } from "@internationalized/date";
 import { z } from "zod";
 
 export const NewsletterFormSchema = z.object({
@@ -10,8 +9,8 @@ export const NewsletterFormSchema = z.object({
 export const EventFormBasicInfoSchema = z.object({
   category: z.string().min(2, "Category is required"),
   endDateTime: z
-    .instanceof(ZonedDateTime)
-    .refine((val) => val instanceof ZonedDateTime, {
+    .instanceof(Date)
+    .refine((val) => val instanceof Date && !isNaN(val.getTime()), {
       message: "Invalid date",
     }),
   isHostedExternally: z.boolean(),
@@ -23,8 +22,8 @@ export const EventFormBasicInfoSchema = z.object({
     placeId: z.string(),
   }),
   startDateTime: z
-    .instanceof(ZonedDateTime)
-    .refine((val) => val instanceof ZonedDateTime, {
+    .instanceof(Date)
+    .refine((val) => val instanceof Date && !isNaN(val.getTime()), {
       message: "Invalid date",
     }),
   title: z.string().min(3, "Must be at least 3 characters"),

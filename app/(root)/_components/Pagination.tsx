@@ -44,7 +44,7 @@ const Pagination: FC<PaginationProps> = ({
         <button
           onClick={() => onClick("prev")}
           disabled={Number(page) <= 1}
-          className="flex items-center px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-default-100 hover:bg-default-200 dark:bg-default-50 dark:hover:bg-default-100 text-foreground transition-colors"
+          className="flex items-center px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-muted hover:bg-muted dark:bg-muted/50 dark:hover:bg-muted text-foreground transition-colors"
           aria-label="Previous page"
         >
           Previous
@@ -57,7 +57,7 @@ const Pagination: FC<PaginationProps> = ({
         <button
           onClick={() => onClick("next")}
           disabled={Number(page) >= totalPages}
-          className="flex items-center px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-default-100 hover:bg-default-200 dark:bg-default-50 dark:hover:bg-default-100 text-foreground transition-colors"
+          className="flex items-center px-4 py-2 rounded-md disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer bg-muted hover:bg-muted dark:bg-muted/50 dark:hover:bg-muted text-foreground transition-colors"
           aria-label="Next page"
         >
           Next

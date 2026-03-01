@@ -1,8 +1,8 @@
 "use client";
 
-import { Button } from "@heroui/button";
-import { Tooltip } from "@heroui/tooltip";
-import { Divider } from "@heroui/divider";
+import { Button } from "@/components/ui/button";
+import { SimpleTooltip } from "@/components/ui/simple-tooltip";
+import { Separator } from "@/components/ui/separator";
 import { type Editor } from "@tiptap/react";
 import {
   Bold,
@@ -68,222 +68,210 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
 
   return (
     <>
-      <div className="flex flex-wrap gap-1 p-3 mb-2 border-default-200 border rounded-medium bg-default-50">
+      <div className="flex flex-wrap gap-1 p-3 mb-2 border-border border rounded-md bg-muted/50">
         {/* Undo/Redo */}
-        <Tooltip content={`Undo (${formatShortcut("⌘Z", "Ctrl+Z")})`}>
+        <SimpleTooltip content={`Undo (${formatShortcut("⌘Z", "Ctrl+Z")})`}>
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().undo().run()}
-            isDisabled={isDisabled || !editor.can().undo()}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().undo().run()}
+            disabled={isDisabled || !editor.can().undo()}
+            variant="ghost"
+            className="h-8 w-8"
             aria-label="Undo"
           >
             <Undo2 size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content={`Redo (${formatShortcut("⇧⌘Z", "Ctrl+Y")})`}>
+        <SimpleTooltip content={`Redo (${formatShortcut("⇧⌘Z", "Ctrl+Y")})`}>
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().redo().run()}
-            isDisabled={isDisabled || !editor.can().redo()}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().redo().run()}
+            disabled={isDisabled || !editor.can().redo()}
+            variant="ghost"
+            className="h-8 w-8"
             aria-label="Redo"
           >
             <Redo2 size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Divider orientation="vertical" className="mx-1 h-6 my-auto" />
+        <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
 
         {/* Text formatting */}
-        <Tooltip content={`Bold (${formatShortcut("⌘B", "Ctrl+B")})`}>
+        <SimpleTooltip content={`Bold (${formatShortcut("⌘B", "Ctrl+B")})`}>
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleBold().run()}
-            className={editor.isActive("bold") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            className={`h-8 w-8 ${editor.isActive("bold") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Bold"
           >
             <Bold size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content={`Italic (${formatShortcut("⌘I", "Ctrl+I")})`}>
+        <SimpleTooltip content={`Italic (${formatShortcut("⌘I", "Ctrl+I")})`}>
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleItalic().run()}
-            className={editor.isActive("italic") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleItalic().run()}
+            className={`h-8 w-8 ${editor.isActive("italic") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Italic"
           >
             <Italic size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content={`Underline (${formatShortcut("⌘U", "Ctrl+U")})`}>
+        <SimpleTooltip
+          content={`Underline (${formatShortcut("⌘U", "Ctrl+U")})`}
+        >
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleUnderline().run()}
-            className={editor.isActive("underline") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={`h-8 w-8 ${editor.isActive("underline") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Underline"
           >
             <Underline size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content="Strikethrough">
+        <SimpleTooltip content="Strikethrough">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleStrike().run()}
-            className={editor.isActive("strike") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleStrike().run()}
+            className={`h-8 w-8 ${editor.isActive("strike") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Strikethrough"
           >
             <Strikethrough size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Divider orientation="vertical" className="mx-1 h-6 my-auto" />
+        <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
 
         {/* Headings */}
-        <Tooltip content="Heading 1">
+        <SimpleTooltip content="Heading 1">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() =>
+            onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
-            className={
-              editor.isActive("heading", { level: 1 }) ? "bg-default-200" : ""
-            }
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            className={`h-8 w-8 ${editor.isActive("heading", { level: 1 }) ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Heading 1"
           >
             <Heading1 size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content="Heading 2">
+        <SimpleTooltip content="Heading 2">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() =>
+            onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
-            className={
-              editor.isActive("heading", { level: 2 }) ? "bg-default-200" : ""
-            }
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            className={`h-8 w-8 ${editor.isActive("heading", { level: 2 }) ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Heading 2"
           >
             <Heading2 size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Divider orientation="vertical" className="mx-1 h-6 my-auto" />
+        <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
 
         {/* Lists */}
-        <Tooltip content="Bullet List">
+        <SimpleTooltip content="Bullet List">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleBulletList().run()}
-            className={editor.isActive("bulletList") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleBulletList().run()}
+            className={`h-8 w-8 ${editor.isActive("bulletList") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Bullet List"
           >
             <List size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content="Numbered List">
+        <SimpleTooltip content="Numbered List">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleOrderedList().run()}
-            className={editor.isActive("orderedList") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleOrderedList().run()}
+            className={`h-8 w-8 ${editor.isActive("orderedList") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Numbered List"
           >
             <ListOrdered size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Tooltip content="Blockquote">
+        <SimpleTooltip content="Blockquote">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().toggleBlockquote().run()}
-            className={editor.isActive("blockquote") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().toggleBlockquote().run()}
+            className={`h-8 w-8 ${editor.isActive("blockquote") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label="Blockquote"
           >
             <MessageSquareQuote size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
-        <Divider orientation="vertical" className="mx-1 h-6 my-auto" />
+        <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
 
         {/* Link */}
-        <Tooltip
+        <SimpleTooltip
           content={`${editor.isActive("link") ? "Edit" : "Add"} Link (${formatShortcut("⌘K", "Ctrl+K")})`}
         >
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={openLinkDialog}
-            className={editor.isActive("link") ? "bg-default-200" : ""}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={openLinkDialog}
+            className={`h-8 w-8 ${editor.isActive("link") ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
             aria-label={editor.isActive("link") ? "Edit Link" : "Add Link"}
           >
             <LinkIcon size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
 
         {/* Horizontal Rule */}
-        <Tooltip content="Horizontal Rule">
+        <SimpleTooltip content="Horizontal Rule">
           <Button
-            isIconOnly
+            size="icon"
             type="button"
-            onPress={() => editor.chain().focus().setHorizontalRule().run()}
-            isDisabled={isDisabled}
-            size="sm"
-            variant="light"
+            onClick={() => editor.chain().focus().setHorizontalRule().run()}
+            disabled={isDisabled}
+            variant="ghost"
+            className="h-8 w-8"
             aria-label="Horizontal Rule"
           >
             <Minus size={18} />
           </Button>
-        </Tooltip>
+        </SimpleTooltip>
       </div>
 
       <LinkDialog

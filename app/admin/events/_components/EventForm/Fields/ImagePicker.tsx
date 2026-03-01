@@ -2,20 +2,20 @@
 
 import { FC, useState, useCallback } from "react";
 import Image from "next/image";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { cn } from "@/app/_lib/utils";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-  useDisclosure,
-} from "@heroui/modal";
-import { Chip } from "@heroui/chip";
-import { Progress } from "@heroui/progress";
-import { Card, CardBody } from "@heroui/card";
-import { ImagePlus, Check, Upload, Image as ImageIcon } from "lucide-react";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
+import { useDisclosure } from "@/app/_hooks/useDisclosure";
+import { Badge } from "@/components/ui/badge";
+import { Progress } from "@/components/ui/progress";
+import { Card, CardContent } from "@/components/ui/card";
+import { ImagePlus, Check, Upload, Image as ImageIcon, X } from "lucide-react";
 import { useDropzone } from "react-dropzone";
 import { FieldErrors, useWatch } from "react-hook-form";
 import { getImages } from "@/app/_lib/actions/blob.actions";
@@ -140,7 +140,7 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
             "border-2 border-dashed rounded-lg p-4 text-center cursor-pointer transition-colors",
             isDragActive
               ? "border-primary bg-primary/10"
-              : "border-default-300 hover:border-default-400",
+              : "border-border hover:border-muted-foreground/40",
             isUploading && "pointer-events-none opacity-60",
           )}
         >
@@ -149,8 +149,8 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
           {isUploading ? (
             <div className="space-y-2">
               <Upload className="w-8 h-8 mx-auto text-primary animate-pulse" />
-              <p className="text-sm text-default-600">Uploading...</p>
-              <Progress value={uploadProgress} size="sm" color="primary" />
+              <p className="text-sm text-muted-foreground">Uploading...</p>
+              <Progress value={uploadProgress} className="h-1" />
             </div>
           ) : isDragActive ? (
             <div className="space-y-2">
@@ -159,11 +159,11 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
             </div>
           ) : (
             <div className="space-y-2">
-              <ImageIcon className="w-8 h-8 mx-auto text-default-400" />
-              <p className="text-sm text-default-600">
+              <ImageIcon className="w-8 h-8 mx-auto text-muted-foreground" />
+              <p className="text-sm text-muted-foreground">
                 Drag & drop an image here, or click to select
               </p>
-              <p className="text-xs text-default-400">
+              <p className="text-xs text-muted-foreground">
                 JPG, PNG, GIF, WebP (max 5MB)
               </p>
             </div>
@@ -173,26 +173,23 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
         {/* Action Buttons and Status */}
         <div className="flex items-center gap-3">
           <Button
-            variant="flat"
-            startContent={<ImagePlus className="w-4 h-4" />}
-            onPress={handlePressOpenButton}
+            variant="secondary"
+            onClick={handlePressOpenButton}
             size="sm"
-            isDisabled={isUploading}
+            disabled={isUploading}
           >
+            <ImagePlus className="w-4 h-4" />
             Choose from Gallery
           </Button>
 
           {currentImageUrl && (
             <div className="flex items-center gap-2">
-              <Chip
-                color="success"
-                variant="flat"
-                startContent={<Check className="w-3 h-3" />}
-                onClose={clearImage}
-                size="sm"
-              >
-                Image Selected
-              </Chip>
+              <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+                <Check className="w-3 h-3 mr-1" /> Image Selected
+                <button onClick={clearImage} className="ml-1 hover:opacity-70">
+                  <X className="h-3 w-3" />
+                </button>
+              </Badge>
             </div>
           )}
         </div>
@@ -200,7 +197,7 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
         {/* Image Preview */}
         {currentImageUrl && (
           <Card className="max-w-[200px]">
-            <CardBody className="p-2">
+            <CardContent className="p-2">
               <div className="relative w-full h-[100px]">
                 <Image
                   src={currentImageUrl}
@@ -209,64 +206,58 @@ const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
                   className="object-cover rounded"
                 />
               </div>
-            </CardBody>
+            </CardContent>
           </Card>
         )}
 
         {errors.imageUrl?.message && (
-          <div className="text-tiny text-danger">{errors.imageUrl.message}</div>
+          <div className="text-xs text-destructive">
+            {errors.imageUrl.message}
+          </div>
         )}
       </div>
 
       {/* Gallery Modal */}
-      <Modal isOpen={isOpen} onOpenChange={onOpenChange} size={"full"}>
-        <ModalContent>
-          {(onClose) => (
-            <>
-              <ModalHeader className="flex flex-col gap-1">
-                Choose from gallery
-              </ModalHeader>
-              <ModalBody
-                className={
-                  "grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4"
-                }
-              >
-                {images?.map((image: any) => (
-                  <div key={image.pathname} className={"relative aspect-video"}>
-                    <Image
-                      src={image.url}
-                      alt={image.pathname}
-                      sizes={"470px"}
-                      onClick={() => setSelectedImgUrl(image.url)}
-                      className={cn(
-                        "object-cover overflow-hidden rounded-medium cursor-pointer transition-all",
-                        "hover:opacity-75 hover:scale-105",
-                        {
-                          "ring-2 ring-primary ring-offset-2":
-                            selectedImgUrl === image.url,
-                        },
-                      )}
-                      fill={true}
-                    />
-                  </div>
-                ))}
-              </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="bordered" onPress={onClose}>
-                  Cancel
-                </Button>
-                <Button
-                  color="primary"
-                  onPress={setHeroImage}
-                  isDisabled={!selectedImgUrl}
-                >
-                  Select Image
-                </Button>
-              </ModalFooter>
-            </>
-          )}
-        </ModalContent>
-      </Modal>
+      <Dialog open={isOpen} onOpenChange={onOpenChange}>
+        <DialogContent className="max-w-[95vw] h-[90vh] flex flex-col">
+          <DialogHeader>
+            <DialogTitle>Choose from gallery</DialogTitle>
+          </DialogHeader>
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 flex-1 overflow-y-auto">
+            {images?.map((image: any) => (
+              <div key={image.pathname} className="relative aspect-video">
+                <Image
+                  src={image.url}
+                  alt={image.pathname}
+                  sizes="470px"
+                  onClick={() => setSelectedImgUrl(image.url)}
+                  className={cn(
+                    "object-cover overflow-hidden rounded-md cursor-pointer transition-all",
+                    "hover:opacity-75 hover:scale-105",
+                    {
+                      "ring-2 ring-primary ring-offset-2":
+                        selectedImgUrl === image.url,
+                    },
+                  )}
+                  fill={true}
+                />
+              </div>
+            ))}
+          </div>
+          <DialogFooter>
+            <Button
+              variant="outline"
+              className="text-destructive border-destructive hover:bg-destructive/10"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancel
+            </Button>
+            <Button onClick={setHeroImage} disabled={!selectedImgUrl}>
+              Select Image
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </>
   );
 };

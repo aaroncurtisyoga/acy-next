@@ -2,8 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
-import { Spinner } from "@heroui/spinner";
+import { Button } from "@/components/ui/button";
+import { Spinner } from "@/components/ui/spinner";
 import { Elements } from "@stripe/react-stripe-js";
 import { loadStripe } from "@stripe/stripe-js";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
@@ -128,9 +128,7 @@ const CheckoutPage: React.FC = () => {
                 <div className="text-red-600 dark:text-red-400 text-lg mb-4">
                   {error}
                 </div>
-                <Button color="primary" onPress={() => createPaymentIntent()}>
-                  Try Again
-                </Button>
+                <Button onClick={() => createPaymentIntent()}>Try Again</Button>
               </div>
             </div>
           ) : clientSecret ? (
@@ -143,7 +141,7 @@ const CheckoutPage: React.FC = () => {
                 Payment Details
               </h3>
               <div className="flex items-center justify-center py-20">
-                <Spinner size="lg" color="primary" />
+                <Spinner size="lg" />
               </div>
             </div>
           )}

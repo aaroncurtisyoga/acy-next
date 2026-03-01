@@ -3,16 +3,14 @@
 import { useEffect, useState, useCallback } from "react";
 import { useParams, useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
-import { Button } from "@heroui/button";
-import { Input } from "@heroui/input";
-import { Switch } from "@heroui/switch";
-import { Spinner } from "@heroui/spinner";
-import { addToast } from "@heroui/toast";
-import {
-  fromDate,
-  getLocalTimeZone,
-  parseZonedDateTime,
-} from "@internationalized/date";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
+import { FormField } from "@/components/ui/form-field";
+import { Spinner } from "@/components/ui/spinner";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { X } from "lucide-react";
 
 import { getEventById, updateEvent } from "@/app/_lib/actions/event.actions";
@@ -87,10 +85,10 @@ export default function EditEventPage() {
               }
             : undefined,
           startDateTime: event.startDateTime
-            ? fromDate(new Date(event.startDateTime), getLocalTimeZone())
+            ? new Date(event.startDateTime)
             : undefined,
           endDateTime: event.endDateTime
-            ? fromDate(new Date(event.endDateTime), getLocalTimeZone())
+            ? new Date(event.endDateTime)
             : undefined,
         });
       } catch (err) {
@@ -124,18 +122,12 @@ export default function EditEventPage() {
       // Auto-adjust end date if it's before start date
       if (newStartDate && endDateTime) {
         const startTime =
-          typeof newStartDate === "string"
-            ? parseZonedDateTime(newStartDate)
-            : newStartDate;
+          newStartDate instanceof Date ? newStartDate : new Date(newStartDate);
         const endTime =
-          typeof endDateTime === "string"
-            ? parseZonedDateTime(endDateTime)
-            : endDateTime;
+          endDateTime instanceof Date ? endDateTime : new Date(endDateTime);
 
-        if (startTime?.compare && endTime?.compare) {
-          if (startTime.compare(endTime) >= 0) {
-            setValue("endDateTime", startTime.add({ hours: 1 }));
-          }
+        if (startTime >= endTime) {
+          setValue("endDateTime", new Date(startTime.getTime() + 3600000));
         }
       }
     },
@@ -146,13 +138,15 @@ export default function EditEventPage() {
     setIsSubmitting(true);
 
     try {
-      // Convert ZonedDateTime to UTC ISO strings
-      const startDateTime = data.startDateTime?.toAbsoluteString
-        ? data.startDateTime.toAbsoluteString()
-        : data.startDateTime;
-      const endDateTime = data.endDateTime?.toAbsoluteString
-        ? data.endDateTime.toAbsoluteString()
-        : data.endDateTime;
+      // Convert Date to UTC ISO strings
+      const startDateTime =
+        data.startDateTime instanceof Date
+          ? data.startDateTime.toISOString()
+          : data.startDateTime;
+      const endDateTime =
+        data.endDateTime instanceof Date
+          ? data.endDateTime.toISOString()
+          : data.endDateTime;
 
       const eventData = {
         ...data,
@@ -166,33 +160,16 @@ export default function EditEventPage() {
       });
 
       if (updated) {
-        addToast({
-          title: "Success",
-          description: "Event updated successfully",
-          color: "success",
-          timeout: 3000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.success("Event updated successfully");
         router.push("/admin/events");
       } else {
-        addToast({
-          title: "Error",
-          description: "Failed to update event",
-          color: "danger",
-          timeout: 5000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.error("Failed to update event");
       }
     } catch (err) {
       console.error("Error updating event:", err);
-      addToast({
-        title: "Error",
-        description:
-          err instanceof Error ? err.message : "Failed to update event",
-        color: "danger",
-        timeout: 5000,
-        shouldShowTimeoutProgress: true,
-      });
+      toast.error(
+        err instanceof Error ? err.message : "Failed to update event",
+      );
     } finally {
       setIsSubmitting(false);
     }
@@ -200,8 +177,9 @@ export default function EditEventPage() {
 
   if (isLoading) {
     return (
-      <div className="flex justify-center items-center min-h-[400px]">
-        <Spinner size="lg" label="Loading event..." />
+      <div className="flex flex-col justify-center items-center min-h-[400px] gap-2">
+        <Spinner size="lg" />
+        <p className="text-sm text-muted-foreground">Loading event...</p>
       </div>
     );
   }
@@ -209,8 +187,8 @@ export default function EditEventPage() {
   if (error) {
     return (
       <div className="flex flex-col items-center justify-center min-h-[400px] gap-4">
-        <p className="text-danger">{error}</p>
-        <Button onPress={() => router.push("/admin/events")}>
+        <p className="text-destructive">{error}</p>
+        <Button onClick={() => router.push("/admin/events")}>
           Back to Events
         </Button>
       </div>
@@ -222,10 +200,10 @@ export default function EditEventPage() {
       <div className="relative">
         {/* Close button */}
         <Button
-          isIconOnly
-          variant="light"
+          size="icon"
+          variant="ghost"
           className="absolute -top-2 -right-2 z-10"
-          onPress={() => router.push("/admin/events")}
+          onClick={() => router.push("/admin/events")}
           aria-label="Close"
         >
           <X size={20} />
@@ -279,61 +257,63 @@ export default function EditEventPage() {
               name="price"
               control={control}
               render={({ field }) => (
-                <Input
-                  label="Price"
-                  placeholder="0.00"
-                  type="number"
-                  min="0"
-                  step="0.01"
-                  variant="bordered"
-                  isDisabled={isFree || isSubmitting}
-                  value={field.value ?? ""}
-                  onChange={(e) => field.onChange(e.target.value)}
-                  onBlur={field.onBlur}
-                  name={field.name}
-                  startContent={
-                    <span className="text-default-400 text-sm">$</span>
-                  }
-                />
+                <FormField label="Price">
+                  <div className="relative">
+                    <span className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground text-sm">
+                      $
+                    </span>
+                    <Input
+                      placeholder="0.00"
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      disabled={isFree || isSubmitting}
+                      className="pl-7"
+                      value={field.value ?? ""}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                    />
+                  </div>
+                </FormField>
               )}
             />
             <Controller
               name="isFree"
               control={control}
               render={({ field }) => (
-                <Switch
-                  isSelected={field.value ?? false}
-                  onValueChange={(checked) => {
-                    field.onChange(checked);
-                    if (checked) {
-                      setValue("price", "0");
-                    }
-                  }}
-                  size="sm"
-                  className="mt-2"
-                >
-                  Free event
-                </Switch>
+                <div className="flex items-center gap-2 mt-2">
+                  <Switch
+                    checked={field.value ?? false}
+                    onCheckedChange={(checked) => {
+                      field.onChange(checked);
+                      if (checked) {
+                        setValue("price", "0");
+                      }
+                    }}
+                  />
+                  <Label className="text-sm">Free event</Label>
+                </div>
               )}
             />
           </div>
 
           {/* Hosting Toggle */}
-          <div className="p-4 bg-default-100 rounded-lg space-y-4">
+          <div className="p-4 bg-muted rounded-lg space-y-4">
             <Controller
               name="isHostedExternally"
               control={control}
               render={({ field }) => (
-                <Switch
-                  isSelected={field.value ?? false}
-                  onValueChange={field.onChange}
-                  size="md"
-                >
-                  <span className="font-medium">Externally hosted event</span>
-                </Switch>
+                <div className="flex items-center gap-2">
+                  <Switch
+                    checked={field.value ?? false}
+                    onCheckedChange={field.onChange}
+                  />
+                  <Label className="font-medium">Externally hosted event</Label>
+                </div>
               )}
             />
-            <p className="text-sm text-default-500">
+            <p className="text-sm text-muted-foreground">
               {isHostedExternally
                 ? "Registration is handled on an external website"
                 : "Registration is handled through this platform"}
@@ -358,20 +338,26 @@ export default function EditEventPage() {
                   },
                 }}
                 render={({ field }) => (
-                  <Input
+                  <FormField
                     label="External Registration URL"
-                    placeholder="https://..."
-                    type="url"
-                    variant="bordered"
-                    isRequired
-                    isDisabled={isSubmitting}
-                    isInvalid={!!errors.externalRegistrationUrl}
-                    errorMessage={errors.externalRegistrationUrl?.message}
-                    value={field.value ?? ""}
-                    onChange={(e) => field.onChange(e.target.value)}
-                    onBlur={field.onBlur}
-                    name={field.name}
-                  />
+                    error={errors.externalRegistrationUrl?.message}
+                    required
+                  >
+                    <Input
+                      placeholder="https://..."
+                      type="url"
+                      disabled={isSubmitting}
+                      className={
+                        errors.externalRegistrationUrl
+                          ? "border-destructive"
+                          : ""
+                      }
+                      value={field.value ?? ""}
+                      onChange={(e) => field.onChange(e.target.value)}
+                      onBlur={field.onBlur}
+                      name={field.name}
+                    />
+                  </FormField>
                 )}
               />
             </div>
@@ -384,25 +370,27 @@ export default function EditEventPage() {
                   name="maxAttendees"
                   control={control}
                   render={({ field }) => (
-                    <Input
-                      label="Maximum Attendees"
-                      placeholder="Leave empty for unlimited"
-                      type="number"
-                      min="1"
-                      variant="bordered"
-                      isDisabled={isSubmitting}
-                      description="Set a limit on the number of registrations"
-                      value={field.value?.toString() ?? ""}
-                      onChange={(e) =>
-                        field.onChange(
-                          e.target.value
-                            ? parseInt(e.target.value, 10)
-                            : undefined,
-                        )
-                      }
-                      onBlur={field.onBlur}
-                      name={field.name}
-                    />
+                    <FormField label="Maximum Attendees">
+                      <Input
+                        placeholder="Leave empty for unlimited"
+                        type="number"
+                        min="1"
+                        disabled={isSubmitting}
+                        value={field.value?.toString() ?? ""}
+                        onChange={(e) =>
+                          field.onChange(
+                            e.target.value
+                              ? parseInt(e.target.value, 10)
+                              : undefined,
+                          )
+                        }
+                        onBlur={field.onBlur}
+                        name={field.name}
+                      />
+                      <p className="text-xs text-muted-foreground">
+                        Set a limit on the number of registrations
+                      </p>
+                    </FormField>
                   )}
                 />
               </div>
@@ -427,13 +415,14 @@ export default function EditEventPage() {
           <div className="flex justify-between pt-4 border-t">
             <Button
               type="button"
-              variant="bordered"
-              onPress={() => router.push("/admin/events")}
-              isDisabled={isSubmitting}
+              variant="outline"
+              onClick={() => router.push("/admin/events")}
+              disabled={isSubmitting}
             >
               Cancel
             </Button>
-            <Button type="submit" color="primary" isLoading={isSubmitting}>
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting && <Loader2 className="animate-spin" size={16} />}
               {isSubmitting ? "Saving..." : "Save Changes"}
             </Button>
           </div>

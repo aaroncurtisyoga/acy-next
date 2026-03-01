@@ -13,15 +13,13 @@ const HighlightedEventSection: FC<HighlightedEventSectionProps> = ({
 }) => {
   return (
     <>
-      <div className="text-sm text-primary dark:text-primary-300 font-medium mb-2">
-        Shared Event
-      </div>
+      <div className="text-sm text-primary font-medium mb-2">Shared Event</div>
       <EventCard
         key={`highlighted-${event.id}`}
         event={event}
         isHighlighted={true}
       />
-      {showDivider && <div className="border-b border-divider my-6" />}
+      {showDivider && <div className="border-b border-border my-6" />}
     </>
   );
 };

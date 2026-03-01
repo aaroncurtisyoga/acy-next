@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { SlidersHorizontal } from "lucide-react";
 
 interface FilterButtonProps {
@@ -11,16 +11,15 @@ interface FilterButtonProps {
 const FilterButton = ({ hasFiltersApplied, onOpen }: FilterButtonProps) => {
   return (
     <Button
-      color={hasFiltersApplied ? "primary" : "default"}
-      onPress={onOpen}
-      radius={"full"}
-      size={"sm"}
-      startContent={<SlidersHorizontal size={14} />}
-      type={"button"}
-      variant={hasFiltersApplied ? "solid" : "flat"}
-      isIconOnly={true}
-      aria-label={"Filter events"}
-    />
+      variant={hasFiltersApplied ? "default" : "secondary"}
+      onClick={onOpen}
+      size="icon"
+      className="rounded-full h-8 w-8"
+      type="button"
+      aria-label="Filter events"
+    >
+      <SlidersHorizontal size={14} />
+    </Button>
   );
 };
 

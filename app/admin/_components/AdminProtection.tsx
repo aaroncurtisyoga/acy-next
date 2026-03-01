@@ -3,7 +3,7 @@
 import { useUser } from "@clerk/nextjs";
 import { useRouter } from "next/navigation";
 import { useEffect, ReactNode } from "react";
-import { Spinner } from "@heroui/spinner";
+import { Spinner } from "@/components/ui/spinner";
 
 interface AdminProtectionProps {
   children: ReactNode;
@@ -34,7 +34,7 @@ export default function AdminProtection({ children }: AdminProtectionProps) {
   if (!isLoaded) {
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Spinner size="lg" color="primary" />
+        <Spinner size="lg" />
       </div>
     );
   }
@@ -46,7 +46,7 @@ export default function AdminProtection({ children }: AdminProtectionProps) {
     // Show loading while redirecting
     return (
       <div className="flex justify-center items-center min-h-screen">
-        <Spinner size="lg" color="primary" />
+        <Spinner size="lg" />
       </div>
     );
   }

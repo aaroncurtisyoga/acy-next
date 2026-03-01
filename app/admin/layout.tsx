@@ -22,7 +22,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
       <div className="flex flex-col md:flex-row min-h-dvh bg-background">
         {/* Mobile Header */}
         <header
-          className="md:hidden flex items-center justify-between p-4 bg-content1 border-b border-divider"
+          className="md:hidden flex items-center justify-between p-4 bg-background border-b border-border"
           style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}
         >
           <h1
@@ -33,7 +33,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </h1>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-            className="p-2 rounded-lg hover:bg-default-100 transition-colors"
+            className="p-2 rounded-lg hover:bg-muted transition-colors"
             aria-label={isMobileMenuOpen ? "Close menu" : "Open menu"}
           >
             {isMobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
@@ -50,7 +50,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* Mobile Drawer */}
         <aside
-          className={`md:hidden fixed top-0 left-0 z-50 h-full w-64 bg-content1 border-r border-divider p-4 flex flex-col transform transition-transform duration-300 ease-in-out ${
+          className={`md:hidden fixed top-0 left-0 z-50 h-full w-64 bg-background border-r border-border p-4 flex flex-col transform transition-transform duration-300 ease-in-out ${
             isMobileMenuOpen ? "translate-x-0" : "-translate-x-full"
           }`}
         >
@@ -66,7 +66,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
             </h1>
             <button
               onClick={closeMobileMenu}
-              className="p-2 rounded-lg hover:bg-default-100 transition-colors"
+              className="p-2 rounded-lg hover:bg-muted transition-colors"
               aria-label="Close menu"
             >
               <X size={20} />
@@ -78,7 +78,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </aside>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:flex md:w-64 bg-content1 border-r border-divider p-4 flex-col">
+        <aside className="hidden md:flex md:w-64 bg-background border-r border-border p-4 flex-col">
           <h1
             className="text-2xl font-bold mb-4 text-foreground cursor-pointer hover:text-primary transition-colors"
             onClick={() => router.push("/admin")}
@@ -93,7 +93,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         {/* Main content */}
         <main className="flex-1 p-4 bg-background text-foreground flex flex-col">
           <div className="flex-1">{children}</div>
-          <div className="mt-8 pt-4 border-t border-divider md:hidden">
+          <div className="mt-8 pt-4 border-t border-border md:hidden">
             <div className="flex justify-center">
               <ThemeToggle />
             </div>
