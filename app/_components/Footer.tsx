@@ -8,6 +8,7 @@ const Footer = () => {
     <footer
       data-testid="footer"
       className="border-t border-slate-200 dark:border-slate-700 py-4 bg-white dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 flex-shrink-0"
+      style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
     >
       <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-12">
         <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-between gap-7 sm:gap-0">

@@ -19,9 +19,12 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
   return (
     <AdminProtection>
-      <div className="flex flex-col md:flex-row min-h-screen bg-background">
+      <div className="flex flex-col md:flex-row min-h-dvh bg-background">
         {/* Mobile Header */}
-        <header className="md:hidden flex items-center justify-between p-4 bg-content1 border-b border-divider">
+        <header
+          className="md:hidden flex items-center justify-between p-4 bg-content1 border-b border-divider"
+          style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}
+        >
           <h1
             className="text-xl font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
             onClick={() => router.push("/admin")}

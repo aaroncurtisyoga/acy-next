@@ -1,6 +1,16 @@
 @import "tailwindcss";
 @config "../tailwind.config.js";
 
+/* PWA safe area support — handles iPhone notch, Dynamic Island, home indicator */
+/* The background color behind the status bar / home indicator areas */
+html {
+  background-color: #ffffff;
+}
+
+html.dark {
+  background-color: #0a0a0a;
+}
+
 /* Prevent horizontal overflow on mobile */
 html,
 body {
