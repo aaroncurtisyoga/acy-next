@@ -50,7 +50,7 @@ export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${robotoFlex.variable} ${merriweather.variable} font-sans`}
+        className={`${robotoFlex.variable} ${merriweather.variable} font-sans bg-background text-foreground antialiased`}
         suppressHydrationWarning
       >
         <Providers>
