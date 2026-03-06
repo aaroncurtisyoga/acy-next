@@ -2,7 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Input } from "@heroui/input";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
 import { Search as SearchIcon } from "lucide-react";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
 import { track } from "@vercel/analytics";
@@ -40,15 +41,23 @@ const SearchEvent = () => {
   }, [query, searchParams, router]);
 
   return (
-    <Input
-      label="Search"
-      placeholder="e.g. 'Power Vinyasa'"
-      value={query}
-      onChange={(e) => setQuery(e.target.value)}
-      type="search"
-      variant="flat"
-      startContent={<SearchIcon size={16} />}
-    />
+    <div className="space-y-2">
+      <Label htmlFor="search-events">Search</Label>
+      <div className="relative">
+        <SearchIcon
+          size={16}
+          className="absolute left-3 top-1/2 -translate-y-1/2 text-muted-foreground"
+        />
+        <Input
+          id="search-events"
+          placeholder="e.g. 'Power Vinyasa'"
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
+          type="search"
+          className="pl-9"
+        />
+      </div>
+    </div>
   );
 };
 

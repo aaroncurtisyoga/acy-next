@@ -2,9 +2,10 @@
 
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
-import { Link as HeroUiLink } from "@heroui/link";
-import { addToast } from "@heroui/toast";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useFormContext } from "react-hook-form";
 import { X } from "lucide-react";
 import {
@@ -37,24 +38,12 @@ const DetailsForInternallyHostedEvent: FC = () => {
         path: `/admin/events`,
       });
       if (updated) {
-        addToast({
-          title: "Success",
-          description: "Event updated successfully",
-          color: "success",
-          timeout: 3000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.success("Event updated successfully");
         router.push("/admin/events");
       }
     } catch (error) {
       console.error("Failed to update event:", error);
-      addToast({
-        title: "Error",
-        description: "Failed to update event. Please try again.",
-        color: "danger",
-        timeout: 5000,
-        shouldShowTimeoutProgress: true,
-      });
+      toast.error("Failed to update event. Please try again.");
     } finally {
       setIsUpdating(false);
     }
@@ -73,10 +62,10 @@ const DetailsForInternallyHostedEvent: FC = () => {
     <div className="relative">
       {/* Close button in top-right corner */}
       <Button
-        isIconOnly
-        variant="light"
+        size="icon"
+        variant="ghost"
         className="absolute -top-2 -right-2 z-10"
-        onPress={() => router.push("/admin/events")}
+        onClick={() => router.push("/admin/events")}
         aria-label="Close"
       >
         <X size={20} />
@@ -103,28 +92,25 @@ const DetailsForInternallyHostedEvent: FC = () => {
           <DescriptionRichTextEditor control={control} errors={errors} />
         </div>
         <div className="flex justify-between mt-5">
-          <Button type="button">
-            <HeroUiLink
-              href={mode === "edit" ? "../" : "/admin/events/create"}
-              className="text-default-foreground"
-            >
+          <Button type="button" asChild>
+            <Link href={mode === "edit" ? "../" : "/admin/events/create"}>
               Previous
-            </HeroUiLink>
+            </Link>
           </Button>
           <div className="flex gap-2">
             {mode === "edit" && (
               <Button
                 type="button"
-                color="success"
-                variant="flat"
-                onPress={() => handleSubmit(handleUpdateNow)()}
-                isLoading={isUpdating}
-                isDisabled={!isDirty || isSubmitting}
+                variant="secondary"
+                className="text-green-600 hover:text-green-700"
+                onClick={() => handleSubmit(handleUpdateNow)()}
+                disabled={isUpdating || !isDirty || isSubmitting}
               >
+                {isUpdating && <Loader2 className="animate-spin" size={16} />}
                 Update Now
               </Button>
             )}
-            <Button type="submit" color="primary" isDisabled={isUpdating}>
+            <Button type="submit" disabled={isUpdating}>
               Next
             </Button>
           </div>

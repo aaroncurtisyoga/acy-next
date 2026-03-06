@@ -2,7 +2,7 @@
 
 import { FC } from "react";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { Event } from "@prisma/client";
 import CheckoutButton from "@/app/(root)/events/[id]/_components/CheckoutButton";
 import CheckoutSkeleton from "@/app/(root)/events/[id]/_components/CheckoutSkeleton";
@@ -38,21 +38,16 @@ const Checkout: FC<ICheckoutButtonProps> = ({ event }) => {
         {event.isFree ? "Free" : `$${event.price}`}
       </p>
       {event.isExternal && event.externalUrl ? (
-        <Button
-          as="a"
-          href={event.externalUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          fullWidth={true}
-          color={"primary"}
-        >
-          Register at Bright Bear
+        <Button className="w-full" asChild>
+          <a href={event.externalUrl} target="_blank" rel="noopener noreferrer">
+            Register at Bright Bear
+          </a>
         </Button>
       ) : (
         <>
           <SignedOut>
             <SignInButton>
-              <Button type="button" fullWidth={true} color={"primary"}>
+              <Button type="button" className="w-full">
                 Sign In to Purchase
               </Button>
             </SignInButton>

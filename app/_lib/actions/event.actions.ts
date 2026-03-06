@@ -1,7 +1,6 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { parseZonedDateTime } from "@internationalized/date";
 import prisma from "@/app/_lib/prisma";
 import {
   GetAllEventsParams,
@@ -37,13 +36,9 @@ export async function createEvent({
       throw new Error("Location is required and must have a valid placeId");
     }
 
-    // Parse the string into a ZonedDateTime object
-    const startZonedDateTime = parseZonedDateTime(event.startDateTime);
-    const endZonedDateTime = parseZonedDateTime(event.endDateTime);
-
-    // Convert ZonedDateTime to UTC ISO string
-    const startDateTimeISO = startZonedDateTime.toAbsoluteString();
-    const endDateTimeISO = endZonedDateTime.toAbsoluteString();
+    // Convert date strings to UTC ISO strings
+    const startDateTimeISO = new Date(event.startDateTime).toISOString();
+    const endDateTimeISO = new Date(event.endDateTime).toISOString();
 
     // Handle location creation/connection first
     const location = await prisma.location.upsert({
@@ -384,41 +379,16 @@ export async function updateEvent({
     // Use categoryId if provided, otherwise use category
     const categoryToConnect = categoryId || category;
 
-    // Handle datetime conversion - if it's already a valid ISO string, use it directly
-    // If it's a ZonedDateTime string format, parse and convert to UTC ISO
+    // Convert datetime strings to ISO format
     let processedStartDateTime = startDateTime;
     let processedEndDateTime = endDateTime;
 
     if (startDateTime && typeof startDateTime === "string") {
-      try {
-        // If it contains timezone info like "[America/New_York]", parse it
-        if (startDateTime.includes("[")) {
-          const zonedDateTime = parseZonedDateTime(startDateTime);
-          processedStartDateTime = zonedDateTime.toAbsoluteString();
-        } else {
-          // If it's already a valid ISO string, use it as is
-          processedStartDateTime = startDateTime;
-        }
-      } catch {
-        // If parsing fails, try to use the original string
-        processedStartDateTime = startDateTime;
-      }
+      processedStartDateTime = new Date(startDateTime).toISOString();
     }
 
     if (endDateTime && typeof endDateTime === "string") {
-      try {
-        // If it contains timezone info like "[America/New_York]", parse it
-        if (endDateTime.includes("[")) {
-          const zonedDateTime = parseZonedDateTime(endDateTime);
-          processedEndDateTime = zonedDateTime.toAbsoluteString();
-        } else {
-          // If it's already a valid ISO string, use it as is
-          processedEndDateTime = endDateTime;
-        }
-      } catch {
-        // If parsing fails, try to use the original string
-        processedEndDateTime = endDateTime;
-      }
+      processedEndDateTime = new Date(endDateTime).toISOString();
     }
 
     // If datetime is being updated, check for duplicates

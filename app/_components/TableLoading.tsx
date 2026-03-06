@@ -1,6 +1,13 @@
 import { FC } from "react";
-import { Table, TableBody, TableColumn, TableHeader } from "@heroui/table";
-import { Spinner } from "@heroui/spinner";
+import {
+  Table,
+  TableBody,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableCell,
+} from "@/components/ui/table";
+import { Spinner } from "@/components/ui/spinner";
 
 interface EmptyTableProps {
   columns: Array<string>;
@@ -8,13 +15,21 @@ interface EmptyTableProps {
 
 const TableLoading: FC<EmptyTableProps> = ({ columns }) => {
   return (
-    <Table aria-label={"Table Loading"}>
+    <Table aria-label="Table Loading">
       <TableHeader>
-        {columns.map((column, index) => (
-          <TableColumn key={index}>{column}</TableColumn>
-        ))}
+        <TableRow>
+          {columns.map((column, index) => (
+            <TableHead key={index}>{column}</TableHead>
+          ))}
+        </TableRow>
       </TableHeader>
-      <TableBody emptyContent={<Spinner />}>{[]}</TableBody>
+      <TableBody>
+        <TableRow>
+          <TableCell colSpan={columns.length} className="h-24 text-center">
+            <Spinner />
+          </TableCell>
+        </TableRow>
+      </TableBody>
     </Table>
   );
 };

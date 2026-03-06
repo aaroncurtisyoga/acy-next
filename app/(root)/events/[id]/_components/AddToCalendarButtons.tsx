@@ -1,13 +1,13 @@
 "use client";
 
 import { FC, useState } from "react";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import {
-  Dropdown,
-  DropdownTrigger,
   DropdownMenu,
-  DropdownItem,
-} from "@heroui/dropdown";
+  DropdownMenuTrigger,
+  DropdownMenuContent,
+  DropdownMenuItem,
+} from "@/components/ui/dropdown-menu";
 import { Calendar, Check } from "lucide-react";
 
 interface AddToCalendarButtonsProps {
@@ -111,42 +111,40 @@ const AddToCalendarButtons: FC<AddToCalendarButtonsProps> = ({ event }) => {
   };
 
   return (
-    <Dropdown>
-      <DropdownTrigger>
-        <Button
-          color="default"
-          variant="bordered"
-          startContent={
-            addedToCalendar ? <Check size={18} /> : <Calendar size={18} />
-          }
-        >
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="outline">
+          {addedToCalendar ? <Check size={18} /> : <Calendar size={18} />}
           {addedToCalendar ? "Added!" : "Add to Calendar"}
         </Button>
-      </DropdownTrigger>
-      <DropdownMenu aria-label="Add to calendar options">
-        <DropdownItem
-          key="google"
-          description="Add to Google Calendar"
-          onPress={() => handleAddToCalendar("google")}
-        >
-          Google Calendar
-        </DropdownItem>
-        <DropdownItem
-          key="outlook"
-          description="Add to Outlook/Office 365"
-          onPress={() => handleAddToCalendar("outlook")}
-        >
-          Outlook Calendar
-        </DropdownItem>
-        <DropdownItem
-          key="apple"
-          description="Download .ics file for Apple Calendar"
-          onPress={() => handleAddToCalendar("apple")}
-        >
-          Apple Calendar
-        </DropdownItem>
-      </DropdownMenu>
-    </Dropdown>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent align="start">
+        <DropdownMenuItem onClick={() => handleAddToCalendar("google")}>
+          <div>
+            <div>Google Calendar</div>
+            <div className="text-xs text-muted-foreground">
+              Add to Google Calendar
+            </div>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddToCalendar("outlook")}>
+          <div>
+            <div>Outlook Calendar</div>
+            <div className="text-xs text-muted-foreground">
+              Add to Outlook/Office 365
+            </div>
+          </div>
+        </DropdownMenuItem>
+        <DropdownMenuItem onClick={() => handleAddToCalendar("apple")}>
+          <div>
+            <div>Apple Calendar</div>
+            <div className="text-xs text-muted-foreground">
+              Download .ics file for Apple Calendar
+            </div>
+          </div>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 };
 

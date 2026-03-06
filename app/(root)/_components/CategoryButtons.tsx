@@ -2,7 +2,7 @@
 
 import { FC, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { Category } from "@prisma/client";
 import { getAllCategories } from "@/app/_lib/actions/category.actions";
 import { formUrlQuery, removeKeysFromQuery } from "@/app/_lib/utils";
@@ -48,13 +48,12 @@ const CategoryButtons: FC = () => {
 
   return (
     <>
-      <p className={"text-small"}>Categories</p>
-      <div className={"flex gap-4 flex-wrap"}>
+      <p className="text-sm">Categories</p>
+      <div className="flex gap-4 flex-wrap">
         <Button
-          className={"font-semibold"}
-          color={selectedCategory === "All" ? "primary" : "default"}
-          onPress={() => handleFormUrlQuery("All")}
-          variant={selectedCategory === "All" ? "solid" : "flat"}
+          className="font-semibold"
+          variant={selectedCategory === "All" ? "default" : "secondary"}
+          onClick={() => handleFormUrlQuery("All")}
         >
           All
         </Button>
@@ -63,10 +62,9 @@ const CategoryButtons: FC = () => {
           return (
             <Button
               key={category.id}
-              className={"font-semibold"}
-              color={isActive ? "primary" : "default"}
-              onPress={() => handleFormUrlQuery(category.name)}
-              variant={isActive ? "solid" : "flat"}
+              className="font-semibold"
+              variant={isActive ? "default" : "secondary"}
+              onClick={() => handleFormUrlQuery(category.name)}
             >
               {category.name}
             </Button>

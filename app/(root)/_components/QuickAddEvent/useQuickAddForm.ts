@@ -1,8 +1,7 @@
 import { useState, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
-import { addToast } from "@heroui/toast";
-import { now, getLocalTimeZone } from "@internationalized/date";
+import { toast } from "sonner";
 import { createEvent } from "@/app/_lib/actions/event.actions";
 import { PlaceDetails } from "@/app/_lib/types";
 
@@ -33,8 +32,8 @@ export function useQuickAddForm(onClose: () => void) {
     defaultValues: {
       isFree: false,
       isHostedExternally: true,
-      startDateTime: now(getLocalTimeZone()).add({ hours: 1 }),
-      endDateTime: now(getLocalTimeZone()).add({ hours: 2 }),
+      startDateTime: new Date(Date.now() + 3600000),
+      endDateTime: new Date(Date.now() + 7200000),
     },
   });
 
@@ -61,13 +60,16 @@ export function useQuickAddForm(onClose: () => void) {
       setValue("startDateTime", newStartDate);
       const currentEndDate = watch("endDateTime");
 
-      if (
-        newStartDate &&
-        currentEndDate &&
-        newStartDate.compare(currentEndDate) >= 0
-      ) {
-        const newEndTime = newStartDate.add({ hours: 1 });
-        setValue("endDateTime", newEndTime);
+      if (newStartDate && currentEndDate) {
+        const start =
+          newStartDate instanceof Date ? newStartDate : new Date(newStartDate);
+        const end =
+          currentEndDate instanceof Date
+            ? currentEndDate
+            : new Date(currentEndDate);
+        if (start >= end) {
+          setValue("endDateTime", new Date(start.getTime() + 3600000));
+        }
       }
     },
     [setValue, watch],
@@ -79,8 +81,14 @@ export function useQuickAddForm(onClose: () => void) {
       const eventData = {
         ...data,
         price: data.isFree ? "0" : data.price || "0",
-        startDateTime: data.startDateTime.toString(),
-        endDateTime: data.endDateTime.toString(),
+        startDateTime:
+          data.startDateTime instanceof Date
+            ? data.startDateTime.toISOString()
+            : data.startDateTime,
+        endDateTime:
+          data.endDateTime instanceof Date
+            ? data.endDateTime.toISOString()
+            : data.endDateTime,
         description: "",
         maxAttendees: 100,
       };
@@ -91,26 +99,14 @@ export function useQuickAddForm(onClose: () => void) {
       });
 
       if (created) {
-        addToast({
-          title: "Success",
-          description: "Event created successfully",
-          color: "success",
-          timeout: 3000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.success("Event created successfully");
         reset();
         onClose();
         router.refresh();
       }
     } catch (error) {
       console.error("Failed to create event:", error);
-      addToast({
-        title: "Error",
-        description: "Failed to create event. Please try again.",
-        color: "danger",
-        timeout: 5000,
-        shouldShowTimeoutProgress: true,
-      });
+      toast.error("Failed to create event. Please try again.");
     } finally {
       setIsSubmitting(false);
     }

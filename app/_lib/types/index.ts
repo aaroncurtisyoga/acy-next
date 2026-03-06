@@ -62,11 +62,6 @@ export type RemoveUrlQueryParams = {
   keysToRemove: string[];
 };
 
-export type SearchParamProps = {
-  params: { id: string };
-  searchParams: { [key: string]: string | string[] | undefined };
-};
-
 export type TravelMode = "driving" | "walking" | "transit" | "bicycling";
 
 export interface TravelOption {
@@ -93,9 +88,3 @@ export interface GetAllEventsResponse {
   hasFiltersApplied: boolean;
   totalCount: number;
 }
-
-export type NavbarLink = {
-  name: string;
-  href: string;
-  testId: string;
-};

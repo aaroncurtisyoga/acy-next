@@ -1,7 +1,8 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
 
 type SyncSource = "bright-bear" | "dcbp";
 
@@ -124,11 +125,11 @@ export default function SyncPage() {
             update the events database.
           </p>
           <Button
-            color="primary"
-            onPress={() => handleSync("bright-bear")}
-            isLoading={loading === "bright-bear"}
+            onClick={() => handleSync("bright-bear")}
+            disabled={loading === "bright-bear"}
             size="lg"
           >
+            {loading === "bright-bear" && <Loader2 className="animate-spin" />}
             {loading === "bright-bear"
               ? "Starting..."
               : "Sync Bright Bear Classes"}
@@ -165,11 +166,11 @@ export default function SyncPage() {
             update the events database.
           </p>
           <Button
-            color="primary"
-            onPress={() => handleSync("dcbp")}
-            isLoading={loading === "dcbp"}
+            onClick={() => handleSync("dcbp")}
+            disabled={loading === "dcbp"}
             size="lg"
           >
+            {loading === "dcbp" && <Loader2 className="animate-spin" />}
             {loading === "dcbp" ? "Starting..." : "Sync DCBP Classes"}
           </Button>
 

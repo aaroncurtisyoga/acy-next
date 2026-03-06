@@ -1,12 +1,12 @@
 import { FC } from "react";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import {
-  Modal,
-  ModalBody,
-  ModalContent,
-  ModalFooter,
-  ModalHeader,
-} from "@heroui/modal";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogFooter,
+} from "@/components/ui/dialog";
 
 interface BasicModalProps {
   children?: React.ReactNode;
@@ -26,39 +26,32 @@ const BasicModal: FC<BasicModalProps> = ({
   onOpenChange,
   primaryAction,
   primaryActionLabel,
-  placement,
   hideButtons = false,
 }) => {
   return (
-    <Modal
-      isOpen={isOpen}
-      onOpenChange={onOpenChange}
-      placement={placement ? placement : "auto"}
-    >
-      <ModalContent className={"pb-8"}>
-        {(onClose) => (
-          <>
-            {header && <ModalHeader>{header}</ModalHeader>}
-            <ModalBody>{children}</ModalBody>
-            {
-              // If hideButtons is false, render the buttons
-              !hideButtons && (
-                <ModalFooter>
-                  <Button color="default" onPress={onClose}>
-                    Cancel
-                  </Button>
-                  {primaryAction && (
-                    <Button color="primary" onPress={primaryAction}>
-                      {primaryActionLabel}
-                    </Button>
-                  )}
-                </ModalFooter>
-              )
-            }
-          </>
+    <Dialog open={isOpen} onOpenChange={onOpenChange}>
+      <DialogContent className="pb-8">
+        {header && (
+          <DialogHeader>
+            <DialogTitle>{header}</DialogTitle>
+          </DialogHeader>
         )}
-      </ModalContent>
-    </Modal>
+        <div>{children}</div>
+        {
+          // If hideButtons is false, render the buttons
+          !hideButtons && (
+            <DialogFooter>
+              <Button variant="secondary" onClick={() => onOpenChange(false)}>
+                Cancel
+              </Button>
+              {primaryAction && (
+                <Button onClick={primaryAction}>{primaryActionLabel}</Button>
+              )}
+            </DialogFooter>
+          )
+        }
+      </DialogContent>
+    </Dialog>
   );
 };
 

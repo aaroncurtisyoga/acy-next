@@ -3,7 +3,6 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavbarMenuItem } from "@heroui/navbar";
 import { Home, Calendar, Users, Mail, Shield } from "lucide-react";
 import { track } from "@vercel/analytics";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
@@ -42,10 +41,8 @@ const MobileNavLinks: FC<MobileNavLinksProps> = ({
     <>
       {/* Navigation links */}
       {unauthenticatedLinks.map((link, index) => (
-        <NavbarMenuItem
+        <div
           key={`${link.name}-${index}`}
-          isActive={pathname.includes(link.href)}
-          className="list-none"
           style={{
             animation: isMenuOpen
               ? `fadeInUp 0.2s ease-out ${index * 0.03 + 0.1}s both`
@@ -56,7 +53,7 @@ const MobileNavLinks: FC<MobileNavLinksProps> = ({
             data-testid={`navbar-menu-item-${link.testId}`}
             className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ${
               pathname.includes(link.href)
-                ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium"
+                ? "bg-primary/10 text-primary font-medium"
                 : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
             }`}
             href={link.href}
@@ -72,22 +69,20 @@ const MobileNavLinks: FC<MobileNavLinksProps> = ({
             {getIconForLink(link.href)}
             <span className="text-base">{link.name}</span>
           </Link>
-        </NavbarMenuItem>
+        </div>
       ))}
 
       {/* Admin links */}
       {isSignedIn && adminLinks.length > 0 && (
         <>
-          <NavbarMenuItem className="list-none mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
+          <div className="mt-3 pt-3 border-t border-gray-200 dark:border-gray-700">
             <p className="text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider px-4 mb-2">
               Admin
             </p>
-          </NavbarMenuItem>
+          </div>
           {adminLinks.map((link, index) => (
-            <NavbarMenuItem
+            <div
               key={`${link.name}-${index}`}
-              isActive={pathname.includes(link.href)}
-              className="list-none"
               style={{
                 animation: isMenuOpen
                   ? `fadeInUp 0.2s ease-out ${(unauthenticatedLinks.length + index) * 0.03 + 0.1}s both`
@@ -98,7 +93,7 @@ const MobileNavLinks: FC<MobileNavLinksProps> = ({
                 data-testid={`navbar-menu-item-${link.testId}`}
                 className={`flex items-center gap-3 w-full px-4 py-3 rounded-xl transition-all duration-200 ${
                   pathname.includes(link.href)
-                    ? "bg-primary-50 dark:bg-primary-900/20 text-primary-700 dark:text-primary-400 font-medium"
+                    ? "bg-primary/10 text-primary font-medium"
                     : "text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-800/50 hover:text-gray-900 dark:hover:text-white"
                 }`}
                 href={link.href}
@@ -114,7 +109,7 @@ const MobileNavLinks: FC<MobileNavLinksProps> = ({
                 <Shield className="w-4 h-4" />
                 <span className="text-base">{link.name}</span>
               </Link>
-            </NavbarMenuItem>
+            </div>
           ))}
         </>
       )}

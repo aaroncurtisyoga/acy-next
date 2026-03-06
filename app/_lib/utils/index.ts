@@ -207,15 +207,7 @@ export const handleError = (error: unknown, _message?: unknown) => {
 };
 
 // Re-export utilities
-export * from "./pagination";
 export * from "./query-builders";
-export * from "./error-handling";
-export * from "./api-response";
-export * from "./validation";
-
-export const isDate = (date: any): date is Date => {
-  return date instanceof Date;
-};
 
 export const isToday = (dateInput: Date | string): boolean => {
   const today = new Date();

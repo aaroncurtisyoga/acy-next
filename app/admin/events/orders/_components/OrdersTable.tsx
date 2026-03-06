@@ -5,10 +5,10 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableColumn,
+  TableHead,
   TableHeader,
   TableRow,
-} from "@heroui/table";
+} from "@/components/ui/table";
 import { Order, User, Event } from "@prisma/client";
 import OrderCard from "@/app/admin/events/orders/_components/OrderCard";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
@@ -24,7 +24,7 @@ interface OrdersTableProps {
 const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
   if (!orders.length) {
     return (
-      <p className="text-default-500 text-center py-8">
+      <p className="text-muted-foreground text-center py-8">
         No orders have been placed just yet.
       </p>
     );
@@ -40,30 +40,34 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
       </div>
 
       {/* Desktop: Table */}
-      <Table aria-label={"Table for Orders"} className="hidden md:table">
-        <TableHeader>
-          <TableColumn>Order ID</TableColumn>
-          <TableColumn>Event Title</TableColumn>
-          <TableColumn>Buyer</TableColumn>
-          <TableColumn>Date</TableColumn>
-          <TableColumn>Amount</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {orders.map((order) => (
-            <TableRow key={order.id}>
-              <TableCell>{order.id}</TableCell>
-              <TableCell>{order.event.title}</TableCell>
-              <TableCell>
-                {order.buyer.firstName} {order.buyer.lastName}
-              </TableCell>
-              <TableCell>
-                {formatDateTime(new Date(order.createdAt)).dateOnly}
-              </TableCell>
-              <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+      <div className="hidden md:block">
+        <Table aria-label="Table for Orders">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Order ID</TableHead>
+              <TableHead>Event Title</TableHead>
+              <TableHead>Buyer</TableHead>
+              <TableHead>Date</TableHead>
+              <TableHead>Amount</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {orders.map((order) => (
+              <TableRow key={order.id}>
+                <TableCell>{order.id}</TableCell>
+                <TableCell>{order.event.title}</TableCell>
+                <TableCell>
+                  {order.buyer.firstName} {order.buyer.lastName}
+                </TableCell>
+                <TableCell>
+                  {formatDateTime(new Date(order.createdAt)).dateOnly}
+                </TableCell>
+                <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
     </>
   );
 };

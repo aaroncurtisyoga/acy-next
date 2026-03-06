@@ -6,15 +6,23 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableColumn,
+  TableHead,
   TableHeader,
   TableRow,
-} from "@heroui/table";
-import { Pagination } from "@heroui/pagination";
-import { useDisclosure } from "@heroui/modal";
-import { Tooltip } from "@heroui/tooltip";
-import { Chip } from "@heroui/chip";
-import { Button } from "@heroui/button";
+} from "@/components/ui/table";
+import {
+  Pagination,
+  PaginationContent,
+  PaginationItem,
+  PaginationLink,
+  PaginationPrevious,
+  PaginationNext,
+  PaginationEllipsis,
+} from "@/components/ui/pagination";
+import { useDisclosure } from "@/app/_hooks/useDisclosure";
+import { SimpleTooltip } from "@/components/ui/simple-tooltip";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import {
   Eye,
   Pencil,
@@ -71,6 +79,27 @@ const TableEventManagement: FC = () => {
     }
   };
 
+  // Generate page numbers for pagination
+  const getPageNumbers = () => {
+    const pages: (number | "ellipsis")[] = [];
+    if (totalPages <= 7) {
+      for (let i = 1; i <= totalPages; i++) pages.push(i);
+    } else {
+      pages.push(1);
+      if (filters.page > 3) pages.push("ellipsis");
+      for (
+        let i = Math.max(2, filters.page - 1);
+        i <= Math.min(totalPages - 1, filters.page + 1);
+        i++
+      ) {
+        pages.push(i);
+      }
+      if (filters.page < totalPages - 2) pages.push("ellipsis");
+      pages.push(totalPages);
+    }
+    return pages;
+  };
+
   if (loading) {
     return (
       <div className="space-y-4">
@@ -106,7 +135,7 @@ const TableEventManagement: FC = () => {
       />
 
       <div className="flex justify-between items-center">
-        <p className="text-default-400 text-sm">
+        <p className="text-muted-foreground text-sm">
           {totalCount} {totalCount === 1 ? "event" : "events"} found
           {hasActiveFilters && " (filtered)"}
         </p>
@@ -136,27 +165,29 @@ const TableEventManagement: FC = () => {
 
           {/* Desktop: Table */}
           <div className="hidden md:block">
-            <Table
-              aria-label="Table for Managing Events"
-              classNames={{ wrapper: "min-h-[400px]" }}
-            >
+            <Table aria-label="Table for Managing Events">
               <TableHeader>
-                {TableEventManagementColumns.map((column) => (
-                  <TableColumn key={column}>{column}</TableColumn>
-                ))}
+                <TableRow>
+                  {TableEventManagementColumns.map((column) => (
+                    <TableHead key={column}>{column}</TableHead>
+                  ))}
+                </TableRow>
               </TableHeader>
               <TableBody>
                 {events.map((event) => (
-                  <TableRow key={event.id} className="hover:bg-default-50">
+                  <TableRow key={event.id} className="hover:bg-muted/50">
                     <TableCell>
                       <div className="space-y-1">
                         <div className="flex items-center gap-2">
-                          <Calendar size={14} className="text-default-400" />
+                          <Calendar
+                            size={14}
+                            className="text-muted-foreground"
+                          />
                           <span className="font-medium">
                             {formatDateTime(event.startDateTime).dateOnly}
                           </span>
                         </div>
-                        <p className="text-xs text-default-400">
+                        <p className="text-xs text-muted-foreground">
                           {formatDateTime(event.startDateTime).timeOnly}
                         </p>
                       </div>
@@ -166,23 +197,26 @@ const TableEventManagement: FC = () => {
                         <div className="flex items-start gap-2">
                           <p className="font-medium">{event.title}</p>
                           {event.isExternal && (
-                            <Tooltip content="Synced from external source">
+                            <SimpleTooltip content="Synced from external source">
                               <span
                                 role="img"
                                 aria-label="Synced from external source"
                               >
                                 <ExternalLink
                                   size={14}
-                                  className="text-default-400 mt-0.5"
+                                  className="text-muted-foreground mt-0.5"
                                 />
                               </span>
-                            </Tooltip>
+                            </SimpleTooltip>
                           )}
                         </div>
                         {event.location && (
                           <div className="flex items-center gap-1">
-                            <MapPin size={12} className="text-default-400" />
-                            <p className="text-xs text-default-500">
+                            <MapPin
+                              size={12}
+                              className="text-muted-foreground"
+                            />
+                            <p className="text-xs text-muted-foreground">
                               {event.location.name ||
                                 event.location.formattedAddress}
                             </p>
@@ -191,88 +225,82 @@ const TableEventManagement: FC = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Chip variant="flat" color="primary" size="sm">
+                      <Badge className="bg-primary/10 text-primary">
                         {event.category.name}
-                      </Chip>
+                      </Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-2">
-                        <Chip
-                          variant="dot"
-                          color={event.isActive ? "success" : "default"}
-                          size="sm"
+                        <Badge
+                          className={
+                            event.isActive
+                              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+                              : "bg-secondary text-secondary-foreground"
+                          }
                         >
                           {event.isActive ? "Active" : "Inactive"}
-                        </Chip>
+                        </Badge>
                         {event.isFree ? (
-                          <Chip variant="flat" color="success" size="sm">
+                          <Badge className="bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
                             Free
-                          </Chip>
+                          </Badge>
                         ) : (
                           event.price && (
-                            <Chip
-                              variant="flat"
-                              color="warning"
-                              size="sm"
-                              startContent={<DollarSign size={12} />}
-                            >
+                            <Badge className="bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">
+                              <DollarSign size={12} className="mr-1" />
                               {event.price}
-                            </Chip>
+                            </Badge>
                           )
                         )}
                         {event.maxAttendees && (
-                          <Chip
-                            variant="flat"
-                            color="default"
-                            size="sm"
-                            startContent={<Users size={12} />}
-                          >
+                          <Badge variant="secondary">
+                            <Users size={12} className="mr-1" />
                             {event.maxAttendees}
-                          </Chip>
+                          </Badge>
                         )}
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
                         {!event.isExternal && (
-                          <Tooltip content="View">
+                          <SimpleTooltip content="View">
                             <Button
-                              as={Link}
-                              href={`/events/${event.id}`}
-                              isIconOnly
-                              size="sm"
-                              variant="light"
+                              size="icon"
+                              variant="ghost"
+                              className="h-8 w-8"
                               aria-label="View event"
+                              asChild
                             >
-                              <Eye size={18} />
+                              <Link href={`/events/${event.id}`}>
+                                <Eye size={18} />
+                              </Link>
                             </Button>
-                          </Tooltip>
+                          </SimpleTooltip>
                         )}
-                        <Tooltip content="Edit">
+                        <SimpleTooltip content="Edit">
                           <Button
-                            as={Link}
-                            href={`/admin/events/${event.id}/edit`}
-                            isIconOnly
-                            size="sm"
-                            variant="light"
-                            color="primary"
+                            size="icon"
+                            variant="ghost"
+                            className="h-8 w-8 text-primary hover:text-primary"
                             aria-label="Edit event"
+                            asChild
                           >
-                            <Pencil size={18} />
+                            <Link href={`/admin/events/${event.id}/edit`}>
+                              <Pencil size={18} />
+                            </Link>
                           </Button>
-                        </Tooltip>
-                        <Tooltip content="Delete">
+                        </SimpleTooltip>
+                        <SimpleTooltip content="Delete">
                           <Button
-                            isIconOnly
-                            size="sm"
-                            variant="light"
-                            color="danger"
+                            size="icon"
+                            variant="ghost"
+                            className="h-8 w-8 text-destructive hover:text-destructive"
                             aria-label="Delete event"
-                            onPress={() => onDeleteClick(event)}
+                            onClick={() => onDeleteClick(event)}
                           >
                             <Trash2 size={18} />
                           </Button>
-                        </Tooltip>
+                        </SimpleTooltip>
                       </div>
                     </TableCell>
                   </TableRow>
@@ -285,15 +313,51 @@ const TableEventManagement: FC = () => {
 
       {totalPages > 1 && (
         <div className="flex justify-center mt-6">
-          <Pagination
-            aria-label="Events pagination"
-            total={totalPages}
-            page={filters.page}
-            onChange={handlePageChange}
-            showControls
-            color="primary"
-            variant="flat"
-          />
+          <Pagination aria-label="Events pagination">
+            <PaginationContent>
+              <PaginationItem>
+                <PaginationPrevious
+                  onClick={() =>
+                    handlePageChange(Math.max(1, filters.page - 1))
+                  }
+                  className={
+                    filters.page <= 1
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+              {getPageNumbers().map((page, index) =>
+                page === "ellipsis" ? (
+                  <PaginationItem key={`ellipsis-${index}`}>
+                    <PaginationEllipsis />
+                  </PaginationItem>
+                ) : (
+                  <PaginationItem key={page}>
+                    <PaginationLink
+                      isActive={filters.page === page}
+                      onClick={() => handlePageChange(page)}
+                      className="cursor-pointer"
+                    >
+                      {page}
+                    </PaginationLink>
+                  </PaginationItem>
+                ),
+              )}
+              <PaginationItem>
+                <PaginationNext
+                  onClick={() =>
+                    handlePageChange(Math.min(totalPages, filters.page + 1))
+                  }
+                  className={
+                    filters.page >= totalPages
+                      ? "pointer-events-none opacity-50"
+                      : "cursor-pointer"
+                  }
+                />
+              </PaginationItem>
+            </PaginationContent>
+          </Pagination>
         </div>
       )}
 

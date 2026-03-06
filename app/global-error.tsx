@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { Home, RefreshCw, ServerCrash } from "lucide-react";
 import Header from "@/app/_components/Header/Header";
@@ -29,7 +29,7 @@ export default function GlobalError({
                   <div className="flex justify-center mb-6">
                     <ServerCrash className="w-16 h-16 text-gray-400 dark:text-gray-500" />
                   </div>
-                  <h1 className="text-6xl md:text-7xl font-bold text-foreground-200 dark:text-foreground-800 select-none mb-4">
+                  <h1 className="text-6xl md:text-7xl font-bold text-muted-foreground/30 select-none mb-4">
                     500
                   </h1>
                   <div className="relative -mt-4">
@@ -40,7 +40,7 @@ export default function GlobalError({
                 </div>
 
                 {/* Description */}
-                <p className="text-foreground-600 dark:text-foreground-400 text-lg mb-8 leading-relaxed max-w-md mx-auto">
+                <p className="text-muted-foreground text-lg mb-8 leading-relaxed max-w-md mx-auto">
                   We encountered an unexpected error while loading this page.
                   Don&apos;t worry, our team has been notified and we&apos;re
                   working on it.
@@ -49,43 +49,41 @@ export default function GlobalError({
                 {/* Action Buttons */}
                 <div className="flex flex-col sm:flex-row gap-4 justify-center items-center mb-8">
                   <Button
-                    onPress={() => reset()}
-                    color="primary"
+                    onClick={() => reset()}
                     size="lg"
-                    startContent={<RefreshCw className="w-4 h-4" />}
                     className="font-medium min-w-[140px]"
                   >
-                    Try Again
+                    <RefreshCw className="w-4 h-4" /> Try Again
                   </Button>
 
                   <Button
-                    as={Link}
-                    href="/"
-                    variant="bordered"
+                    variant="outline"
                     size="lg"
-                    startContent={<Home className="w-4 h-4" />}
                     className="font-medium min-w-[140px] border-2"
+                    asChild
                   >
-                    Go Home
+                    <Link href="/">
+                      <Home className="w-4 h-4" /> Go Home
+                    </Link>
                   </Button>
                 </div>
 
                 {/* Error Details (if available) */}
                 {error?.digest && (
-                  <div className="mb-8 p-4 bg-foreground-50 dark:bg-foreground-900/20 rounded-lg">
-                    <p className="text-xs text-foreground-500 dark:text-foreground-400 font-mono">
+                  <div className="mb-8 p-4 bg-muted rounded-lg">
+                    <p className="text-xs text-muted-foreground font-mono">
                       Error ID: {error.digest}
                     </p>
                   </div>
                 )}
 
                 {/* Additional Help */}
-                <div className="mt-12 pt-8 border-t border-divider">
-                  <p className="text-sm text-foreground-500 dark:text-foreground-400">
+                <div className="mt-12 pt-8 border-t border-border">
+                  <p className="text-sm text-muted-foreground">
                     If the problem persists, please{" "}
                     <Link
                       href={`mailto:${instructorEmailAddress}?subject=Error%20Report&body=Error%20ID:%20${error?.digest || "Unknown"}`}
-                      className="text-primary-600 dark:text-primary-400 hover:underline font-medium"
+                      className="text-primary hover:underline font-medium"
                     >
                       send an email
                     </Link>

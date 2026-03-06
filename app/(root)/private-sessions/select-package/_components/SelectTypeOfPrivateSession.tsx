@@ -1,7 +1,7 @@
 "use client";
 
 import { FC } from "react";
-import { Tabs, Tab } from "@heroui/tabs";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import {
   GROUP,
   INDIVIDUAL,
@@ -17,21 +17,18 @@ const SelectTypeOfPrivateSession: FC<GroupSizeTabsProps> = ({
 }) => {
   return (
     <Tabs
-      color="primary"
-      aria-label="Tabs colors"
-      radius="md"
-      size="lg"
+      defaultValue={INDIVIDUAL}
+      onValueChange={(value) => setPrivateSessionType(value as SessionType)}
       className="mb-6 mx-auto flex justify-center"
-      classNames={{
-        tab: "font-sm min-w-[120px]",
-        tabList: "justify-center",
-      }}
-      onSelectionChange={(key: SessionType) => {
-        setPrivateSessionType(key);
-      }}
     >
-      <Tab key={INDIVIDUAL} title="Individual" />
-      <Tab key={GROUP} title="Group" />
+      <TabsList className="h-10">
+        <TabsTrigger value={INDIVIDUAL} className="min-w-[120px] text-sm">
+          Individual
+        </TabsTrigger>
+        <TabsTrigger value={GROUP} className="min-w-[120px] text-sm">
+          Group
+        </TabsTrigger>
+      </TabsList>
     </Tabs>
   );
 };

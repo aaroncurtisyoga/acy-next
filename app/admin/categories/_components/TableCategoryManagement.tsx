@@ -1,16 +1,16 @@
 "use client";
 
 import { Dispatch, FC, SetStateAction, useState } from "react";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import {
   Table,
   TableBody,
   TableCell,
-  TableColumn,
+  TableHead,
   TableHeader,
   TableRow,
-} from "@heroui/table";
-import { useDisclosure } from "@heroui/modal";
+} from "@/components/ui/table";
+import { useDisclosure } from "@/app/_hooks/useDisclosure";
 import { Category } from "@prisma/client";
 import BasicModal from "@/app/_components/BasicModal";
 import CategoryCard from "@/app/admin/categories/_components/CategoryCard";
@@ -63,34 +63,34 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
       </div>
 
       {/* Desktop: Table */}
-      <Table
-        aria-label={"Table for Managing Event Categories"}
-        className={"mt-2 hidden md:table"}
-      >
-        <TableHeader>
-          <TableColumn>Category Name</TableColumn>
-          <TableColumn width={100}>Actions</TableColumn>
-        </TableHeader>
-        <TableBody>
-          {categories.map((category: Category) => (
-            <TableRow key={category.id}>
-              <TableCell className="font-medium">{category.name}</TableCell>
-              <TableCell>
-                <Button
-                  isIconOnly
-                  size="sm"
-                  color="danger"
-                  variant="light"
-                  onPress={() => handleCategoryDeleteClick(category)}
-                  aria-label={`Delete ${category.name}`}
-                >
-                  <Trash2 className="w-4 h-4" />
-                </Button>
-              </TableCell>
+      <div className="hidden md:block mt-2">
+        <Table aria-label="Table for Managing Event Categories">
+          <TableHeader>
+            <TableRow>
+              <TableHead>Category Name</TableHead>
+              <TableHead className="w-[100px]">Actions</TableHead>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {categories.map((category: Category) => (
+              <TableRow key={category.id}>
+                <TableCell className="font-medium">{category.name}</TableCell>
+                <TableCell>
+                  <Button
+                    size="icon"
+                    variant="ghost"
+                    className="h-8 w-8 text-destructive hover:text-destructive"
+                    onClick={() => handleCategoryDeleteClick(category)}
+                    aria-label={`Delete ${category.name}`}
+                  >
+                    <Trash2 className="w-4 h-4" />
+                  </Button>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       <BasicModal
         onOpenChange={onOpenChange}
         isOpen={isOpen}

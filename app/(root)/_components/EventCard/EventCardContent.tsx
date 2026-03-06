@@ -37,11 +37,11 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
       {/* Desktop Date Badge */}
       <div className="hidden @sm:flex">
         <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-l-2xl px-3 py-3 flex flex-col items-center justify-center min-w-[50px]">
-          <div className="text-[10px] font-medium text-foreground-500 dark:text-foreground-400 tracking-wide mb-2">
+          <div className="text-[10px] font-medium text-muted-foreground tracking-wide mb-2">
             {dayLabel}
           </div>
           <div className="flex flex-col items-center">
-            <div className="text-xs font-normal text-foreground-600 dark:text-foreground-400 mb-0.5">
+            <div className="text-xs font-normal text-muted-foreground mb-0.5">
               {dateTime.monthShort}
             </div>
             <div className="text-xl font-semibold text-foreground leading-none">
@@ -67,20 +67,20 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
                 </span>
               </div>
 
-              <div className="flex items-center gap-1.5 text-foreground-700">
-                <Clock className="w-3.5 h-3.5 text-foreground-500 flex-shrink-0" />
+              <div className="flex items-center gap-1.5 text-foreground">
+                <Clock className="w-3.5 h-3.5 text-muted-foreground flex-shrink-0" />
                 <span className="font-normal">{dateTime.timeOnly}</span>
               </div>
 
-              <span className="text-foreground-400">•</span>
+              <span className="text-muted-foreground">•</span>
 
-              <span className="text-foreground-600 line-clamp-1">
+              <span className="text-muted-foreground line-clamp-1">
                 {event.location.name}
               </span>
 
-              <span className="text-foreground-400">•</span>
+              <span className="text-muted-foreground">•</span>
 
-              <span className="text-foreground-600">{category.name}</span>
+              <span className="text-muted-foreground">{category.name}</span>
 
               {isFree && (
                 <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs font-semibold">
@@ -91,12 +91,12 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
           </div>
 
           {/* Mobile Sign Up Link */}
-          <div className="@sm:hidden mt-2 pt-2 border-t border-divider text-right">
+          <div className="@sm:hidden mt-2 pt-2 border-t border-border text-right">
             <Link
               href={signUpHref}
               target="_blank"
               onClick={() => trackSignup("mobile_card")}
-              className="inline-block text-sm text-foreground-600 hover:text-foreground-900 font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic"
+              className="inline-block text-sm text-muted-foreground hover:text-foreground font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic"
             >
               Sign Up
             </Link>
@@ -109,7 +109,7 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
             href={signUpHref}
             target="_blank"
             onClick={() => trackSignup("desktop_card")}
-            className="text-sm text-black dark:text-foreground-600 hover:text-foreground-900 font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic whitespace-nowrap"
+            className="text-sm text-black dark:text-muted-foreground hover:text-foreground font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic whitespace-nowrap"
           >
             Sign Up
           </Link>

@@ -116,18 +116,18 @@
 
 /* Error state */
 .hasError {
-  border-color: hsl(var(--heroui-danger)) !important;
+  border-color: hsl(var(--destructive)) !important;
 }
 
 .hasError:focus-within {
-  --tw-ring-color: hsl(var(--heroui-danger)) !important;
+  --tw-ring-color: hsl(var(--destructive)) !important;
 }
 
 /* Disabled state */
 .disabled {
   opacity: 0.6;
   cursor: not-allowed;
-  background-color: hsl(var(--heroui-default-100));
+  background-color: hsl(var(--muted));
 }
 
 .disabled :global(*) {
@@ -159,7 +159,7 @@
 }
 
 .errorMessage {
-  color: hsl(var(--heroui-danger));
+  color: hsl(var(--destructive));
   font-size: 0.75rem;
   flex-shrink: 0;
 }
@@ -172,6 +172,6 @@
 }
 
 .overLimit {
-  color: hsl(var(--heroui-danger));
+  color: hsl(var(--destructive));
   font-weight: 500;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { X } from "lucide-react";
 import { useFormContext, useWatch } from "react-hook-form";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
@@ -31,9 +31,9 @@ const CreateEventFormDetails = () => {
       <div className="flex items-center justify-between mb-6">
         <h1>Create Event</h1>
         <Button
-          isIconOnly
-          variant="light"
-          onPress={() => router.push("/admin/events")}
+          size="icon"
+          variant="ghost"
+          onClick={() => router.push("/admin/events")}
           aria-label="Close"
         >
           <X className="w-5 h-5" />

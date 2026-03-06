@@ -1,5 +1,4 @@
 import { FC } from "react";
-import { Link as HeroUiLink } from "@heroui/link";
 import { instructorEmailAddress } from "@/app/_lib/constants";
 const RefundPolicy: FC = () => {
   return (
@@ -7,9 +6,12 @@ const RefundPolicy: FC = () => {
       <h2 className={"text-2xl font-bold mb-3"}>Refund Policy</h2>
       <p>
         In order to receive a refund, please{" "}
-        <HeroUiLink href={`mailto:${instructorEmailAddress}`} underline="hover">
+        <a
+          href={`mailto:${instructorEmailAddress}`}
+          className="text-primary hover:underline"
+        >
           send me an email
-        </HeroUiLink>
+        </a>
         , and I&lsquo;ll provide a 100% refund. No questions asked.
       </p>
     </div>

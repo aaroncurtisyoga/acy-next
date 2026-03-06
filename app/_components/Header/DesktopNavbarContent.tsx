@@ -3,11 +3,9 @@
 import { FC, ReactNode } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { NavbarContent, NavbarItem } from "@heroui/navbar";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 import { track } from "@vercel/analytics";
-// import { HiOutlineMail } from "react-icons/hi";
-// import NewsletterModal from "@/app/_components/NewsletterModal";
+import { cn } from "@/app/_lib/utils";
 
 interface DesktopNavbarContentProps {
   children: ReactNode;
@@ -15,57 +13,38 @@ interface DesktopNavbarContentProps {
 
 const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
   const pathname = usePathname();
-  // const { isOpen, onOpen, onOpenChange } = useDisclosure();
 
   return (
-    <>
-      <NavbarContent
-        className="hidden sm:flex gap-4"
-        justify="end"
-        data-testid="navbar-menu-desktop"
-      >
-        {/* Navigation links */}
-        {unauthenticatedLinks.map((link, index) => (
-          <NavbarItem
-            key={`${link.name}-${index}`}
-            isActive={pathname.includes(link.href)}
-          >
-            <Link
-              className="w-full"
-              href={link.href}
-              aria-label={link.name}
-              data-testid={`${link.testId}`}
-              onClick={() => {
-                track("navigation", {
-                  action: "desktop_nav_click",
-                  destination: link.name.toLowerCase(),
-                  href: link.href,
-                });
-              }}
-            >
-              {link.name}
-            </Link>
-          </NavbarItem>
-        ))}
+    <div
+      className="hidden sm:flex items-center gap-4 ml-auto"
+      data-testid="navbar-menu-desktop"
+    >
+      {unauthenticatedLinks.map((link, index) => (
+        <Link
+          key={`${link.name}-${index}`}
+          className={cn(
+            "flex items-center px-3 py-2 rounded-lg text-sm transition-all duration-200",
+            pathname.includes(link.href)
+              ? "text-slate-800 bg-slate-100 dark:text-white dark:bg-gray-800"
+              : "text-gray-700 dark:text-gray-300 hover:text-slate-700 hover:bg-slate-50 dark:hover:text-white dark:hover:bg-gray-800/50",
+          )}
+          href={link.href}
+          aria-label={link.name}
+          data-testid={`${link.testId}`}
+          onClick={() => {
+            track("navigation", {
+              action: "desktop_nav_click",
+              destination: link.name.toLowerCase(),
+              href: link.href,
+            });
+          }}
+        >
+          {link.name}
+        </Link>
+      ))}
 
-        {/* Newsletter button */}
-        {/*<Button*/}
-        {/*  onPress={onOpen}*/}
-        {/*  color="primary"*/}
-        {/*  variant="flat"*/}
-        {/*  startContent={<HiOutlineMail className="w-4 h-4" />}*/}
-        {/*  className="font-medium"*/}
-        {/*>*/}
-        {/*  Newsletter*/}
-        {/*</Button>*/}
-
-        {/* User dropdown */}
-        {children}
-      </NavbarContent>
-
-      {/* Newsletter Modal */}
-      {/*<NewsletterModal isOpen={isOpen} onOpenChange={onOpenChange} />*/}
-    </>
+      {children}
+    </div>
   );
 };
 

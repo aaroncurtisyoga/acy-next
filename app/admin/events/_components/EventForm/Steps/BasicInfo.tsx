@@ -2,9 +2,9 @@
 
 import { FC, useCallback, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
-import { addToast } from "@heroui/toast";
-import { parseZonedDateTime } from "@internationalized/date";
+import { Button } from "@/components/ui/button";
+import { toast } from "sonner";
+import { Loader2 } from "lucide-react";
 import { useFormContext } from "react-hook-form";
 import { X } from "lucide-react";
 import { PlaceDetails } from "@/app/_lib/types";
@@ -58,23 +58,14 @@ const BasicInfo: FC = () => {
       const currentEndDate = endDateTime;
       if (newStartDate && currentEndDate) {
         const startTime =
-          typeof newStartDate === "string"
-            ? parseZonedDateTime(newStartDate)
-            : newStartDate;
+          newStartDate instanceof Date ? newStartDate : new Date(newStartDate);
         const endTime =
-          typeof currentEndDate === "string"
-            ? parseZonedDateTime(currentEndDate)
-            : currentEndDate;
+          currentEndDate instanceof Date
+            ? currentEndDate
+            : new Date(currentEndDate);
 
-        if (
-          startTime &&
-          endTime &&
-          typeof startTime !== "string" &&
-          typeof endTime !== "string" &&
-          startTime.compare(endTime) >= 0
-        ) {
-          // If start time is same or after end time, set end time to start time + 1 hour
-          const newEndTime = startTime.add({ hours: 1 });
+        if (startTime >= endTime) {
+          const newEndTime = new Date(startTime.getTime() + 3600000);
           setValue("endDateTime", newEndTime);
         }
       }
@@ -94,24 +85,12 @@ const BasicInfo: FC = () => {
         path: `/admin/events`,
       });
       if (updated) {
-        addToast({
-          title: "Success",
-          description: "Event updated successfully",
-          color: "success",
-          timeout: 3000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.success("Event updated successfully");
         router.push("/admin/events");
       }
     } catch (error) {
       console.error("Failed to update event:", error);
-      addToast({
-        title: "Error",
-        description: "Failed to update event. Please try again.",
-        color: "danger",
-        timeout: 5000,
-        shouldShowTimeoutProgress: true,
-      });
+      toast.error("Failed to update event. Please try again.");
     } finally {
       setIsUpdating(false);
     }
@@ -141,10 +120,10 @@ const BasicInfo: FC = () => {
     <div className="relative">
       {/* Close button in top-right corner */}
       <Button
-        isIconOnly
-        variant="light"
+        size="icon"
+        variant="ghost"
         className="absolute -top-2 -right-2 z-10"
-        onPress={() => router.push("/admin/events")}
+        onClick={() => router.push("/admin/events")}
         aria-label="Close"
       >
         <X size={20} />
@@ -152,8 +131,8 @@ const BasicInfo: FC = () => {
 
       <form onSubmit={handleSubmit(onSubmit)}>
         {defaultValues?.isExternal && (
-          <div className="mb-4 p-3 bg-default-100 rounded-lg flex items-center gap-2">
-            <span className="text-sm text-default-600">
+          <div className="mb-4 p-3 bg-muted rounded-lg flex items-center gap-2">
+            <span className="text-sm text-muted-foreground">
               This event was synced from an external source
               {defaultValues.sourceType && ` (${defaultValues.sourceType})`}.
               You can still edit all fields including the category.
@@ -208,23 +187,23 @@ const BasicInfo: FC = () => {
           />
         </div>
         <div className="flex justify-between mt-5">
-          <Button type="button" onPress={() => reset()} variant="flat">
+          <Button type="button" onClick={() => reset()} variant="secondary">
             Reset Form
           </Button>
           <div className="flex gap-2">
             {mode === "edit" && (
               <Button
                 type="button"
-                color="success"
-                variant="flat"
-                onPress={() => handleSubmit(handleUpdateNow)()}
-                isLoading={isUpdating}
-                isDisabled={!isDirty || isSubmitting}
+                variant="secondary"
+                className="text-green-600 hover:text-green-700"
+                onClick={() => handleSubmit(handleUpdateNow)()}
+                disabled={isUpdating || !isDirty || isSubmitting}
               >
+                {isUpdating && <Loader2 className="animate-spin" size={16} />}
                 Update Now
               </Button>
             )}
-            <Button type="submit" color="primary" isDisabled={isUpdating}>
+            <Button type="submit" disabled={isUpdating}>
               Next
             </Button>
           </div>

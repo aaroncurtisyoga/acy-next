@@ -2,8 +2,9 @@
 
 import { FC, FormEvent, useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
-import { Link as HeroUiLink } from "@heroui/link";
+import { Button } from "@/components/ui/button";
+import { Loader2 } from "lucide-react";
+import Link from "next/link";
 import { useFormContext } from "react-hook-form";
 import { createEvent } from "@/app/_lib/actions/event.actions";
 import { CreateEventData } from "@/app/_lib/types/event";
@@ -78,15 +79,17 @@ const SubmitStep: FC = () => {
       console.log("Location details:", formValues.location);
       console.log("Location placeId:", formValues.location?.placeId);
 
-      // Convert ZonedDateTime objects to ISO strings for serialization
+      // Convert Date objects to ISO strings for serialization
       const eventData: CreateEventData = {
         title: formValues.title,
-        startDateTime: formValues.startDateTime?.toString
-          ? formValues.startDateTime.toString()
-          : formValues.startDateTime,
-        endDateTime: formValues.endDateTime?.toString
-          ? formValues.endDateTime.toString()
-          : formValues.endDateTime,
+        startDateTime:
+          formValues.startDateTime instanceof Date
+            ? formValues.startDateTime.toISOString()
+            : formValues.startDateTime,
+        endDateTime:
+          formValues.endDateTime instanceof Date
+            ? formValues.endDateTime.toISOString()
+            : formValues.endDateTime,
         price: formValues.price || "0",
         isFree: formValues.isFree ?? false,
         category: formValues.category,
@@ -151,10 +154,14 @@ const SubmitStep: FC = () => {
     description: formValues.description || "",
     imageUrl: formValues.imageUrl || "/assets/images/handstand_desktop.jpeg",
     startDateTime: formValues.startDateTime
-      ? formValues.startDateTime.toDate("America/New_York")
+      ? formValues.startDateTime instanceof Date
+        ? formValues.startDateTime
+        : new Date(formValues.startDateTime)
       : new Date(),
     endDateTime: formValues.endDateTime
-      ? formValues.endDateTime.toDate("America/New_York")
+      ? formValues.endDateTime instanceof Date
+        ? formValues.endDateTime
+        : new Date(formValues.endDateTime)
       : new Date(),
     price: formValues.price || "0",
     isFree: formValues.isFree === true,
@@ -196,7 +203,7 @@ const SubmitStep: FC = () => {
 
       {/* Display event preview using actual EventCard */}
       <div className="my-6">
-        <p className="text-sm text-default-500 mb-4">
+        <p className="text-sm text-muted-foreground mb-4">
           This is how your event will appear to students:
         </p>
         <div className="max-w-full">
@@ -207,7 +214,9 @@ const SubmitStep: FC = () => {
       <form onSubmit={onSubmit}>
         {submitError && (
           <div className="mb-4 p-3 bg-danger-50 border border-danger-200 rounded-lg">
-            <p className="text-danger-600 text-sm font-medium">{submitError}</p>
+            <p className="text-destructive text-sm font-medium">
+              {submitError}
+            </p>
           </div>
         )}
 
@@ -215,22 +224,18 @@ const SubmitStep: FC = () => {
           <div className="flex gap-3">
             <Button
               type="button"
-              variant="bordered"
-              onPress={handleCancel}
-              isDisabled={isSubmitting}
+              variant="outline"
+              onClick={handleCancel}
+              disabled={isSubmitting}
             >
               Cancel
             </Button>
-            <Button type="button" isDisabled={isSubmitting}>
-              <HeroUiLink
-                href="/admin/events/create/details"
-                className="text-default-foreground"
-              >
-                Previous
-              </HeroUiLink>
+            <Button type="button" asChild disabled={isSubmitting}>
+              <Link href="/admin/events/create/details">Previous</Link>
             </Button>
           </div>
-          <Button type="submit" color="primary" isLoading={isSubmitting}>
+          <Button type="submit" disabled={isSubmitting}>
+            {isSubmitting && <Loader2 className="animate-spin" size={16} />}
             {isSubmitting ? "Creating Event..." : "Create Event"}
           </Button>
         </div>

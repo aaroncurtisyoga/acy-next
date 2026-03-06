@@ -1,8 +1,8 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
-import { Button } from "@heroui/button";
-import { Tooltip } from "@heroui/tooltip";
+import { Button } from "@/components/ui/button";
+import { SimpleTooltip } from "@/components/ui/simple-tooltip";
 import { Check, Share } from "lucide-react";
 
 interface ShareEventProps {
@@ -25,17 +25,17 @@ const ShareEvent: FC<ShareEventProps> = ({ eventId }) => {
   };
 
   return (
-    <Tooltip content={`Copy link to event`}>
+    <SimpleTooltip content="Copy link to event">
       <Button
-        isIconOnly
-        onPress={handleClick}
-        radius={"full"}
-        variant={"light"}
+        size="icon"
+        onClick={handleClick}
+        variant="ghost"
+        className="rounded-full"
         aria-label="Copy link to event"
       >
         {isRecentlyCopied ? <Check /> : <Share />}
       </Button>
-    </Tooltip>
+    </SimpleTooltip>
   );
 };
 

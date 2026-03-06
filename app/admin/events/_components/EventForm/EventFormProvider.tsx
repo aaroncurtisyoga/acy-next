@@ -3,11 +3,6 @@
 import { createContext, useContext, useEffect } from "react";
 import { ReactNode } from "react";
 import { useForm, FormProvider } from "react-hook-form";
-import {
-  now,
-  getLocalTimeZone,
-  parseZonedDateTime,
-} from "@internationalized/date";
 
 const FORM_STORAGE_KEY = "eventFormData";
 
@@ -15,11 +10,16 @@ const FORM_STORAGE_KEY = "eventFormData";
 const saveFormDataToStorage = (data: EventFormValues) => {
   if (typeof window !== "undefined") {
     try {
-      // Convert ZonedDateTime objects to strings for storage
       const serializable = {
         ...data,
-        startDateTime: data.startDateTime?.toString?.(),
-        endDateTime: data.endDateTime?.toString?.(),
+        startDateTime:
+          data.startDateTime instanceof Date
+            ? data.startDateTime.toISOString()
+            : data.startDateTime,
+        endDateTime:
+          data.endDateTime instanceof Date
+            ? data.endDateTime.toISOString()
+            : data.endDateTime,
       };
       sessionStorage.setItem(FORM_STORAGE_KEY, JSON.stringify(serializable));
     } catch (error) {
@@ -34,10 +34,10 @@ const loadFormDataFromStorage = (): EventFormValues | null => {
       const stored = sessionStorage.getItem(FORM_STORAGE_KEY);
       if (stored) {
         const parsed = JSON.parse(stored);
-        // Convert date strings back to ZonedDateTime objects
+        // Convert date strings back to Date objects
         if (parsed.startDateTime && typeof parsed.startDateTime === "string") {
           try {
-            parsed.startDateTime = parseZonedDateTime(parsed.startDateTime);
+            parsed.startDateTime = new Date(parsed.startDateTime);
           } catch (e) {
             console.warn("Failed to parse startDateTime:", e);
             delete parsed.startDateTime;
@@ -45,7 +45,7 @@ const loadFormDataFromStorage = (): EventFormValues | null => {
         }
         if (parsed.endDateTime && typeof parsed.endDateTime === "string") {
           try {
-            parsed.endDateTime = parseZonedDateTime(parsed.endDateTime);
+            parsed.endDateTime = new Date(parsed.endDateTime);
           } catch (e) {
             console.warn("Failed to parse endDateTime:", e);
             delete parsed.endDateTime;
@@ -56,7 +56,6 @@ const loadFormDataFromStorage = (): EventFormValues | null => {
       return null;
     } catch (error) {
       console.error("Failed to load form data, clearing storage:", error);
-      // Clear corrupted data
       clearFormDataFromStorage();
       return null;
     }
@@ -122,22 +121,21 @@ export const EventFormProvider = ({
   defaultValues?: EventFormValues;
 }) => {
   // Round up to the nearest hour for better UX
-  const currentTime = now(getLocalTimeZone());
-  const roundedStartTime = currentTime
-    .set({
-      minute: 0,
-      second: 0,
-      millisecond: 0,
-    })
-    .add({ hours: 1 });
+  const now = new Date();
+  const roundedStart = new Date(now);
+  roundedStart.setMinutes(0, 0, 0);
+  roundedStart.setHours(roundedStart.getHours() + 1);
+
+  const roundedEnd = new Date(roundedStart);
+  roundedEnd.setHours(roundedEnd.getHours() + 1);
 
   // Load stored form data if in create mode
   const storedData = mode === "create" ? loadFormDataFromStorage() : null;
 
   // Set proper default values for form initialization
   const formDefaultValues: EventFormValues = {
-    startDateTime: roundedStartTime,
-    endDateTime: roundedStartTime.add({ hours: 1 }),
+    startDateTime: roundedStart,
+    endDateTime: roundedEnd,
     isHostedExternally: false,
     isFree: false,
     ...defaultValues,
@@ -145,18 +143,14 @@ export const EventFormProvider = ({
 
   // Only merge stored data if it has valid dates
   if (storedData) {
-    // Validate that stored dates are valid ZonedDateTime objects
     const hasValidStartDate =
-      storedData.startDateTime &&
-      typeof storedData.startDateTime === "object" &&
-      typeof storedData.startDateTime.toDate === "function";
+      storedData.startDateTime instanceof Date &&
+      !isNaN(storedData.startDateTime.getTime());
 
     const hasValidEndDate =
-      storedData.endDateTime &&
-      typeof storedData.endDateTime === "object" &&
-      typeof storedData.endDateTime.toDate === "function";
+      storedData.endDateTime instanceof Date &&
+      !isNaN(storedData.endDateTime.getTime());
 
-    // Merge stored data, but use defaults for invalid dates
     Object.assign(formDefaultValues, {
       ...storedData,
       startDateTime: hasValidStartDate
@@ -170,7 +164,7 @@ export const EventFormProvider = ({
 
   const methods = useForm<EventFormValues>({
     defaultValues: formDefaultValues,
-    mode: "onChange", // Enable onChange validation for better UX
+    mode: "onChange",
   });
 
   // Auto-save form data when it changes (only in create mode)
@@ -178,14 +172,12 @@ export const EventFormProvider = ({
     if (mode === "create") {
       // eslint-disable-next-line react-hooks/incompatible-library -- react-hook-form watch is safe here
       const subscription = methods.watch((data) => {
-        // Only save if we have valid data
         if (data && typeof data === "object") {
           saveFormDataToStorage(data as EventFormValues);
         }
       });
       return () => subscription.unsubscribe();
     }
-    // Return empty cleanup function for edit mode
     return () => {};
   }, [methods, mode]);
 

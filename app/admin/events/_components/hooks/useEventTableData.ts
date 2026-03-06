@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { addToast } from "@heroui/toast";
+import { toast } from "sonner";
 import { getAllEvents, deleteEvent } from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import type { EventTableFilters } from "@/app/admin/events/_components/hooks/useEventTableFilters";
@@ -35,9 +35,8 @@ export function useEventTableData(
   useEffect(() => {
     const fetchCategories = async () => {
       try {
-        const { getAllCategories } = await import(
-          "@/app/_lib/actions/category.actions"
-        );
+        const { getAllCategories } =
+          await import("@/app/_lib/actions/category.actions");
         const fetchedCategories = await getAllCategories();
         setCategories(fetchedCategories);
       } catch (error) {
@@ -69,13 +68,7 @@ export function useEventTableData(
         setTotalCount(count);
       } catch (error) {
         handleError("Failed to fetch events", error);
-        addToast({
-          title: "Error",
-          description: "Failed to fetch events. Please try again.",
-          color: "danger",
-          timeout: 5000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.error("Failed to fetch events. Please try again.");
       } finally {
         setLoading(false);
       }
@@ -89,25 +82,13 @@ export function useEventTableData(
       if (response.success) {
         setEvents((prev) => prev.filter((event) => event.id !== eventId));
         setTotalCount((prev) => prev - 1);
-        addToast({
-          title: "Success",
-          description: "Event deleted successfully",
-          color: "success",
-          timeout: 3000,
-          shouldShowTimeoutProgress: true,
-        });
+        toast.success("Event deleted successfully");
         return true;
       }
       throw new Error("Failed to delete event");
     } catch (error) {
       handleError("Failed to delete event", error);
-      addToast({
-        title: "Error",
-        description: "Failed to delete event. Please try again.",
-        color: "danger",
-        timeout: 5000,
-        shouldShowTimeoutProgress: true,
-      });
+      toast.error("Failed to delete event. Please try again.");
       return false;
     }
   };

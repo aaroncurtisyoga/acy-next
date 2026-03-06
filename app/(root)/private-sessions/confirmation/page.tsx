@@ -2,7 +2,7 @@
 
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { CheckCircle, Calendar, Home } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 
@@ -104,20 +104,19 @@ const ConfirmationPage: React.FC = () => {
       {/* Action Buttons */}
       <div className="flex flex-col sm:flex-row gap-4 justify-center">
         <Button
-          color="primary"
           size="lg"
-          onPress={handleViewAccount}
-          className="min-w-[200px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
+          onClick={handleViewAccount}
+          className="min-w-[200px] font-medium rounded-lg"
         >
           View My Account
         </Button>
         <Button
-          variant="bordered"
+          variant="outline"
           size="lg"
-          onPress={handleGoHome}
-          startContent={<Home size={16} />}
+          onClick={handleGoHome}
           className="min-w-[200px] font-medium rounded-lg"
         >
+          <Home size={16} />
           Back to Home
         </Button>
       </div>

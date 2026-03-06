@@ -5,13 +5,13 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableColumn,
+  TableHead,
   TableHeader,
   TableRow,
-} from "@heroui/table";
-import { Tooltip } from "@heroui/tooltip";
-import { useDisclosure } from "@heroui/modal";
-import { Button } from "@heroui/button";
+} from "@/components/ui/table";
+import { Button } from "@/components/ui/button";
+import { SimpleTooltip } from "@/components/ui/simple-tooltip";
+import { useDisclosure } from "@/app/_hooks/useDisclosure";
 import { Trash2 } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
@@ -26,20 +26,18 @@ const ManageUsersTable: FC = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [selectedUser, setSelectedUser] = useState(null);
   const [users, setUsers] = useState([]);
-  // const [totalPages, setTotalPages] = useState(0); // Unused - for future pagination
-  const [page /*, setPage */] = useState(1); // setPage for future pagination
-  const [searchText /*, setSearchText */] = useState(""); // setSearchText for future search
+  const [page /*, setPage */] = useState(1);
+  const [searchText /*, setSearchText */] = useState("");
 
   useEffect(() => {
     const fetchUsers = async () => {
       try {
-        const { data /* , totalPages */ } = await getAllUsers({
+        const { data } = await getAllUsers({
           limit: 8,
           page,
           query: searchText,
         });
         setUsers(data);
-        // setTotalPages(totalPages); // Unused - for future pagination
         setLoading(false);
       } catch (error) {
         handleError("Failed to fetch users", error);
@@ -54,8 +52,6 @@ const ManageUsersTable: FC = () => {
     if (response.success) {
       onOpenChange();
       setUsers(users.filter((user) => user.id !== selectedUser.id));
-    } else {
-      //   Todo: Toast notification saying there was an error
     }
   };
 
@@ -91,40 +87,40 @@ const ManageUsersTable: FC = () => {
       </div>
 
       {/* Desktop: Table */}
-      <Table
-        aria-label={"Table for Managing Users"}
-        className={"mt-5 hidden md:table"}
-      >
-        <TableHeader>
-          {TableManageUsersColumns.map((column) => (
-            <TableColumn key={column}>{column}</TableColumn>
-          ))}
-        </TableHeader>
-        <TableBody>
-          {users.map((user) => (
-            <TableRow key={user.id}>
-              <TableCell>{user.firstName}</TableCell>
-              <TableCell>{user.lastName}</TableCell>
-              <TableCell>{user.email}</TableCell>
-              <TableCell>{user.id}</TableCell>
-              <TableCell>
-                <Tooltip content="Delete">
-                  <Button
-                    isIconOnly
-                    size="sm"
-                    variant="light"
-                    color="danger"
-                    aria-label="Delete user"
-                    onPress={() => handleUserDeleteClick(user)}
-                  >
-                    <Trash2 size={16} />
-                  </Button>
-                </Tooltip>
-              </TableCell>
+      <div className="hidden md:block mt-5">
+        <Table aria-label="Table for Managing Users">
+          <TableHeader>
+            <TableRow>
+              {TableManageUsersColumns.map((column) => (
+                <TableHead key={column}>{column}</TableHead>
+              ))}
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+          </TableHeader>
+          <TableBody>
+            {users.map((user) => (
+              <TableRow key={user.id}>
+                <TableCell>{user.firstName}</TableCell>
+                <TableCell>{user.lastName}</TableCell>
+                <TableCell>{user.email}</TableCell>
+                <TableCell>{user.id}</TableCell>
+                <TableCell>
+                  <SimpleTooltip content="Delete">
+                    <Button
+                      size="icon"
+                      variant="ghost"
+                      className="h-8 w-8 text-destructive hover:text-destructive"
+                      aria-label="Delete user"
+                      onClick={() => handleUserDeleteClick(user)}
+                    >
+                      <Trash2 size={16} />
+                    </Button>
+                  </SimpleTooltip>
+                </TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </div>
       <BasicModal
         isOpen={isOpen}
         onOpenChange={onOpenChange}

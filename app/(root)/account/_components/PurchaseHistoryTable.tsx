@@ -6,10 +6,10 @@ import {
   Table,
   TableBody,
   TableCell,
-  TableColumn,
+  TableHead,
   TableHeader,
   TableRow,
-} from "@heroui/table";
+} from "@/components/ui/table";
 import { OrderResponse } from "@/app/(root)/account/page";
 import TableEmpty from "@/app/_components/TableEmpty";
 import {
@@ -33,11 +33,13 @@ const PurchaseHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
   }
 
   return (
-    <Table aria-label={"Table for Purchase History"}>
+    <Table aria-label="Table for Purchase History">
       <TableHeader>
-        {EventHistoryTableColumns.map((column) => (
-          <TableColumn key={column}>{column}</TableColumn>
-        ))}
+        <TableRow>
+          {EventHistoryTableColumns.map((column) => (
+            <TableHead key={column}>{column}</TableHead>
+          ))}
+        </TableRow>
       </TableHeader>
       <TableBody>
         {orders.data.map((order) => (
@@ -47,11 +49,10 @@ const PurchaseHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
             </TableCell>
             <TableCell>{formatPrice(order.totalAmount)}</TableCell>
             <TableCell>
-              {/* Todo: Replace w/ Next UI link */}
               {order.event?.id ? (
                 <Link
                   href={`${process.env.NEXT_PUBLIC_SERVER_URL}/events/${order.event.id}`}
-                  className={"text-sm text-blue-600 hover:underline"}
+                  className="text-sm text-blue-600 hover:underline"
                 >
                   {order.event.title}
                 </Link>

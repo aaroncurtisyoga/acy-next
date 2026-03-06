@@ -90,7 +90,7 @@
 
 /* Links */
 .richTextContent :global(a) {
-  color: hsl(var(--heroui-primary));
+  color: hsl(var(--primary));
   text-decoration: underline;
   cursor: pointer;
 }
@@ -128,16 +128,16 @@
 
 /* Blockquote */
 .richTextContent :global(blockquote) {
-  border-left: 3px solid hsl(var(--heroui-default-300));
+  border-left: 3px solid hsl(var(--border));
   margin: 1rem 0;
   padding-left: 1rem;
   font-style: italic;
-  color: hsl(var(--heroui-default-600));
+  color: hsl(var(--muted-foreground));
 }
 
 /* Horizontal rule */
 .richTextContent :global(hr) {
   border: none;
-  border-top: 1px solid hsl(var(--heroui-default-200));
+  border-top: 1px solid hsl(var(--border));
   margin: 1.5rem 0;
 }

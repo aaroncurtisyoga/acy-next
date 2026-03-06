@@ -2,7 +2,7 @@
 
 import React from "react";
 import { useRouter } from "next/navigation";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { Check } from "lucide-react";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
@@ -56,10 +56,9 @@ const WelcomePage: React.FC = () => {
             </div>
           </div>
           <Button
-            color="primary"
             size="lg"
-            className="w-full max-w-[340px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
-            onPress={handleGetStarted}
+            className="w-full max-w-[340px] font-medium rounded-lg"
+            onClick={handleGetStarted}
           >
             Next
           </Button>

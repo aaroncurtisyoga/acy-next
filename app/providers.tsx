@@ -1,12 +1,11 @@
 "use client";
 
 import { ReactNode, useMemo } from "react";
-import { useRouter } from "next/navigation";
 import { ClerkProvider } from "@clerk/nextjs";
 import { dark } from "@clerk/themes";
-import { HeroUIProvider } from "@heroui/system";
-import { ToastProvider } from "@heroui/toast";
+import { Toaster } from "@/components/ui/sonner";
 import { ThemeProvider, useTheme } from "next-themes";
+import { TooltipProvider } from "@/components/ui/tooltip";
 
 interface ProvidersProps {
   children: ReactNode;
@@ -29,33 +28,19 @@ function ThemedClerkProvider({ children }: { children: ReactNode }) {
 }
 
 export function Providers({ children }: ProvidersProps) {
-  const router = useRouter();
-
   return (
-    <HeroUIProvider navigate={router.push}>
-      <ThemeProvider
-        attribute="class"
-        defaultTheme="dark"
-        enableSystem
-        disableTransitionOnChange={false}
-      >
-        <ThemedClerkProvider>
-          <ToastProvider
-            toastProps={{
-              radius: "full",
-              color: "primary",
-              variant: "flat",
-              timeout: 1000,
-              hideIcon: true,
-              classNames: {
-                closeButton:
-                  "opacity-100 absolute right-4 top-1/2 -translate-y-1/2",
-              },
-            }}
-          />
+    <ThemeProvider
+      attribute="class"
+      defaultTheme="dark"
+      enableSystem
+      disableTransitionOnChange={false}
+    >
+      <ThemedClerkProvider>
+        <TooltipProvider delayDuration={300}>
+          <Toaster richColors closeButton position="bottom-right" />
           {children}
-        </ThemedClerkProvider>
-      </ThemeProvider>
-    </HeroUIProvider>
+        </TooltipProvider>
+      </ThemedClerkProvider>
+    </ThemeProvider>
   );
 }

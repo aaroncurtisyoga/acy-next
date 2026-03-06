@@ -1,5 +1,5 @@
 import { FC } from "react";
-import { Card, CardBody } from "@heroui/card";
+import { Card, CardContent } from "@/components/ui/card";
 
 interface EmptyEventsStateProps {
   hasFiltersApplied: boolean;
@@ -8,7 +8,7 @@ interface EmptyEventsStateProps {
 const EmptyEventsState: FC<EmptyEventsStateProps> = ({ hasFiltersApplied }) => {
   return (
     <Card className="flex-1 border border-gray-200 dark:border-gray-800 shadow-none rounded-2xl transition-all duration-300 @container">
-      <CardBody className="flex flex-col items-center justify-center text-center py-16 px-6 @sm:py-20 @sm:px-8">
+      <CardContent className="flex flex-col items-center justify-center text-center py-16 px-6 @sm:py-20 @sm:px-8">
         <h3 className="text-xl @sm:text-2xl font-bold text-gray-900 dark:text-white mb-3 tracking-tight">
           No Events Found
         </h3>
@@ -17,7 +17,7 @@ const EmptyEventsState: FC<EmptyEventsStateProps> = ({ hasFiltersApplied }) => {
             ? "No events match your current filters. Try adjusting them to see more events."
             : "There aren't any events scheduled at the moment. Check back soon for upcoming yoga sessions and workshops!"}
         </p>
-      </CardBody>
+      </CardContent>
     </Card>
   );
 };

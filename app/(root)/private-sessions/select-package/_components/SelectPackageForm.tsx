@@ -3,7 +3,7 @@
 import { FC, useState } from "react";
 import { useRouter } from "next/navigation";
 import { SignedIn, SignedOut, SignInButton, useUser } from "@clerk/nextjs";
-import { Button } from "@heroui/button";
+import { Button } from "@/components/ui/button";
 import { useWizardForm } from "@/app/(root)/private-sessions/_lib/_context/FormContext";
 import CheckoutButtonSkeleton from "@/app/(root)/private-sessions/select-package/_components/CheckoutButtonSkeleton";
 import { StepIndicator } from "@/app/(root)/private-sessions/select-package/_components/StepIndicator";
@@ -121,9 +121,8 @@ const SelectPackageForm: FC = () => {
               <SignedOut>
                 <SignInButton>
                   <Button
-                    color="primary"
                     size="lg"
-                    className="w-full max-w-[440px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
+                    className="w-full max-w-[440px] font-medium rounded-lg"
                   >
                     Sign In to Purchase
                   </Button>
@@ -131,10 +130,9 @@ const SelectPackageForm: FC = () => {
               </SignedOut>
               <SignedIn>
                 <Button
-                  color="primary"
                   size="lg"
-                  className="w-full max-w-[440px] font-medium [&:hover]:bg-[#1a5bb8] [&:hover]:text-white transition-colors rounded-lg"
-                  onPress={onSubmit}
+                  className="w-full max-w-[440px] font-medium rounded-lg"
+                  onClick={onSubmit}
                 >
                   Continue to Checkout
                 </Button>

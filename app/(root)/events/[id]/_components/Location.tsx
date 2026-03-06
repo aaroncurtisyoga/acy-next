@@ -1,9 +1,14 @@
 "use client";
 
 import { FC } from "react";
-import { Accordion, AccordionItem } from "@heroui/accordion";
+import {
+  Accordion,
+  AccordionItem,
+  AccordionTrigger,
+  AccordionContent,
+} from "@/components/ui/accordion";
 import { Location as LocationPrisma } from "@prisma/client";
-import { ChevronDown, ChevronUp, MapPin } from "lucide-react";
+import { MapPin } from "lucide-react";
 import DirectionLinks from "@/app/(root)/events/[id]/_components/DirectionLinks";
 import GoogleMap from "@/app/_components/GoogleMap";
 
@@ -21,23 +26,15 @@ const Location: FC<LocationProps> = ({ location }) => {
             <b>{location.name}</b>
           </p>
           <p className={"mb-2"}>{location.formattedAddress}</p>
-          <Accordion className={"p-0"}>
-            <AccordionItem
-              key="1"
-              aria-label="Show Map Accordion"
-              title={<p>Show Map</p>}
-              classNames={{
-                indicator: "text-primary",
-                trigger: "w-auto py-0",
-                title: "text-sm font-semibold cursor-pointer text-primary",
-              }}
-              indicator={({ isOpen }) =>
-                isOpen ? <ChevronUp size={16} /> : <ChevronDown size={16} />
-              }
-              disableIndicatorAnimation={true}
-            >
-              <GoogleMap lat={location.lat} lng={location.lng} />
-              <DirectionLinks lat={location.lat} lng={location.lng} />
+          <Accordion type="single" collapsible className="p-0 border-none">
+            <AccordionItem value="map" className="border-none">
+              <AccordionTrigger className="w-auto py-0 text-sm font-semibold text-primary hover:no-underline">
+                Show Map
+              </AccordionTrigger>
+              <AccordionContent>
+                <GoogleMap lat={location.lat} lng={location.lng} />
+                <DirectionLinks lat={location.lat} lng={location.lng} />
+              </AccordionContent>
             </AccordionItem>
           </Accordion>
         </div>
