@@ -88,3 +88,23 @@ export interface GetAllEventsResponse {
   hasFiltersApplied: boolean;
   totalCount: number;
 }
+
+// ====== BOOK PARAMS
+export type CreateBookParams = {
+  title: string;
+  author: string;
+  description?: string;
+  coverImageUrl?: string;
+  openLibraryKey?: string;
+  isCurrentlyReading: boolean;
+};
+
+export type UpdateBookParams = Partial<CreateBookParams>;
+
+export type OpenLibrarySearchResult = {
+  openLibraryKey: string;
+  title: string;
+  author: string;
+  year?: number;
+  coverImageUrl: string | null;
+};

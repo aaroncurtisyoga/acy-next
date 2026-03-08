@@ -1,5 +1,6 @@
 import {
   Bike,
+  BookOpen,
   Boxes,
   Calendar,
   Car,
@@ -17,6 +18,7 @@ export const unauthenticatedLinks = [
   //   href: "/private-sessions",
   //   testId: "private-sessions-link",
   // },
+  { name: "Reading", href: "/reading", testId: "reading-link" },
 ];
 
 export const adminLinks = [
@@ -52,6 +54,7 @@ export const adminDashboardLinks = [
   { name: "Events", path: "/admin/events", icon: Calendar },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "Users", path: "/admin/users", icon: UsersRound },
+  { name: "Reading", path: "/admin/reading", icon: BookOpen },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
   { name: "Main Site", path: "/", icon: ExternalLink },
 ];

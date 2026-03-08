@@ -98,4 +98,14 @@ model Category {
   events Event[]
 }
 
-
+model Book {
+  id                 String    @id @default(uuid())
+  createdAt          DateTime  @default(now())
+  updatedAt          DateTime  @updatedAt
+  title              String
+  author             String
+  description        String?
+  coverImageUrl      String?
+  openLibraryKey     String?   @unique
+  isCurrentlyReading Boolean   @default(false)
+}

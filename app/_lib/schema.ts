@@ -32,3 +32,11 @@ export const EventFormBasicInfoSchema = z.object({
 export const CategoryFormSchema = z.object({
   category: z.string().min(2, "Category required"),
 });
+
+export const BookFormSchema = z.object({
+  title: z.string().min(1, "Title is required"),
+  author: z.string().min(1, "Author is required"),
+  description: z.string().optional(),
+  coverImageUrl: z.string().url().optional().or(z.literal("")),
+  isCurrentlyReading: z.boolean(),
+});

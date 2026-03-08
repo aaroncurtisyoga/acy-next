@@ -10,7 +10,8 @@ const nextConfig = {
     remotePatterns: [
       { hostname: "*.public.blob.vercel-storage.com" },
       { hostname: "img.clerk.com" },
-      { hostname: "images.clerk.dev" }
+      { hostname: "images.clerk.dev" },
+      { hostname: "covers.openlibrary.org" }
     ],
     qualities: [50, 75, 80, 90, 100],
   },
