@@ -1,4 +1,5 @@
 import { chromium } from "playwright-core";
+import { toEasternDate } from "@/app/_lib/utils/timezone";
 
 interface MomenceClass {
   id: string;
@@ -538,8 +539,9 @@ export class BrightBearCrawler {
           }
         }
 
-        // Try to parse the full date string
-        const parsedDate = new Date(dateTimeStr);
+        // Try to parse the full date string, then re-interpret as Eastern Time
+        // so it's correct regardless of server timezone (UTC on Vercel)
+        const parsedDate = toEasternDate(new Date(dateTimeStr));
 
         // Accept dates that are from the past year onwards (for historical data)
         // or future dates within reasonable bounds
@@ -589,7 +591,7 @@ export class BrightBearCrawler {
 
             // Construct a standard date string
             const standardDateStr = `${month} ${day}, ${currentYear} ${time}`;
-            const attemptParse = new Date(standardDateStr);
+            const attemptParse = toEasternDate(new Date(standardDateStr));
 
             if (!isNaN(attemptParse.getTime())) {
               startDateTime = attemptParse;
