@@ -1,6 +1,5 @@
 import { FC } from "react";
 import { Book } from "@prisma/client";
-import { Card, CardContent } from "@/components/ui/card";
 import { BookOpen } from "lucide-react";
 import Image from "next/image";
 
@@ -12,43 +11,52 @@ interface CurrentlyReadingProps {
 const CurrentlyReading: FC<CurrentlyReadingProps> = ({ book, blurDataUrl }) => {
   return (
     <section>
-      <h2 className="text-2xl font-bold text-foreground mb-4">
-        Currently Reading
-      </h2>
-      <Card className="shadow-lg">
-        <CardContent className="flex flex-col sm:flex-row gap-6 p-6">
-          {/* Cover */}
-          <div className="flex-shrink-0 flex justify-center sm:justify-start">
-            {book.coverImageUrl ? (
+      <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-center md:items-start">
+        {/* Cover */}
+        <div className="flex-shrink-0">
+          {book.coverImageUrl ? (
+            <div className="relative">
+              {/* Soft decorative shadow behind the book */}
+              <div className="absolute -inset-3 bg-primary/5 dark:bg-primary/10 rounded-2xl blur-xl" />
               <Image
                 src={book.coverImageUrl}
                 alt={book.title}
-                width={200}
-                height={300}
-                className="rounded-lg shadow-md object-cover"
+                width={220}
+                height={330}
+                className="relative rounded-xl shadow-lg object-cover"
                 placeholder={blurDataUrl ? "blur" : "empty"}
                 blurDataURL={blurDataUrl}
                 priority
               />
-            ) : (
-              <div className="w-[200px] h-[300px] bg-muted rounded-lg flex items-center justify-center">
-                <BookOpen className="w-12 h-12 text-muted-foreground" />
-              </div>
-            )}
+            </div>
+          ) : (
+            <div className="w-[220px] h-[330px] bg-muted rounded-xl flex items-center justify-center">
+              <BookOpen className="w-12 h-12 text-muted-foreground/50" />
+            </div>
+          )}
+        </div>
+
+        {/* Text content */}
+        <div className="flex flex-col justify-center text-center md:text-left space-y-4 min-w-0 py-2">
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-widest text-primary mb-3">
+              Currently Reading
+            </p>
+            <h2 className="font-serif text-2xl md:text-3xl font-bold text-foreground leading-tight">
+              {book.title}
+            </h2>
+            <p className="text-muted-foreground mt-2 text-base md:text-lg">
+              {book.author}
+            </p>
           </div>
 
-          {/* Text */}
-          <div className="flex flex-col justify-center min-w-0">
-            <h3 className="text-xl font-bold text-foreground">{book.title}</h3>
-            <p className="text-muted-foreground mt-1">{book.author}</p>
-            {book.description && (
-              <p className="mt-4 text-foreground/80 leading-relaxed">
-                {book.description}
-              </p>
-            )}
-          </div>
-        </CardContent>
-      </Card>
+          {book.description && (
+            <p className="text-foreground/75 dark:text-foreground/65 leading-relaxed text-[15px] max-w-lg">
+              {book.description}
+            </p>
+          )}
+        </div>
+      </div>
     </section>
   );
 };

@@ -30,23 +30,32 @@ const ReadingPage = async () => {
   const hasNoBooks = !currentBook && pastBooks.length === 0;
 
   return (
-    <div className="wrapper max-w-5xl mx-auto py-8 w-full space-y-10">
-      <h1 className="text-4xl font-bold text-foreground">
-        What I&apos;m Reading
-      </h1>
+    <div className="wrapper-width w-full">
+      <div className="max-w-4xl mx-auto py-8 md:py-14 space-y-12 md:space-y-16">
+        {/* Page header */}
+        <header className="text-center space-y-3">
+          <h1 className="font-serif text-3xl md:text-4xl font-bold text-foreground">
+            What I&apos;m Reading
+          </h1>
+          <p className="text-muted-foreground text-base md:text-lg max-w-md mx-auto leading-relaxed">
+            Books that shape my practice, teaching, and perspective.
+          </p>
+        </header>
 
-      {hasNoBooks && (
-        <div className="text-center py-16 text-muted-foreground">
-          <BookOpen className="w-16 h-16 mx-auto mb-4 text-muted-foreground/60" />
-          <p className="text-lg">No books yet. Check back soon!</p>
-        </div>
-      )}
+        {hasNoBooks && (
+          <div className="text-center py-20 text-muted-foreground">
+            <BookOpen className="w-14 h-14 mx-auto mb-4 text-muted-foreground/40" />
+            <p className="text-lg font-medium">No books yet.</p>
+            <p className="text-sm mt-1">Check back soon!</p>
+          </div>
+        )}
 
-      {currentBook && (
-        <CurrentlyReading book={currentBook} blurDataUrl={blurDataUrl} />
-      )}
+        {currentBook && (
+          <CurrentlyReading book={currentBook} blurDataUrl={blurDataUrl} />
+        )}
 
-      <PastReads books={pastBooks} />
+        <PastReads books={pastBooks} />
+      </div>
     </div>
   );
 };
