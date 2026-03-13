@@ -34,16 +34,15 @@ export class DCBPCrawler {
     );
 
     try {
-      const page = await browser.newPage();
-      // Reduce timeout for faster execution on Vercel
-      page.setDefaultTimeout(20000);
-
-      // Set minimal page settings for faster loading
-      await page.setViewportSize({ width: 1280, height: 720 });
-      await page.setExtraHTTPHeaders({
-        "User-Agent":
+      const context = await browser.newContext({
+        timezoneId: "America/New_York",
+        viewport: { width: 1280, height: 720 },
+        userAgent:
           "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36",
       });
+      const page = await context.newPage();
+      // Reduce timeout for faster execution on Vercel
+      page.setDefaultTimeout(20000);
 
       console.log(`📍 Navigating to ZoomShift login: ${this.loginUrl}`);
       await page.goto(this.loginUrl, {

@@ -31,7 +31,10 @@ export class BrightBearCrawler {
     );
 
     try {
-      const page = await browser.newPage();
+      const context = await browser.newContext({
+        timezoneId: "America/New_York",
+      });
+      const page = await context.newPage();
 
       // Set page timeout to 30 seconds instead of default 30s
       page.setDefaultTimeout(30000);
