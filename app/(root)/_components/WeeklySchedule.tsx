@@ -77,7 +77,7 @@ export default async function WeeklySchedule({
         <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
           Weekly Schedule
         </h2>
-        <p className="text-sm text-default-500">
+        <p className="text-sm text-muted-foreground">
           {formatDateTime(dayDates[0]).dateOnlyWithoutYear} &ndash;{" "}
           {formatDateTime(dayDates[6]).dateOnlyWithoutYear}
         </p>
@@ -109,7 +109,7 @@ export default async function WeeklySchedule({
                 className={`mb-1 rounded-t-lg px-2 py-2 text-center text-xs font-semibold uppercase tracking-wide ${
                   isToday
                     ? "bg-primary text-white"
-                    : "bg-default-100 text-default-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 <div>{dayName}</div>
@@ -121,7 +121,7 @@ export default async function WeeklySchedule({
               {/* Events */}
               <div className="flex min-h-[80px] flex-col gap-1">
                 {dayEvents.length === 0 ? (
-                  <div className="px-1 py-2 text-center text-xs text-default-300">
+                  <div className="px-1 py-2 text-center text-xs text-muted-foreground/50">
                     &mdash;
                   </div>
                 ) : (
@@ -154,7 +154,7 @@ export default async function WeeklySchedule({
                 className={`mb-1 rounded-lg px-3 py-2 text-sm font-semibold ${
                   isToday
                     ? "bg-primary text-white"
-                    : "bg-default-100 text-default-600"
+                    : "bg-muted text-muted-foreground"
                 }`}
               >
                 {formatDateTime(date).dateLongWithoutYear}
@@ -168,7 +168,7 @@ export default async function WeeklySchedule({
           );
         })}
         {events.length === 0 && (
-          <p className="py-8 text-center text-default-400">
+          <p className="py-8 text-center text-muted-foreground">
             No classes scheduled this week.
           </p>
         )}
@@ -176,7 +176,7 @@ export default async function WeeklySchedule({
 
       {/* Desktop empty state */}
       {events.length === 0 && (
-        <p className="hidden py-4 text-center text-default-400 md:block">
+        <p className="hidden py-4 text-center text-muted-foreground md:block">
           No classes scheduled this week.
         </p>
       )}
@@ -195,14 +195,14 @@ function EventCell({ event }: { event: EventWithLocationAndCategory }) {
     <Link
       href={href}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group rounded-lg border border-default-200 bg-white px-2 py-2 transition-colors hover:border-primary hover:bg-primary-50"
+      className="group rounded-lg border border-border bg-card px-2 py-2 transition-colors hover:border-primary hover:bg-primary/5"
     >
       <p className="text-xs font-semibold text-primary">{timeOnly}</p>
-      <p className="text-sm font-medium leading-snug text-foreground group-hover:text-primary">
+      <p className="text-sm font-medium leading-snug text-card-foreground group-hover:text-primary">
         {event.title}
       </p>
       {event.location && (
-        <p className="mt-0.5 truncate text-xs text-default-400">
+        <p className="mt-0.5 truncate text-xs text-muted-foreground">
           {event.location.name}
         </p>
       )}
