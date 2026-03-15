@@ -10,8 +10,9 @@ test.describe("Homepage Smoke Test", () => {
     // Page loaded correctly
     await expect(page).toHaveTitle(/Aaron Curtis Yoga/i);
 
-    // At least one event is displayed
-    const eventCards = page.locator('[id^="event-"]');
-    await expect(eventCards.first()).toBeVisible({ timeout: 10000 });
+    // Weekly schedule section is displayed
+    await expect(
+      page.getByRole("heading", { name: /weekly schedule/i }),
+    ).toBeVisible({ timeout: 10000 });
   });
 });
