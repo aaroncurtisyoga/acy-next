@@ -12,7 +12,7 @@ const AdminEventsPage: FC = () => {
   const [view, setView] = useState<"list" | "calendar">("calendar");
 
   return (
-    <div className="wrapper">
+    <div className="wrapper flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
         <h1 className="text-3xl font-bold text-foreground">Events</h1>
         <div className="flex items-center gap-3">

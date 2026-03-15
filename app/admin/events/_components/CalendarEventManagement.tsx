@@ -118,8 +118,10 @@ const CalendarEventManagement: FC = () => {
     });
   }, [eventsByDate, month, year]);
 
+  const numRows = gridDates.length / 7 + 1; // +1 for day-name header row
+
   return (
-    <div className="space-y-4">
+    <div className="flex flex-col flex-1 gap-4">
       <EventTableToolbar
         searchText={filters.searchText}
         category={filters.category}
@@ -150,10 +152,23 @@ const CalendarEventManagement: FC = () => {
 
       {loading ? (
         <>
-          <div className="hidden md:grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
-            {Array.from({ length: 35 }).map((_, i) => (
-              <Skeleton key={i} className="h-36 rounded-none" />
-            ))}
+          <div className="hidden md:flex md:flex-col flex-1">
+            <div
+              className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden flex-1"
+              style={{ gridTemplateRows: `auto repeat(5, 1fr)` }}
+            >
+              {DAY_NAMES.map((day) => (
+                <div
+                  key={day}
+                  className="bg-muted px-2 py-1.5 text-center text-xs font-medium text-muted-foreground"
+                >
+                  {day}
+                </div>
+              ))}
+              {Array.from({ length: 35 }).map((_, i) => (
+                <Skeleton key={i} className="rounded-none" />
+              ))}
+            </div>
           </div>
           <div className="md:hidden space-y-3">
             {Array.from({ length: 4 }).map((_, i) => (
@@ -164,8 +179,13 @@ const CalendarEventManagement: FC = () => {
       ) : (
         <>
           {/* Desktop: Grid */}
-          <div className="hidden md:block">
-            <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
+          <div className="hidden md:flex md:flex-col flex-1">
+            <div
+              className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden flex-1"
+              style={{
+                gridTemplateRows: `auto repeat(${numRows - 1}, 1fr)`,
+              }}
+            >
               {DAY_NAMES.map((day) => (
                 <div
                   key={day}
@@ -184,7 +204,7 @@ const CalendarEventManagement: FC = () => {
                   <div
                     key={i}
                     className={cn(
-                      "bg-background min-h-36 p-1.5 relative",
+                      "bg-background p-1.5 relative overflow-hidden",
                       !isCurrentMonth && "opacity-40",
                     )}
                   >
