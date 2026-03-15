@@ -9,7 +9,7 @@ import TableEventManagement from "@/app/admin/events/_components/TableEventManag
 import CalendarEventManagement from "@/app/admin/events/_components/CalendarEventManagement";
 
 const AdminEventsPage: FC = () => {
-  const [view, setView] = useState<"list" | "calendar">("list");
+  const [view, setView] = useState<"list" | "calendar">("calendar");
 
   return (
     <div className="wrapper">

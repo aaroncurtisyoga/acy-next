@@ -152,7 +152,7 @@ const CalendarEventManagement: FC = () => {
         <>
           <div className="hidden md:grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
             {Array.from({ length: 35 }).map((_, i) => (
-              <Skeleton key={i} className="h-28 rounded-none" />
+              <Skeleton key={i} className="h-36 rounded-none" />
             ))}
           </div>
           <div className="md:hidden space-y-3">
@@ -184,7 +184,7 @@ const CalendarEventManagement: FC = () => {
                   <div
                     key={i}
                     className={cn(
-                      "bg-background min-h-28 p-1.5 relative",
+                      "bg-background min-h-36 p-1.5 relative",
                       !isCurrentMonth && "opacity-40",
                     )}
                   >

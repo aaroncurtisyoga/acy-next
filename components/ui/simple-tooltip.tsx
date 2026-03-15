@@ -10,13 +10,14 @@ import {
 interface SimpleTooltipProps {
   content: string;
   children: ReactNode;
+  side?: "top" | "right" | "bottom" | "left";
 }
 
-export function SimpleTooltip({ content, children }: SimpleTooltipProps) {
+export function SimpleTooltip({ content, children, side }: SimpleTooltipProps) {
   return (
     <Tooltip>
       <TooltipTrigger asChild>{children}</TooltipTrigger>
-      <TooltipContent>{content}</TooltipContent>
+      <TooltipContent side={side}>{content}</TooltipContent>
     </Tooltip>
   );
 }

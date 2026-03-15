@@ -2,7 +2,7 @@
 
 import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Menu, X } from "lucide-react";
+import { Menu, X, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import SidebarMenu from "@/app/admin/_components/SidebarMenu";
 import ThemeToggle from "@/app/_components/ThemeToggle";
 import AdminProtection from "@/app/admin/_components/AdminProtection";
@@ -14,6 +14,7 @@ interface AdminLayoutProps {
 export default function AdminLayout({ children }: AdminLayoutProps) {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
 
   const closeMobileMenu = () => setIsMobileMenuOpen(false);
 
@@ -78,15 +79,36 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         </aside>
 
         {/* Desktop Sidebar */}
-        <aside className="hidden md:flex md:w-64 bg-background border-r border-border p-4 flex-col">
-          <h1
-            className="text-2xl font-bold mb-4 text-foreground cursor-pointer hover:text-primary transition-colors"
-            onClick={() => router.push("/admin")}
-          >
-            Dashboard
-          </h1>
+        <aside
+          className={`hidden md:flex bg-background border-r border-border p-4 flex-col transition-all duration-300 ${
+            isSidebarCollapsed ? "md:w-16" : "md:w-64"
+          }`}
+        >
+          <div className="flex items-center justify-between mb-4">
+            {!isSidebarCollapsed && (
+              <h1
+                className="text-2xl font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
+                onClick={() => router.push("/admin")}
+              >
+                Dashboard
+              </h1>
+            )}
+            <button
+              onClick={() => setIsSidebarCollapsed(!isSidebarCollapsed)}
+              className="p-1.5 rounded-lg hover:bg-muted transition-colors text-muted-foreground hover:text-foreground"
+              aria-label={
+                isSidebarCollapsed ? "Expand sidebar" : "Collapse sidebar"
+              }
+            >
+              {isSidebarCollapsed ? (
+                <PanelLeftOpen size={18} />
+              ) : (
+                <PanelLeftClose size={18} />
+              )}
+            </button>
+          </div>
           <div className="flex-1 flex flex-col">
-            <SidebarMenu />
+            <SidebarMenu collapsed={isSidebarCollapsed} />
           </div>
         </aside>
 
