@@ -24,6 +24,26 @@ export function buildEventSearchConditions(
   return { AND: conditions };
 }
 
+export function buildWeekDateRange(weekStart: Date) {
+  const start = new Date(weekStart);
+  start.setHours(0, 0, 0, 0);
+  const end = new Date(start);
+  end.setDate(end.getDate() + 7);
+  return { start, end };
+}
+
+export function buildMonthGridRange(year: number, month: number) {
+  const firstOfMonth = new Date(year, month, 1);
+  const lastOfMonth = new Date(year, month + 1, 0);
+  const gridStart = new Date(firstOfMonth);
+  gridStart.setDate(gridStart.getDate() - gridStart.getDay() - 1);
+  gridStart.setHours(0, 0, 0, 0);
+  const gridEnd = new Date(lastOfMonth);
+  gridEnd.setDate(gridEnd.getDate() + (6 - gridEnd.getDay()) + 1);
+  gridEnd.setHours(23, 59, 59, 999);
+  return { gridStart, gridEnd };
+}
+
 export function buildUserSearchConditions(query?: string) {
   if (!query) return {};
 

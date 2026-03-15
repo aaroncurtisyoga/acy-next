@@ -3,6 +3,7 @@
 import { revalidatePath } from "next/cache";
 import prisma from "@/app/_lib/prisma";
 import {
+  EventWithLocationAndCategory,
   GetAllEventsParams,
   GetAllEventsResponse,
   GetRelatedEventsByCategoryParams,
@@ -14,7 +15,12 @@ import {
   calculateSkipAmount,
   calculateTotalPages,
 } from "@/app/_lib/utils/pagination";
-import { buildEventSearchConditions } from "@/app/_lib/utils/query-builders";
+import {
+  buildEventSearchConditions,
+  buildWeekDateRange,
+  buildMonthGridRange,
+} from "@/app/_lib/utils/query-builders";
+import { Prisma } from "@prisma/client";
 import { generateMockEvents } from "@/app/_lib/utils/mock-events";
 import {
   createCalendarEvent,
@@ -342,6 +348,29 @@ export async function getEventById(eventId: string) {
   }
 }
 
+export async function getEventsByWeek(weekStartISO: string) {
+  try {
+    const { start, end } = buildWeekDateRange(new Date(weekStartISO));
+
+    const events = await prisma.event.findMany({
+      where: {
+        isActive: true,
+        startDateTime: { gte: start, lt: end },
+      },
+      orderBy: { startDateTime: "asc" },
+      include: {
+        category: true,
+        location: true,
+      },
+    });
+
+    return serialize(events) as EventWithLocationAndCategory[];
+  } catch (error) {
+    handleError(error);
+    return [];
+  }
+}
+
 export async function updateEvent({
   event,
   path,
@@ -566,5 +595,53 @@ export async function updateEvent({
   } catch (error) {
     handleError(error);
     return null;
+  }
+}
+
+export async function getEventsByMonth({
+  year,
+  month,
+  query,
+  category,
+  isActive,
+}: {
+  year: number;
+  month: number;
+  query?: string;
+  category?: string;
+  isActive?: boolean;
+}): Promise<EventWithLocationAndCategory[]> {
+  try {
+    const { gridStart, gridEnd } = buildMonthGridRange(year, month);
+
+    const conditions: Prisma.EventWhereInput[] = [
+      { startDateTime: { gte: gridStart, lte: gridEnd } },
+    ];
+
+    if (query) {
+      conditions.push({ title: { contains: query } });
+    }
+
+    if (category) {
+      conditions.push({ category: { id: category } });
+    }
+
+    if (typeof isActive === "boolean") {
+      conditions.push({ isActive });
+    }
+
+    const events = await prisma.event.findMany({
+      where: { AND: conditions },
+      orderBy: { startDateTime: "asc" },
+      include: {
+        category: true,
+        location: true,
+      },
+    });
+
+    return serialize(events) as EventWithLocationAndCategory[];
+  } catch (error) {
+    handleError(error);
+    return [];
   }
 }
