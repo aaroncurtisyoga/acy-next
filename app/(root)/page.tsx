@@ -1,8 +1,6 @@
-import { Suspense } from "react";
 import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
 import WeeklySchedule from "@/app/(root)/_components/WeeklySchedule";
 import MonthlySchedule from "@/app/(root)/_components/MonthlySchedule";
-import ScheduleToggle from "@/app/(root)/_components/ScheduleToggle";
 
 interface HomePageProps {
   searchParams: Promise<any>;
@@ -25,18 +23,11 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
       >
         <ImageResponsiveHandstand />
       </div>
-      <div className="flex flex-col">
-        <div className="px-4 pt-5 md:px-6 lg:px-12 lg:pt-10">
-          <Suspense>
-            <ScheduleToggle />
-          </Suspense>
-        </div>
-        {isMonthView ? (
-          <MonthlySchedule searchParams={resolvedParams} />
-        ) : (
-          <WeeklySchedule searchParams={resolvedParams} />
-        )}
-      </div>
+      {isMonthView ? (
+        <MonthlySchedule searchParams={resolvedParams} />
+      ) : (
+        <WeeklySchedule searchParams={resolvedParams} />
+      )}
     </section>
   );
 };

@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { getEventsByWeek } from "@/app/_lib/actions/event.actions";
 import { formatDateTime } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import WeekNavigation from "./WeekNavigation";
+import ScheduleToggle from "./ScheduleToggle";
 
 function getMondayOfWeek(date: Date): Date {
   const d = new Date(date);
@@ -71,16 +73,21 @@ export default async function WeeklySchedule({
   nextWeek.setDate(nextWeek.getDate() + 7);
 
   return (
-    <div className="flex flex-col gap-4 px-4 pt-3 pb-8 md:px-6 lg:px-12 lg:pt-4 lg:pb-16">
-      {/* Header */}
-      <div className="flex flex-col gap-1">
-        <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          Weekly Schedule
-        </h2>
-        <p className="text-sm text-muted-foreground">
-          {formatDateTime(dayDates[0]).dateOnlyWithoutYear} &ndash;{" "}
-          {formatDateTime(dayDates[6]).dateOnlyWithoutYear}
-        </p>
+    <div className="flex flex-col gap-4 px-4 py-5 pb-8 md:px-6 lg:px-12 lg:py-10 lg:pb-16">
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-1">
+          <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+            Weekly Schedule
+          </h2>
+          <p className="text-sm text-muted-foreground">
+            {formatDateTime(dayDates[0]).dateOnlyWithoutYear} &ndash;{" "}
+            {formatDateTime(dayDates[6]).dateOnlyWithoutYear}
+          </p>
+        </div>
+        <Suspense>
+          <ScheduleToggle />
+        </Suspense>
       </div>
 
       {/* Navigation */}

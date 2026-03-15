@@ -1,8 +1,10 @@
+import { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { getEventsByMonth } from "@/app/_lib/actions/event.actions";
 import { formatDateTime, cn } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
+import ScheduleToggle from "./ScheduleToggle";
 
 const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
 
@@ -95,27 +97,30 @@ export default async function MonthlySchedule({
     .sort(([a], [b]) => a.localeCompare(b));
 
   return (
-    <div className="flex flex-col gap-4 px-4 pt-3 pb-8 md:px-6 lg:px-12 lg:pt-4 lg:pb-16">
-      {/* Header */}
-      <div className="flex flex-col gap-1">
-        <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-          {monthLabel}
-        </h2>
-      </div>
-
-      {/* Navigation */}
-      <div className="flex items-center gap-2">
-        <Button asChild size="sm" variant="outline">
-          <Link href={`/?view=month&month=${prevParam}`}>&larr; Prev</Link>
-        </Button>
-        {!isCurrentMonth && (
-          <Button asChild size="sm" variant="outline">
-            <Link href="/?view=month">This Month</Link>
-          </Button>
-        )}
-        <Button asChild size="sm" variant="outline">
-          <Link href={`/?view=month&month=${nextParam}`}>Next &rarr;</Link>
-        </Button>
+    <div className="flex flex-col gap-4 px-4 py-5 pb-8 md:px-6 lg:px-12 lg:py-10 lg:pb-16">
+      {/* Header row */}
+      <div className="flex items-start justify-between gap-4">
+        <div className="flex flex-col gap-3">
+          <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+            {monthLabel}
+          </h2>
+          <div className="flex items-center gap-2">
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/?view=month&month=${prevParam}`}>&larr; Prev</Link>
+            </Button>
+            {!isCurrentMonth && (
+              <Button asChild size="sm" variant="outline">
+                <Link href="/?view=month">This Month</Link>
+              </Button>
+            )}
+            <Button asChild size="sm" variant="outline">
+              <Link href={`/?view=month&month=${nextParam}`}>Next &rarr;</Link>
+            </Button>
+          </div>
+        </div>
+        <Suspense>
+          <ScheduleToggle />
+        </Suspense>
       </div>
 
       {/* Desktop: Calendar grid */}
@@ -139,7 +144,7 @@ export default async function MonthlySchedule({
               <div
                 key={i}
                 className={cn(
-                  "bg-background min-h-24 p-1.5",
+                  "bg-background min-h-32 p-1.5",
                   !isCurrentMonthDay && "opacity-40",
                 )}
               >
