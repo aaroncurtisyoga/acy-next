@@ -121,9 +121,7 @@ export default async function WeeklySchedule({
               {/* Events */}
               <div className="flex min-h-[80px] flex-col gap-1">
                 {dayEvents.length === 0 ? (
-                  <div className="px-1 py-2 text-center text-xs text-muted-foreground/50">
-                    &mdash;
-                  </div>
+                  <div className="flex-1" />
                 ) : (
                   dayEvents.map((event) => (
                     <EventCell key={event.id} event={event} />
@@ -195,7 +193,7 @@ function EventCell({ event }: { event: EventWithLocationAndCategory }) {
     <Link
       href={href}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group rounded-lg border border-border bg-card px-2 py-2 transition-colors hover:border-primary hover:bg-primary/5"
+      className="group rounded-lg border border-border bg-card px-2.5 py-3 transition-colors hover:border-primary hover:bg-primary/5"
     >
       <p className="text-xs font-semibold text-primary">{timeOnly}</p>
       <p className="text-sm font-medium leading-snug text-card-foreground group-hover:text-primary">
