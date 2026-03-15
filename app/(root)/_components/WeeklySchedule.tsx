@@ -71,7 +71,7 @@ export default async function WeeklySchedule({
   nextWeek.setDate(nextWeek.getDate() + 7);
 
   return (
-    <div className="flex flex-col gap-4 px-4 py-5 pb-8 md:px-6 lg:px-12 lg:py-10 lg:pb-16">
+    <div className="flex flex-col gap-4 px-4 pt-3 pb-8 md:px-6 lg:px-12 lg:pt-4 lg:pb-16">
       {/* Header */}
       <div className="flex flex-col gap-1">
         <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
