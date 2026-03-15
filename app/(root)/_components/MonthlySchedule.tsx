@@ -70,6 +70,7 @@ export default async function MonthlySchedule({
   }
 
   const gridDates = buildGridDates(year, month);
+  const numRows = gridDates.length / 7;
   const today = todayKey();
 
   const monthLabel = new Date(year, month).toLocaleDateString("en-US", {
@@ -97,7 +98,7 @@ export default async function MonthlySchedule({
     .sort(([a], [b]) => a.localeCompare(b));
 
   return (
-    <div className="flex flex-col gap-4 px-4 py-5 pb-8 md:px-6 lg:px-12 lg:py-10 lg:pb-16">
+    <div className="flex flex-col flex-1 gap-4 px-4 py-5 pb-8 md:px-6 lg:px-12 lg:py-10 lg:pb-16">
       {/* Header row */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-3">
@@ -124,8 +125,11 @@ export default async function MonthlySchedule({
       </div>
 
       {/* Desktop: Calendar grid */}
-      <div className="hidden md:block">
-        <div className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden">
+      <div className="hidden md:flex md:flex-col flex-1">
+        <div
+          className="grid grid-cols-7 gap-px bg-border rounded-lg overflow-hidden flex-1"
+          style={{ gridTemplateRows: `auto repeat(${numRows}, 1fr)` }}
+        >
           {DAY_NAMES.map((day) => (
             <div
               key={day}
@@ -144,7 +148,7 @@ export default async function MonthlySchedule({
               <div
                 key={i}
                 className={cn(
-                  "bg-background min-h-32 p-1.5",
+                  "bg-background p-1.5 overflow-hidden",
                   !isCurrentMonthDay && "opacity-40",
                 )}
               >
