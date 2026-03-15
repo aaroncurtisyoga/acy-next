@@ -1,5 +1,5 @@
 import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
-import UpcomingEvents from "@/app/(root)/_components/UpcomingEvents";
+import WeeklySchedule from "@/app/(root)/_components/WeeklySchedule";
 
 interface HomePageProps {
   searchParams: Promise<any>;
@@ -10,7 +10,9 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
 
   return (
     <section
-      className={"grid w-full max-w-7xl flex-1 " + "md:grid-cols-2 lg:mx-auto"}
+      className={
+        "grid w-full max-w-7xl flex-1 md:grid-cols-[1fr_2fr] lg:mx-auto"
+      }
     >
       <div
         className={
@@ -19,7 +21,7 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
       >
         <ImageResponsiveHandstand />
       </div>
-      <UpcomingEvents searchParams={resolvedParams} />
+      <WeeklySchedule searchParams={resolvedParams} />
     </section>
   );
 };
