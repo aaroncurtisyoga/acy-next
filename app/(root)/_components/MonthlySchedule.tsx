@@ -1,12 +1,15 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { getEventsByMonth } from "@/app/_lib/actions/event.actions";
+import {
+  getEventsByMonth,
+  getLastActiveEventDate,
+} from "@/app/_lib/actions/event.actions";
 import { formatDateTime, cn } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import ScheduleToggle from "./ScheduleToggle";
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function toDateKey(date: Date): string {
   const y = date.getFullYear();
@@ -24,7 +27,7 @@ function todayKey(): string {
 function buildGridDates(year: number, month: number): Date[] {
   const firstOfMonth = new Date(year, month, 1);
   const lastOfMonth = new Date(year, month + 1, 0);
-  const startDay = firstOfMonth.getDay();
+  const startDay = (firstOfMonth.getDay() + 6) % 7; // Mon=0, Sun=6
   const totalCells = Math.ceil((startDay + lastOfMonth.getDate()) / 7) * 7;
   const dates: Date[] = [];
   for (let i = 0; i < totalCells; i++) {
@@ -81,6 +84,13 @@ export default async function MonthlySchedule({
   const isCurrentMonth =
     year === etNow.getFullYear() && month === etNow.getMonth();
 
+  // Disable "Next" if no events exist after the current month
+  const lastEventDate = await getLastActiveEventDate();
+  const nextMonthStart = new Date(year, month + 1, 1);
+  const hasMoreEvents = lastEventDate
+    ? new Date(lastEventDate) >= nextMonthStart
+    : false;
+
   // Prev / Next month params
   const prevMonth = month === 0 ? 12 : month;
   const prevYear = month === 0 ? year - 1 : year;
@@ -109,14 +119,26 @@ export default async function MonthlySchedule({
             <Button asChild size="sm" variant="outline">
               <Link href={`/?view=month&month=${prevParam}`}>&larr; Prev</Link>
             </Button>
-            {!isCurrentMonth && (
+            {isCurrentMonth ? (
+              <Button size="sm" variant="outline" disabled>
+                This Month
+              </Button>
+            ) : (
               <Button asChild size="sm" variant="outline">
                 <Link href="/?view=month">This Month</Link>
               </Button>
             )}
-            <Button asChild size="sm" variant="outline">
-              <Link href={`/?view=month&month=${nextParam}`}>Next &rarr;</Link>
-            </Button>
+            {hasMoreEvents ? (
+              <Button asChild size="sm" variant="outline">
+                <Link href={`/?view=month&month=${nextParam}`}>
+                  Next &rarr;
+                </Link>
+              </Button>
+            ) : (
+              <Button size="sm" variant="outline" disabled>
+                Next &rarr;
+              </Button>
+            )}
           </div>
         </div>
         <Suspense>

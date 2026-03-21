@@ -1,6 +1,9 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { getEventsByWeek } from "@/app/_lib/actions/event.actions";
+import {
+  getEventsByWeek,
+  getLastActiveEventDate,
+} from "@/app/_lib/actions/event.actions";
 import { formatDateTime } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import WeekNavigation from "./WeekNavigation";
@@ -66,6 +69,14 @@ export default async function WeeklySchedule({
   const isCurrentWeek =
     toISODateString(currentMonday) === toISODateString(weekStart);
 
+  // Disable "Next" if no events exist after the current week
+  const lastEventDate = await getLastActiveEventDate();
+  const currentWeekEnd = new Date(weekStart);
+  currentWeekEnd.setDate(currentWeekEnd.getDate() + 7);
+  const hasMoreEvents = lastEventDate
+    ? new Date(lastEventDate) >= currentWeekEnd
+    : false;
+
   // Prev / Next week ISO strings
   const prevWeek = new Date(weekStart);
   prevWeek.setDate(prevWeek.getDate() - 7);
@@ -95,6 +106,7 @@ export default async function WeeklySchedule({
         prevWeek={toISODateString(prevWeek)}
         nextWeek={toISODateString(nextWeek)}
         isCurrentWeek={isCurrentWeek}
+        hasMoreEvents={hasMoreEvents}
       />
 
       {/* Desktop: 7-column grid */}

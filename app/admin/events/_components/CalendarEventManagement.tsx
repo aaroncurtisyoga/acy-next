@@ -27,17 +27,16 @@ import { useCalendarData } from "@/app/admin/events/_components/hooks/useCalenda
 import { formatDateTime, cn } from "@/app/_lib/utils";
 import type { EventWithLocationAndCategory } from "@/app/_lib/types";
 
-const DAY_NAMES = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
 
 function buildGridDates(year: number, month: number): Date[] {
   const firstOfMonth = new Date(year, month, 1);
   const lastOfMonth = new Date(year, month + 1, 0);
-  const startDay = firstOfMonth.getDay();
+  const startDay = (firstOfMonth.getDay() + 6) % 7; // Mon=0, Sun=6
   const totalCells = Math.ceil((startDay + lastOfMonth.getDate()) / 7) * 7;
   const dates: Date[] = [];
   for (let i = 0; i < totalCells; i++) {
-    const d = new Date(year, month, 1 - startDay + i);
-    dates[i] = d;
+    dates[i] = new Date(year, month, 1 - startDay + i);
   }
   return dates;
 }

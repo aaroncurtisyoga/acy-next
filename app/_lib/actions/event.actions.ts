@@ -645,3 +645,17 @@ export async function getEventsByMonth({
     return [];
   }
 }
+
+export async function getLastActiveEventDate(): Promise<Date | null> {
+  try {
+    const event = await prisma.event.findFirst({
+      where: { isActive: true },
+      orderBy: { startDateTime: "desc" },
+      select: { startDateTime: true },
+    });
+    return event?.startDateTime ?? null;
+  } catch (error) {
+    handleError(error);
+    return null;
+  }
+}
