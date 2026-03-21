@@ -6,12 +6,6 @@
     "app/api/admin/sync/dcbp/route.ts": {
       "maxDuration": 60
     },
-    "app/api/cron/sync-bright-bear/route.ts": {
-      "maxDuration": 60
-    },
-    "app/api/cron/sync-dcbp/route.ts": {
-      "maxDuration": 60
-    },
     "app/api/cron/sync-events/route.ts": {
       "maxDuration": 180
     }
@@ -20,14 +14,6 @@
     {
       "path": "/api/cron/sync-events",
       "schedule": "0 8 * * *"
-    },
-    {
-      "path": "/api/cron/sync-dcbp",
-      "schedule": "0 0 1 1 *"
-    },
-    {
-      "path": "/api/cron/sync-bright-bear",
-      "schedule": "0 0 1 1 *"
     }
   ]
 }

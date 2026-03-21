@@ -5,18 +5,11 @@ import {
   getEventsByMonth,
   getLastActiveEventDate,
 } from "@/app/_lib/actions/event.actions";
-import { formatDateTime, cn } from "@/app/_lib/utils";
+import { formatDateTime, cn, toDateKey } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import ScheduleToggle from "./ScheduleToggle";
 
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
-
-function toDateKey(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
 
 function todayKey(): string {
   return new Date().toLocaleDateString("en-CA", {

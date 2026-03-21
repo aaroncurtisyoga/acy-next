@@ -6,18 +6,11 @@ const isAuthenticatedRoute = createRouteMatcher([
   "/admin/(.*)",
   "/profile",
   "/settings",
-  // "/private-sessions/select-package(.*)",
-  // "/private-sessions/checkout(.*)",
 ]);
 
 const isAdminRoute = createRouteMatcher(["/admin", "/admin/(.*)"]);
 
-const isPublicRoute = createRouteMatcher([
-  "/",
-  // "/private-sessions",
-  // "/private-sessions/welcome(.*)",
-  // "/private-sessions/sign-in(.*)",
-]);
+const isPublicRoute = createRouteMatcher(["/"]);
 
 export default clerkMiddleware(async (auth, req) => {
   // Get auth object

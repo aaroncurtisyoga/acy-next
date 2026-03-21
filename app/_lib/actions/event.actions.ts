@@ -6,7 +6,6 @@ import {
   EventWithLocationAndCategory,
   GetAllEventsParams,
   GetAllEventsResponse,
-  GetRelatedEventsByCategoryParams,
 } from "@/app/_lib/types";
 import { CreateEventData, UpdateEventData } from "@/app/_lib/types/event";
 import { handleError } from "@/app/_lib/utils";
@@ -27,6 +26,7 @@ import {
   updateCalendarEvent,
   deleteCalendarEvent,
   findCalendarEventByDatabaseId,
+  buildCalendarEventData,
 } from "@/app/_lib/google-calendar";
 
 export async function createEvent({
@@ -95,19 +95,17 @@ export async function createEvent({
 
     // Sync with Google Calendar
     console.log("[Event Creation] Syncing new event with Google Calendar...");
-    const calendarResult = await createCalendarEvent({
-      title: event.title,
-      description: event.description,
-      startDateTime: startDateTimeISO,
-      endDateTime: endDateTimeISO,
-      location: location.formattedAddress || location.name || undefined,
-      // Only include maxAttendees for internally hosted events
-      maxAttendees: event.isHostedExternally ? undefined : event.maxAttendees,
-      price: event.price,
-      isFree: event.isFree,
-      externalRegistrationUrl: event.externalRegistrationUrl,
-      databaseEventId: newEvent.id, // Add database ID for duplicate prevention
-    });
+    const calendarResult = await createCalendarEvent(
+      buildCalendarEventData(
+        {
+          ...event,
+          startDateTime: startDateTimeISO,
+          endDateTime: endDateTimeISO,
+        },
+        location.formattedAddress || location.name || undefined,
+        newEvent.id,
+      ),
+    );
 
     // Update event with Google Calendar details if sync was successful
     if (calendarResult) {
@@ -180,22 +178,6 @@ export async function deleteEvent(
   }
 }
 
-// Unused function - commented out to fix build
-// async function getEventAttendees(eventId: string) {
-//   return prisma.order.findMany({
-//     where: { event: { id: eventId } },
-//     include: {
-//       buyer: {
-//         select: {
-//           firstName: true,
-//           lastName: true,
-//           photo: true,
-//         },
-//       },
-//     },
-//   });
-// }
-
 export async function getAllEvents({
   query,
   limit = 8,
@@ -263,50 +245,6 @@ export async function getAllEvents({
       hasFiltersApplied: false,
       totalPages: 0,
       totalCount: 0,
-    };
-  }
-}
-
-// Unused function - commented out to fix build
-// const getCategoryByName = async (name: string) => {
-//   return prisma.category.findUnique({
-//     where: { name: name },
-//   });
-// };
-
-export async function getEventsWithSameCategory({
-  categoryId,
-  eventId,
-  limit = 3,
-  page = 1,
-}: GetRelatedEventsByCategoryParams) {
-  try {
-    const skipAmount = calculateSkipAmount(Number(page), limit);
-    const whereConditions = {
-      AND: [{ category: { id: categoryId } }, { id: { not: eventId } }],
-    };
-
-    const [events, eventsCount] = await Promise.all([
-      prisma.event.findMany({
-        where: whereConditions,
-        orderBy: { createdAt: "desc" },
-        take: limit,
-        skip: skipAmount,
-      }),
-      prisma.event.count({
-        where: whereConditions,
-      }),
-    ]);
-
-    return {
-      data: events,
-      totalPages: calculateTotalPages(eventsCount, limit),
-    };
-  } catch (error) {
-    handleError(error);
-    return {
-      data: [],
-      totalPages: 0,
     };
   }
 }
@@ -484,30 +422,20 @@ export async function updateEvent({
       },
     });
 
-    // Sync with Google Calendar if the event has a Google Event ID
+    // Sync with Google Calendar
+    const locationStr =
+      updatedEvent.location?.formattedAddress ||
+      updatedEvent.location?.name ||
+      undefined;
+    const calendarData = buildCalendarEventData(updatedEvent, locationStr);
+
     if (updatedEvent.googleEventId) {
       console.log(
         "[Event Update] Syncing updated event with Google Calendar...",
       );
       const calendarResult = await updateCalendarEvent(
         updatedEvent.googleEventId,
-        {
-          title: updatedEvent.title,
-          description: updatedEvent.description,
-          startDateTime: updatedEvent.startDateTime,
-          endDateTime: updatedEvent.endDateTime,
-          location:
-            updatedEvent.location?.formattedAddress ||
-            updatedEvent.location?.name ||
-            undefined,
-          // Only include maxAttendees for internally hosted events
-          maxAttendees: updatedEvent.isHostedExternally
-            ? undefined
-            : updatedEvent.maxAttendees,
-          price: updatedEvent.price,
-          isFree: updatedEvent.isFree,
-          externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
-        },
+        calendarData,
       );
 
       if (!calendarResult) {
@@ -518,12 +446,10 @@ export async function updateEvent({
         console.log("[Event Update] Google Calendar sync successful");
       }
     } else {
-      // If no Google Event ID exists, check if one already exists in Google Calendar
       console.log(
         "[Event Update] No Google Event ID found, checking for existing calendar event...",
       );
 
-      // First check if a Google Calendar event already exists with this database ID
       const existingGoogleEvent = await findCalendarEventByDatabaseId(eventId);
 
       let calendarResult;
@@ -531,47 +457,15 @@ export async function updateEvent({
         console.log(
           "[Event Update] Found existing Google Calendar event, updating...",
         );
-        // Update the existing Google Calendar event
         calendarResult = await updateCalendarEvent(
           existingGoogleEvent.googleEventId,
-          {
-            title: updatedEvent.title,
-            description: updatedEvent.description,
-            startDateTime: updatedEvent.startDateTime,
-            endDateTime: updatedEvent.endDateTime,
-            location:
-              updatedEvent.location?.formattedAddress ||
-              updatedEvent.location?.name ||
-              undefined,
-            // Only include maxAttendees for internally hosted events
-            maxAttendees: updatedEvent.isHostedExternally
-              ? undefined
-              : updatedEvent.maxAttendees,
-            price: updatedEvent.price,
-            isFree: updatedEvent.isFree,
-            externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
-          },
+          calendarData,
         );
       } else {
         console.log("[Event Update] Creating new calendar event...");
-        // Create a new Google Calendar event
         calendarResult = await createCalendarEvent({
-          title: updatedEvent.title,
-          description: updatedEvent.description,
-          startDateTime: updatedEvent.startDateTime,
-          endDateTime: updatedEvent.endDateTime,
-          location:
-            updatedEvent.location?.formattedAddress ||
-            updatedEvent.location?.name ||
-            undefined,
-          // Only include maxAttendees for internally hosted events
-          maxAttendees: updatedEvent.isHostedExternally
-            ? undefined
-            : updatedEvent.maxAttendees,
-          price: updatedEvent.price,
-          isFree: updatedEvent.isFree,
-          externalRegistrationUrl: updatedEvent.externalRegistrationUrl,
-          databaseEventId: eventId, // Add database ID for duplicate prevention
+          ...calendarData,
+          databaseEventId: eventId,
         });
       }
 

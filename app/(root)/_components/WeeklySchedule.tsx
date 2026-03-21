@@ -4,7 +4,7 @@ import {
   getEventsByWeek,
   getLastActiveEventDate,
 } from "@/app/_lib/actions/event.actions";
-import { formatDateTime } from "@/app/_lib/utils";
+import { formatDateTime, toDateKey } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import WeekNavigation from "./WeekNavigation";
 import ScheduleToggle from "./ScheduleToggle";
@@ -22,13 +22,6 @@ function getMondayOfWeek(date: Date): Date {
   return etDate;
 }
 
-function toISODateString(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
-}
-
 const DAYS = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"] as const;
 
 interface WeeklyScheduleProps {
@@ -43,7 +36,7 @@ export default async function WeeklySchedule({
     ? getMondayOfWeek(new Date(searchParams.week + "T12:00:00"))
     : getMondayOfWeek(now);
 
-  const weekStartISO = toISODateString(weekStart);
+  const weekStartISO = toDateKey(weekStart);
   const events = await getEventsByWeek(weekStartISO);
 
   // Group events by day of week (0=Mon .. 6=Sun)
@@ -66,8 +59,7 @@ export default async function WeeklySchedule({
 
   // Check if this is the current week
   const currentMonday = getMondayOfWeek(now);
-  const isCurrentWeek =
-    toISODateString(currentMonday) === toISODateString(weekStart);
+  const isCurrentWeek = toDateKey(currentMonday) === toDateKey(weekStart);
 
   // Disable "Next" if no events exist after the current week
   const lastEventDate = await getLastActiveEventDate();
@@ -103,8 +95,8 @@ export default async function WeeklySchedule({
 
       {/* Navigation */}
       <WeekNavigation
-        prevWeek={toISODateString(prevWeek)}
-        nextWeek={toISODateString(nextWeek)}
+        prevWeek={toDateKey(prevWeek)}
+        nextWeek={toDateKey(nextWeek)}
         isCurrentWeek={isCurrentWeek}
         hasMoreEvents={hasMoreEvents}
       />
@@ -115,11 +107,11 @@ export default async function WeeklySchedule({
           const dayEvents = eventsByDay.get(i) || [];
           const date = dayDates[i];
           const isToday =
-            toISODateString(
+            toDateKey(
               new Date(
                 now.toLocaleString("en-US", { timeZone: "America/New_York" }),
               ),
-            ) === toISODateString(date);
+            ) === toDateKey(date);
 
           return (
             <div key={dayName} className="flex flex-col">
@@ -159,11 +151,11 @@ export default async function WeeklySchedule({
           if (dayEvents.length === 0) return null;
           const date = dayDates[i];
           const isToday =
-            toISODateString(
+            toDateKey(
               new Date(
                 now.toLocaleString("en-US", { timeZone: "America/New_York" }),
               ),
-            ) === toISODateString(date);
+            ) === toDateKey(date);
 
           return (
             <div key={dayName}>

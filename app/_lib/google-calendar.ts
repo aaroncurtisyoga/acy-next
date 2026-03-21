@@ -90,8 +90,28 @@ export const findCalendarEventByDatabaseId = async (
   }
 };
 
-// Create a Google Calendar event
-export const createCalendarEvent = async (event: {
+// Build enriched description for Google Calendar events
+function buildCalendarDescription(event: {
+  description?: string | null;
+  price?: string | null;
+  isFree?: boolean;
+  maxAttendees?: number | null;
+  externalRegistrationUrl?: string | null;
+}): string {
+  let desc = event.description || "";
+  if (event.price && !event.isFree) {
+    desc += `\n\nPrice: $${event.price}`;
+  }
+  if (event.maxAttendees) {
+    desc += `\n\nMax Attendees: ${event.maxAttendees}`;
+  }
+  if (event.externalRegistrationUrl) {
+    desc += `\n\nRegister at: ${event.externalRegistrationUrl}`;
+  }
+  return desc.trim();
+}
+
+export type CalendarEventInput = {
   title: string;
   description?: string | null;
   startDateTime: Date | string;
@@ -101,8 +121,41 @@ export const createCalendarEvent = async (event: {
   price?: string | null;
   isFree?: boolean;
   externalRegistrationUrl?: string | null;
-  databaseEventId?: string; // Add database event ID for duplicate prevention
-}) => {
+  databaseEventId?: string;
+};
+
+// Build calendar event data from an event with location
+export function buildCalendarEventData(
+  event: {
+    title: string;
+    description?: string | null;
+    startDateTime: Date | string;
+    endDateTime: Date | string;
+    isHostedExternally?: boolean;
+    maxAttendees?: number | null;
+    price?: string | null;
+    isFree?: boolean;
+    externalRegistrationUrl?: string | null;
+  },
+  locationString?: string,
+  databaseEventId?: string,
+): CalendarEventInput {
+  return {
+    title: event.title,
+    description: event.description,
+    startDateTime: event.startDateTime,
+    endDateTime: event.endDateTime,
+    location: locationString,
+    maxAttendees: event.isHostedExternally ? undefined : event.maxAttendees,
+    price: event.price,
+    isFree: event.isFree,
+    externalRegistrationUrl: event.externalRegistrationUrl,
+    ...(databaseEventId && { databaseEventId }),
+  };
+}
+
+// Create a Google Calendar event
+export const createCalendarEvent = async (event: CalendarEventInput) => {
   console.log("[Google Calendar] Creating calendar event:", {
     title: event.title,
   });
@@ -118,21 +171,9 @@ export const createCalendarEvent = async (event: {
       throw new Error("Google Calendar ID not configured");
     }
 
-    // Build event description with additional details
-    let eventDescription = event.description || "";
-    if (event.price && !event.isFree) {
-      eventDescription += `\n\nPrice: $${event.price}`;
-    }
-    if (event.maxAttendees) {
-      eventDescription += `\n\nMax Attendees: ${event.maxAttendees}`;
-    }
-    if (event.externalRegistrationUrl) {
-      eventDescription += `\n\nRegister at: ${event.externalRegistrationUrl}`;
-    }
-
     const calendarEvent: any = {
       summary: event.title,
-      description: eventDescription.trim(),
+      description: buildCalendarDescription(event),
       start: {
         dateTime: new Date(event.startDateTime).toISOString(),
         timeZone: "America/New_York", // Eastern Time
@@ -222,21 +263,9 @@ export const updateCalendarEvent = async (
       throw new Error("Google Calendar ID not configured");
     }
 
-    // Build event description with additional details
-    let eventDescription = event.description || "";
-    if (event.price && !event.isFree) {
-      eventDescription += `\n\nPrice: $${event.price}`;
-    }
-    if (event.maxAttendees) {
-      eventDescription += `\n\nMax Attendees: ${event.maxAttendees}`;
-    }
-    if (event.externalRegistrationUrl) {
-      eventDescription += `\n\nRegister at: ${event.externalRegistrationUrl}`;
-    }
-
     const calendarEvent = {
       summary: event.title,
-      description: eventDescription.trim(),
+      description: buildCalendarDescription(event),
       start: {
         dateTime: new Date(event.startDateTime).toISOString(),
         timeZone: "America/New_York", // Eastern Time

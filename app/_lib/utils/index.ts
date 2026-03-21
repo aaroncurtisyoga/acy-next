@@ -1,4 +1,3 @@
-import qs from "query-string";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 import { RemoveUrlQueryParams, UrlQueryParams } from "@/app/_lib/types";
@@ -169,36 +168,30 @@ export const formatPrice = (price: string) => {
 };
 
 export function formUrlQuery({ params, key, value }: UrlQueryParams) {
-  const currentUrl = qs.parse(params);
+  const searchParams = new URLSearchParams(params);
 
-  currentUrl[key] = value;
+  if (value === null) {
+    searchParams.delete(key);
+  } else {
+    searchParams.set(key, value);
+  }
 
-  return qs.stringifyUrl(
-    {
-      url: window.location.pathname,
-      query: currentUrl,
-    },
-    { skipNull: true },
-  );
+  const qs = searchParams.toString();
+  return `${window.location.pathname}${qs ? `?${qs}` : ""}`;
 }
 
 export function removeKeysFromQuery({
   params,
   keysToRemove,
 }: RemoveUrlQueryParams) {
-  const currentUrl = qs.parse(params);
+  const searchParams = new URLSearchParams(params);
 
   keysToRemove.forEach((key) => {
-    delete currentUrl[key];
+    searchParams.delete(key);
   });
 
-  return qs.stringifyUrl(
-    {
-      url: window.location.pathname,
-      query: currentUrl,
-    },
-    { skipNull: true },
-  );
+  const qs = searchParams.toString();
+  return `${window.location.pathname}${qs ? `?${qs}` : ""}`;
 }
 
 export const handleError = (error: unknown, _message?: unknown) => {
@@ -208,6 +201,13 @@ export const handleError = (error: unknown, _message?: unknown) => {
 
 // Re-export utilities
 export * from "./query-builders";
+
+export function toDateKey(date: Date): string {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, "0");
+  const d = String(date.getDate()).padStart(2, "0");
+  return `${y}-${m}-${d}`;
+}
 
 export const isToday = (dateInput: Date | string): boolean => {
   const today = new Date();

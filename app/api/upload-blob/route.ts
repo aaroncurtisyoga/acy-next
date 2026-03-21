@@ -31,6 +31,36 @@ export async function POST(request: Request): Promise<NextResponse> {
       );
     }
 
+    // Validate file type
+    const allowedExtensions = [
+      ".jpg",
+      ".jpeg",
+      ".png",
+      ".gif",
+      ".webp",
+      ".svg",
+      ".pdf",
+    ];
+    const ext = filename.toLowerCase().slice(filename.lastIndexOf("."));
+    if (!allowedExtensions.includes(ext)) {
+      return NextResponse.json(
+        {
+          error: `File type not allowed. Accepted: ${allowedExtensions.join(", ")}`,
+        },
+        { status: 400 },
+      );
+    }
+
+    // Validate file size (10MB max)
+    const contentLength = request.headers.get("content-length");
+    const MAX_SIZE = 10 * 1024 * 1024;
+    if (contentLength && parseInt(contentLength) > MAX_SIZE) {
+      return NextResponse.json(
+        { error: "File too large. Maximum size is 10MB." },
+        { status: 400 },
+      );
+    }
+
     const blob = await put(filename, request.body, {
       access: "public",
     });

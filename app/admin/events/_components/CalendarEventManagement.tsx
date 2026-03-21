@@ -24,7 +24,7 @@ import EventTableToolbar from "@/app/admin/events/_components/EventTableToolbar"
 import { useDisclosure } from "@/app/_hooks/useDisclosure";
 import { useEventTableFilters } from "@/app/admin/events/_components/hooks/useEventTableFilters";
 import { useCalendarData } from "@/app/admin/events/_components/hooks/useCalendarData";
-import { formatDateTime, cn } from "@/app/_lib/utils";
+import { formatDateTime, cn, toDateKey } from "@/app/_lib/utils";
 import type { EventWithLocationAndCategory } from "@/app/_lib/types";
 
 const DAY_NAMES = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"];
@@ -39,13 +39,6 @@ function buildGridDates(year: number, month: number): Date[] {
     dates[i] = new Date(year, month, 1 - startDay + i);
   }
   return dates;
-}
-
-function toDateKey(date: Date): string {
-  const y = date.getFullYear();
-  const m = String(date.getMonth() + 1).padStart(2, "0");
-  const d = String(date.getDate()).padStart(2, "0");
-  return `${y}-${m}-${d}`;
 }
 
 function todayKey(): string {
