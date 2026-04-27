@@ -70,10 +70,10 @@ export class DCBPCrawler {
         this.password!,
       );
 
-      // Click the login button
-      await page.click(
-        'button[type="submit"], input[type="submit"], button:has-text("Log in"), button:has-text("Sign in")',
-      );
+      // Click the email/password "Log In" button. Avoid generic "Sign in"
+      // matchers — the page also has a "Sign in with Google" button that's
+      // first in the DOM and would hijack the click into Google's OAuth flow.
+      await page.getByRole("button", { name: "Log In", exact: true }).click();
 
       // Wait for navigation after login
       console.log("⏳ Waiting for dashboard to load...");
