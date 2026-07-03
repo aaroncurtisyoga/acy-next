@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, useState, useCallback } from "react";
+import { FC, useState } from "react";
 import {
   Dialog,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogFooter,
@@ -19,6 +20,7 @@ interface LinkDialogProps {
   onSubmit: (url: string, openInNewTab: boolean) => void;
   onRemove: () => void;
   initialUrl?: string;
+  initialOpenInNewTab?: boolean;
   hasExistingLink: boolean;
 }
 
@@ -28,25 +30,31 @@ const LinkDialog: FC<LinkDialogProps> = ({
   onSubmit,
   onRemove,
   initialUrl = "",
+  initialOpenInNewTab = true,
   hasExistingLink,
 }) => {
   const [url, setUrl] = useState(initialUrl);
-  const [openInNewTab, setOpenInNewTab] = useState(true);
+  const [openInNewTab, setOpenInNewTab] = useState(initialOpenInNewTab);
   const [error, setError] = useState<string | null>(null);
 
-  // Reset state when dialog opens using onOpenChange
-  const handleOpenChange = useCallback(
-    (open: boolean) => {
-      if (open) {
-        setUrl(initialUrl);
-        setOpenInNewTab(true);
-        setError(null);
-      } else {
-        onClose();
-      }
-    },
-    [initialUrl, onClose],
-  );
+  // Reset to the current link's values each time the dialog opens — Radix
+  // only calls onOpenChange for internal interactions, not when the `open`
+  // prop flips, so this is derived during render instead
+  const [wasOpen, setWasOpen] = useState(isOpen);
+  if (isOpen !== wasOpen) {
+    setWasOpen(isOpen);
+    if (isOpen) {
+      setUrl(initialUrl);
+      setOpenInNewTab(initialOpenInNewTab);
+      setError(null);
+    }
+  }
+
+  const handleOpenChange = (open: boolean) => {
+    if (!open) {
+      onClose();
+    }
+  };
 
   const validateUrl = (value: string): boolean => {
     if (!value.trim()) {
@@ -87,6 +95,9 @@ const LinkDialog: FC<LinkDialogProps> = ({
           <DialogTitle>
             {hasExistingLink ? "Edit Link" : "Insert Link"}
           </DialogTitle>
+          <DialogDescription className="sr-only">
+            Enter a URL and choose whether it opens in a new tab.
+          </DialogDescription>
         </DialogHeader>
         <div className="space-y-4">
           <div className="space-y-2">

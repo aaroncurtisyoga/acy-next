@@ -3,7 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { SimpleTooltip } from "@/components/ui/simple-tooltip";
 import { Separator } from "@/components/ui/separator";
-import { type Editor } from "@tiptap/react";
+import { useEditorState, type Editor } from "@tiptap/react";
 import {
   Bold,
   Italic,
@@ -30,15 +30,39 @@ interface ToolbarProps {
 // Helper to format keyboard shortcuts for display
 const formatShortcut = (mac: string, win: string) => {
   const isMac =
-    typeof navigator !== "undefined" &&
-    navigator.platform.toUpperCase().indexOf("MAC") >= 0;
+    typeof navigator !== "undefined" && /Mac/i.test(navigator.userAgent);
   return isMac ? mac : win;
 };
 
 const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
   const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
 
-  if (!editor) {
+  // Subscribe to editor transactions so active/enabled states stay fresh —
+  // the editor is created with shouldRerenderOnTransaction: false
+  const state = useEditorState({
+    editor,
+    selector: (ctx) => {
+      if (!ctx.editor) return null;
+      return {
+        canUndo: ctx.editor.can().undo(),
+        canRedo: ctx.editor.can().redo(),
+        isBold: ctx.editor.isActive("bold"),
+        isItalic: ctx.editor.isActive("italic"),
+        isUnderline: ctx.editor.isActive("underline"),
+        isStrike: ctx.editor.isActive("strike"),
+        isHeading1: ctx.editor.isActive("heading", { level: 1 }),
+        isHeading2: ctx.editor.isActive("heading", { level: 2 }),
+        isBulletList: ctx.editor.isActive("bulletList"),
+        isOrderedList: ctx.editor.isActive("orderedList"),
+        isBlockquote: ctx.editor.isActive("blockquote"),
+        isLink: ctx.editor.isActive("link"),
+        linkHref: ctx.editor.getAttributes("link").href || "",
+        linkOpensInNewTab: ctx.editor.getAttributes("link").target === "_blank",
+      };
+    },
+  });
+
+  if (!editor || !state) {
     return null;
   }
 
@@ -64,8 +88,6 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
     editor.chain().focus().unsetLink().run();
   };
 
-  const currentLinkUrl = editor.getAttributes("link").href || "";
-
   return (
     <>
       <div className="flex flex-wrap gap-1 p-3 mb-2 border-border border rounded-md bg-muted/50">
@@ -75,7 +97,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().undo().run()}
-            disabled={isDisabled || !editor.can().undo()}
+            disabled={isDisabled || !state.canUndo}
             variant="ghost"
             className="h-8 w-8"
             aria-label="Undo"
@@ -89,7 +111,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().redo().run()}
-            disabled={isDisabled || !editor.can().redo()}
+            disabled={isDisabled || !state.canRedo}
             variant="ghost"
             className="h-8 w-8"
             aria-label="Redo"
@@ -106,7 +128,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleBold().run()}
-            className={`h-8 w-8 ${editor.isActive("bold") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isBold ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Bold"
@@ -120,7 +142,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={`h-8 w-8 ${editor.isActive("italic") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isItalic ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Italic"
@@ -136,7 +158,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={`h-8 w-8 ${editor.isActive("underline") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isUnderline ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Underline"
@@ -150,7 +172,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={`h-8 w-8 ${editor.isActive("strike") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isStrike ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Strikethrough"
@@ -169,7 +191,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 1 }).run()
             }
-            className={`h-8 w-8 ${editor.isActive("heading", { level: 1 }) ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isHeading1 ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Heading 1"
@@ -185,7 +207,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             onClick={() =>
               editor.chain().focus().toggleHeading({ level: 2 }).run()
             }
-            className={`h-8 w-8 ${editor.isActive("heading", { level: 2 }) ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isHeading2 ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Heading 2"
@@ -202,7 +224,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={`h-8 w-8 ${editor.isActive("bulletList") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isBulletList ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Bullet List"
@@ -216,7 +238,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={`h-8 w-8 ${editor.isActive("orderedList") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isOrderedList ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Numbered List"
@@ -230,7 +252,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             size="icon"
             type="button"
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={`h-8 w-8 ${editor.isActive("blockquote") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isBlockquote ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
             aria-label="Blockquote"
@@ -243,16 +265,16 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
 
         {/* Link */}
         <SimpleTooltip
-          content={`${editor.isActive("link") ? "Edit" : "Add"} Link (${formatShortcut("⌘K", "Ctrl+K")})`}
+          content={`${state.isLink ? "Edit" : "Add"} Link (${formatShortcut("⌘K", "Ctrl+K")})`}
         >
           <Button
             size="icon"
             type="button"
             onClick={openLinkDialog}
-            className={`h-8 w-8 ${editor.isActive("link") ? "bg-accent" : ""}`}
+            className={`h-8 w-8 ${state.isLink ? "bg-accent" : ""}`}
             disabled={isDisabled}
             variant="ghost"
-            aria-label={editor.isActive("link") ? "Edit Link" : "Add Link"}
+            aria-label={state.isLink ? "Edit Link" : "Add Link"}
           >
             <LinkIcon size={18} />
           </Button>
@@ -279,8 +301,9 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
         onClose={() => setIsLinkDialogOpen(false)}
         onSubmit={handleLinkSubmit}
         onRemove={handleLinkRemove}
-        initialUrl={currentLinkUrl}
-        hasExistingLink={editor.isActive("link")}
+        initialUrl={state.linkHref}
+        initialOpenInNewTab={state.isLink ? state.linkOpensInNewTab : true}
+        hasExistingLink={state.isLink}
       />
     </>
   );

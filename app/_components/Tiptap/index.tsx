@@ -1,13 +1,16 @@
 "use client";
 
-import { Link } from "@tiptap/extension-link";
-import Placeholder from "@tiptap/extension-placeholder";
-import Underline from "@tiptap/extension-underline";
-import CharacterCount from "@tiptap/extension-character-count";
-import { useEditor, EditorContent } from "@tiptap/react";
+import { CharacterCount, Placeholder } from "@tiptap/extensions";
+import {
+  useEditor,
+  useEditorState,
+  EditorContent,
+  Editor,
+} from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect, useCallback, useMemo, memo } from "react";
 import DOMPurify from "dompurify";
+import { isRichTextEmpty } from "@/app/_components/Tiptap/RichTextContent";
 import styles from "@/app/_components/Tiptap/index.module.css";
 import Toolbar from "@/app/_components/Tiptap/Toolbar";
 
@@ -20,6 +23,7 @@ interface TiptapProps {
   isDisabled?: boolean;
   maxLength?: number;
   showCharacterCount?: boolean;
+  onEditorReady?: (editor: Editor) => void;
 }
 
 const Tiptap = memo(
@@ -32,21 +36,27 @@ const Tiptap = memo(
     isDisabled = false,
     maxLength,
     showCharacterCount = true,
+    onEditorReady,
   }: TiptapProps) => {
     const handleUpdate = useCallback(
-      ({ editor }: { editor: any }) => {
+      ({ editor }: { editor: Editor }) => {
         const html = editor.getHTML();
-        // Sanitize HTML before passing to parent
+        // Sanitize HTML before passing to parent. DOMPurify strips `target`
+        // by default; keep it so "open in new tab" survives (links always
+        // carry rel="noopener noreferrer")
         const sanitizedHtml =
-          typeof window !== "undefined" ? DOMPurify.sanitize(html) : html;
+          typeof window !== "undefined"
+            ? DOMPurify.sanitize(html, { ADD_ATTR: ["target"] })
+            : html;
         onChange(sanitizedHtml);
       },
       [onChange],
     );
 
-    // Memoize extensions to prevent duplicate registration warnings
     const extensions = useMemo(
       () => [
+        // StarterKit v3 already includes Link and Underline — configure
+        // Link here rather than registering it twice
         StarterKit.configure({
           bulletList: {
             HTMLAttributes: { class: "list-disc pl-4 my-2" },
@@ -71,20 +81,19 @@ const Tiptap = memo(
           },
           blockquote: {
             HTMLAttributes: {
-              class: "border-l-4 border-default-300 pl-4 italic my-2",
+              class: "border-l-4 border-border pl-4 italic my-2",
             },
           },
-        }),
-        Link.configure({
-          openOnClick: false,
-          HTMLAttributes: {
-            class: "text-primary underline cursor-pointer",
-            target: "_blank",
-            rel: "noopener noreferrer",
+          link: {
+            openOnClick: false,
+            HTMLAttributes: {
+              class: "text-primary underline cursor-pointer",
+              target: "_blank",
+              rel: "noopener noreferrer",
+            },
+            shouldAutoLink: (url) => /^https?:\/\//i.test(url),
           },
-          validate: (href) => /^https?:\/\//.test(href),
         }),
-        Underline,
         Placeholder.configure({
           placeholder,
           emptyEditorClass: "is-editor-empty",
@@ -103,45 +112,60 @@ const Tiptap = memo(
       content: initialContent,
       editorProps: {
         attributes: {
-          class: `${styles.tiptap} rounded-md border min-h-[200px] border-default-200 p-4 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent prose prose-sm max-w-none ${
+          class: `${styles.tiptap} rounded-md border min-h-[200px] border-input p-4 focus:outline-none focus:ring-1 focus:ring-ring ${
             errorMessage ? styles.hasError : ""
           } ${isDisabled ? styles.disabled : ""}`,
         },
-        editable: () => !isDisabled,
       },
       onUpdate: handleUpdate,
       autofocus: false,
       editable: !isDisabled,
     });
 
-    // Sync editable state when isDisabled changes
+    const counts = useEditorState({
+      editor,
+      selector: (ctx) => ({
+        characters: ctx.editor?.storage.characterCount.characters() ?? 0,
+        words: ctx.editor?.storage.characterCount.words() ?? 0,
+      }),
+    });
+
+    // Sync editable state when isDisabled changes. emitUpdate: false —
+    // otherwise this fires onChange on mount and dirties a pristine form
     useEffect(() => {
       if (editor) {
-        editor.setEditable(!isDisabled);
+        editor.setEditable(!isDisabled, false);
       }
     }, [editor, isDisabled]);
 
-    // Sync initial content
+    // Expose the editor instance to parents that need programmatic access
     useEffect(() => {
-      if (!editor) return;
+      if (editor) {
+        onEditorReady?.(editor);
+      }
+    }, [editor, onEditorReady]);
+
+    // Sync externally-changed content; skip while the user is typing so a
+    // round-tripped form value can't reset the cursor
+    useEffect(() => {
+      if (!editor || editor.isFocused) return;
 
       const currentContent = editor.getHTML();
       if (
-        initialContent &&
-        initialContent !== currentContent &&
-        initialContent !== "<p></p>"
+        !isRichTextEmpty(initialContent) &&
+        initialContent !== currentContent
       ) {
         editor.commands.setContent(initialContent, { emitUpdate: false });
       }
     }, [initialContent, editor]);
 
-    const characterCount = editor?.storage.characterCount.characters() ?? 0;
-    const wordCount = editor?.storage.characterCount.words() ?? 0;
+    const characterCount = counts?.characters ?? 0;
+    const wordCount = counts?.words ?? 0;
 
     if (!editor) {
       return (
         <div
-          className={`min-h-[200px] rounded-md border border-default-200 p-4 ${styles.editorContainer}`}
+          className={`min-h-[200px] rounded-md border border-input p-4 ${styles.editorContainer}`}
         />
       );
     }

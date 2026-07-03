@@ -10,6 +10,13 @@ interface RichTextContentProps {
 }
 
 /**
+ * True when editor HTML has no visible text — an empty editor still emits
+ * markup like `<p class="my-2"></p>`, so tag-stripping beats string equality.
+ */
+export const isRichTextEmpty = (content: string | null | undefined): boolean =>
+  !content || content.replace(/<[^>]*>/g, "").trim() === "";
+
+/**
  * Renders sanitized HTML content with rich text styling.
  * Use this for displaying Tiptap editor content in read-only mode.
  * More performant than creating a full Tiptap editor instance.
@@ -17,7 +24,9 @@ interface RichTextContentProps {
 const RichTextContent: FC<RichTextContentProps> = ({ content, className }) => {
   const sanitizedContent = useMemo(() => {
     if (typeof window === "undefined") {
-      // Server-side: return content as-is (will be sanitized on client)
+      // DOMPurify needs a DOM, so SSR emits the stored HTML as-is. That HTML
+      // is trusted: it's admin-authored and sanitized at write time in the
+      // editor. The client re-sanitizes on hydration as defense-in-depth.
       return content;
     }
     return DOMPurify.sanitize(content, {
@@ -47,11 +56,10 @@ const RichTextContent: FC<RichTextContentProps> = ({ content, className }) => {
         "hr",
       ],
       ALLOWED_ATTR: ["href", "target", "rel", "class"],
-      ADD_ATTR: ["target"], // Allow target attribute for links
     });
   }, [content]);
 
-  if (!content || content === "<p></p>") {
+  if (isRichTextEmpty(content)) {
     return null;
   }
 

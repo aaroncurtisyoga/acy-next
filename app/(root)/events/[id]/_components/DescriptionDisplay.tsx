@@ -1,14 +1,16 @@
 "use client";
 
 import { FC } from "react";
-import RichTextContent from "@/app/_components/Tiptap/RichTextContent";
+import RichTextContent, {
+  isRichTextEmpty,
+} from "@/app/_components/Tiptap/RichTextContent";
 
 interface DescriptionProps {
   description: string;
 }
 
 const DescriptionDisplay: FC<DescriptionProps> = ({ description }) => {
-  if (!description || description === "<p></p>") {
+  if (isRichTextEmpty(description)) {
     return null;
   }
 
