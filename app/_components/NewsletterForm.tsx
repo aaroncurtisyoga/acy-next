@@ -68,7 +68,7 @@ const NewsletterForm = () => {
             )}
           >
             {isSubmitSuccessful
-              ? "Success! Check your email for confirmation."
+              ? "Success! You're on the list."
               : "Be the first to know about events & more!"}
           </p>
         </div>

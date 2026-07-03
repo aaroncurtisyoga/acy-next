@@ -5,6 +5,7 @@ import {
   Calendar,
   Car,
   Footprints,
+  Mail,
   TramFront,
   UsersRound,
   RefreshCw,
@@ -55,6 +56,7 @@ export const adminDashboardLinks = [
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "Users", path: "/admin/users", icon: UsersRound },
   { name: "Reading", path: "/admin/reading", icon: BookOpen },
+  { name: "Newsletter", path: "/admin/newsletter", icon: Mail },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
   { name: "Main Site", path: "/", icon: ExternalLink },
 ];

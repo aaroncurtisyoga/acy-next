@@ -104,6 +104,27 @@ model Category {
   events Event[]
 }
 
+model Newsletter {
+  id                String           @id @default(uuid())
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+  subject           String
+  previewText       String?
+  content           String // TipTap-generated HTML body
+  status            NewsletterStatus @default(DRAFT)
+  scheduledAt       DateTime?
+  sentAt            DateTime?
+  resendBroadcastId String?
+
+  @@index([status, scheduledAt])
+}
+
+enum NewsletterStatus {
+  DRAFT
+  SCHEDULED
+  SENT
+}
+
 model Book {
   id                 String    @id @default(uuid())
   createdAt          DateTime  @default(now())

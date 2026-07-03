@@ -6,6 +6,18 @@ export const NewsletterFormSchema = z.object({
     .email({ message: "Please enter a valid email address" }),
 });
 
+export const NewsletterComposeSchema = z.object({
+  subject: z
+    .string()
+    .min(1, "Subject is required")
+    .max(150, "Subject must be 150 characters or fewer"),
+  previewText: z
+    .string()
+    .max(150, "Preview text must be 150 characters or fewer")
+    .optional(),
+  content: z.string().min(20, "Newsletter body is required"),
+});
+
 export const EventFormBasicInfoSchema = z.object({
   category: z.string().min(2, "Category is required"),
   endDateTime: z

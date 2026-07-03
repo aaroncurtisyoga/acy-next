@@ -5,13 +5,13 @@ Fullstack yoga instructor website. Event management, class registration, private
 ## Stack
 
 - **Next.js 16** + React 19 + TypeScript (`strict: false`, `noUnusedLocals: true`)
-- **HeroUI** (component library, NOT shadcn) + Tailwind CSS 4 + Framer Motion
+- **shadcn/ui** (Radix primitives in `components/ui`) + Tailwind CSS 4 + Framer Motion
 - **Prisma 6** + Vercel Postgres (pooled: `POSTGRES_PRISMA_URL`, direct: `POSTGRES_URL_NON_POOLING`)
 - **Clerk** for auth (RBAC — admin role in session claims metadata)
 - **Stripe** for payments (events + private sessions)
 - **Google Calendar** via service account (not OAuth)
 - **Google Maps** for locations
-- **Mailchimp** for newsletter
+- **Resend** for newsletter (signups + broadcasts, managed from `/admin/newsletter`)
 - **Playwright** + Browserless.io for web scraping (event sync)
 - **Vercel Blob** for file uploads
 - Deploy: **Vercel** with cron jobs
@@ -48,11 +48,18 @@ npx playwright test      # E2E tests
 - Event form uses `@internationalized/date` for timezone-aware ZonedDateTime handling
 - Stored as UTC DateTime in Postgres, displayed in ET
 
-### HeroUI (not shadcn)
+### shadcn/ui (not HeroUI — migrated)
 
-- Import from `@heroui/react` (buttons, cards, modals, tables, inputs, etc.)
-- Custom theme in `tailwind.config.js` with Google-inspired primary blue `#0842a0`
+- Import from `@/components/ui/*` (button, card, dialog, table, input, etc.)
+- Google-inspired primary blue `#0842a0` (`--primary` in `app/globals.css`)
 - Fonts: Roboto Flex (sans) + Merriweather (serif)
+
+### Newsletter (Resend)
+
+- Signup form adds contacts to the Resend segment (`RESEND_SEGMENT_ID`)
+- Compose/schedule/send from `/admin/newsletter` — drafts live in the `Newsletter` Prisma model, delivery via Resend Broadcast API (scheduling handled by Resend, no cron)
+- Unsubscribes handled by Resend via `{{{RESEND_UNSUBSCRIBE_URL}}}` in the email template (`app/_lib/email/newsletter-template.ts`)
+- One-time Mailchimp import: `npx tsx scripts/import-subscribers.ts <export.csv>`
 
 ### Event Sync Architecture
 
@@ -151,6 +158,6 @@ Documented in `.env.example`. Key groups:
 - **Maps**: `NEXT_PUBLIC_GOOGLE_MAPS_API_KEY`, `NEXT_PUBLIC_GOOGLE_MAPS_ID`
 - **Calendar**: `GOOGLE_SERVICE_ACCOUNT_EMAIL`, `GOOGLE_PRIVATE_KEY_BASE64`, `GOOGLE_CALENDAR_ID`
 - **Scraping**: `BROWSERLESS_API_TOKEN` (required in all envs), `ZOOMSHIFT_EMAIL`, `ZOOMSHIFT_PASSWORD`
-- **Email**: `MAILCHIMP_API_KEY`, `MAILCHIMP_API_SERVER`, `MAILCHIMP_AUDIENCE_ID`
+- **Email**: `RESEND_API_KEY`, `RESEND_SEGMENT_ID`, `RESEND_FROM_EMAIL`
 - **Storage**: `BLOB_READ_WRITE_TOKEN`
 - **Cron**: `CRON_SECRET`
