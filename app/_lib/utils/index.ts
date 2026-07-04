@@ -199,6 +199,23 @@ export const handleError = (error: unknown, _message?: unknown) => {
   throw new Error(typeof error === "string" ? error : JSON.stringify(error));
 };
 
+/**
+ * Convert stored TipTap HTML to plain text for card teasers and previews.
+ * Server-safe (no DOM). Also returns "" for visually empty editor output
+ * like `<p class="my-2"></p>`.
+ */
+export const richTextToPlainText = (html: string | null | undefined): string =>
+  (html || "")
+    .replace(/<[^>]*>/g, " ")
+    .replace(/&nbsp;/g, " ")
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&#39;|&apos;/g, "'")
+    .replace(/&quot;/g, '"')
+    .replace(/\s+/g, " ")
+    .trim();
+
 // Re-export utilities
 export * from "./query-builders";
 

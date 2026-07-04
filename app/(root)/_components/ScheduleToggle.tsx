@@ -8,29 +8,33 @@ export default function ScheduleToggle() {
   const searchParams = useSearchParams();
   const isMonthView = searchParams.get("view") === "month";
 
+  const base =
+    "px-1.5 py-1 text-sm font-semibold lowercase tracking-wide transition-colors";
+
   return (
-    <div className="inline-flex items-center rounded-lg bg-muted p-1 text-sm">
+    <div className="flex items-center gap-1">
       <Link
         href="/"
         className={cn(
-          "rounded-md px-3 py-1 font-medium transition-colors",
+          base,
           !isMonthView
-            ? "bg-background text-foreground shadow-sm"
+            ? "text-foreground underline decoration-primary decoration-2 underline-offset-4"
             : "text-muted-foreground hover:text-foreground",
         )}
       >
-        Week
+        week
       </Link>
+      <span className="text-muted-foreground/40">·</span>
       <Link
         href="/?view=month"
         className={cn(
-          "rounded-md px-3 py-1 font-medium transition-colors",
+          base,
           isMonthView
-            ? "bg-background text-foreground shadow-sm"
+            ? "text-foreground underline decoration-primary decoration-2 underline-offset-4"
             : "text-muted-foreground hover:text-foreground",
         )}
       >
-        Month
+        month
       </Link>
     </div>
   );

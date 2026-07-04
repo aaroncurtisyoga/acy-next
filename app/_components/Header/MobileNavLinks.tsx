@@ -3,7 +3,7 @@
 import { FC } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Home, Calendar, Users, Mail, Shield, BookOpen } from "lucide-react";
+import { Home, Calendar, Users, Mail, Shield } from "lucide-react";
 import { track } from "@vercel/analytics";
 import { unauthenticatedLinks } from "@/app/_lib/constants";
 
@@ -23,10 +23,11 @@ interface MobileNavLinksProps {
 const getIconForLink = (href: string) => {
   if (href.includes("home") || href === "/")
     return <Home className="w-4 h-4" />;
-  if (href.includes("events")) return <Calendar className="w-4 h-4" />;
+  if (href.includes("this-week")) return <Calendar className="w-4 h-4" />;
+  if (href.includes("upcoming") || href.includes("events"))
+    return <Calendar className="w-4 h-4" />;
   if (href.includes("community")) return <Users className="w-4 h-4" />;
   if (href.includes("contact")) return <Mail className="w-4 h-4" />;
-  if (href.includes("reading")) return <BookOpen className="w-4 h-4" />;
   return null;
 };
 

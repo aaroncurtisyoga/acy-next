@@ -22,16 +22,9 @@ body {
   max-width: 100%;
 }
 
-/* Ensure all elements respect viewport width, except modals */
-*:not([role="dialog"]) {
-  max-width: 100vw;
-  box-sizing: border-box;
-}
-
-/* Ensure box-sizing for modals without max-width constraint */
-[role="dialog"] {
-  box-sizing: border-box;
-}
+/* Horizontal overflow is prevented by overflow-x: hidden on html/body above.
+   (A previous blanket `* { max-width: 100vw }` rule lived here — removed because
+   it overrode every Tailwind max-w-* utility.) */
 
 /* Prevent any form elements from overflowing */
 form,
@@ -286,6 +279,12 @@ img {
   --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
   --color-sidebar-border: var(--sidebar-border);
   --color-sidebar-ring: var(--sidebar-ring);
+  /* Brand — Practice Notes design system */
+  --color-navy: #131826;
+  --color-navy-card: #1b2233;
+  --color-cobalt: #2749e0;
+  --color-cobalt-bright: #5c7cff;
+  --color-band: #eef1fa;
 }
 
 :root {
@@ -296,7 +295,7 @@ img {
   --card-foreground: oklch(0.145 0 0);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.145 0 0);
-  --primary: oklch(0.409 0.163 260.608);
+  --primary: #2749e0;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.97 0 0);
   --secondary-foreground: oklch(0.205 0 0);
@@ -308,7 +307,7 @@ img {
   --destructive-foreground: oklch(0.985 0 0);
   --border: oklch(0.922 0 0);
   --input: oklch(0.922 0 0);
-  --ring: oklch(0.409 0.163 260.608);
+  --ring: #2749e0;
   --chart-1: oklch(0.646 0.222 41.116);
   --chart-2: oklch(0.6 0.118 184.704);
   --chart-3: oklch(0.398 0.07 227.392);
@@ -331,7 +330,7 @@ img {
   --card-foreground: oklch(0.985 0 0);
   --popover: oklch(0.205 0 0);
   --popover-foreground: oklch(0.985 0 0);
-  --primary: oklch(0.598 0.2 259.213);
+  --primary: #5c7cff;
   --primary-foreground: oklch(0.985 0 0);
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);

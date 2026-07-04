@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 
 interface WeekNavigationProps {
   prevWeek: string;
@@ -10,6 +9,11 @@ interface WeekNavigationProps {
   hasMoreEvents: boolean;
 }
 
+const linkClass =
+  "px-1.5 py-1 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground";
+const disabledClass =
+  "px-1.5 py-1 text-sm font-semibold text-muted-foreground/40";
+
 export default function WeekNavigation({
   prevWeek,
   nextWeek,
@@ -17,27 +21,35 @@ export default function WeekNavigation({
   hasMoreEvents,
 }: WeekNavigationProps) {
   return (
-    <div className="flex items-center gap-2">
-      <Button asChild size="sm" variant="outline">
-        <Link href={`/?week=${prevWeek}`}>&larr; Prev</Link>
-      </Button>
+    <div className="flex items-center gap-1">
+      <Link
+        href={`/?week=${prevWeek}`}
+        aria-label="Previous week"
+        className={linkClass}
+      >
+        &larr;
+      </Link>
       {isCurrentWeek ? (
-        <Button size="sm" variant="outline" disabled>
-          This Week
-        </Button>
+        <span className={`${disabledClass} lowercase tracking-wide`}>
+          today
+        </span>
       ) : (
-        <Button asChild size="sm" variant="outline">
-          <Link href="/">This Week</Link>
-        </Button>
+        <Link href="/" className={`${linkClass} lowercase tracking-wide`}>
+          today
+        </Link>
       )}
       {hasMoreEvents ? (
-        <Button asChild size="sm" variant="outline">
-          <Link href={`/?week=${nextWeek}`}>Next &rarr;</Link>
-        </Button>
+        <Link
+          href={`/?week=${nextWeek}`}
+          aria-label="Next week"
+          className={linkClass}
+        >
+          &rarr;
+        </Link>
       ) : (
-        <Button size="sm" variant="outline" disabled>
-          Next &rarr;
-        </Button>
+        <span aria-label="Next week unavailable" className={disabledClass}>
+          &rarr;
+        </span>
       )}
     </div>
   );

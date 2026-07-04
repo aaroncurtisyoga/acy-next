@@ -10,9 +10,14 @@ test.describe("Homepage Smoke Test", () => {
     // Page loaded correctly
     await expect(page).toHaveTitle(/Aaron Curtis Yoga/i);
 
-    // Schedule section is displayed
+    // Hero is displayed
     await expect(
-      page.getByRole("heading", { name: /where to find me/i }),
+      page.getByRole("heading", { name: /an honest practice/i }),
     ).toBeVisible({ timeout: 10000 });
+
+    // Schedule section is displayed
+    await expect(page.getByRole("heading", { name: /this week/i })).toBeVisible(
+      { timeout: 10000 },
+    );
   });
 });
