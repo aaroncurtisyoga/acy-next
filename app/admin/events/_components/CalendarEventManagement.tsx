@@ -128,7 +128,9 @@ const CalendarEventManagement: FC = () => {
 
       {/* Calendar Header */}
       <div className="flex items-center justify-between">
-        <h2 className="text-xl font-semibold">{monthLabel}</h2>
+        <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
+          {monthLabel}
+        </h2>
         <div className="flex items-center gap-1">
           <Button variant="outline" size="sm" onClick={goToPrevMonth}>
             <ChevronLeft className="h-4 w-4" />

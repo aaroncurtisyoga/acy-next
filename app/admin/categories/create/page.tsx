@@ -59,7 +59,7 @@ const CreateCategory: FC = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground mb-2">
+        <h1 className="mb-2 font-display text-3xl uppercase text-foreground">
           Create Category
         </h1>
         <p className="text-muted-foreground">

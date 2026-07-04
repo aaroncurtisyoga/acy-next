@@ -44,7 +44,9 @@ const NewsletterDetailPage: FC = () => {
   if (newsletter.status === "DRAFT") {
     return (
       <div className="wrapper max-w-4xl mx-auto">
-        <h1 className="text-3xl font-bold text-foreground mb-6">Edit Draft</h1>
+        <h1 className="mb-6 font-display text-3xl uppercase text-foreground">
+          Edit Draft
+        </h1>
         <NewsletterEditor newsletter={newsletter} />
       </div>
     );
@@ -56,7 +58,7 @@ const NewsletterDetailPage: FC = () => {
   return (
     <div className="wrapper max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
-        <h1 className="text-3xl font-bold text-foreground truncate">
+        <h1 className="truncate font-display text-3xl uppercase text-foreground">
           {newsletter.subject}
         </h1>
         <Badge

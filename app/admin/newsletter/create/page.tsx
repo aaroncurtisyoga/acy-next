@@ -6,7 +6,7 @@ import NewsletterEditor from "@/app/admin/newsletter/_components/NewsletterEdito
 const CreateNewsletterPage: FC = () => {
   return (
     <div className="wrapper max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold text-foreground mb-6">
+      <h1 className="mb-6 font-display text-3xl uppercase text-foreground">
         New Newsletter
       </h1>
       <NewsletterEditor />

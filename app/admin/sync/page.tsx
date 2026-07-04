@@ -107,12 +107,16 @@ export default function SyncPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4 text-foreground">Event Sync</h1>
+      <h1 className="mb-4 font-display text-3xl uppercase text-foreground">
+        Event Sync
+      </h1>
       <div className="max-w-2xl space-y-4">
         {/* Bright Bear Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-xl font-semibold">Bright Bear Yoga Classes</h2>
+            <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
+              Bright Bear Yoga Classes
+            </h2>
             {syncStatus && (
               <span className="text-sm text-gray-500 dark:text-gray-400">
                 Last synced: {formatTimeAgo(syncStatus.brightBear)}
@@ -151,7 +155,7 @@ export default function SyncPage() {
         {/* DCBP Section */}
         <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-xl font-semibold">
+            <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
               DC Bouldering Project Classes
             </h2>
             {syncStatus && (

@@ -209,7 +209,9 @@ export default function EditEventPage() {
           <X size={20} />
         </Button>
 
-        <h1 className="text-2xl font-bold mb-6">Edit Event</h1>
+        <h1 className="mb-6 font-display text-3xl uppercase text-foreground">
+          Edit Event
+        </h1>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
           {/* Title */}

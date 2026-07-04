@@ -4,7 +4,6 @@ import { ReactNode, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Menu, X, PanelLeftClose, PanelLeftOpen } from "lucide-react";
 import SidebarMenu from "@/app/admin/_components/SidebarMenu";
-import ThemeToggle from "@/app/_components/ThemeToggle";
 import AdminProtection from "@/app/admin/_components/AdminProtection";
 
 interface AdminLayoutProps {
@@ -27,10 +26,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           style={{ paddingTop: "max(1rem, env(safe-area-inset-top, 0px))" }}
         >
           <h1
-            className="text-xl font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
+            className="flex cursor-pointer items-center gap-2.5 font-display text-lg uppercase tracking-[0.04em] text-foreground transition-colors hover:text-primary"
             onClick={() => router.push("/admin")}
           >
-            Dashboard
+            <span className="flex h-8 w-8 items-center justify-center bg-navy font-display text-sm text-white">
+              AC
+            </span>
+            admin
           </h1>
           <button
             onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
@@ -57,13 +59,16 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
         >
           <div className="flex items-center justify-between mb-4">
             <h1
-              className="text-xl font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
+              className="flex cursor-pointer items-center gap-2.5 font-display text-lg uppercase tracking-[0.04em] text-foreground transition-colors hover:text-primary"
               onClick={() => {
                 router.push("/admin");
                 closeMobileMenu();
               }}
             >
-              Dashboard
+              <span className="flex h-8 w-8 items-center justify-center bg-navy font-display text-sm text-white">
+                AC
+              </span>
+              admin
             </h1>
             <button
               onClick={closeMobileMenu}
@@ -87,10 +92,13 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           <div className="flex items-center justify-between mb-4">
             {!isSidebarCollapsed && (
               <h1
-                className="text-2xl font-bold text-foreground cursor-pointer hover:text-primary transition-colors"
+                className="flex cursor-pointer items-center gap-2.5 font-display text-xl uppercase tracking-[0.04em] text-foreground transition-colors hover:text-primary"
                 onClick={() => router.push("/admin")}
               >
-                Dashboard
+                <span className="flex h-8 w-8 items-center justify-center bg-navy font-display text-sm text-white">
+                  AC
+                </span>
+                admin
               </h1>
             )}
             <button
@@ -114,12 +122,7 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
 
         {/* Main content */}
         <main className="flex-1 p-4 bg-background text-foreground flex flex-col">
-          <div className="flex-1">{children}</div>
-          <div className="mt-8 pt-4 border-t border-border md:hidden">
-            <div className="flex justify-center">
-              <ThemeToggle />
-            </div>
-          </div>
+          <div className="flex-1">{children}</div>{" "}
         </main>
       </div>
     </AdminProtection>

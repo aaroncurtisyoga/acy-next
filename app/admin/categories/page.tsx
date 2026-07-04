@@ -91,7 +91,9 @@ const AdminCategories: FC = () => {
   return (
     <div className="wrapper max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-foreground">Categories</h1>
+        <h1 className="font-display text-3xl uppercase text-foreground">
+          Categories
+        </h1>
         <Badge className="bg-primary/10 text-primary text-sm px-3 py-1">
           {categories.length}{" "}
           {categories.length === 1 ? "Category" : "Categories"}

@@ -58,7 +58,9 @@ const SubmitStep = () => {
         <X size={20} />
       </Button>
 
-      <h1>Review Event</h1>
+      <h1 className="font-display text-2xl uppercase text-foreground">
+        Review Event
+      </h1>
       <form onSubmit={onSubmit}>
         <div className="flex justify-between mt-5">
           <Button type="button" asChild>

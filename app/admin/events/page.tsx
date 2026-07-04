@@ -14,7 +14,9 @@ const AdminEventsPage: FC = () => {
   return (
     <div className="wrapper flex flex-col h-full">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-foreground">Events</h1>
+        <h1 className="font-display text-3xl uppercase text-foreground">
+          Events
+        </h1>
         <div className="flex items-center gap-3">
           <Tabs
             value={view}

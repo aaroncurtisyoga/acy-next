@@ -42,7 +42,9 @@ const AdminNewsletterPage: FC = () => {
     <div className="wrapper max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <h1 className="text-3xl font-bold text-foreground">Newsletter</h1>
+          <h1 className="font-display text-3xl uppercase text-foreground">
+            Newsletter
+          </h1>
           {subscribers && (
             <Badge className="bg-primary/10 text-primary text-sm px-3 py-1">
               {subscribers.hasMore
