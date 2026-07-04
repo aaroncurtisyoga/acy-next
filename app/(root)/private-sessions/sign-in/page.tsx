@@ -31,10 +31,8 @@ const SignInPage: React.FC = () => {
           <div className="w-16 h-16 bg-primary/10 rounded-full flex items-center justify-center mx-auto mb-4">
             <User className="w-8 h-8 text-primary" />
           </div>
-          <h2 className="text-2xl font-bold mb-4 dark:text-gray-200">
-            Welcome back!
-          </h2>
-          <p className="text-gray-600 dark:text-gray-400 mb-6">
+          <h2 className="text-2xl font-bold mb-4">Welcome back!</h2>
+          <p className="text-gray-600 mb-6">
             Continue as <strong>{user.emailAddresses[0]?.emailAddress}</strong>
           </p>
         </div>
@@ -55,7 +53,7 @@ const SignInPage: React.FC = () => {
               <Button
                 variant="ghost"
                 size="sm"
-                className="text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200 underline underline-offset-2 transition-colors duration-200 rounded-lg"
+                className="text-gray-500 hover:text-gray-700 underline underline-offset-2 transition-colors duration-200 rounded-lg"
               >
                 Sign in with a different account
               </Button>
@@ -68,10 +66,10 @@ const SignInPage: React.FC = () => {
 
   return (
     <div className="max-w-md mx-auto text-center">
-      <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200 mb-2 mt-[60px]">
+      <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 mb-2 mt-[60px]">
         Sign in to book
       </h1>
-      <p className="text-gray-600 dark:text-gray-400 mb-8">
+      <p className="text-gray-600 mb-8">
         Please sign in to continue with your private session booking
       </p>
 
@@ -82,35 +80,31 @@ const SignInPage: React.FC = () => {
         appearance={{
           elements: {
             rootBox: "mx-auto",
-            card: "shadow-none border-none p-0 dark:bg-transparent",
+            card: "shadow-none border-none p-0",
             cardBox: "shadow-none border-none bg-transparent",
             card__main: "shadow-none border-none mx-auto",
             headerTitle: "hidden",
             headerSubtitle: "hidden",
-            formFieldLabel:
-              "text-gray-700 dark:text-gray-300 text-sm font-medium",
+            formFieldLabel: "text-gray-700 text-sm font-medium",
             formButtonPrimary:
               "w-full max-w-[440px] font-medium bg-primary hover:bg-primary/90 text-primary-foreground transition-colors duration-200 border-none shadow-none rounded-lg py-3 px-4 text-base",
-            footer: "bg-white dark:bg-transparent",
-            footerAction: "bg-white dark:bg-transparent",
+            footer: "bg-white",
+            footerAction: "bg-white",
             form: "shadow-none border-none",
             formContainer: "shadow-none border-none",
-            formFieldInput:
-              "bg-white dark:bg-gray-900 border border-gray-300 dark:border-gray-700 rounded-md dark:text-white",
+            formFieldInput: "bg-white border border-gray-300 rounded-md",
             formFieldAction__password: "shadow-none",
             formFieldLabelRow: "font-medium",
             formResendCodeLink: "text-primary",
             footerActionLink: "text-primary",
             identityPreview: "border-none shadow-none",
-            identityPreviewText: "font-normal dark:text-gray-300",
+            identityPreviewText: "font-normal",
             identityPreviewEditButton: "text-primary",
-            otpCodeFieldInput:
-              "shadow-none dark:bg-gray-900 dark:border-gray-700 dark:text-white",
+            otpCodeFieldInput: "shadow-none",
             socialButtonsBlockButton:
-              "w-full max-w-[440px] border border-gray-300 dark:border-gray-700 rounded-md font-medium py-3 px-4 text-base hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors duration-200 dark:bg-gray-900",
+              "w-full max-w-[440px] border border-gray-300 rounded-md font-medium py-3 px-4 text-base hover:bg-gray-50 transition-colors duration-200",
             socialButtonsBlockButtonArrow: "hidden",
-            socialButtonsBlockButtonText:
-              "w-full text-center text-gray-700 dark:text-gray-300",
+            socialButtonsBlockButtonText: "w-full text-center text-gray-700",
           },
         }}
       />

@@ -36,7 +36,7 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
     <div className="flex flex-row items-stretch gap-0">
       {/* Desktop Date Badge */}
       <div className="hidden @sm:flex">
-        <div className="bg-gray-50/50 dark:bg-gray-800/30 rounded-l-2xl px-3 py-3 flex flex-col items-center justify-center min-w-[50px]">
+        <div className="bg-gray-50/50 rounded-l-2xl px-3 py-3 flex flex-col items-center justify-center min-w-[50px]">
           <div className="text-[10px] font-medium text-muted-foreground tracking-wide mb-2">
             {dayLabel}
           </div>
@@ -83,7 +83,7 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
               <span className="text-muted-foreground">{category.name}</span>
 
               {isFree && (
-                <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-800 dark:bg-green-900/30 dark:text-green-300 rounded-full text-xs font-semibold">
+                <span className="inline-flex items-center px-2 py-0.5 bg-green-100 text-green-800 rounded-full text-xs font-semibold">
                   FREE
                 </span>
               )}
@@ -109,7 +109,7 @@ const EventCardContent: FC<EventCardContentProps> = ({ event, dayLabel }) => {
             href={signUpHref}
             target="_blank"
             onClick={() => trackSignup("desktop_card")}
-            className="text-sm text-black dark:text-muted-foreground hover:text-foreground font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic whitespace-nowrap"
+            className="text-sm text-black hover:text-foreground font-medium transition-colors duration-200 underline decoration-dotted underline-offset-4 italic whitespace-nowrap"
           >
             Sign Up
           </Link>

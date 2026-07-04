@@ -108,26 +108,22 @@ const CheckoutPage: React.FC = () => {
       </div>
 
       <div className="mb-8">
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
           Complete your payment.
         </h1>
-        <p className="text-gray-700 dark:text-gray-400 mt-2">
-          Secure payment powered by Stripe
-        </p>
+        <p className="text-gray-700 mt-2">Secure payment powered by Stripe</p>
       </div>
 
       <div className="grid md:grid-cols-2 gap-8">
         {/* Payment form */}
         <div className="order-2 md:order-1">
           {error ? (
-            <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">
                 Payment Details
               </h3>
               <div className="text-center py-12">
-                <div className="text-red-600 dark:text-red-400 text-lg mb-4">
-                  {error}
-                </div>
+                <div className="text-red-600 text-lg mb-4">{error}</div>
                 <Button onClick={() => createPaymentIntent()}>Try Again</Button>
               </div>
             </div>
@@ -136,8 +132,8 @@ const CheckoutPage: React.FC = () => {
               <CheckoutForm />
             </Elements>
           ) : (
-            <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6 min-h-[502px]">
-              <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
+            <div className="bg-gray-50 border border-gray-200 rounded-lg p-6 min-h-[502px]">
+              <h3 className="text-lg font-semibold mb-4 text-gray-900">
                 Payment Details
               </h3>
               <div className="flex items-center justify-center py-20">

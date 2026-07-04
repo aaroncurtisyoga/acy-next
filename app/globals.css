@@ -2,17 +2,12 @@
 
 @plugin "tailwindcss-animate";
 
-@custom-variant dark (&:is(.dark *));
 @config "../tailwind.config.js";
 
 /* PWA safe area support — handles iPhone notch, Dynamic Island, home indicator */
 /* The background color behind the status bar / home indicator areas */
 html {
   background-color: #ffffff;
-}
-
-html.dark {
-  background-color: #0a0a0a;
 }
 
 /* Prevent horizontal overflow on mobile */
@@ -88,11 +83,11 @@ img {
   }
 
   .error-headline {
-    @apply text-3xl md:text-5xl font-extrabold text-gray-900 dark:text-gray-100;
+    @apply text-3xl md:text-5xl font-extrabold text-gray-900;
   }
 
   .error-subHeadline {
-    @apply text-xl md:text-2xl text-gray-600 dark:text-gray-400;
+    @apply text-xl md:text-2xl text-gray-600;
   }
 
   .navbar-menu-item {
@@ -100,7 +95,7 @@ img {
   }
 
   .header-link {
-    @apply text-gray-700 dark:text-gray-300 hover:text-slate-800 dark:hover:text-white relative transition-all duration-200 ease-out;
+    @apply text-gray-700 hover:text-slate-800 relative transition-all duration-200 ease-out;
   }
 
   .header-link::after {
@@ -146,66 +141,9 @@ img {
   max-width: 100%;
 }
 
-/* Dark mode overrides for Clerk footer */
-.dark .cl-footerAction {
-  background-color: transparent !important;
-}
-
-.dark .cl-footerActionText {
-  color: rgb(156 163 175) !important;
-  /* text-gray-400 */
-}
-
-.dark .cl-footerActionLink {
-  color: rgb(96 165 250) !important;
-  /* text-blue-400 */
-}
-
-.dark .cl-footerActionLink:hover {
-  color: rgb(147 197 253) !important;
-  /* text-blue-300 */
-}
-
-/* Dark mode for Clerk internal elements */
-.dark .cl-internal-b3fm6y {
-  background-color: transparent !important;
-}
-
-.dark .cl-footer [class*="cl-internal"] {
-  background-color: transparent !important;
-}
-
-.dark .cl-footerAction [class*="cl-internal"] {
-  background-color: transparent !important;
-}
-
-/* Secured by Clerk text */
-.dark .cl-internal-wf8x4b {
-  color: rgb(156 163 175) !important;
-}
-
 /* Remove box-shadow from Clerk primary button */
 [class*="cl-internal"][data-variant="solid"][data-color="primary"] {
   box-shadow: none !important;
-}
-
-/* Make divider lines visible in dark mode */
-.dark .cl-dividerLine {
-  background-color: rgb(75 85 99) !important;
-  /* gray-600 */
-}
-
-/* Enhanced social button styling for dark mode */
-.dark .cl-socialButtonsBlockButton {
-  border-color: rgb(107 114 128) !important;
-  /* gray-500 - lighter border */
-  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.3) !important;
-  /* subtle shadow */
-}
-
-/* Force navbar dark mode background */
-.dark [data-testid="navbar"] {
-  background-color: #0a0a0a !important;
 }
 
 /* Mobile menu animations */
@@ -321,39 +259,4 @@ img {
   --sidebar-accent-foreground: oklch(0.205 0 0);
   --sidebar-border: oklch(0.922 0 0);
   --sidebar-ring: oklch(0.708 0 0);
-}
-
-.dark {
-  --background: oklch(0.145 0 0);
-  --foreground: oklch(0.985 0 0);
-  --card: oklch(0.205 0 0);
-  --card-foreground: oklch(0.985 0 0);
-  --popover: oklch(0.205 0 0);
-  --popover-foreground: oklch(0.985 0 0);
-  --primary: #5c7cff;
-  --primary-foreground: oklch(0.985 0 0);
-  --secondary: oklch(0.269 0 0);
-  --secondary-foreground: oklch(0.985 0 0);
-  --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
-  --accent: oklch(0.269 0 0);
-  --accent-foreground: oklch(0.985 0 0);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.556 0 0);
-  --chart-1: oklch(0.488 0.243 264.376);
-  --chart-2: oklch(0.696 0.17 162.48);
-  --chart-3: oklch(0.769 0.188 70.08);
-  --chart-4: oklch(0.627 0.265 303.9);
-  --chart-5: oklch(0.645 0.246 16.439);
-  --sidebar: oklch(0.205 0 0);
-  --sidebar-foreground: oklch(0.985 0 0);
-  --sidebar-primary: oklch(0.488 0.243 264.376);
-  --sidebar-primary-foreground: oklch(0.985 0 0);
-  --sidebar-accent: oklch(0.269 0 0);
-  --sidebar-accent-foreground: oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.556 0 0);
 }

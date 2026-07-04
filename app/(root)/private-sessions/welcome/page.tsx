@@ -25,7 +25,7 @@ const WelcomePage: React.FC = () => {
 
       {/* Header */}
       <div className="text-center mb-8">
-        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-100">
+        <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
           Choose your
           <br />
           private yoga training.
@@ -38,21 +38,19 @@ const WelcomePage: React.FC = () => {
           <div className="flex flex-col gap-4 w-full items-center">
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <Check size={20} className="text-primary flex-shrink-0" />
-              <span className="text-gray-700 dark:text-gray-300 md:text-lg">
+              <span className="text-gray-700 md:text-lg">
                 Custom programming
               </span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <Check size={20} className="text-primary flex-shrink-0" />
-              <span className="text-gray-700 dark:text-gray-300 md:text-lg">
+              <span className="text-gray-700 md:text-lg">
                 Flexible scheduling
               </span>
             </div>
             <div className="flex items-center justify-start gap-3 w-full max-w-[280px]">
               <Check size={20} className="text-primary flex-shrink-0" />
-              <span className="text-gray-700 dark:text-gray-300 md:text-lg">
-                Expert guidance
-              </span>
+              <span className="text-gray-700 md:text-lg">Expert guidance</span>
             </div>
           </div>
           <Button

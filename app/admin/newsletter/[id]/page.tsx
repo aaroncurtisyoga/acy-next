@@ -64,8 +64,8 @@ const NewsletterDetailPage: FC = () => {
         <Badge
           className={
             isSent
-              ? "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300"
-              : "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300"
+              ? "bg-green-100 text-green-800"
+              : "bg-amber-100 text-amber-800"
           }
         >
           {isSent ? "Sent" : "Scheduled"}

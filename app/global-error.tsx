@@ -20,20 +20,20 @@ export default function GlobalError({
     <html lang="en" suppressHydrationWarning>
       <body className="font-sans" suppressHydrationWarning>
         <Providers>
-          <div className="min-h-screen flex flex-col bg-white dark:bg-[#0a0a0a]">
+          <div className="min-h-screen flex flex-col bg-white">
             <Header />
-            <main className="flex-1 flex items-center justify-center bg-white dark:bg-[#0a0a0a]">
+            <main className="flex-1 flex items-center justify-center bg-white">
               <div className="max-w-2xl w-full text-center px-4 md:px-6 py-12">
                 {/* Error Display */}
                 <div className="mb-8">
                   <div className="flex justify-center mb-6">
-                    <ServerCrash className="w-16 h-16 text-gray-400 dark:text-gray-500" />
+                    <ServerCrash className="w-16 h-16 text-gray-400" />
                   </div>
                   <h1 className="text-6xl md:text-7xl font-bold text-muted-foreground/30 select-none mb-4">
                     500
                   </h1>
                   <div className="relative -mt-4">
-                    <h2 className="text-2xl md:text-3xl font-semibold text-gray-900 dark:text-gray-100">
+                    <h2 className="text-2xl md:text-3xl font-semibold text-gray-900">
                       Something went wrong
                     </h2>
                   </div>

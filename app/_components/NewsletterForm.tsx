@@ -56,7 +56,7 @@ const NewsletterForm = () => {
             type="email"
             disabled={isSubmitting}
             className={cn(
-              "h-12 rounded-[4px] border-[#c3cbe4] bg-white text-base dark:border-white/20 dark:bg-navy-card",
+              "h-12 rounded-[4px] border-[#c3cbe4] bg-white text-base",
               errors.email && "border-destructive",
             )}
           />
@@ -76,9 +76,7 @@ const NewsletterForm = () => {
         <p
           className={cn(
             "mt-3 text-[13px] font-medium",
-            isSubmitSuccessful
-              ? "text-green-700 dark:text-green-400"
-              : "text-[#707687] dark:text-white/50",
+            isSubmitSuccessful ? "text-green-700" : "text-[#707687]",
           )}
         >
           {isSubmitSuccessful

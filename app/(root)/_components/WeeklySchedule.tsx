@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import {
   getEventsByWeek,
@@ -7,7 +6,6 @@ import {
 import { formatDateTime, toDateKey } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import WeekNavigation from "./WeekNavigation";
-import ScheduleToggle from "./ScheduleToggle";
 
 function getMondayOfWeek(date: Date): Date {
   const d = new Date(date);
@@ -58,8 +56,6 @@ export default async function WeeklySchedule({
   });
 
   // Check if this is the current week
-  const currentMonday = getMondayOfWeek(now);
-  const isCurrentWeek = toDateKey(currentMonday) === toDateKey(weekStart);
 
   // Disable "Next" if no events exist after the current week
   const lastEventDate = await getLastActiveEventDate();
@@ -92,17 +88,11 @@ export default async function WeeklySchedule({
             {formatDateTime(dayDates[6]).dateOnlyWithoutYear}
           </p>
         </div>
-        <div className="flex flex-wrap items-center gap-3">
-          <WeekNavigation
-            prevWeek={toDateKey(prevWeek)}
-            nextWeek={toDateKey(nextWeek)}
-            isCurrentWeek={isCurrentWeek}
-            hasMoreEvents={hasMoreEvents}
-          />
-          <Suspense>
-            <ScheduleToggle />
-          </Suspense>
-        </div>
+        <WeekNavigation
+          prevWeek={toDateKey(prevWeek)}
+          nextWeek={toDateKey(nextWeek)}
+          hasMoreEvents={hasMoreEvents}
+        />
       </div>
 
       {/* Poster rows */}
@@ -148,7 +138,11 @@ function ScheduleRow({
   const isExternal = event.isHostedExternally && event.externalRegistrationUrl;
 
   return (
-    <div className="grid grid-cols-[64px_1fr_auto] items-center gap-x-4 border-b-2 border-foreground py-4 md:grid-cols-[150px_120px_1fr_auto] md:gap-x-6 md:py-5">
+    <Link
+      href={href}
+      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      className="group grid grid-cols-[64px_1fr_auto] items-center gap-x-4 border-b-2 border-foreground py-4 md:grid-cols-[150px_120px_1fr_auto] md:gap-x-6 md:py-5"
+    >
       <span
         className={`font-display text-3xl uppercase leading-none md:text-5xl ${
           isToday ? "text-primary" : "text-foreground"
@@ -164,7 +158,7 @@ function ScheduleRow({
         <span className="block text-xs font-bold tabular-nums text-primary md:hidden">
           {timeOnly}
         </span>
-        <span className="block truncate text-base font-semibold uppercase tracking-[0.03em] text-foreground md:text-lg">
+        <span className="block truncate text-base font-semibold uppercase tracking-[0.03em] text-foreground transition-colors group-hover:text-primary md:text-lg">
           {event.title}
         </span>
         {event.location?.name && (
@@ -173,15 +167,9 @@ function ScheduleRow({
           </span>
         )}
       </span>
-      <Link
-        href={href}
-        {...(isExternal
-          ? { target: "_blank", rel: "noopener noreferrer" }
-          : {})}
-        className="border-b-2 border-primary pb-0.5 text-sm font-semibold uppercase tracking-[0.1em] text-foreground transition-colors hover:text-primary"
-      >
+      <span className="border-b-2 border-primary pb-0.5 text-sm font-semibold uppercase tracking-[0.1em] text-foreground transition-colors group-hover:text-primary">
         Book
-      </Link>
-    </div>
+      </span>
+    </Link>
   );
 }

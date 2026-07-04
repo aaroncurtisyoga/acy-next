@@ -366,19 +366,19 @@ function EventPopoverDetails({
           className={cn(
             "text-[10px]",
             event.isActive
-              ? "bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300"
+              ? "bg-green-100 text-green-700"
               : "bg-secondary text-secondary-foreground",
           )}
         >
           {event.isActive ? "Active" : "Inactive"}
         </Badge>
         {event.isFree ? (
-          <Badge className="text-[10px] bg-green-100 text-green-700 dark:bg-green-900/30 dark:text-green-300">
+          <Badge className="text-[10px] bg-green-100 text-green-700">
             Free
           </Badge>
         ) : (
           event.price && (
-            <Badge className="text-[10px] bg-yellow-100 text-yellow-700 dark:bg-yellow-900/30 dark:text-yellow-300">
+            <Badge className="text-[10px] bg-yellow-100 text-yellow-700">
               ${event.price}
             </Badge>
           )

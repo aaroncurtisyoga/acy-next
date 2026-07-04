@@ -17,23 +17,23 @@ const AnimatedHamburger: FC<AnimatedHamburgerProps> = ({
     <button
       onClick={onClick}
       className={`relative w-10 h-10 flex flex-col justify-center items-center gap-1.5 p-2 rounded-xl transition-all duration-300 ${
-        isOpen ? "bg-primary/10" : "hover:bg-gray-100 dark:hover:bg-gray-800/50"
+        isOpen ? "bg-primary/10" : "hover:bg-gray-100"
       } ${className}`}
       aria-label={isOpen ? "Close menu" : "Open menu"}
       data-testid="menu-toggle"
     >
       <span
-        className={`block w-5 h-0.5 bg-gray-700 dark:bg-gray-300 rounded-full transition-all duration-300 ease-out ${
+        className={`block w-5 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ease-out ${
           isOpen ? "rotate-45 translate-y-2" : ""
         }`}
       />
       <span
-        className={`block w-5 h-0.5 bg-gray-700 dark:bg-gray-300 rounded-full transition-all duration-300 ease-out ${
+        className={`block w-5 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ease-out ${
           isOpen ? "opacity-0 scale-x-0" : ""
         }`}
       />
       <span
-        className={`block w-5 h-0.5 bg-gray-700 dark:bg-gray-300 rounded-full transition-all duration-300 ease-out ${
+        className={`block w-5 h-0.5 bg-gray-700 rounded-full transition-all duration-300 ease-out ${
           isOpen ? "-rotate-45 -translate-y-2" : ""
         }`}
       />

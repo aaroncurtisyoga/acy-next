@@ -64,7 +64,7 @@ const SelectPackageForm: FC = () => {
         <div className="mb-8">
           <div className="text-left">
             <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between sm:items-center">
-              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900 dark:text-gray-200">
+              <h1 className="text-2xl md:text-[32px] font-medium text-gray-900">
                 Select your package.
               </h1>
               <SessionTypeToggle
@@ -104,7 +104,7 @@ const SelectPackageForm: FC = () => {
 
         {/* Legal Notice */}
         <div className="mt-4 mb-8">
-          <p className="text-xs text-gray-500 dark:text-gray-400 leading-relaxed text-left">
+          <p className="text-xs text-gray-500 leading-relaxed text-left">
             <strong>Refund Policy:</strong> Full refunds are available at any
             time prior to the actual class taking place. Once a session has
             begun, refunds are not available. By proceeding with your purchase,
