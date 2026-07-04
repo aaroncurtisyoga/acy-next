@@ -1,5 +1,4 @@
 import Link from "next/link";
-import ThemeToggle from "@/app/_components/ThemeToggle";
 import { track } from "@vercel/analytics";
 
 const socialLinks = [
@@ -37,12 +36,9 @@ const Footer = () => {
     >
       <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-12">
         <div className="flex flex-col-reverse items-center gap-7 sm:flex-row sm:justify-between">
-          <div className="flex items-center gap-6">
-            <ThemeToggle />
-            <span className="text-sm font-medium lowercase">
-              © {new Date().getFullYear()} aaron curtis
-            </span>
-          </div>
+          <span className="text-sm font-medium lowercase">
+            © {new Date().getFullYear()} aaron curtis
+          </span>
 
           <div
             data-testid="footer-social-links"
