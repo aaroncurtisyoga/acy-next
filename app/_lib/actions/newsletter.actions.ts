@@ -9,10 +9,12 @@ import resend from "@/app/_lib/resend";
 import {
   NewsletterComposeSchema,
   NewsletterFormSchema,
+  NewsletterSubscriberSchema,
 } from "@/app/_lib/schema";
 import { serialize } from "@/app/_lib/utils/serialize";
 
 type SignupInputs = z.infer<typeof NewsletterFormSchema>;
+type SubscriberInputs = z.infer<typeof NewsletterSubscriberSchema>;
 type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 
 const NEWSLETTER_ADMIN_PATH = "/admin/newsletter";
@@ -74,6 +76,53 @@ export async function addNewsletterEntry(data: SignupInputs) {
       apiError: "Failed to subscribe.",
       message: "Sorry. Something went wrong. Please try again later!",
     };
+  }
+}
+
+/* --------------------------- Admin: subscribers -------------------------- */
+
+export async function addSubscriber(data: SubscriberInputs) {
+  await requireAdmin();
+
+  const validation = NewsletterSubscriberSchema.safeParse(data);
+  if (!validation.success) {
+    return { status: false, message: "Please enter a valid email address." };
+  }
+
+  try {
+    const segmentId = process.env.RESEND_SEGMENT_ID;
+    if (!segmentId) {
+      return {
+        status: false,
+        message: "Missing RESEND_SEGMENT_ID environment variable.",
+      };
+    }
+
+    const firstName = validation.data.firstName?.trim() || undefined;
+    const lastName = validation.data.lastName?.trim() || undefined;
+
+    const { error } = await resend.contacts.create({
+      email: validation.data.email,
+      firstName,
+      lastName,
+      segments: [{ id: segmentId }],
+    });
+
+    if (error) {
+      if (/already exist/i.test(error.message)) {
+        return {
+          status: false,
+          message: "That email is already subscribed.",
+        };
+      }
+      console.error("Failed to add subscriber:", error);
+      return { status: false, message: "Resend rejected the subscriber." };
+    }
+
+    return { status: true, message: "Subscriber added." };
+  } catch (error) {
+    console.error("Failed to add subscriber:", error);
+    return { status: false, message: "Failed to add the subscriber." };
   }
 }
 

@@ -9,6 +9,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { Mail, Plus } from "lucide-react";
 import NewsletterTable from "@/app/admin/newsletter/_components/NewsletterTable";
+import AddSubscriberDialog from "@/app/admin/newsletter/_components/AddSubscriberDialog";
 import {
   getNewsletters,
   getSubscriberCount,
@@ -27,16 +28,18 @@ const AdminNewsletterPage: FC = () => {
     setNewsletters(data);
   }, []);
 
+  const fetchSubscribers = useCallback(async () => {
+    const data = await getSubscriberCount();
+    setSubscribers(data);
+  }, []);
+
   useEffect(() => {
     const load = async () => {
-      await Promise.all([
-        fetchNewsletters(),
-        getSubscriberCount().then(setSubscribers),
-      ]);
+      await Promise.all([fetchNewsletters(), fetchSubscribers()]);
       setIsLoading(false);
     };
     load();
-  }, [fetchNewsletters]);
+  }, [fetchNewsletters, fetchSubscribers]);
 
   return (
     <div className="wrapper max-w-4xl mx-auto">
@@ -54,11 +57,14 @@ const AdminNewsletterPage: FC = () => {
             </Badge>
           )}
         </div>
-        <Button className="font-medium" asChild>
-          <Link href="/admin/newsletter/create">
-            <Plus className="w-4 h-4" /> New Newsletter
-          </Link>
-        </Button>
+        <div className="flex items-center gap-2">
+          <AddSubscriberDialog onAdded={fetchSubscribers} />
+          <Button className="font-medium" asChild>
+            <Link href="/admin/newsletter/create">
+              <Plus className="w-4 h-4" /> New Newsletter
+            </Link>
+          </Button>
+        </div>
       </div>
 
       <Card className="shadow-lg">
