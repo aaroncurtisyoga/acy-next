@@ -65,9 +65,7 @@ export default async function WeeklySchedule({
     ? new Date(lastEventDate) >= currentWeekEnd
     : false;
 
-  // Prev / Next week ISO strings
-  const prevWeek = new Date(weekStart);
-  prevWeek.setDate(prevWeek.getDate() - 7);
+  // Next week ISO string
   const nextWeek = new Date(weekStart);
   nextWeek.setDate(nextWeek.getDate() + 7);
 
@@ -89,7 +87,6 @@ export default async function WeeklySchedule({
           </p>
         </div>
         <WeekNavigation
-          prevWeek={toDateKey(prevWeek)}
           nextWeek={toDateKey(nextWeek)}
           hasMoreEvents={hasMoreEvents}
         />

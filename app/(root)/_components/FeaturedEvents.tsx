@@ -11,7 +11,7 @@ export default async function FeaturedEvents() {
     <section
       id="upcoming"
       data-testid="featured-events"
-      className="scroll-mt-20 bg-navy py-14 md:py-20"
+      className="scroll-mt-20 bg-upcoming py-14 md:py-20"
     >
       <div className="mx-auto w-full max-w-screen-2xl px-4 md:px-6 lg:px-12">
         <h2 className="font-display text-4xl uppercase text-white md:text-5xl">
@@ -74,7 +74,7 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
   if (!event.imageUrl) {
     // Text-first card when the event has no photo
     return (
-      <div className="rounded-md border-l-4 border-primary bg-navy-card p-7 md:p-10">
+      <div className="rounded-md border-l-4 border-primary bg-upcoming-card p-7 md:p-10">
         <h3 className="max-w-[26ch] font-display text-3xl uppercase leading-[1.05] text-white md:text-4xl">
           {event.title}
         </h3>
@@ -90,7 +90,7 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
   }
 
   return (
-    <div className="grid overflow-hidden rounded-md bg-navy-card md:grid-cols-[1.1fr_1fr]">
+    <div className="grid overflow-hidden rounded-md bg-upcoming-card md:grid-cols-[1.1fr_1fr]">
       <div className="relative min-h-[220px] md:min-h-[300px]">
         <Image
           src={event.imageUrl}

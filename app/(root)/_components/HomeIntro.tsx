@@ -5,17 +5,13 @@ const VALUES = [
       "Every practice starts and ends here. When in doubt, come back to it.",
   },
   {
-    name: "Strength",
+    name: "Move",
     blurb:
       "My flows lean power — and there’s always an option for where you’re at today.",
   },
   {
     name: "Sound",
     blurb: "Handpan, bowls, and a few quiet moments to integrate and return.",
-  },
-  {
-    name: "Consistency",
-    blurb: "Showing up a little, often. That’s the whole practice.",
   },
 ];
 
@@ -28,11 +24,11 @@ export default function HomeIntro() {
           power-leaning vinyasa, and lately a lot of sound: handpan, bowls, and
           live sound baths.{" "}
           <span className="bg-gradient-to-t from-[#c9d4ff] from-[38%] to-transparent to-[38%] font-semibold">
-            Space to move, breathe, connect + just chill.
+            Space to move, breathe, connect.
           </span>
         </p>
 
-        <div className="mt-14 grid grid-cols-2 gap-x-7 gap-y-9 border-t border-border pt-11 md:grid-cols-4">
+        <div className="mt-14 grid grid-cols-1 gap-x-7 gap-y-9 border-t border-border pt-11 sm:grid-cols-3">
           {VALUES.map((value) => (
             <div key={value.name}>
               <div className="h-[5px] w-7 bg-primary" aria-hidden="true" />
