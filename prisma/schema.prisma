@@ -36,6 +36,7 @@ model Event {
   externalRegistrationUrl String?
   imageUrl               String?
   isFree                 Boolean   @default(false)
+  isFeatured             Boolean   @default(false)
   isHostedExternally     Boolean
   maxAttendees           Int?
   price                  String?

@@ -1,6 +1,10 @@
 import { useState, useEffect } from "react";
 import { toast } from "sonner";
-import { getAllEvents, deleteEvent } from "@/app/_lib/actions/event.actions";
+import {
+  getAllEvents,
+  deleteEvent,
+  toggleEventFeatured,
+} from "@/app/_lib/actions/event.actions";
 import { handleError } from "@/app/_lib/utils";
 import type { EventTableFilters } from "@/app/admin/events/_components/hooks/useEventTableFilters";
 
@@ -16,6 +20,7 @@ export interface UseEventTableDataReturn {
   totalCount: number;
   loading: boolean;
   handleDeleteEvent: (eventId: string) => Promise<boolean>;
+  handleToggleFeatured: (eventId: string, next: boolean) => Promise<void>;
   refreshEvents: () => void;
 }
 
@@ -93,6 +98,31 @@ export function useEventTableData(
     }
   };
 
+  const handleToggleFeatured = async (
+    eventId: string,
+    next: boolean,
+  ): Promise<void> => {
+    // Optimistic update — flip immediately, revert if the action fails
+    setEvents((prev) =>
+      prev.map((event) =>
+        event.id === eventId ? { ...event, isFeatured: next } : event,
+      ),
+    );
+    try {
+      const response = await toggleEventFeatured(eventId, next);
+      if (!response.success) throw new Error("Failed to update featured state");
+      toast.success(next ? "Added to Upcoming" : "Removed from Upcoming");
+    } catch (error) {
+      setEvents((prev) =>
+        prev.map((event) =>
+          event.id === eventId ? { ...event, isFeatured: !next } : event,
+        ),
+      );
+      handleError("Failed to update featured state", error);
+      toast.error("Couldn't update featured state. Please try again.");
+    }
+  };
+
   const refreshEvents = () => {
     setRefreshTrigger((prev) => prev + 1);
   };
@@ -104,6 +134,7 @@ export function useEventTableData(
     totalCount,
     loading,
     handleDeleteEvent,
+    handleToggleFeatured,
     refreshEvents,
   };
 }

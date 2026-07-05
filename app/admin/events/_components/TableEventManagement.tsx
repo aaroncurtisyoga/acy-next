@@ -32,6 +32,7 @@ import {
   Calendar,
   Users,
   DollarSign,
+  Star,
 } from "lucide-react";
 import BasicModal from "@/app/_components/BasicModal";
 import TableEmpty from "@/app/_components/TableEmpty";
@@ -64,6 +65,7 @@ const TableEventManagement: FC = () => {
     totalCount,
     loading,
     handleDeleteEvent,
+    handleToggleFeatured,
   } = useEventTableData(filters);
 
   const onDeleteClick = (event: any) => {
@@ -159,6 +161,7 @@ const TableEventManagement: FC = () => {
                 key={event.id}
                 event={event}
                 onDeleteClick={onDeleteClick}
+                onToggleFeatured={handleToggleFeatured}
               />
             ))}
           </div>
@@ -258,10 +261,47 @@ const TableEventManagement: FC = () => {
                             {event.maxAttendees}
                           </Badge>
                         )}
+                        {event.isFeatured && (
+                          <Badge className="bg-primary/10 text-primary">
+                            <Star size={12} className="mr-1 fill-primary" />
+                            Featured
+                          </Badge>
+                        )}
                       </div>
                     </TableCell>
                     <TableCell>
                       <div className="flex items-center gap-1">
+                        <SimpleTooltip
+                          content={
+                            event.isFeatured
+                              ? "Remove from Upcoming"
+                              : "Feature in Upcoming"
+                          }
+                        >
+                          <Button
+                            size="icon"
+                            variant="ghost"
+                            className="h-8 w-8"
+                            aria-label={
+                              event.isFeatured
+                                ? "Remove from Upcoming"
+                                : "Feature in Upcoming"
+                            }
+                            aria-pressed={event.isFeatured}
+                            onClick={() =>
+                              handleToggleFeatured(event.id, !event.isFeatured)
+                            }
+                          >
+                            <Star
+                              size={18}
+                              className={
+                                event.isFeatured
+                                  ? "fill-primary text-primary"
+                                  : undefined
+                              }
+                            />
+                          </Button>
+                        </SimpleTooltip>
                         {!event.isExternal && (
                           <SimpleTooltip content="View">
                             <Button

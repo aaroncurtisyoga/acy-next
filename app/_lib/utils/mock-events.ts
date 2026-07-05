@@ -89,6 +89,7 @@ export function generateMockEvents(
       externalRegistrationUrl: null,
       imageUrl: null,
       isFree,
+      isFeatured: false,
       isHostedExternally: false,
       maxAttendees: isFree ? null : 20,
       price: isFree ? null : "15",

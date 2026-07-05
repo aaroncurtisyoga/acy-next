@@ -165,6 +165,7 @@ const SubmitStep: FC = () => {
       : new Date(),
     price: formValues.price || "0",
     isFree: formValues.isFree === true,
+    isFeatured: false,
     isHostedExternally: formValues.isHostedExternally || false,
     externalRegistrationUrl: formValues.externalRegistrationUrl || null,
     maxAttendees: formValues.maxAttendees || null,

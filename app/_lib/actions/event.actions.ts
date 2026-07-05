@@ -295,9 +295,10 @@ export async function getFeaturedEvents(limit = 2) {
     const events = await prisma.event.findMany({
       where: {
         isActive: true,
-        isExternal: false,
-        sourceType: null,
         startDateTime: { gte: new Date() },
+        // Show anything explicitly featured (incl. synced events) plus
+        // manually-created events, which default into the Upcoming band.
+        OR: [{ isFeatured: true }, { sourceType: null, isExternal: false }],
       },
       orderBy: { startDateTime: "asc" },
       take: limit,
@@ -316,6 +317,29 @@ export async function getFeaturedEvents(limit = 2) {
       error,
     );
     return [];
+  }
+}
+
+/**
+ * Feature/unfeature an event for the homepage Upcoming band. Works for synced
+ * events too, since featuring is independent of source. Admin-only routes are
+ * protected by proxy.ts.
+ */
+export async function toggleEventFeatured(
+  eventId: string,
+  isFeatured: boolean,
+): Promise<{ success: boolean }> {
+  try {
+    await prisma.event.update({
+      where: { id: eventId },
+      data: { isFeatured },
+    });
+    revalidatePath("/");
+    revalidatePath("/admin/events");
+    return { success: true };
+  } catch (error) {
+    handleError(error);
+    return { success: false };
   }
 }
 
