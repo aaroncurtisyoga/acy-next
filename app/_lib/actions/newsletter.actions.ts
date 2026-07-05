@@ -10,11 +10,13 @@ import {
   NewsletterComposeSchema,
   NewsletterFormSchema,
   NewsletterSubscriberSchema,
+  NewsletterSubscriberUpdateSchema,
 } from "@/app/_lib/schema";
 import { serialize } from "@/app/_lib/utils/serialize";
 
 type SignupInputs = z.infer<typeof NewsletterFormSchema>;
 type SubscriberInputs = z.infer<typeof NewsletterSubscriberSchema>;
+type SubscriberUpdateInputs = z.infer<typeof NewsletterSubscriberUpdateSchema>;
 type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 
 const NEWSLETTER_ADMIN_PATH = "/admin/newsletter";
@@ -139,6 +141,163 @@ export async function addSubscriber(
   } catch (error) {
     console.error("Failed to add subscriber:", error);
     return { status: false, message: "Failed to add the subscriber." };
+  }
+}
+
+/* -------------------------- Admin: subscriber CRUD ----------------------- */
+
+export type Subscriber = {
+  id: string;
+  email: string;
+  firstName: string | null;
+  lastName: string | null;
+  unsubscribed: boolean;
+  createdAt: string;
+};
+
+/**
+ * Resend paginates contacts (max 100 per page, cursor-based). Walk every page
+ * so the admin sees the whole list and gets an accurate count — the yoga list
+ * is small enough that fetching it all is cheaper than partial + guessing.
+ */
+async function fetchAllSubscribers(): Promise<{
+  subscribers: Subscriber[];
+  capped: boolean;
+  failed: boolean;
+}> {
+  const segmentId = process.env.RESEND_SEGMENT_ID;
+  if (!segmentId) return { subscribers: [], capped: false, failed: false };
+
+  const subscribers: Subscriber[] = [];
+  let after: string | undefined;
+  const MAX_PAGES = 100; // 100 pages * 100 = 10k contacts safety ceiling
+
+  for (let page = 0; page < MAX_PAGES; page++) {
+    const { data, error } = await resend.contacts.list(
+      after ? { segmentId, limit: 100, after } : { segmentId, limit: 100 },
+    );
+    if (error || !data) {
+      // A failure before we've read anything is a hard error worth surfacing;
+      // a failure partway through still leaves a usable (if partial) list.
+      return { subscribers, capped: false, failed: subscribers.length === 0 };
+    }
+
+    for (const contact of data.data) {
+      subscribers.push({
+        id: contact.id,
+        email: contact.email,
+        firstName: contact.first_name,
+        lastName: contact.last_name,
+        unsubscribed: contact.unsubscribed,
+        createdAt: contact.created_at,
+      });
+    }
+
+    if (!data.has_more || data.data.length === 0) {
+      return { subscribers, capped: false, failed: false };
+    }
+    after = data.data[data.data.length - 1].id;
+  }
+
+  // Fell out of the loop still seeing has_more — list is larger than the cap.
+  return { subscribers, capped: true, failed: false };
+}
+
+export async function listSubscribers() {
+  await requireAdmin();
+  try {
+    const segmentId = process.env.RESEND_SEGMENT_ID;
+    if (!segmentId) {
+      return {
+        status: false as const,
+        message: "Missing RESEND_SEGMENT_ID environment variable.",
+        subscribers: [] as Subscriber[],
+        capped: false,
+      };
+    }
+
+    const { subscribers, capped, failed } = await fetchAllSubscribers();
+    if (failed) {
+      return {
+        status: false as const,
+        message: "Couldn't reach Resend. Please try again.",
+        subscribers: [] as Subscriber[],
+        capped: false,
+      };
+    }
+    // Newest first
+    subscribers.sort((a, b) =>
+      a.createdAt < b.createdAt ? 1 : a.createdAt > b.createdAt ? -1 : 0,
+    );
+    return { status: true as const, subscribers, capped };
+  } catch (error) {
+    console.error("Failed to list subscribers:", error);
+    return {
+      status: false as const,
+      message: "Failed to load subscribers.",
+      subscribers: [] as Subscriber[],
+      capped: false,
+    };
+  }
+}
+
+export async function updateSubscriber(
+  data: SubscriberUpdateInputs,
+): Promise<AddSubscriberResult> {
+  await requireAdmin();
+
+  const validation = NewsletterSubscriberUpdateSchema.safeParse(data);
+  if (!validation.success) {
+    return {
+      status: false,
+      message: "Please check the details and try again.",
+    };
+  }
+
+  try {
+    const { id, firstName, lastName, unsubscribed } = validation.data;
+
+    // Only send the fields the caller actually provided. A blank name field is
+    // an intentional clear (null); an omitted field is left untouched — that's
+    // what keeps the quick unsubscribe toggle from wiping someone's name.
+    const payload: {
+      id: string;
+      firstName?: string | null;
+      lastName?: string | null;
+      unsubscribed?: boolean;
+    } = { id };
+    if (firstName !== undefined) payload.firstName = firstName.trim() || null;
+    if (lastName !== undefined) payload.lastName = lastName.trim() || null;
+    if (unsubscribed !== undefined) payload.unsubscribed = unsubscribed;
+
+    const { error } = await resend.contacts.update(payload);
+    if (error) {
+      console.error("Failed to update subscriber:", error);
+      return { status: false, message: "Resend rejected the update." };
+    }
+    return { status: true, message: "Subscriber updated." };
+  } catch (error) {
+    console.error("Failed to update subscriber:", error);
+    return { status: false, message: "Failed to update the subscriber." };
+  }
+}
+
+export async function deleteSubscriber(
+  id: string,
+): Promise<AddSubscriberResult> {
+  await requireAdmin();
+  if (!id) return { status: false, message: "Missing subscriber id." };
+
+  try {
+    const { error } = await resend.contacts.remove(id);
+    if (error) {
+      console.error("Failed to remove subscriber:", error);
+      return { status: false, message: "Resend rejected the removal." };
+    }
+    return { status: true, message: "Subscriber removed." };
+  } catch (error) {
+    console.error("Failed to remove subscriber:", error);
+    return { status: false, message: "Failed to remove the subscriber." };
   }
 }
 
@@ -390,14 +549,12 @@ export async function getSubscriberCount() {
     const segmentId = process.env.RESEND_SEGMENT_ID;
     if (!segmentId) return null;
 
-    const { data, error } = await resend.contacts.list({
-      segmentId,
-      limit: 100,
-    });
-    if (error || !data) return null;
-
-    // Good enough for a small list; shows "100+" once pagination kicks in
-    return { count: data.data.length, hasMore: data.has_more };
+    const { subscribers, capped, failed } = await fetchAllSubscribers();
+    if (failed) return null;
+    // Count active subscribers only — unsubscribed contacts still come back
+    // from Resend but shouldn't inflate the headline number.
+    const count = subscribers.filter((s) => !s.unsubscribed).length;
+    return { count, hasMore: capped };
   } catch (error) {
     console.error("Failed to fetch subscriber count:", error);
     return null;

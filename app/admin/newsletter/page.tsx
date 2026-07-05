@@ -3,25 +3,17 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { Newsletter } from "@prisma/client";
-import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import { Mail, Plus } from "lucide-react";
 import NewsletterTable from "@/app/admin/newsletter/_components/NewsletterTable";
-import AddSubscriberDialog from "@/app/admin/newsletter/_components/AddSubscriberDialog";
+import NewsletterNav from "@/app/admin/newsletter/_components/NewsletterNav";
 import AdminPage from "@/app/admin/_components/AdminPage";
-import {
-  getNewsletters,
-  getSubscriberCount,
-} from "@/app/_lib/actions/newsletter.actions";
+import { getNewsletters } from "@/app/_lib/actions/newsletter.actions";
 
 const AdminNewsletterPage: FC = () => {
   const [newsletters, setNewsletters] = useState<Newsletter[]>([]);
-  const [subscribers, setSubscribers] = useState<{
-    count: number;
-    hasMore: boolean;
-  } | null>(null);
   const [isLoading, setIsLoading] = useState(true);
 
   const fetchNewsletters = useCallback(async () => {
@@ -29,42 +21,27 @@ const AdminNewsletterPage: FC = () => {
     setNewsletters(data);
   }, []);
 
-  const fetchSubscribers = useCallback(async () => {
-    const data = await getSubscriberCount();
-    setSubscribers(data);
-  }, []);
-
   useEffect(() => {
     const load = async () => {
-      await Promise.all([fetchNewsletters(), fetchSubscribers()]);
+      await fetchNewsletters();
       setIsLoading(false);
     };
     load();
-  }, [fetchNewsletters, fetchSubscribers]);
+  }, [fetchNewsletters]);
 
   return (
     <AdminPage
       title="Newsletter"
       width="narrow"
-      badge={
-        subscribers && (
-          <Badge variant="info" className="px-3 py-1 text-sm">
-            {subscribers.hasMore ? `${subscribers.count}+` : subscribers.count}{" "}
-            {subscribers.count === 1 ? "Subscriber" : "Subscribers"}
-          </Badge>
-        )
-      }
       actions={
-        <>
-          <AddSubscriberDialog onAdded={fetchSubscribers} />
-          <Button className="font-medium" asChild>
-            <Link href="/admin/newsletter/create">
-              <Plus className="w-4 h-4" /> New Newsletter
-            </Link>
-          </Button>
-        </>
+        <Button className="font-medium" asChild>
+          <Link href="/admin/newsletter/create">
+            <Plus className="w-4 h-4" /> New Newsletter
+          </Link>
+        </Button>
       }
     >
+      <NewsletterNav />
       <Card className="shadow-lg">
         <CardContent className="pt-6">
           {isLoading ? (

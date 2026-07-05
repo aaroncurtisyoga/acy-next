@@ -20,6 +20,19 @@ export const NewsletterSubscriberSchema = z.object({
     .optional(),
 });
 
+export const NewsletterSubscriberUpdateSchema = z.object({
+  id: z.string().min(1, "Missing subscriber id"),
+  firstName: z
+    .string()
+    .max(100, "First name must be 100 characters or fewer")
+    .optional(),
+  lastName: z
+    .string()
+    .max(100, "Last name must be 100 characters or fewer")
+    .optional(),
+  unsubscribed: z.boolean().optional(),
+});
+
 export const NewsletterComposeSchema = z.object({
   subject: z
     .string()

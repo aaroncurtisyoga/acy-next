@@ -67,8 +67,8 @@ const AddSubscriberDialog: FC<AddSubscriberDialogProps> = ({ onAdded }) => {
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
-        <Button variant="outline" className="font-medium">
-          <UserPlus className="w-4 h-4" /> Add Subscriber
+        <Button className="font-medium">
+          <UserPlus className="w-4 h-4" /> Add subscriber
         </Button>
       </DialogTrigger>
       <DialogContent className="max-w-md">

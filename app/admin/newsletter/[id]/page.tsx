@@ -1,7 +1,9 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
+import Link from "next/link";
 import { useParams } from "next/navigation";
+import { ArrowLeft } from "lucide-react";
 import { Newsletter } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
@@ -44,6 +46,12 @@ const NewsletterDetailPage: FC = () => {
   if (newsletter.status === "DRAFT") {
     return (
       <div className="wrapper max-w-4xl mx-auto">
+        <Link
+          href="/admin/newsletter"
+          className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+        >
+          <ArrowLeft className="h-4 w-4" /> Newsletters
+        </Link>
         <h1 className="mb-6 font-display text-3xl uppercase text-foreground">
           Edit Draft
         </h1>
@@ -57,6 +65,12 @@ const NewsletterDetailPage: FC = () => {
 
   return (
     <div className="wrapper max-w-4xl mx-auto">
+      <Link
+        href="/admin/newsletter"
+        className="mb-4 inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"
+      >
+        <ArrowLeft className="h-4 w-4" /> Newsletters
+      </Link>
       <div className="flex items-center justify-between mb-6 gap-3 flex-wrap">
         <h1 className="truncate font-display text-3xl uppercase text-foreground">
           {newsletter.subject}
