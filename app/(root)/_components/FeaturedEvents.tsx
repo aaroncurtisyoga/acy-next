@@ -11,14 +11,15 @@ export default async function FeaturedEvents() {
     <section
       id="upcoming"
       data-testid="featured-events"
-      className="scroll-mt-20 bg-upcoming py-14 md:py-20"
+      className="scroll-mt-20 border-t border-[#dee3f2] bg-band py-14 md:py-20"
     >
       <div className="mx-auto w-full max-w-screen-2xl px-4 md:px-6 lg:px-12">
-        <h2 className="font-display text-4xl uppercase text-white md:text-5xl">
+        <div className="h-1.5 w-9 bg-primary" aria-hidden="true" />
+        <h2 className="mt-4 font-display text-4xl uppercase text-foreground md:text-5xl">
           Upcoming
         </h2>
         {events.length === 0 ? (
-          <p className="mt-5 max-w-[52ch] text-[15px] leading-relaxed text-white/60">
+          <p className="mt-3 max-w-[52ch] text-base font-medium text-[#3c3f4c] md:text-[17px]">
             Nothing extra on the calendar right now ~ new sound baths and
             workshops land here first.
           </p>
@@ -74,13 +75,13 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
   if (!event.imageUrl) {
     // Text-first card when the event has no photo
     return (
-      <div className="rounded-md border-l-4 border-primary bg-upcoming-card p-7 md:p-10">
-        <h3 className="max-w-[26ch] font-display text-3xl uppercase leading-[1.05] text-white md:text-4xl">
+      <div className="rounded-md border border-[#dde3f3] border-l-4 border-l-primary bg-white p-7 shadow-sm md:p-10">
+        <h3 className="max-w-[26ch] font-display text-3xl uppercase leading-[1.05] text-foreground md:text-4xl">
           {event.title}
         </h3>
         <div className="mt-5">{chips}</div>
         {descriptionText && (
-          <p className="mt-5 line-clamp-3 max-w-[64ch] text-[15px] leading-relaxed text-white/70">
+          <p className="mt-5 line-clamp-3 max-w-[64ch] text-[15px] leading-relaxed text-muted-foreground">
             {descriptionText}
           </p>
         )}
@@ -90,7 +91,7 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
   }
 
   return (
-    <div className="grid overflow-hidden rounded-md bg-upcoming-card md:grid-cols-[1.1fr_1fr]">
+    <div className="grid overflow-hidden rounded-md border border-[#dde3f3] bg-white shadow-sm md:grid-cols-[1.1fr_1fr]">
       <div className="relative min-h-[220px] md:min-h-[300px]">
         <Image
           src={event.imageUrl}
@@ -111,7 +112,7 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
       <div className="flex flex-col justify-center p-7 md:p-10">
         {chips}
         {descriptionText && (
-          <p className="mt-5 line-clamp-3 max-w-[42ch] text-[15px] leading-relaxed text-white/70">
+          <p className="mt-5 line-clamp-3 max-w-[42ch] text-[15px] leading-relaxed text-muted-foreground">
             {descriptionText}
           </p>
         )}
@@ -123,7 +124,7 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
 
 function Chip({ children }: { children: React.ReactNode }) {
   return (
-    <span className="rounded-[3px] border border-white/25 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-white/90">
+    <span className="rounded-[3px] border border-[#cdd5ea] px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.08em] text-[#3c3f4c]">
       {children}
     </span>
   );
