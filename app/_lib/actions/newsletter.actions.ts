@@ -10,11 +10,17 @@ import {
 import prisma from "@/app/_lib/prisma";
 import resend from "@/app/_lib/resend";
 import {
+  getEventsByWeek,
+  getFeaturedEvents,
+} from "@/app/_lib/actions/event.actions";
+import {
   NewsletterComposeSchema,
   NewsletterFormSchema,
   NewsletterSubscriberSchema,
   NewsletterSubscriberUpdateSchema,
 } from "@/app/_lib/schema";
+import { EventWithLocationAndCategory } from "@/app/_lib/types";
+import { formatDateTime, toDateKey } from "@/app/_lib/utils";
 import { serialize } from "@/app/_lib/utils/serialize";
 
 type SignupInputs = z.infer<typeof NewsletterFormSchema>;
@@ -451,8 +457,11 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       }
     }
 
+    const sections = await buildEventSectionsHtml();
     const html = renderNewsletterHtml({
-      contentHtml: newsletter.content,
+      // Resend substitutes the merge tags per-recipient; we only append the
+      // live event listings.
+      contentHtml: `${newsletter.content}${sections}`,
       previewText: newsletter.previewText ?? undefined,
     });
 
@@ -521,14 +530,15 @@ export async function sendTestNewsletter(data: ComposeInputs) {
       };
     }
 
+    const sections = await buildEventSectionsHtml();
     const html = renderNewsletterHtml({
       // The transactional API doesn't substitute merge tags, so resolve them
       // here with the admin's own details for a realistic test.
-      contentHtml: resolveMergeTags(validation.data.content, {
+      contentHtml: `${resolveMergeTags(validation.data.content, {
         firstName: user?.firstName ?? undefined,
         lastName: user?.lastName ?? undefined,
         email,
-      }),
+      })}${sections}`,
       previewText: validation.data.previewText,
       unsubscribeUrl: "#",
     });
@@ -602,18 +612,81 @@ async function reconcileScheduledNewsletters() {
 
 /* ------------------------- Admin: compose helpers ------------------------ */
 
-export async function getUpcomingEventsForNewsletter() {
-  await requireAdmin();
+const NEWSLETTER_SITE_URL = "https://www.aaroncurtisyoga.com";
+
+function eventListItemHtml(event: EventWithLocationAndCategory): string {
+  const { weekdayShort, monthShort, dayNumber, timeOnly } = formatDateTime(
+    event.startDateTime,
+  );
+  const when = `${weekdayShort}, ${monthShort} ${dayNumber} · ${timeOnly}`;
+  const location = event.location?.name ? ` · ${event.location.name}` : "";
+  const href =
+    event.isHostedExternally && event.externalRegistrationUrl
+      ? event.externalRegistrationUrl
+      : `${NEWSLETTER_SITE_URL}/events/${event.id}`;
+  return `<li><strong><a href="${href}">${event.title}</a></strong>, ${when}${location}</li>`;
+}
+
+/** Monday (ET) of the week containing `now`, as a YYYY-MM-DD key. */
+function getEtMondayIso(now: Date): string {
+  const et = new Date(
+    now.toLocaleString("en-US", { timeZone: "America/New_York" }),
+  );
+  const day = et.getDay(); // 0 = Sun … 6 = Sat
+  const diff = day === 0 ? -6 : 1 - day;
+  et.setDate(et.getDate() + diff);
+  et.setHours(0, 0, 0, 0);
+  return toDateKey(et);
+}
+
+/**
+ * Builds the "Upcoming" (featured events) and "Classes This Week" (this week's
+ * remaining classes) blocks appended after the writer's message — mirroring the
+ * homepage's two sections. Returns "" when both are empty so the newsletter
+ * simply omits them. Kept out of the saved draft so duplicating a newsletter
+ * never bakes in a stale snapshot.
+ */
+async function buildEventSectionsHtml(): Promise<string> {
   try {
-    const events = await prisma.event.findMany({
-      where: { isActive: true, startDateTime: { gte: new Date() } },
-      orderBy: { startDateTime: "asc" },
-      take: 8,
-      include: { location: true },
-    });
-    return serialize(events);
+    const now = new Date();
+
+    const upcoming = await getFeaturedEvents(5).catch(() => []);
+    let weekEvents: EventWithLocationAndCategory[] = [];
+    try {
+      weekEvents = await getEventsByWeek(getEtMondayIso(now));
+    } catch {
+      weekEvents = [];
+    }
+    // Only classes still to come this week — past ones are noise in an email.
+    const classesThisWeek = weekEvents.filter(
+      (event) => new Date(event.startDateTime) >= now,
+    );
+
+    const sections: string[] = [];
+    if (upcoming.length > 0) {
+      sections.push(
+        `<h2>Upcoming</h2><ul>${upcoming.map(eventListItemHtml).join("")}</ul>`,
+      );
+    }
+    if (classesThisWeek.length > 0) {
+      sections.push(
+        `<h2>Classes This Week</h2><ul>${classesThisWeek
+          .map(eventListItemHtml)
+          .join("")}</ul>`,
+      );
+    }
+
+    if (sections.length === 0) return "";
+    // A divider separates the writer's message from the auto-added listings.
+    return `<hr>${sections.join("")}`;
   } catch (error) {
-    console.error("Failed to fetch upcoming events:", error);
-    return [];
+    console.error("Failed to build newsletter event sections:", error);
+    return "";
   }
+}
+
+/** Exposed for the composer preview + sent view so they match what's sent. */
+export async function getNewsletterEventSectionsHtml(): Promise<string> {
+  await requireAdmin();
+  return buildEventSectionsHtml();
 }

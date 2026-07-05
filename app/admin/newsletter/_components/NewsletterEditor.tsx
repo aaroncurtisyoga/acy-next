@@ -1,6 +1,6 @@
 "use client";
 
-import { FC, useCallback, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { Controller, useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -10,7 +10,6 @@ import { Editor } from "@tiptap/react";
 import { toast } from "sonner";
 import {
   CalendarClock,
-  CalendarPlus,
   Eye,
   Loader2,
   Save,
@@ -37,7 +36,7 @@ import {
 } from "@/app/_lib/email/newsletter-template";
 import {
   createNewsletter,
-  getUpcomingEventsForNewsletter,
+  getNewsletterEventSectionsHtml,
   sendNewsletter,
   sendTestNewsletter,
   updateNewsletter,
@@ -59,7 +58,8 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   const [scheduledAt, setScheduledAt] = useState<Date | undefined>();
   const [isSending, setIsSending] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
-  const [isInsertingEvents, setIsInsertingEvents] = useState(false);
+  // Live "Upcoming" + "Classes This Week" HTML, appended after the message.
+  const [sectionsHtml, setSectionsHtml] = useState("");
 
   const {
     register,
@@ -79,6 +79,19 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
 
   const handleEditorReady = useCallback((editor: Editor) => {
     editorRef.current = editor;
+  }, []);
+
+  // Pull the same listings that get appended at send time so Preview matches.
+  useEffect(() => {
+    let active = true;
+    const loadSections = async () => {
+      const html = await getNewsletterEventSectionsHtml();
+      if (active) setSectionsHtml(html);
+    };
+    loadSections();
+    return () => {
+      active = false;
+    };
   }, []);
 
   const saveDraft = async (data: ComposeInputs) => {
@@ -129,35 +142,6 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       .run();
   };
 
-  const handleInsertEvents = async () => {
-    setIsInsertingEvents(true);
-    try {
-      const events = await getUpcomingEventsForNewsletter();
-      if (events.length === 0) {
-        toast.info("No upcoming events found.");
-        return;
-      }
-      const items = events
-        .map((event) => {
-          const { dateOnlyWithoutYear, timeOnly } = formatDateTime(
-            event.startDateTime,
-          );
-          const locationName = event.location?.name
-            ? ` · ${event.location.name}`
-            : "";
-          return `<li><strong><a href="https://www.aaroncurtisyoga.com/events/${event.id}">${event.title}</a></strong> — ${dateOnlyWithoutYear} · ${timeOnly}${locationName}</li>`;
-        })
-        .join("");
-      editorRef.current
-        ?.chain()
-        .focus("end")
-        .insertContent(`<h2>Upcoming Classes</h2><ul>${items}</ul>`)
-        .run();
-    } finally {
-      setIsInsertingEvents(false);
-    }
-  };
-
   const handleSend = async (when: "now" | "scheduled") => {
     if (when === "scheduled") {
       if (!scheduledAt) {
@@ -200,11 +184,11 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
 
   const previewHtml = () =>
     renderNewsletterHtml({
-      // Show the no-name fallback so the preview matches what most recipients
-      // (and the "Hey there," case) will actually see.
-      contentHtml: resolveMergeTags(
+      // Resolve the greeting to its no-name form and append the same event
+      // listings that get added at send time, so Preview matches the real email.
+      contentHtml: `${resolveMergeTags(
         getValues("content") || "<p>Nothing here yet…</p>",
-      ),
+      )}${sectionsHtml}`,
       previewText: getValues("previewText"),
       unsubscribeUrl: "#",
     });
@@ -248,38 +232,24 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
           </FormField>
 
           <div className="space-y-2">
-            <div className="flex flex-wrap gap-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleInsertGreeting}
-              >
-                <UserRound className="w-4 h-4" />
-                Insert greeting
-              </Button>
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                disabled={isInsertingEvents}
-                onClick={handleInsertEvents}
-              >
-                {isInsertingEvents ? (
-                  <Loader2 className="w-4 h-4 animate-spin" />
-                ) : (
-                  <CalendarPlus className="w-4 h-4" />
-                )}
-                Insert upcoming classes
-              </Button>
-            </div>
+            <Button
+              type="button"
+              variant="outline"
+              size="sm"
+              onClick={handleInsertGreeting}
+            >
+              <UserRound className="w-4 h-4" />
+              Insert greeting
+            </Button>
             <p className="text-xs text-muted-foreground">
               Tip: the greeting uses{" "}
               <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
                 {"{{{contact.first_name}}}"}
-              </code>{" "}
-              — people with a name on file see “Hey Aaron”; everyone else just
-              sees “Hey.”
+              </code>
+              , so people with a name see “Hey Aaron” and everyone else sees
+              “Hey.” Your <strong>Upcoming</strong> events and{" "}
+              <strong>Classes This Week</strong> are added automatically below
+              your message. Hit Preview to see the full email.
             </p>
           </div>
         </CardContent>

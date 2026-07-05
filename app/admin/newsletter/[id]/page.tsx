@@ -9,7 +9,10 @@ import { Badge } from "@/components/ui/badge";
 import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import NewsletterEditor from "@/app/admin/newsletter/_components/NewsletterEditor";
-import { getNewsletterById } from "@/app/_lib/actions/newsletter.actions";
+import {
+  getNewsletterById,
+  getNewsletterEventSectionsHtml,
+} from "@/app/_lib/actions/newsletter.actions";
 import {
   renderNewsletterHtml,
   resolveMergeTags,
@@ -19,12 +22,17 @@ import { formatDateTime } from "@/app/_lib/utils";
 const NewsletterDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null);
+  const [sectionsHtml, setSectionsHtml] = useState("");
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const load = async () => {
-      const data = await getNewsletterById(id);
+      const [data, sections] = await Promise.all([
+        getNewsletterById(id),
+        getNewsletterEventSectionsHtml(),
+      ]);
       setNewsletter(data);
+      setSectionsHtml(sections);
       setIsLoading(false);
     };
     load();
@@ -95,7 +103,7 @@ const NewsletterDetailPage: FC = () => {
           <iframe
             title="Newsletter content"
             srcDoc={renderNewsletterHtml({
-              contentHtml: resolveMergeTags(newsletter.content),
+              contentHtml: `${resolveMergeTags(newsletter.content)}${sectionsHtml}`,
               previewText: newsletter.previewText ?? undefined,
               unsubscribeUrl: "#",
             })}

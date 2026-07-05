@@ -42,8 +42,8 @@ interface RenderNewsletterHtmlParams {
 
 /**
  * Wraps TipTap-generated HTML in an email-safe, table-based layout with the
- * "Practice Notes" branding (cobalt/navy, Helvetica poster style) and the
- * CAN-SPAM-required unsubscribe link.
+ * Aaron Curtis Yoga wordmark (cobalt/navy accents) and the CAN-SPAM-required
+ * unsubscribe link.
  */
 export function renderNewsletterHtml({
   contentHtml,
@@ -95,19 +95,10 @@ ${
     <td align="center" style="padding: 24px 16px;">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
         <tr>
-          <td style="background-color:#ffffff; border-top: 5px solid ${NAVY}; padding: 34px 36px 8px;">
-            <table role="presentation" cellpadding="0" cellspacing="0">
-              <tr>
-                <td style="background-color:${NAVY}; width:44px; height:44px; text-align:center; vertical-align:middle;">
-                  <span style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; font-weight: 800; color: #ffffff; letter-spacing: 0.02em;">AC</span>
-                </td>
-                <td style="padding-left: 14px;">
-                  <a href="${SITE_URL}" style="font-family: Helvetica, Arial, sans-serif; font-size: 23px; font-weight: 800; text-transform: uppercase; letter-spacing: 0.03em; color: ${INK}; text-decoration: none;">
-                    Practice Notes
-                  </a>
-                </td>
-              </tr>
-            </table>
+          <td style="background-color:#ffffff; border-top: 5px solid ${NAVY}; padding: 34px 36px 6px; text-align: center;">
+            <a href="${SITE_URL}" style="font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 600; font-style: italic; letter-spacing: -0.01em; color: ${INK}; text-decoration: none;">
+              aaron curtis yoga
+            </a>
           </td>
         </tr>
         <tr>
