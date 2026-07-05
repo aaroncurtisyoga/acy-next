@@ -81,7 +81,7 @@ const NewsletterForm = () => {
         >
           {isSubmitSuccessful
             ? "You're on the list ~ thank you!"
-            : "Free, weekly-ish. Unsubscribe anytime."}
+            : "Free, monthly-ish. Unsubscribe anytime."}
         </p>
       )}
     </form>
