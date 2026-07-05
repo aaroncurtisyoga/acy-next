@@ -80,9 +80,7 @@ const UserDropdown: FC<UserDropdownProps> = ({
   };
 
   // Simple header link styling
-  const buttonClasses = isSignedIn
-    ? "group cursor-pointer"
-    : "group header-link cursor-pointer";
+  const buttonClasses = "group cursor-pointer";
 
   // Get user initials for avatar
   const userInitials =
@@ -109,13 +107,11 @@ const UserDropdown: FC<UserDropdownProps> = ({
     return <div className={className}>{userInitials}</div>;
   };
 
-  // Show skeleton while Clerk is loading
-  if (!isLoaded) {
-    return (
-      <div className={`relative ${className}`}>
-        <div className="w-8 h-8 rounded-full bg-gray-200 animate-pulse"></div>
-      </div>
-    );
+  // Only the admin uses authentication, so the public header shows no account
+  // control for signed-out (or still-loading) visitors. The admin signs in by
+  // navigating to /admin, which redirects to the Clerk sign-in page.
+  if (!isLoaded || !isSignedIn) {
+    return null;
   }
 
   return (
@@ -123,19 +119,15 @@ const UserDropdown: FC<UserDropdownProps> = ({
       <button
         ref={buttonRef}
         data-testid="user-menu-button"
-        aria-label={isSignedIn ? "Account menu" : "Sign in"}
+        aria-label="Account menu"
         aria-expanded={isDropdownOpen}
         aria-haspopup="menu"
         className={buttonClasses}
         onClick={toggleMenu}
       >
-        {isSignedIn ? (
-          <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white hover:shadow-xl transition-shadow duration-200 overflow-hidden">
-            <AvatarDisplay className="w-full h-full rounded-full object-cover flex items-center justify-center text-white font-medium text-sm" />
-          </div>
-        ) : (
-          <span className="text-sm font-medium">Sign In</span>
-        )}
+        <div className="w-8 h-8 rounded-full bg-gray-600 flex items-center justify-center text-white font-medium text-sm shadow-lg border-2 border-white hover:shadow-xl transition-shadow duration-200 overflow-hidden">
+          <AvatarDisplay className="w-full h-full rounded-full object-cover flex items-center justify-center text-white font-medium text-sm" />
+        </div>
       </button>
 
       {isDropdownOpen &&
@@ -200,41 +192,16 @@ const UserDropdown: FC<UserDropdownProps> = ({
                   </Link>
                 ))}
 
-              {isSignedIn ? (
-                <>
-                  <div className="mx-4 my-2 h-px bg-gray-200" />
-                  <button
-                    data-testid="logout-button"
-                    onClick={handleSignOut}
-                    className="group flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
-                    role="menuitem"
-                  >
-                    <LogOut className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
-                    <span className="flex-1">Sign out</span>
-                  </button>
-                </>
-              ) : (
-                <div className="px-4 py-3">
-                  <Link
-                    data-testid="login-link"
-                    href="/sign-in"
-                    className="block w-full text-center px-4 py-2.5 bg-gray-600 hover:bg-gray-700 text-white font-medium rounded-xl transition-all duration-200 shadow-sm hover:shadow-md"
-                    role="menuitem"
-                    onClick={() => {
-                      track("auth", {
-                        action: "sign_in_click",
-                        source: "user_dropdown",
-                      });
-                      closeDropdown();
-                    }}
-                  >
-                    Sign in to your account
-                  </Link>
-                  <p className="text-xs text-gray-500 text-center mt-3">
-                    Secure authentication powered by Clerk
-                  </p>
-                </div>
-              )}
+              <div className="mx-4 my-2 h-px bg-gray-200" />
+              <button
+                data-testid="logout-button"
+                onClick={handleSignOut}
+                className="group flex items-center gap-3 w-full text-left px-4 py-2.5 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900 transition-all duration-200"
+                role="menuitem"
+              >
+                <LogOut className="w-4 h-4 text-gray-400 group-hover:text-gray-600 transition-colors duration-200" />
+                <span className="flex-1">Sign out</span>
+              </button>
             </div>
           </div>,
           document.body,
