@@ -3,7 +3,10 @@
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
-import { renderNewsletterHtml } from "@/app/_lib/email/newsletter-template";
+import {
+  renderNewsletterHtml,
+  resolveMergeTags,
+} from "@/app/_lib/email/newsletter-template";
 import prisma from "@/app/_lib/prisma";
 import resend from "@/app/_lib/resend";
 import {
@@ -519,9 +522,14 @@ export async function sendTestNewsletter(data: ComposeInputs) {
     }
 
     const html = renderNewsletterHtml({
-      contentHtml: validation.data.content,
+      // The transactional API doesn't substitute merge tags, so resolve them
+      // here with the admin's own details for a realistic test.
+      contentHtml: resolveMergeTags(validation.data.content, {
+        firstName: user?.firstName ?? undefined,
+        lastName: user?.lastName ?? undefined,
+        email,
+      }),
       previewText: validation.data.previewText,
-      // No per-recipient substitution on the transactional API
       unsubscribeUrl: "#",
     });
 

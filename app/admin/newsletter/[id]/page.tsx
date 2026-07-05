@@ -10,7 +10,10 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import NewsletterEditor from "@/app/admin/newsletter/_components/NewsletterEditor";
 import { getNewsletterById } from "@/app/_lib/actions/newsletter.actions";
-import { renderNewsletterHtml } from "@/app/_lib/email/newsletter-template";
+import {
+  renderNewsletterHtml,
+  resolveMergeTags,
+} from "@/app/_lib/email/newsletter-template";
 import { formatDateTime } from "@/app/_lib/utils";
 
 const NewsletterDetailPage: FC = () => {
@@ -92,7 +95,7 @@ const NewsletterDetailPage: FC = () => {
           <iframe
             title="Newsletter content"
             srcDoc={renderNewsletterHtml({
-              contentHtml: newsletter.content,
+              contentHtml: resolveMergeTags(newsletter.content),
               previewText: newsletter.previewText ?? undefined,
               unsubscribeUrl: "#",
             })}

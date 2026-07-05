@@ -15,6 +15,7 @@ import {
   Loader2,
   Save,
   Send,
+  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -30,7 +31,10 @@ import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import Tiptap from "@/app/_components/Tiptap";
-import { renderNewsletterHtml } from "@/app/_lib/email/newsletter-template";
+import {
+  renderNewsletterHtml,
+  resolveMergeTags,
+} from "@/app/_lib/email/newsletter-template";
 import {
   createNewsletter,
   getUpcomingEventsForNewsletter,
@@ -113,6 +117,18 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     }
   };
 
+  const handleInsertGreeting = () => {
+    // Resend swaps {{{contact.first_name}}} for each person's name at send time.
+    // No fallback word and no trailing comma on purpose: with a name it reads
+    // "Hey Aaron"; with none it's just "Hey" (a trailing comma would leave a
+    // stray "Hey ," for the no-name folks).
+    editorRef.current
+      ?.chain()
+      .focus("start")
+      .insertContent("<p>Hey {{{contact.first_name}}}</p>")
+      .run();
+  };
+
   const handleInsertEvents = async () => {
     setIsInsertingEvents(true);
     try {
@@ -184,7 +200,11 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
 
   const previewHtml = () =>
     renderNewsletterHtml({
-      contentHtml: getValues("content") || "<p>Nothing here yet…</p>",
+      // Show the no-name fallback so the preview matches what most recipients
+      // (and the "Hey there," case) will actually see.
+      contentHtml: resolveMergeTags(
+        getValues("content") || "<p>Nothing here yet…</p>",
+      ),
       previewText: getValues("previewText"),
       unsubscribeUrl: "#",
     });
@@ -227,20 +247,41 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
             />
           </FormField>
 
-          <Button
-            type="button"
-            variant="outline"
-            size="sm"
-            disabled={isInsertingEvents}
-            onClick={handleInsertEvents}
-          >
-            {isInsertingEvents ? (
-              <Loader2 className="w-4 h-4 animate-spin" />
-            ) : (
-              <CalendarPlus className="w-4 h-4" />
-            )}
-            Insert upcoming classes
-          </Button>
+          <div className="space-y-2">
+            <div className="flex flex-wrap gap-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleInsertGreeting}
+              >
+                <UserRound className="w-4 h-4" />
+                Insert greeting
+              </Button>
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                disabled={isInsertingEvents}
+                onClick={handleInsertEvents}
+              >
+                {isInsertingEvents ? (
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                ) : (
+                  <CalendarPlus className="w-4 h-4" />
+                )}
+                Insert upcoming classes
+              </Button>
+            </div>
+            <p className="text-xs text-muted-foreground">
+              Tip: the greeting uses{" "}
+              <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
+                {"{{{contact.first_name}}}"}
+              </code>{" "}
+              — people with a name on file see “Hey Aaron”; everyone else just
+              sees “Hey.”
+            </p>
+          </div>
         </CardContent>
       </Card>
 

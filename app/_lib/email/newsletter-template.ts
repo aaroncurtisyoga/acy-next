@@ -3,6 +3,32 @@ const COBALT = "#2749e0";
 const NAVY = "#131826";
 const INK = "#222222";
 
+/**
+ * Resend substitutes {{{contact.*}}} merge tags per-recipient only when a
+ * broadcast actually sends. Previews, the sent-newsletter viewer, and test
+ * sends go through APIs that DON'T substitute, so resolve the tags ourselves in
+ * those contexts — using the supplied values, or each tag's own |fallback (or
+ * empty when it has none) — so nobody sees a raw "{{{contact.first_name}}}".
+ * Leaves {{{RESEND_UNSUBSCRIBE_URL}}} untouched (handled via unsubscribeUrl).
+ */
+export function resolveMergeTags(
+  html: string,
+  values: { firstName?: string; lastName?: string; email?: string } = {},
+): string {
+  const map: Record<string, string | undefined> = {
+    first_name: values.firstName,
+    last_name: values.lastName,
+    email: values.email,
+  };
+  return html.replace(
+    /\{\{\{\s*contact\.(first_name|last_name|email)\s*(?:\|([^}]*))?\}\}\}/g,
+    (_match, field: string, fallback = "") => {
+      const value = map[field];
+      return (value && value.trim()) || fallback.trim();
+    },
+  );
+}
+
 interface RenderNewsletterHtmlParams {
   contentHtml: string;
   previewText?: string;
