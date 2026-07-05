@@ -1,14 +1,12 @@
 import { FC } from "react";
+import AdminPage from "@/app/admin/_components/AdminPage";
 import ManageUsersTable from "@/app/admin/users/_components/ManageUsersTable";
 
 const Users: FC = () => {
   return (
-    <div className={"wrapper"}>
-      <h1 className="my-5 font-display text-3xl uppercase text-foreground">
-        Users
-      </h1>
+    <AdminPage title="Users">
       <ManageUsersTable />
-    </div>
+    </AdminPage>
   );
 };
 

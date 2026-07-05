@@ -120,9 +120,9 @@ export default function AdminLayout({ children }: AdminLayoutProps) {
           </div>
         </aside>
 
-        {/* Main content */}
-        <main className="flex-1 p-4 bg-background text-foreground flex flex-col">
-          <div className="flex-1">{children}</div>{" "}
+        {/* Main content — padding is owned by each page's AdminPage shell */}
+        <main className="flex flex-1 flex-col bg-background text-foreground">
+          <div className="flex flex-1 flex-col">{children}</div>
         </main>
       </div>
     </AdminProtection>

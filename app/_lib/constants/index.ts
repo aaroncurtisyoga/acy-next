@@ -4,7 +4,9 @@ import {
   Calendar,
   Car,
   Footprints,
+  LayoutDashboard,
   Mail,
+  ShoppingBag,
   TramFront,
   UsersRound,
   RefreshCw,
@@ -51,14 +53,22 @@ export const travelOptions: TravelOption[] = [
 
 export const instructorEmailAddress = "hi@aaroncurtisyoga.com";
 
-export const adminDashboardLinks = [
+export const adminNavLinks = [
+  { name: "Dashboard", path: "/admin", icon: LayoutDashboard },
   { name: "Events", path: "/admin/events", icon: Calendar },
+  { name: "Orders", path: "/admin/events/orders", icon: ShoppingBag },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "Users", path: "/admin/users", icon: UsersRound },
   { name: "Newsletter", path: "/admin/newsletter", icon: Mail },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
-  { name: "Main Site", path: "/", icon: ExternalLink },
 ];
+
+// Rendered apart from the admin sections — it leaves the admin area entirely.
+export const mainSiteLink = {
+  name: "Back to site",
+  path: "/",
+  icon: ExternalLink,
+};
 
 export const TableEventManagementColumns = [
   "Date & Time",

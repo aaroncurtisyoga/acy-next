@@ -48,7 +48,7 @@ const EventManagementCard: FC<EventManagementCardProps> = ({
               </SimpleTooltip>
             )}
           </div>
-          <Badge className="bg-primary/10 text-primary flex-shrink-0">
+          <Badge variant="info" className="flex-shrink-0">
             {event.category.name}
           </Badge>
         </div>
@@ -77,20 +77,14 @@ const EventManagementCard: FC<EventManagementCardProps> = ({
 
         {/* Status chips */}
         <div className="flex flex-wrap gap-2">
-          <Badge
-            className={
-              event.isActive
-                ? "bg-green-100 text-green-700"
-                : "bg-secondary text-secondary-foreground"
-            }
-          >
+          <Badge variant={event.isActive ? "success" : "secondary"}>
             {event.isActive ? "Active" : "Inactive"}
           </Badge>
           {event.isFree ? (
-            <Badge className="bg-green-100 text-green-700">Free</Badge>
+            <Badge variant="success">Free</Badge>
           ) : (
             event.price && (
-              <Badge className="bg-yellow-100 text-yellow-700">
+              <Badge variant="secondary">
                 <DollarSign size={12} className="mr-1" />
                 {event.price}
               </Badge>
@@ -103,7 +97,7 @@ const EventManagementCard: FC<EventManagementCardProps> = ({
             </Badge>
           )}
           {event.isFeatured && (
-            <Badge className="bg-primary/10 text-primary">
+            <Badge variant="info">
               <Star size={12} className="mr-1 fill-primary" />
               Featured
             </Badge>

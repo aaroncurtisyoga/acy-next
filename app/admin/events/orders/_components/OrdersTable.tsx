@@ -10,6 +10,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { Order, User, Event } from "@prisma/client";
+import { ShoppingBag } from "lucide-react";
 import OrderCard from "@/app/admin/events/orders/_components/OrderCard";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 
@@ -24,9 +25,10 @@ interface OrdersTableProps {
 const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
   if (!orders.length) {
     return (
-      <p className="text-muted-foreground text-center py-8">
-        No orders have been placed just yet.
-      </p>
+      <div className="py-8 text-center text-muted-foreground">
+        <ShoppingBag className="mx-auto mb-3 h-12 w-12 text-muted-foreground/60" />
+        <p>No orders have been placed just yet.</p>
+      </div>
     );
   }
 

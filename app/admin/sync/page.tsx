@@ -2,6 +2,8 @@
 
 import { useState, useEffect, useCallback } from "react";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import AdminPage from "@/app/admin/_components/AdminPage";
 import { Loader2 } from "lucide-react";
 
 type SyncSource = "bright-bear" | "dcbp";
@@ -106,24 +108,24 @@ export default function SyncPage() {
     results.find((r) => r.source === source);
 
   return (
-    <div className="p-6">
-      <h1 className="mb-4 font-display text-3xl uppercase text-foreground">
-        Event Sync
-      </h1>
+    <AdminPage
+      title="Event Sync"
+      description="Pull the latest external class schedules into your events."
+    >
       <div className="max-w-2xl space-y-4">
         {/* Bright Bear Section */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex justify-between items-start mb-4">
+        <Card className="p-6">
+          <div className="mb-4 flex items-start justify-between gap-3">
             <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
               Bright Bear Yoga Classes
             </h2>
             {syncStatus && (
-              <span className="text-sm text-gray-500">
+              <span className="shrink-0 text-sm text-muted-foreground">
                 Last synced: {formatTimeAgo(syncStatus.brightBear)}
               </span>
             )}
           </div>
-          <p className="text-gray-600 mb-4">
+          <p className="mb-4 text-muted-foreground">
             Sync Aaron Curtis&apos;s classes from Bright Bear Yoga DC. This will
             fetch the latest schedule from their Momence booking system and
             update the events database.
@@ -141,30 +143,30 @@ export default function SyncPage() {
 
           {getResult("bright-bear") && (
             <div
-              className={`mt-4 p-4 rounded-lg ${
+              className={`mt-4 rounded-lg p-4 ${
                 getResult("bright-bear")?.isError
-                  ? "bg-red-100 text-red-700"
-                  : "bg-green-100 text-green-700"
+                  ? "bg-destructive/10 text-destructive"
+                  : "bg-green-100 text-green-800"
               }`}
             >
               {getResult("bright-bear")?.message}
             </div>
           )}
-        </div>
+        </Card>
 
         {/* DCBP Section */}
-        <div className="bg-white rounded-lg shadow p-6">
-          <div className="flex justify-between items-start mb-4">
+        <Card className="p-6">
+          <div className="mb-4 flex items-start justify-between gap-3">
             <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
               DC Bouldering Project Classes
             </h2>
             {syncStatus && (
-              <span className="text-sm text-gray-500">
+              <span className="shrink-0 text-sm text-muted-foreground">
                 Last synced: {formatTimeAgo(syncStatus.dcbp)}
               </span>
             )}
           </div>
-          <p className="text-gray-600 mb-4">
+          <p className="mb-4 text-muted-foreground">
             Sync Aaron Curtis&apos;s yoga classes from DC Bouldering Project.
             This will fetch the latest schedule from their ZoomShift system and
             update the events database.
@@ -180,27 +182,27 @@ export default function SyncPage() {
 
           {getResult("dcbp") && (
             <div
-              className={`mt-4 p-4 rounded-lg ${
+              className={`mt-4 rounded-lg p-4 ${
                 getResult("dcbp")?.isError
-                  ? "bg-red-100 text-red-700"
-                  : "bg-green-100 text-green-700"
+                  ? "bg-destructive/10 text-destructive"
+                  : "bg-green-100 text-green-800"
               }`}
             >
               {getResult("dcbp")?.message}
             </div>
           )}
-        </div>
+        </Card>
 
         {/* Info Section */}
-        <div className="bg-gray-100 rounded-lg p-4">
-          <h3 className="font-semibold mb-2">Automatic Sync</h3>
-          <p className="text-sm text-gray-600">
+        <div className="rounded-lg bg-muted p-4">
+          <h3 className="mb-2 font-semibold">Automatic Sync</h3>
+          <p className="text-sm text-muted-foreground">
             Classes from both venues are automatically synced daily via Vercel
             Cron. External events will show a &ldquo;Register&rdquo; button that
             links directly to each venue&apos;s booking system.
           </p>
         </div>
       </div>
-    </div>
+    </AdminPage>
   );
 }

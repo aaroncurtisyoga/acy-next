@@ -228,28 +228,20 @@ const TableEventManagement: FC = () => {
                       </div>
                     </TableCell>
                     <TableCell>
-                      <Badge className="bg-primary/10 text-primary">
-                        {event.category.name}
-                      </Badge>
+                      <Badge variant="info">{event.category.name}</Badge>
                     </TableCell>
                     <TableCell>
                       <div className="flex flex-wrap gap-2">
                         <Badge
-                          className={
-                            event.isActive
-                              ? "bg-green-100 text-green-700"
-                              : "bg-secondary text-secondary-foreground"
-                          }
+                          variant={event.isActive ? "success" : "secondary"}
                         >
                           {event.isActive ? "Active" : "Inactive"}
                         </Badge>
                         {event.isFree ? (
-                          <Badge className="bg-green-100 text-green-700">
-                            Free
-                          </Badge>
+                          <Badge variant="success">Free</Badge>
                         ) : (
                           event.price && (
-                            <Badge className="bg-yellow-100 text-yellow-700">
+                            <Badge variant="secondary">
                               <DollarSign size={12} className="mr-1" />
                               {event.price}
                             </Badge>
@@ -262,7 +254,7 @@ const TableEventManagement: FC = () => {
                           </Badge>
                         )}
                         {event.isFeatured && (
-                          <Badge className="bg-primary/10 text-primary">
+                          <Badge variant="info">
                             <Star size={12} className="mr-1 fill-primary" />
                             Featured
                           </Badge>

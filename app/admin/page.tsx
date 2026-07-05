@@ -1,64 +1,114 @@
 import Link from "next/link";
-import { Card, CardContent, CardHeader } from "@/components/ui/card";
-import { adminDashboardLinks } from "@/app/_lib/constants";
+import {
+  Boxes,
+  Calendar,
+  CalendarClock,
+  Mail,
+  ShoppingBag,
+  UsersRound,
+} from "lucide-react";
+import { Card } from "@/components/ui/card";
+import AdminPage from "@/app/admin/_components/AdminPage";
+import prisma from "@/app/_lib/prisma";
+import { getSubscriberCount } from "@/app/_lib/actions/newsletter.actions";
 
-export default function AdminDashboard() {
-  const dashboardCards = adminDashboardLinks;
+type Stat = number | string | null;
+
+async function getStats() {
+  const now = new Date();
+  const [events, upcoming, orders, users, categories, subscriberData] =
+    await Promise.all([
+      prisma.event.count().catch(() => null),
+      prisma.event
+        .count({ where: { isActive: true, startDateTime: { gte: now } } })
+        .catch(() => null),
+      prisma.order.count().catch(() => null),
+      prisma.user.count().catch(() => null),
+      prisma.category.count().catch(() => null),
+      getSubscriberCount().catch(() => null),
+    ]);
+
+  const subscribers: Stat = subscriberData
+    ? subscriberData.hasMore
+      ? `${subscriberData.count}+`
+      : subscriberData.count
+    : null;
+
+  return { events, upcoming, orders, users, categories, subscribers };
+}
+
+export default async function AdminDashboard() {
+  const stats = await getStats();
+
+  const tiles: {
+    label: string;
+    value: Stat;
+    icon: typeof Calendar;
+    href: string;
+  }[] = [
+    {
+      label: "Total Events",
+      value: stats.events,
+      icon: Calendar,
+      href: "/admin/events",
+    },
+    {
+      label: "Upcoming",
+      value: stats.upcoming,
+      icon: CalendarClock,
+      href: "/admin/events",
+    },
+    {
+      label: "Orders",
+      value: stats.orders,
+      icon: ShoppingBag,
+      href: "/admin/events/orders",
+    },
+    {
+      label: "Subscribers",
+      value: stats.subscribers,
+      icon: Mail,
+      href: "/admin/newsletter",
+    },
+    {
+      label: "Users",
+      value: stats.users,
+      icon: UsersRound,
+      href: "/admin/users",
+    },
+    {
+      label: "Categories",
+      value: stats.categories,
+      icon: Boxes,
+      href: "/admin/categories",
+    },
+  ];
 
   return (
-    <div className="p-6">
-      <div className="mb-8">
-        <h1 className="mb-2 font-display text-3xl uppercase text-foreground md:text-4xl">
-          Dashboard
-        </h1>
-        <p className="text-muted-foreground">
-          Manage your application data and settings
-        </p>
-      </div>
-
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-        {dashboardCards.map((item) => {
-          const IconComponent = item.icon;
+    <AdminPage
+      title="Dashboard"
+      description="At a glance across your events, orders, and community."
+    >
+      <div className="grid grid-cols-2 gap-4 md:grid-cols-3">
+        {tiles.map((tile) => {
+          const Icon = tile.icon;
           return (
-            <Link key={item.path} href={item.path} className="block">
-              <Card className="p-4 transition-all duration-200 cursor-pointer border border-border hover:shadow-lg relative flex flex-col h-full">
-                <CardHeader className="flex flex-col items-center pb-2 space-y-0">
-                  <div className="p-3 rounded-full bg-primary/10 mb-3">
-                    <IconComponent size={32} className="text-primary" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-foreground">
-                    {item.name}
-                  </h3>
-                </CardHeader>
-                <CardContent className="pt-0 flex flex-col flex-grow">
-                  <p className="text-sm text-muted-foreground text-center flex-grow">
-                    {getCardDescription(item.name)}
-                  </p>
-                </CardContent>
+            <Link key={tile.label} href={tile.href} className="block">
+              <Card className="h-full p-5 transition-shadow hover:shadow-md">
+                <div className="flex items-center justify-between gap-2">
+                  <span className="text-sm font-medium text-muted-foreground">
+                    {tile.label}
+                  </span>
+                  <Icon className="h-5 w-5 shrink-0 text-primary" />
+                </div>
+                <p className="mt-3 font-display text-4xl text-foreground">
+                  {tile.value ?? "—"}
+                </p>
               </Card>
             </Link>
           );
         })}
       </div>
-    </div>
+    </AdminPage>
   );
-}
-
-function getCardDescription(name: string): string {
-  switch (name) {
-    case "Events":
-      return "Create, edit, and manage all events";
-    case "Categories":
-      return "Organize events with custom categories";
-    case "Users":
-      return "Manage user accounts and permissions";
-    case "Newsletter":
-      return "Write and send Practice Notes issues";
-    case "Sync Events":
-      return "Synchronize events with external sources";
-    case "Main Site":
-      return "Go back to the main website";
-    default:
-      return `Manage ${name.toLowerCase()}`;
-  }
 }

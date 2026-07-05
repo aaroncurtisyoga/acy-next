@@ -76,7 +76,7 @@ const ManageUsersTable: FC = () => {
   return (
     <>
       {/* Mobile: Cards */}
-      <div className="md:hidden space-y-3 mt-5">
+      <div className="md:hidden space-y-3">
         {users.map((user) => (
           <UserManagementCard
             key={user.id}
@@ -87,7 +87,7 @@ const ManageUsersTable: FC = () => {
       </div>
 
       {/* Desktop: Table */}
-      <div className="hidden md:block mt-5">
+      <div className="hidden md:block">
         <Table aria-label="Table for Managing Users">
           <TableHeader>
             <TableRow>

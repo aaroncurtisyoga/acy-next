@@ -359,26 +359,22 @@ function EventPopoverDetails({
       </div>
 
       <div className="flex flex-wrap gap-1.5">
-        <Badge className="text-[10px] bg-primary/10 text-primary">
+        <Badge variant="info" className="text-[10px]">
           {event.category.name}
         </Badge>
         <Badge
-          className={cn(
-            "text-[10px]",
-            event.isActive
-              ? "bg-green-100 text-green-700"
-              : "bg-secondary text-secondary-foreground",
-          )}
+          variant={event.isActive ? "success" : "secondary"}
+          className="text-[10px]"
         >
           {event.isActive ? "Active" : "Inactive"}
         </Badge>
         {event.isFree ? (
-          <Badge className="text-[10px] bg-green-100 text-green-700">
+          <Badge variant="success" className="text-[10px]">
             Free
           </Badge>
         ) : (
           event.price && (
-            <Badge className="text-[10px] bg-yellow-100 text-yellow-700">
+            <Badge variant="secondary" className="text-[10px]">
               ${event.price}
             </Badge>
           )
@@ -430,7 +426,7 @@ function MobileEventItem({
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2">
           <span className="text-sm font-medium">{timeOnly}</span>
-          <Badge className="text-[10px] bg-primary/10 text-primary">
+          <Badge variant="info" className="text-[10px]">
             {event.category.name}
           </Badge>
           {!event.isActive && (

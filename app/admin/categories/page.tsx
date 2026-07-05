@@ -18,6 +18,7 @@ import {
 import { CategoryFormSchema } from "@/app/_lib/schema";
 import { handleError } from "@/app/_lib/utils";
 import TableCategoryManagement from "@/app/admin/categories/_components/TableCategoryManagement";
+import AdminPage from "@/app/admin/_components/AdminPage";
 import { CheckCircle, Plus, X, Layers } from "lucide-react";
 
 type Inputs = z.infer<typeof CategoryFormSchema>;
@@ -89,17 +90,16 @@ const AdminCategories: FC = () => {
   };
 
   return (
-    <div className="wrapper max-w-4xl mx-auto">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-3xl uppercase text-foreground">
-          Categories
-        </h1>
-        <Badge className="bg-primary/10 text-primary text-sm px-3 py-1">
+    <AdminPage
+      title="Categories"
+      width="narrow"
+      badge={
+        <Badge variant="info" className="px-3 py-1 text-sm">
           {categories.length}{" "}
           {categories.length === 1 ? "Category" : "Categories"}
         </Badge>
-      </div>
-
+      }
+    >
       {/* Success Message */}
       {showSuccess && (
         <div className="flex items-center gap-2 p-3 mb-4 bg-green-50 text-green-700 rounded-lg animate-in slide-in-from-top-2">
@@ -180,15 +180,6 @@ const AdminCategories: FC = () => {
                   {isSubmitting && <Loader2 className="animate-spin" />}
                   {isSubmitting ? "Adding..." : "Add"}
                 </Button>
-                <Button
-                  type="button"
-                  variant="secondary"
-                  onClick={handleCancel}
-                  disabled={isSubmitting}
-                  className="font-medium"
-                >
-                  Cancel
-                </Button>
               </form>
             </div>
           )}
@@ -208,7 +199,7 @@ const AdminCategories: FC = () => {
           )}
         </CardContent>
       </Card>
-    </div>
+    </AdminPage>
   );
 };
 

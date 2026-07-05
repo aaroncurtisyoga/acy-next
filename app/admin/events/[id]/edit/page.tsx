@@ -196,7 +196,7 @@ export default function EditEventPage() {
   }
 
   return (
-    <div className="max-w-4xl mx-auto">
+    <div className="mx-auto max-w-4xl p-4 md:p-6">
       <div className="relative">
         {/* Close button */}
         <Button

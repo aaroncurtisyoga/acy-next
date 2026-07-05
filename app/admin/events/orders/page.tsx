@@ -1,5 +1,6 @@
 import { getOrdersByEvent } from "@/app/_lib/actions/order.actions";
 import OrdersTable from "@/app/admin/events/orders/_components/OrdersTable";
+import AdminPage from "@/app/admin/_components/AdminPage";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
@@ -17,10 +18,12 @@ const Orders = async ({ searchParams }: OrdersPageProps) => {
   const orders = await getOrdersByEvent({ eventId, searchString: searchText });
 
   return (
-    <section className={"wrapper py-5 md:py-10 "}>
-      <h3 className={"text-xl mb-5 text-foreground"}>Orders</h3>
+    <AdminPage
+      title="Orders"
+      description="Registrations and payments across your events."
+    >
       <OrdersTable orders={orders} />
-    </section>
+    </AdminPage>
   );
 };
 

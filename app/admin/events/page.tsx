@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Plus, List, CalendarDays } from "lucide-react";
+import AdminPage from "@/app/admin/_components/AdminPage";
 import TableEventManagement from "@/app/admin/events/_components/TableEventManagement";
 import CalendarEventManagement from "@/app/admin/events/_components/CalendarEventManagement";
 
@@ -12,12 +13,11 @@ const AdminEventsPage: FC = () => {
   const [view, setView] = useState<"list" | "calendar">("calendar");
 
   return (
-    <div className="wrapper flex flex-col h-full">
-      <div className="flex items-center justify-between mb-6">
-        <h1 className="font-display text-3xl uppercase text-foreground">
-          Events
-        </h1>
-        <div className="flex items-center gap-3">
+    <AdminPage
+      title="Events"
+      fill
+      actions={
+        <>
           <Tabs
             value={view}
             onValueChange={(v) => setView(v as "list" | "calendar")}
@@ -36,11 +36,11 @@ const AdminEventsPage: FC = () => {
               <Plus className="w-4 h-4" /> Create Event
             </Link>
           </Button>
-        </div>
-      </div>
-
+        </>
+      }
+    >
       {view === "list" ? <TableEventManagement /> : <CalendarEventManagement />}
-    </div>
+    </AdminPage>
   );
 };
 
