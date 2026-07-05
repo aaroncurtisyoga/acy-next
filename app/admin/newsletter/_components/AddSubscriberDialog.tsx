@@ -44,7 +44,11 @@ const AddSubscriberDialog: FC<AddSubscriberDialogProps> = ({ onAdded }) => {
     const result = await addSubscriber(data);
 
     if (!result.status) {
-      setError("email", { type: "manual", message: result.message });
+      if (result.field === "email") {
+        setError("email", { type: "manual", message: result.message });
+      } else {
+        toast.error(result.message);
+      }
       return;
     }
 

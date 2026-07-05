@@ -81,12 +81,27 @@ export async function addNewsletterEntry(data: SignupInputs) {
 
 /* --------------------------- Admin: subscribers -------------------------- */
 
-export async function addSubscriber(data: SubscriberInputs) {
+// `field: "email"` marks errors the client should show inline on the email
+// input (bad address, already subscribed); everything else is infrastructure
+// and belongs in a toast.
+type AddSubscriberResult = {
+  status: boolean;
+  message: string;
+  field?: "email";
+};
+
+export async function addSubscriber(
+  data: SubscriberInputs,
+): Promise<AddSubscriberResult> {
   await requireAdmin();
 
   const validation = NewsletterSubscriberSchema.safeParse(data);
   if (!validation.success) {
-    return { status: false, message: "Please enter a valid email address." };
+    return {
+      status: false,
+      message: "Please enter a valid email address.",
+      field: "email",
+    };
   }
 
   try {
@@ -113,6 +128,7 @@ export async function addSubscriber(data: SubscriberInputs) {
         return {
           status: false,
           message: "That email is already subscribed.",
+          field: "email",
         };
       }
       console.error("Failed to add subscriber:", error);
