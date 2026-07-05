@@ -17,6 +17,7 @@ export default function WeekNavigation({
     <div className="flex items-center gap-2">
       <Link
         href={`/?week=${prevWeek}`}
+        scroll={false}
         aria-label="Previous week"
         className="px-2 py-1 text-base font-semibold text-muted-foreground transition-colors hover:text-primary"
       >
@@ -25,6 +26,7 @@ export default function WeekNavigation({
       {hasMoreEvents ? (
         <Link
           href={`/?week=${nextWeek}`}
+          scroll={false}
           aria-label="Next week"
           className="px-2 py-1 text-base font-semibold text-muted-foreground transition-colors hover:text-primary"
         >
