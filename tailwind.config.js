@@ -7,8 +7,9 @@ module.exports = {
   theme: {
     extend: {
       fontFamily: {
-        sans: ["var(--font-roboto-flex)", "sans-serif"],
+        sans: ["var(--font-barlow)", "sans-serif"],
         serif: ["var(--font-merriweather)", "serif"],
+        display: ["var(--font-anton)", "Impact", "sans-serif"],
       },
       screens: {
         md: "768px",
@@ -39,6 +40,5 @@ module.exports = {
       },
     },
   },
-  darkMode: "class",
   plugins: [],
 };

@@ -8,8 +8,8 @@ export default function AdminDashboard() {
   return (
     <div className="p-6">
       <div className="mb-8">
-        <h1 className="text-3xl font-bold text-foreground mb-2">
-          Welcome to Admin Dashboard
+        <h1 className="mb-2 font-display text-3xl uppercase text-foreground md:text-4xl">
+          Dashboard
         </h1>
         <p className="text-muted-foreground">
           Manage your application data and settings
@@ -52,6 +52,8 @@ function getCardDescription(name: string): string {
       return "Organize events with custom categories";
     case "Users":
       return "Manage user accounts and permissions";
+    case "Newsletter":
+      return "Write and send Practice Notes issues";
     case "Sync Events":
       return "Synchronize events with external sources";
     case "Main Site":

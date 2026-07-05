@@ -1,78 +1,76 @@
 import Link from "next/link";
-import { FaYoutube, FaSpotify, FaInstagram } from "react-icons/fa";
-import ThemeToggle from "@/app/_components/ThemeToggle";
 import { track } from "@vercel/analytics";
+
+const socialLinks = [
+  {
+    name: "instagram",
+    href: "https://www.instagram.com/aaroncurtisyoga/",
+    testId: "footer-instagram-link",
+    ariaLabel: "Follow Aaron on Instagram",
+    trackAction: "instagram_click",
+  },
+  {
+    name: "youtube",
+    href: "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw",
+    testId: "footer-youtube-link",
+    ariaLabel: "Visit Aaron on YouTube",
+    trackAction: "youtube_click",
+  },
+  {
+    name: "spotify",
+    href: "https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08",
+    testId: "footer-spotify-link",
+    ariaLabel: "See Aaron's playlists on Spotify",
+    trackAction: "spotify_click",
+  },
+];
 
 const Footer = () => {
   return (
     <footer
       data-testid="footer"
-      className="border-t border-slate-200 dark:border-slate-700 py-4 bg-white dark:bg-[#0a0a0a] text-slate-700 dark:text-slate-300 flex-shrink-0"
-      style={{ paddingBottom: "max(1rem, env(safe-area-inset-bottom, 0px))" }}
+      className="flex-shrink-0 bg-navy py-9 text-white/55"
+      style={{
+        paddingBottom: "max(2.25rem, env(safe-area-inset-bottom, 0px))",
+      }}
     >
       <div className="w-full max-w-screen-2xl mx-auto px-4 md:px-6 lg:px-12">
-        <div className="flex flex-col-reverse sm:flex-row items-center sm:justify-between gap-7 sm:gap-0">
-          {/* Theme toggle - left side on desktop, bottom on mobile */}
-          <div className="sm:block">
-            <ThemeToggle />
-          </div>
+        <div className="flex flex-col-reverse items-center gap-7 sm:flex-row sm:justify-between">
+          <span className="text-sm font-medium lowercase">
+            © {new Date().getFullYear()} aaron curtis
+          </span>
 
-          {/* Social links - right side on desktop, top on mobile */}
           <div
             data-testid="footer-social-links"
-            className="flex items-center gap-6"
+            className="flex items-center gap-7"
           >
-            <Link
-              href="https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw"
-              target="_blank"
-              data-testid="footer-youtube-link"
-              aria-label="Visit Aaron on YouTube"
-              className="group"
-              onClick={() => {
-                track("social_media", {
-                  action: "youtube_click",
-                  source: "footer",
-                });
-              }}
+            {socialLinks.map((link) => (
+              <Link
+                key={link.name}
+                href={link.href}
+                target="_blank"
+                rel="noopener noreferrer"
+                data-testid={link.testId}
+                aria-label={link.ariaLabel}
+                className="text-[15px] font-medium lowercase text-white transition-colors hover:text-cobalt-bright"
+                onClick={() => {
+                  track("social_media", {
+                    action: link.trackAction,
+                    source: "footer",
+                  });
+                }}
+              >
+                {link.name}
+              </Link>
+            ))}
+            <a
+              href="mailto:hi@aaroncurtisyoga.com"
+              data-testid="footer-email-link"
+              aria-label="Email Aaron"
+              className="text-[15px] font-medium lowercase text-white transition-colors hover:text-cobalt-bright"
             >
-              <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600">
-                <FaYoutube className="w-6 h-6 text-[#FF0000]" />
-              </div>
-            </Link>
-            <Link
-              href="https://open.spotify.com/user/31fmmphtelatfs7ra4tvboorm4qy?si=c32d094ea2c84e08"
-              target="_blank"
-              data-testid="footer-spotify-link"
-              aria-label="See Aaron's playlists on Spotify"
-              className="group"
-              onClick={() => {
-                track("social_media", {
-                  action: "spotify_click",
-                  source: "footer",
-                });
-              }}
-            >
-              <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600">
-                <FaSpotify className="w-6 h-6 text-[#1DB954]" />
-              </div>
-            </Link>
-            <Link
-              href="https://www.instagram.com/aaroncurtisyoga/"
-              target="_blank"
-              data-testid="footer-instagram-link"
-              aria-label="Follow Aaron on Instagram"
-              className="group"
-              onClick={() => {
-                track("social_media", {
-                  action: "instagram_click",
-                  source: "footer",
-                });
-              }}
-            >
-              <div className="p-3 rounded-full bg-white/70 dark:bg-slate-800/70 backdrop-blur-sm shadow-sm border border-gray-300 dark:border-slate-600">
-                <FaInstagram className="w-6 h-6 text-[#E4405F]" />
-              </div>
-            </Link>
+              email
+            </a>
           </div>
         </div>
       </div>

@@ -59,7 +59,7 @@ const CreateCategory: FC = () => {
   return (
     <div className="max-w-2xl mx-auto">
       <div className="mb-6">
-        <h1 className="text-3xl font-bold text-foreground mb-2">
+        <h1 className="mb-2 font-display text-3xl uppercase text-foreground">
           Create Category
         </h1>
         <p className="text-muted-foreground">
@@ -104,7 +104,7 @@ const CreateCategory: FC = () => {
             />
 
             {showSuccess && (
-              <div className="flex items-center gap-2 p-3 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg">
+              <div className="flex items-center gap-2 p-3 bg-green-50 text-green-700 rounded-lg">
                 <CheckCircle className="w-5 h-5" />
                 <span className="font-medium">
                   Category created successfully!

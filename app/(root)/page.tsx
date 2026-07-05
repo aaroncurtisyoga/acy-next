@@ -1,6 +1,9 @@
-import ImageResponsiveHandstand from "@/app/(root)/_components/ImageResponsiveHandstand";
+import HomeHero from "@/app/(root)/_components/HomeHero";
 import WeeklySchedule from "@/app/(root)/_components/WeeklySchedule";
 import MonthlySchedule from "@/app/(root)/_components/MonthlySchedule";
+import FeaturedEvents from "@/app/(root)/_components/FeaturedEvents";
+import HomeIntro from "@/app/(root)/_components/HomeIntro";
+import NewsletterBand from "@/app/(root)/_components/NewsletterBand";
 
 interface HomePageProps {
   searchParams: Promise<any>;
@@ -11,24 +14,22 @@ const HomePage = async ({ searchParams }: HomePageProps) => {
   const isMonthView = resolvedParams.view === "month";
 
   return (
-    <section
-      className={
-        "grid w-full max-w-7xl flex-1 md:grid-cols-[1fr_2fr] lg:mx-auto"
-      }
-    >
-      <div
-        className={
-          "relative min-h-[300px] md:min-h-[400px] aspect-[4/3] md:aspect-auto"
-        }
+    <div className="w-full">
+      <HomeHero />
+      <section
+        id="this-week"
+        className="mx-auto w-full max-w-screen-2xl scroll-mt-20"
       >
-        <ImageResponsiveHandstand />
-      </div>
-      {isMonthView ? (
-        <MonthlySchedule searchParams={resolvedParams} />
-      ) : (
-        <WeeklySchedule searchParams={resolvedParams} />
-      )}
-    </section>
+        {isMonthView ? (
+          <MonthlySchedule searchParams={resolvedParams} />
+        ) : (
+          <WeeklySchedule searchParams={resolvedParams} />
+        )}
+      </section>
+      <FeaturedEvents />
+      <HomeIntro />
+      <NewsletterBand />
+    </div>
   );
 };
 

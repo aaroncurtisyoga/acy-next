@@ -1,14 +1,21 @@
 import { ReactNode } from "react";
 import Script from "next/script";
 import { Analytics } from "@vercel/analytics/react";
-import { Merriweather, Roboto_Flex } from "next/font/google";
+import { Anton, Barlow, Merriweather } from "next/font/google";
 import { Providers } from "@/app/providers";
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
 
-const robotoFlex = Roboto_Flex({
+const barlow = Barlow({
   subsets: ["latin"],
-  variable: "--font-roboto-flex",
+  weight: ["400", "500", "600", "700"],
+  variable: "--font-barlow",
+});
+
+const anton = Anton({
+  subsets: ["latin"],
+  weight: "400",
+  variable: "--font-anton",
 });
 
 const merriweather = Merriweather({
@@ -40,17 +47,14 @@ export const viewport: Viewport = {
   initialScale: 1,
   maximumScale: 5,
   viewportFit: "cover",
-  themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#ffffff" },
-    { media: "(prefers-color-scheme: dark)", color: "#0a0a0a" },
-  ],
+  themeColor: "#ffffff",
 };
 
 export default function RootLayout({ children }: { children: ReactNode }) {
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${robotoFlex.variable} ${merriweather.variable} font-sans bg-background text-foreground antialiased`}
+        className={`${barlow.variable} ${anton.variable} ${merriweather.variable} font-sans bg-background text-foreground antialiased`}
         suppressHydrationWarning
       >
         <Providers>

@@ -23,10 +23,10 @@ const DesktopNavbarContent: FC<DesktopNavbarContentProps> = ({ children }) => {
         <Link
           key={`${link.name}-${index}`}
           className={cn(
-            "flex items-center px-3 py-2 rounded-lg text-sm transition-all duration-200",
+            "flex items-center px-3 py-2 text-[15px] font-medium lowercase transition-colors duration-200",
             pathname.includes(link.href)
-              ? "text-slate-800 bg-slate-100 dark:text-white dark:bg-gray-800"
-              : "text-gray-700 dark:text-gray-300 hover:text-slate-700 hover:bg-slate-50 dark:hover:text-white dark:hover:bg-gray-800/50",
+              ? "text-foreground underline decoration-primary decoration-2 underline-offset-8"
+              : "text-muted-foreground hover:text-foreground",
           )}
           href={link.href}
           aria-label={link.name}

@@ -6,6 +6,20 @@ export const NewsletterFormSchema = z.object({
     .email({ message: "Please enter a valid email address" }),
 });
 
+export const NewsletterSubscriberSchema = z.object({
+  email: z
+    .string({ message: "Email address is required" })
+    .email({ message: "Please enter a valid email address" }),
+  firstName: z
+    .string()
+    .max(100, "First name must be 100 characters or fewer")
+    .optional(),
+  lastName: z
+    .string()
+    .max(100, "Last name must be 100 characters or fewer")
+    .optional(),
+});
+
 export const NewsletterComposeSchema = z.object({
   subject: z
     .string()
@@ -43,12 +57,4 @@ export const EventFormBasicInfoSchema = z.object({
 
 export const CategoryFormSchema = z.object({
   category: z.string().min(2, "Category required"),
-});
-
-export const BookFormSchema = z.object({
-  title: z.string().min(1, "Title is required"),
-  author: z.string().min(1, "Author is required"),
-  description: z.string().optional(),
-  coverImageUrl: z.string().url().optional().or(z.literal("")),
-  isCurrentlyReading: z.boolean(),
 });

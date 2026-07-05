@@ -1,4 +1,3 @@
-import { Suspense } from "react";
 import Link from "next/link";
 import {
   getEventsByWeek,
@@ -7,7 +6,6 @@ import {
 import { formatDateTime, toDateKey } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import WeekNavigation from "./WeekNavigation";
-import ScheduleToggle from "./ScheduleToggle";
 
 function getMondayOfWeek(date: Date): Date {
   const d = new Date(date);
@@ -58,8 +56,6 @@ export default async function WeeklySchedule({
   });
 
   // Check if this is the current week
-  const currentMonday = getMondayOfWeek(now);
-  const isCurrentWeek = toDateKey(currentMonday) === toDateKey(weekStart);
 
   // Disable "Next" if no events exist after the current week
   const lastEventDate = await getLastActiveEventDate();
@@ -75,117 +71,50 @@ export default async function WeeklySchedule({
   const nextWeek = new Date(weekStart);
   nextWeek.setDate(nextWeek.getDate() + 7);
 
+  const todayKey = toDateKey(
+    new Date(now.toLocaleString("en-US", { timeZone: "America/New_York" })),
+  );
+
   return (
-    <div className="flex flex-col gap-4 px-4 py-5 pb-8 md:px-6 lg:px-12 lg:py-10 lg:pb-16">
+    <div className="flex flex-col px-4 py-12 md:px-6 md:py-16 lg:px-12">
       {/* Header row */}
-      <div className="flex items-start justify-between gap-4">
+      <div className="flex flex-wrap items-end justify-between gap-4">
         <div className="flex flex-col gap-1">
-          <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
-            Where to Find Me
+          <h2 className="font-display text-4xl uppercase text-foreground md:text-5xl">
+            This Week
           </h2>
-          <p className="text-sm text-muted-foreground">
+          <p className="text-sm font-medium text-muted-foreground">
             {formatDateTime(dayDates[0]).dateOnlyWithoutYear} &ndash;{" "}
             {formatDateTime(dayDates[6]).dateOnlyWithoutYear}
           </p>
         </div>
-        <Suspense>
-          <ScheduleToggle />
-        </Suspense>
+        <WeekNavigation
+          prevWeek={toDateKey(prevWeek)}
+          nextWeek={toDateKey(nextWeek)}
+          hasMoreEvents={hasMoreEvents}
+        />
       </div>
 
-      {/* Navigation */}
-      <WeekNavigation
-        prevWeek={toDateKey(prevWeek)}
-        nextWeek={toDateKey(nextWeek)}
-        isCurrentWeek={isCurrentWeek}
-        hasMoreEvents={hasMoreEvents}
-      />
-
-      {/* Desktop: 7-column grid */}
-      <div className="hidden md:grid md:grid-cols-7 md:gap-1">
-        {DAYS.map((dayName, i) => {
-          const dayEvents = eventsByDay.get(i) || [];
-          const date = dayDates[i];
-          const isToday =
-            toDateKey(
-              new Date(
-                now.toLocaleString("en-US", { timeZone: "America/New_York" }),
-              ),
-            ) === toDateKey(date);
-
-          return (
-            <div key={dayName} className="flex flex-col">
-              {/* Day header */}
-              <div
-                className={`mb-1 rounded-t-lg px-2 py-2 text-center text-xs font-semibold uppercase tracking-wide ${
-                  isToday
-                    ? "bg-primary text-white"
-                    : "bg-muted text-muted-foreground"
-                }`}
-              >
-                <div>{dayName}</div>
-                <div className="text-lg font-bold leading-tight">
-                  {date.getDate()}
-                </div>
-              </div>
-
-              {/* Events */}
-              <div className="flex min-h-[80px] flex-col gap-1">
-                {dayEvents.length === 0 ? (
-                  <div className="flex-1" />
-                ) : (
-                  dayEvents.map((event) => (
-                    <EventCell key={event.id} event={event} />
-                  ))
-                )}
-              </div>
-            </div>
-          );
-        })}
-      </div>
-
-      {/* Mobile: stacked days, hide empty */}
-      <div className="flex flex-col gap-3 md:hidden">
+      {/* Poster rows */}
+      <div className="mt-8 border-t-[3px] border-foreground">
         {DAYS.map((dayName, i) => {
           const dayEvents = eventsByDay.get(i) || [];
           if (dayEvents.length === 0) return null;
-          const date = dayDates[i];
-          const isToday =
-            toDateKey(
-              new Date(
-                now.toLocaleString("en-US", { timeZone: "America/New_York" }),
-              ),
-            ) === toDateKey(date);
+          const isToday = todayKey === toDateKey(dayDates[i]);
 
-          return (
-            <div key={dayName}>
-              <div
-                className={`mb-1 rounded-lg px-3 py-2 text-sm font-semibold ${
-                  isToday
-                    ? "bg-primary text-white"
-                    : "bg-muted text-muted-foreground"
-                }`}
-              >
-                {formatDateTime(date).dateLongWithoutYear}
-              </div>
-              <div className="flex flex-col gap-1 pl-1">
-                {dayEvents.map((event) => (
-                  <EventCell key={event.id} event={event} />
-                ))}
-              </div>
-            </div>
-          );
+          return dayEvents.map((event, idx) => (
+            <ScheduleRow
+              key={event.id}
+              event={event}
+              dayLabel={idx === 0 ? dayName : ""}
+              isToday={isToday}
+            />
+          ));
         })}
-        {events.length === 0 && (
-          <p className="py-8 text-center text-muted-foreground">
-            No classes scheduled this week.
-          </p>
-        )}
       </div>
 
-      {/* Desktop empty state */}
       {events.length === 0 && (
-        <p className="hidden py-4 text-center text-muted-foreground md:block">
+        <p className="border-b-2 border-foreground py-10 text-center font-medium text-muted-foreground">
           No classes scheduled this week.
         </p>
       )}
@@ -193,7 +122,15 @@ export default async function WeeklySchedule({
   );
 }
 
-function EventCell({ event }: { event: EventWithLocationAndCategory }) {
+function ScheduleRow({
+  event,
+  dayLabel,
+  isToday,
+}: {
+  event: EventWithLocationAndCategory;
+  dayLabel: string;
+  isToday: boolean;
+}) {
   const { timeOnly } = formatDateTime(event.startDateTime);
   const href = event.isHostedExternally
     ? event.externalRegistrationUrl || `/events/${event.id}`
@@ -204,17 +141,35 @@ function EventCell({ event }: { event: EventWithLocationAndCategory }) {
     <Link
       href={href}
       {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group rounded-lg border border-border bg-card px-2.5 py-3 transition-colors hover:border-primary hover:bg-primary/5"
+      className="group grid grid-cols-[64px_1fr_auto] items-center gap-x-4 border-b-2 border-foreground py-4 md:grid-cols-[150px_120px_1fr_auto] md:gap-x-6 md:py-5"
     >
-      <p className="text-xs font-semibold text-primary">{timeOnly}</p>
-      <p className="text-sm font-medium leading-snug text-card-foreground group-hover:text-primary">
-        {event.title}
-      </p>
-      {event.location && (
-        <p className="mt-0.5 truncate text-xs text-muted-foreground">
-          {event.location.name}
-        </p>
-      )}
+      <span
+        className={`font-display text-3xl uppercase leading-none md:text-5xl ${
+          isToday ? "text-primary" : "text-foreground"
+        }`}
+        aria-hidden={dayLabel === ""}
+      >
+        {dayLabel}
+      </span>
+      <span className="hidden text-[15px] font-semibold tabular-nums text-foreground md:block">
+        {timeOnly}
+      </span>
+      <span className="min-w-0">
+        <span className="block text-xs font-bold tabular-nums text-primary md:hidden">
+          {timeOnly}
+        </span>
+        <span className="block truncate text-base font-semibold uppercase tracking-[0.03em] text-foreground transition-colors group-hover:text-primary md:text-lg">
+          {event.title}
+        </span>
+        {event.location?.name && (
+          <span className="mt-0.5 block truncate text-sm text-muted-foreground">
+            {event.location.name}
+          </span>
+        )}
+      </span>
+      <span className="border-b-2 border-primary pb-0.5 text-sm font-semibold uppercase tracking-[0.1em] text-foreground transition-colors group-hover:text-primary">
+        Book
+      </span>
     </Link>
   );
 }

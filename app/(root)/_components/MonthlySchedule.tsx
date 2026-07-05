@@ -1,6 +1,5 @@
 import { Suspense } from "react";
 import Link from "next/link";
-import { Button } from "@/components/ui/button";
 import {
   getEventsByMonth,
   getLastActiveEventDate,
@@ -105,32 +104,44 @@ export default async function MonthlySchedule({
       {/* Header row */}
       <div className="flex items-start justify-between gap-4">
         <div className="flex flex-col gap-3">
-          <h2 className="font-serif text-2xl font-bold tracking-tight text-foreground md:text-3xl">
+          <h2 className="font-display text-4xl uppercase text-foreground md:text-5xl">
             {monthLabel}
           </h2>
-          <div className="flex items-center gap-2">
-            <Button asChild size="sm" variant="outline">
-              <Link href={`/?view=month&month=${prevParam}`}>&larr; Prev</Link>
-            </Button>
+          <div className="flex items-center gap-1">
+            <Link
+              href={`/?view=month&month=${prevParam}`}
+              aria-label="Previous month"
+              className="px-1.5 py-1 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+            >
+              &larr;
+            </Link>
             {isCurrentMonth ? (
-              <Button size="sm" variant="outline" disabled>
-                This Month
-              </Button>
+              <span className="px-1.5 py-1 text-sm font-semibold lowercase tracking-wide text-muted-foreground/40">
+                today
+              </span>
             ) : (
-              <Button asChild size="sm" variant="outline">
-                <Link href="/?view=month">This Month</Link>
-              </Button>
+              <Link
+                href="/?view=month"
+                className="px-1.5 py-1 text-sm font-semibold lowercase tracking-wide text-muted-foreground transition-colors hover:text-foreground"
+              >
+                today
+              </Link>
             )}
             {hasMoreEvents ? (
-              <Button asChild size="sm" variant="outline">
-                <Link href={`/?view=month&month=${nextParam}`}>
-                  Next &rarr;
-                </Link>
-              </Button>
+              <Link
+                href={`/?view=month&month=${nextParam}`}
+                aria-label="Next month"
+                className="px-1.5 py-1 text-sm font-semibold text-muted-foreground transition-colors hover:text-foreground"
+              >
+                &rarr;
+              </Link>
             ) : (
-              <Button size="sm" variant="outline" disabled>
-                Next &rarr;
-              </Button>
+              <span
+                aria-label="Next month unavailable"
+                className="px-1.5 py-1 text-sm font-semibold text-muted-foreground/40"
+              >
+                &rarr;
+              </span>
             )}
           </div>
         </div>

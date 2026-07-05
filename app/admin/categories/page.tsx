@@ -91,7 +91,9 @@ const AdminCategories: FC = () => {
   return (
     <div className="wrapper max-w-4xl mx-auto">
       <div className="flex items-center justify-between mb-6">
-        <h1 className="text-3xl font-bold text-foreground">Categories</h1>
+        <h1 className="font-display text-3xl uppercase text-foreground">
+          Categories
+        </h1>
         <Badge className="bg-primary/10 text-primary text-sm px-3 py-1">
           {categories.length}{" "}
           {categories.length === 1 ? "Category" : "Categories"}
@@ -100,7 +102,7 @@ const AdminCategories: FC = () => {
 
       {/* Success Message */}
       {showSuccess && (
-        <div className="flex items-center gap-2 p-3 mb-4 bg-green-50 dark:bg-green-900/30 text-green-700 dark:text-green-300 rounded-lg animate-in slide-in-from-top-2">
+        <div className="flex items-center gap-2 p-3 mb-4 bg-green-50 text-green-700 rounded-lg animate-in slide-in-from-top-2">
           <CheckCircle className="w-5 h-5" />
           <span className="font-medium">Category created successfully!</span>
         </div>

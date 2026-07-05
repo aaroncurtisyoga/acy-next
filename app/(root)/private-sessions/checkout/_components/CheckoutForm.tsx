@@ -49,8 +49,8 @@ const CheckoutForm: React.FC = () => {
   };
 
   return (
-    <div className="bg-gray-50 dark:bg-gray-800/30 border border-gray-200 dark:border-gray-700 rounded-lg p-6">
-      <h3 className="text-lg font-semibold mb-4 text-gray-900 dark:text-gray-200">
+    <div className="bg-gray-50 border border-gray-200 rounded-lg p-6">
+      <h3 className="text-lg font-semibold mb-4 text-gray-900">
         Payment Details
       </h3>
 
@@ -74,10 +74,8 @@ const CheckoutForm: React.FC = () => {
         </div>
 
         {errorMessage && (
-          <div className="mb-4 p-3 bg-red-50 dark:bg-red-900/30 border border-red-200 dark:border-red-800 rounded-md">
-            <p className="text-red-600 dark:text-red-400 text-sm">
-              {errorMessage}
-            </p>
+          <div className="mb-4 p-3 bg-red-50 border border-red-200 rounded-md">
+            <p className="text-red-600 text-sm">{errorMessage}</p>
           </div>
         )}
 
@@ -93,7 +91,7 @@ const CheckoutForm: React.FC = () => {
       </form>
 
       <div className="mt-4 text-center">
-        <p className="text-xs text-gray-500 dark:text-gray-400">
+        <p className="text-xs text-gray-500">
           🔒 Your payment information is secure and encrypted
         </p>
       </div>

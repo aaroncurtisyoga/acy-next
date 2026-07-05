@@ -107,19 +107,23 @@ export default function SyncPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold mb-4 text-foreground">Event Sync</h1>
+      <h1 className="mb-4 font-display text-3xl uppercase text-foreground">
+        Event Sync
+      </h1>
       <div className="max-w-2xl space-y-4">
         {/* Bright Bear Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-xl font-semibold">Bright Bear Yoga Classes</h2>
+            <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
+              Bright Bear Yoga Classes
+            </h2>
             {syncStatus && (
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-gray-500">
                 Last synced: {formatTimeAgo(syncStatus.brightBear)}
               </span>
             )}
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-gray-600 mb-4">
             Sync Aaron Curtis&apos;s classes from Bright Bear Yoga DC. This will
             fetch the latest schedule from their Momence booking system and
             update the events database.
@@ -139,8 +143,8 @@ export default function SyncPage() {
             <div
               className={`mt-4 p-4 rounded-lg ${
                 getResult("bright-bear")?.isError
-                  ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-                  : "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-green-100 text-green-700"
               }`}
             >
               {getResult("bright-bear")?.message}
@@ -149,18 +153,18 @@ export default function SyncPage() {
         </div>
 
         {/* DCBP Section */}
-        <div className="bg-white dark:bg-gray-800 rounded-lg shadow p-6">
+        <div className="bg-white rounded-lg shadow p-6">
           <div className="flex justify-between items-start mb-4">
-            <h2 className="text-xl font-semibold">
+            <h2 className="font-display text-xl uppercase tracking-[0.03em] text-foreground">
               DC Bouldering Project Classes
             </h2>
             {syncStatus && (
-              <span className="text-sm text-gray-500 dark:text-gray-400">
+              <span className="text-sm text-gray-500">
                 Last synced: {formatTimeAgo(syncStatus.dcbp)}
               </span>
             )}
           </div>
-          <p className="text-gray-600 dark:text-gray-400 mb-4">
+          <p className="text-gray-600 mb-4">
             Sync Aaron Curtis&apos;s yoga classes from DC Bouldering Project.
             This will fetch the latest schedule from their ZoomShift system and
             update the events database.
@@ -178,8 +182,8 @@ export default function SyncPage() {
             <div
               className={`mt-4 p-4 rounded-lg ${
                 getResult("dcbp")?.isError
-                  ? "bg-red-100 text-red-700 dark:bg-red-900 dark:text-red-300"
-                  : "bg-green-100 text-green-700 dark:bg-green-900 dark:text-green-300"
+                  ? "bg-red-100 text-red-700"
+                  : "bg-green-100 text-green-700"
               }`}
             >
               {getResult("dcbp")?.message}
@@ -188,9 +192,9 @@ export default function SyncPage() {
         </div>
 
         {/* Info Section */}
-        <div className="bg-gray-100 dark:bg-gray-800 rounded-lg p-4">
+        <div className="bg-gray-100 rounded-lg p-4">
           <h3 className="font-semibold mb-2">Automatic Sync</h3>
-          <p className="text-sm text-gray-600 dark:text-gray-400">
+          <p className="text-sm text-gray-600">
             Classes from both venues are automatically synced daily via Vercel
             Cron. External events will show a &ldquo;Register&rdquo; button that
             links directly to each venue&apos;s booking system.

@@ -10,7 +10,7 @@ export const StepIndicator: FC<StepIndicatorProps> = ({
   totalSteps,
 }) => {
   return (
-    <div className="text-xs text-gray-500 dark:text-gray-400 mb-2">
+    <div className="text-xs text-gray-500 mb-2">
       STEP <span className="font-bold">{currentStep}</span> OF{" "}
       <span className="font-bold">{totalSteps}</span>
     </div>

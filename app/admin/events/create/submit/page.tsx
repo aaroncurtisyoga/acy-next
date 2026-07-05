@@ -199,7 +199,9 @@ const SubmitStep: FC = () => {
 
   return (
     <section className="wrapper">
-      <h1>Review Event</h1>
+      <h1 className="font-display text-2xl uppercase text-foreground">
+        Review Event
+      </h1>
 
       {/* Display event preview using actual EventCard */}
       <div className="my-6">

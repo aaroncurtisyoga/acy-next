@@ -3,7 +3,6 @@
 import { usePathname, useRouter } from "next/navigation";
 import { adminDashboardLinks } from "@/app/_lib/constants";
 import { SimpleTooltip } from "@/components/ui/simple-tooltip";
-import ThemeToggle from "@/app/_components/ThemeToggle";
 import { cn } from "@/app/_lib/utils";
 
 interface SidebarMenuProps {
@@ -53,12 +52,6 @@ const SidebarMenu = ({ onClose, collapsed }: SidebarMenuProps) => {
           return button;
         })}
       </nav>
-
-      <div className="mt-auto pt-4 border-t border-border hidden md:block">
-        <div className="flex justify-center">
-          <ThemeToggle />
-        </div>
-      </div>
     </div>
   );
 };

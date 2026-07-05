@@ -24,9 +24,8 @@ import { formatDateTime } from "@/app/_lib/utils";
 
 const statusStyles: Record<Newsletter["status"], string> = {
   DRAFT: "bg-muted text-muted-foreground",
-  SCHEDULED:
-    "bg-amber-100 text-amber-800 dark:bg-amber-950 dark:text-amber-300",
-  SENT: "bg-green-100 text-green-800 dark:bg-green-950 dark:text-green-300",
+  SCHEDULED: "bg-amber-100 text-amber-800",
+  SENT: "bg-green-100 text-green-800",
 };
 
 const statusLabels: Record<Newsletter["status"], string> = {

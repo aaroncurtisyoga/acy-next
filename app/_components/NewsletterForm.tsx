@@ -5,7 +5,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import { cn } from "@/app/_lib/utils";
 import { addNewsletterEntry } from "@/app/_lib/actions/newsletter.actions";
 import { NewsletterFormSchema } from "@/app/_lib/schema";
@@ -45,38 +44,46 @@ const NewsletterForm = () => {
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
-      <div className="flex flex-col gap-4">
-        <div className="space-y-2">
-          <Label htmlFor="newsletter-email">Email</Label>
+      <div className="flex flex-wrap items-stretch gap-3">
+        <div className="min-w-0 flex-1 basis-60">
+          <label htmlFor="newsletter-email" className="sr-only">
+            Email address
+          </label>
           <Input
             {...register("email")}
             id="newsletter-email"
-            placeholder="Enter your email"
+            placeholder="you@example.com"
             type="email"
             disabled={isSubmitting}
-            className={cn("w-full", errors.email && "border-destructive")}
-          />
-          {errors.email?.message && (
-            <p className="text-sm text-destructive">{errors.email.message}</p>
-          )}
-          <p
             className={cn(
-              "text-xs",
-              isSubmitSuccessful
-                ? "text-green-600 dark:text-green-400"
-                : "text-muted-foreground",
+              "h-12 rounded-[4px] border-[#c3cbe4] bg-white text-base",
+              errors.email && "border-destructive",
             )}
-          >
-            {isSubmitSuccessful
-              ? "Success! You're on the list."
-              : "Be the first to know about events & more!"}
-          </p>
+          />
         </div>
-        <Button type="submit" disabled={isSubmitting} className="font-medium">
+        <Button
+          type="submit"
+          disabled={isSubmitting}
+          className="h-12 rounded-[4px] px-8 font-display text-base font-normal uppercase tracking-[0.08em]"
+        >
           {isSubmitting && <Loader2 className="animate-spin" size={16} />}
-          {isSubmitting ? "Subscribing..." : "Subscribe"}
+          {isSubmitting ? "Signing up..." : "Sign up"}
         </Button>
       </div>
+      {errors.email?.message ? (
+        <p className="mt-3 text-sm text-destructive">{errors.email.message}</p>
+      ) : (
+        <p
+          className={cn(
+            "mt-3 text-[13px] font-medium",
+            isSubmitSuccessful ? "text-green-700" : "text-[#707687]",
+          )}
+        >
+          {isSubmitSuccessful
+            ? "You're on the list ~ thank you!"
+            : "Free, weekly-ish. Unsubscribe anytime."}
+        </p>
+      )}
     </form>
   );
 };

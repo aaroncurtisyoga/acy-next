@@ -286,6 +286,39 @@ export async function getEventById(eventId: string) {
   }
 }
 
+/**
+ * Aaron's own upcoming one-off events (sound baths, workshops) — excludes
+ * externally synced studio classes, which already appear in the weekly schedule.
+ */
+export async function getFeaturedEvents(limit = 2) {
+  try {
+    const events = await prisma.event.findMany({
+      where: {
+        isActive: true,
+        isExternal: false,
+        sourceType: null,
+        startDateTime: { gte: new Date() },
+      },
+      orderBy: { startDateTime: "asc" },
+      take: limit,
+      include: {
+        category: true,
+        location: true,
+      },
+    });
+
+    return serialize(events) as EventWithLocationAndCategory[];
+  } catch (error) {
+    // Degrade gracefully: a failure here should hide the homepage Upcoming
+    // section, not crash the whole page (handleError rethrows).
+    console.error(
+      "[getFeaturedEvents] Failed to fetch featured events:",
+      error,
+    );
+    return [];
+  }
+}
+
 export async function getEventsByWeek(weekStartISO: string) {
   try {
     const { start, end } = buildWeekDateRange(new Date(weekStartISO));

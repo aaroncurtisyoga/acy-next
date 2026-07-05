@@ -1,6 +1,5 @@
 import {
   Bike,
-  BookOpen,
   Boxes,
   Calendar,
   Car,
@@ -19,7 +18,8 @@ export const unauthenticatedLinks = [
   //   href: "/private-sessions",
   //   testId: "private-sessions-link",
   // },
-  { name: "Reading", href: "/reading", testId: "reading-link" },
+  { name: "classes", href: "/#this-week", testId: "classes-link" },
+  { name: "events", href: "/#upcoming", testId: "events-link" },
 ];
 
 export const adminLinks = [
@@ -49,13 +49,12 @@ export const travelOptions: TravelOption[] = [
   },
 ];
 
-export const instructorEmailAddress = "aaroncurtisyoga@gmail.com";
+export const instructorEmailAddress = "hi@aaroncurtisyoga.com";
 
 export const adminDashboardLinks = [
   { name: "Events", path: "/admin/events", icon: Calendar },
   { name: "Categories", path: "/admin/categories", icon: Boxes },
   { name: "Users", path: "/admin/users", icon: UsersRound },
-  { name: "Reading", path: "/admin/reading", icon: BookOpen },
   { name: "Newsletter", path: "/admin/newsletter", icon: Mail },
   { name: "Sync Events", path: "/admin/sync", icon: RefreshCw },
   { name: "Main Site", path: "/", icon: ExternalLink },
