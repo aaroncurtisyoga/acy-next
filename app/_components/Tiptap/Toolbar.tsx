@@ -21,6 +21,7 @@ import {
 } from "lucide-react";
 import { useState, memo } from "react";
 import LinkDialog from "./LinkDialog";
+import EmojiPicker from "./EmojiPicker";
 
 interface ToolbarProps {
   editor: Editor | null;
@@ -294,6 +295,11 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             <Minus size={18} />
           </Button>
         </SimpleTooltip>
+
+        <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
+
+        {/* Emoji */}
+        <EmojiPicker editor={editor} isDisabled={isDisabled} />
       </div>
 
       <LinkDialog
