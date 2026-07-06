@@ -8,9 +8,13 @@ import {
   Editor,
 } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
-import { useEffect, useCallback, useMemo, memo } from "react";
+import { useEffect, useCallback, useMemo, useRef, memo } from "react";
 import DOMPurify from "dompurify";
 import { isRichTextEmpty } from "@/app/_components/Tiptap/RichTextContent";
+import {
+  looksLikeHtmlSource,
+  stripCodeFence,
+} from "@/app/_components/Tiptap/paste-html";
 import styles from "@/app/_components/Tiptap/index.module.css";
 import Toolbar from "@/app/_components/Tiptap/Toolbar";
 
@@ -38,6 +42,10 @@ const Tiptap = memo(
     showCharacterCount = true,
     onEditorReady,
   }: TiptapProps) => {
+    // Referenced from handlePaste (which is created before `editor` exists);
+    // populated once the editor is ready, below.
+    const editorRef = useRef<Editor | null>(null);
+
     const handleUpdate = useCallback(
       ({ editor }: { editor: Editor }) => {
         const html = editor.getHTML();
@@ -116,6 +124,27 @@ const Tiptap = memo(
             errorMessage ? styles.hasError : ""
           } ${isDisabled ? styles.disabled : ""}`,
         },
+        // Render pasted HTML *source* (e.g. AI-generated markup copied as text)
+        // as formatted content instead of literal tags. Skipped inside code
+        // blocks so raw HTML can still be pasted as code when that's intended.
+        handlePaste: (_view, event) => {
+          const activeEditor = editorRef.current;
+          if (!activeEditor || activeEditor.isActive("codeBlock")) return false;
+
+          const source = stripCodeFence(
+            event.clipboardData?.getData("text/plain") ?? "",
+          );
+          if (!looksLikeHtmlSource(source)) return false;
+
+          // Parse through the schema (drops anything unsupported) after a
+          // DOMPurify pass, matching the sanitization used in handleUpdate.
+          const clean =
+            typeof window !== "undefined"
+              ? DOMPurify.sanitize(source, { ADD_ATTR: ["target"] })
+              : source;
+          activeEditor.commands.insertContent(clean);
+          return true;
+        },
       },
       onUpdate: handleUpdate,
       autofocus: false,
@@ -138,9 +167,11 @@ const Tiptap = memo(
       }
     }, [editor, isDisabled]);
 
-    // Expose the editor instance to parents that need programmatic access
+    // Expose the editor instance to parents that need programmatic access,
+    // and to handlePaste via editorRef.
     useEffect(() => {
       if (editor) {
+        editorRef.current = editor;
         onEditorReady?.(editor);
       }
     }, [editor, onEditorReady]);
