@@ -661,9 +661,13 @@ function eventListItemHtml(
   );
   const when = `${weekdayShort}, ${monthShort} ${dayNumber} · ${timeOnly}`;
   const location = event.location?.name ? ` · ${event.location.name}` : "";
+  // Synced events (Momence/DCBP) store their booking link in externalUrl;
+  // admin-created external events use externalRegistrationUrl. Link straight to
+  // whichever real booking page exists, else the event page on our site.
+  const bookingUrl = event.externalRegistrationUrl || event.externalUrl;
   const href =
-    event.isHostedExternally && event.externalRegistrationUrl
-      ? event.externalRegistrationUrl
+    (event.isHostedExternally || event.isExternal) && bookingUrl
+      ? bookingUrl
       : `${NEWSLETTER_SITE_URL}/events/${event.id}`;
 
   // Descriptions are TipTap HTML on the site — flatten, truncate, re-escape
