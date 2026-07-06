@@ -668,7 +668,7 @@ function eventListItemHtml(
   if (withDescription) {
     const text = richTextToPlainText(event.description);
     if (text) {
-      description = `<span style="display:block; margin-top:3px; color:#52525b; font-size:14px; line-height:1.5;">${escapeHtml(
+      description = `<span style="display:block; margin-top:3px; color:#52525b; font-size:14px; font-style:italic; line-height:1.5;">${escapeHtml(
         truncate(text, DESCRIPTION_MAX_CHARS),
       )}</span>`;
     }
