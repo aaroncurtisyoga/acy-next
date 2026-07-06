@@ -28,6 +28,11 @@ type SubscriberInputs = z.infer<typeof NewsletterSubscriberSchema>;
 type SubscriberUpdateInputs = z.infer<typeof NewsletterSubscriberUpdateSchema>;
 type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 
+type EventSectionOptions = {
+  includeUpcoming?: boolean;
+  includeClasses?: boolean;
+};
+
 const NEWSLETTER_ADMIN_PATH = "/admin/newsletter";
 
 /* -------------------------------- Helpers -------------------------------- */
@@ -433,7 +438,11 @@ export async function duplicateNewsletter(id: string) {
 
 /* ----------------------------- Admin: sending ---------------------------- */
 
-export async function sendNewsletter(id: string, scheduledAtIso?: string) {
+export async function sendNewsletter(
+  id: string,
+  scheduledAtIso?: string,
+  sectionOpts?: EventSectionOptions,
+) {
   await requireAdmin();
   try {
     const { segmentId, from } = getResendConfig();
@@ -457,7 +466,7 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       }
     }
 
-    const sections = await buildEventSectionsHtml();
+    const sections = await buildEventSectionsHtml(sectionOpts);
     const html = renderNewsletterHtml({
       // Resend substitutes the merge tags per-recipient; we only append the
       // live event listings.
@@ -511,7 +520,10 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
   }
 }
 
-export async function sendTestNewsletter(data: ComposeInputs) {
+export async function sendTestNewsletter(
+  data: ComposeInputs,
+  sectionOpts?: EventSectionOptions,
+) {
   await requireAdmin();
   const validation = NewsletterComposeSchema.safeParse(data);
   if (!validation.success) {
@@ -530,7 +542,7 @@ export async function sendTestNewsletter(data: ComposeInputs) {
       };
     }
 
-    const sections = await buildEventSectionsHtml();
+    const sections = await buildEventSectionsHtml(sectionOpts);
     const html = renderNewsletterHtml({
       // The transactional API doesn't substitute merge tags, so resolve them
       // here with the admin's own details for a realistic test.
@@ -646,34 +658,42 @@ function getEtMondayIso(now: Date): string {
  * simply omits them. Kept out of the saved draft so duplicating a newsletter
  * never bakes in a stale snapshot.
  */
-async function buildEventSectionsHtml(): Promise<string> {
+async function buildEventSectionsHtml({
+  includeUpcoming = true,
+  includeClasses = true,
+}: EventSectionOptions = {}): Promise<string> {
+  if (!includeUpcoming && !includeClasses) return "";
   try {
     const now = new Date();
-
-    const upcoming = await getFeaturedEvents(5).catch(() => []);
-    let weekEvents: EventWithLocationAndCategory[] = [];
-    try {
-      weekEvents = await getEventsByWeek(getEtMondayIso(now));
-    } catch {
-      weekEvents = [];
-    }
-    // Only classes still to come this week — past ones are noise in an email.
-    const classesThisWeek = weekEvents.filter(
-      (event) => new Date(event.startDateTime) >= now,
-    );
-
     const sections: string[] = [];
-    if (upcoming.length > 0) {
-      sections.push(
-        `<h2>Upcoming</h2><ul>${upcoming.map(eventListItemHtml).join("")}</ul>`,
-      );
+
+    if (includeUpcoming) {
+      const upcoming = await getFeaturedEvents(5).catch(() => []);
+      if (upcoming.length > 0) {
+        sections.push(
+          `<h2>Upcoming</h2><ul>${upcoming.map(eventListItemHtml).join("")}</ul>`,
+        );
+      }
     }
-    if (classesThisWeek.length > 0) {
-      sections.push(
-        `<h2>Classes This Week</h2><ul>${classesThisWeek
-          .map(eventListItemHtml)
-          .join("")}</ul>`,
+
+    if (includeClasses) {
+      let weekEvents: EventWithLocationAndCategory[] = [];
+      try {
+        weekEvents = await getEventsByWeek(getEtMondayIso(now));
+      } catch {
+        weekEvents = [];
+      }
+      // Only classes still to come this week — past ones are noise in an email.
+      const classesThisWeek = weekEvents.filter(
+        (event) => new Date(event.startDateTime) >= now,
       );
+      if (classesThisWeek.length > 0) {
+        sections.push(
+          `<h2>Classes This Week</h2><ul>${classesThisWeek
+            .map(eventListItemHtml)
+            .join("")}</ul>`,
+        );
+      }
     }
 
     if (sections.length === 0) return "";
@@ -686,7 +706,9 @@ async function buildEventSectionsHtml(): Promise<string> {
 }
 
 /** Exposed for the composer preview + sent view so they match what's sent. */
-export async function getNewsletterEventSectionsHtml(): Promise<string> {
+export async function getNewsletterEventSectionsHtml(
+  opts?: EventSectionOptions,
+): Promise<string> {
   await requireAdmin();
-  return buildEventSectionsHtml();
+  return buildEventSectionsHtml(opts);
 }

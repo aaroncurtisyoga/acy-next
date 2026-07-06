@@ -66,6 +66,9 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   const [sectionsHtml, setSectionsHtml] = useState("");
   // Live-preview mode renders the email beside the editor as you type.
   const [livePreview, setLivePreview] = useState(true);
+  // Which auto-sections to append below the message (both on by default).
+  const [includeUpcoming, setIncludeUpcoming] = useState(true);
+  const [includeClasses, setIncludeClasses] = useState(true);
 
   const {
     register,
@@ -91,14 +94,17 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   useEffect(() => {
     let active = true;
     const loadSections = async () => {
-      const html = await getNewsletterEventSectionsHtml();
+      const html = await getNewsletterEventSectionsHtml({
+        includeUpcoming,
+        includeClasses,
+      });
       if (active) setSectionsHtml(html);
     };
     loadSections();
     return () => {
       active = false;
     };
-  }, []);
+  }, [includeUpcoming, includeClasses]);
 
   // Restore the live-preview choice for this browser (defaults on).
   useEffect(() => {
@@ -169,7 +175,10 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     if (!(await trigger())) return;
     setIsTesting(true);
     try {
-      const result = await sendTestNewsletter(getValues());
+      const result = await sendTestNewsletter(getValues(), {
+        includeUpcoming,
+        includeClasses,
+      });
       if (result.status) {
         toast.success(result.message);
       } else {
@@ -213,6 +222,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       const result = await sendNewsletter(
         saved.id,
         when === "scheduled" ? scheduledAt!.toISOString() : undefined,
+        { includeUpcoming, includeClasses },
       );
       if (!result.status) {
         toast.error(result.message);
@@ -297,27 +307,66 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
               />
             </FormField>
 
-            <div className="space-y-2">
-              <Button
-                type="button"
-                variant="outline"
-                size="sm"
-                onClick={handleInsertGreeting}
-              >
-                <UserRound className="w-4 h-4" />
-                Insert greeting
-              </Button>
-              <p className="text-xs text-muted-foreground">
-                Tip: the greeting uses{" "}
-                <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
-                  {"{{{contact.first_name}}}"}
-                </code>
-                , so people with a name see “Hey Aaron” and everyone else sees
-                “Hey.” Your <strong>Upcoming</strong> events and{" "}
-                <strong>Classes This Week</strong> are added automatically below
-                your message. The preview shows the finished email: your message
-                first, then those listings.
-              </p>
+            <div className="space-y-3">
+              <div className="space-y-2">
+                <Button
+                  type="button"
+                  variant="outline"
+                  size="sm"
+                  onClick={handleInsertGreeting}
+                >
+                  <UserRound className="w-4 h-4" />
+                  Insert greeting
+                </Button>
+                <p className="text-xs text-muted-foreground">
+                  Tip: the greeting uses{" "}
+                  <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
+                    {"{{{contact.first_name}}}"}
+                  </code>
+                  , so people with a name see “Hey Aaron” and everyone else sees
+                  “Hey.”
+                </p>
+              </div>
+
+              <div className="rounded-md border border-border p-3">
+                <p className="mb-2.5 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                  Add below your message
+                </p>
+                <div className="flex flex-wrap items-center gap-x-6 gap-y-3">
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="include-upcoming"
+                      checked={includeUpcoming}
+                      onCheckedChange={setIncludeUpcoming}
+                      disabled={isSending}
+                    />
+                    <Label
+                      htmlFor="include-upcoming"
+                      className="text-sm font-normal text-foreground"
+                    >
+                      Upcoming events
+                    </Label>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <Switch
+                      id="include-classes"
+                      checked={includeClasses}
+                      onCheckedChange={setIncludeClasses}
+                      disabled={isSending}
+                    />
+                    <Label
+                      htmlFor="include-classes"
+                      className="text-sm font-normal text-foreground"
+                    >
+                      Classes this week
+                    </Label>
+                  </div>
+                </div>
+                <p className="mt-2.5 text-xs text-muted-foreground">
+                  Turn off “Classes this week” to focus a send on just an
+                  upcoming event. Empty sections are skipped automatically.
+                </p>
+              </div>
             </div>
           </CardContent>
         </Card>
