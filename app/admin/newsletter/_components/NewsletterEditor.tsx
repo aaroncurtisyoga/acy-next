@@ -1,8 +1,8 @@
 "use client";
 
-import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { z } from "zod";
 import { Newsletter } from "@prisma/client";
@@ -29,6 +29,8 @@ import {
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Switch } from "@/components/ui/switch";
 import Tiptap from "@/app/_components/Tiptap";
 import {
   renderNewsletterHtml,
@@ -46,6 +48,8 @@ import { formatDateTime } from "@/app/_lib/utils";
 
 type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 
+const LIVE_PREVIEW_KEY = "acy:newsletter:live-preview";
+
 interface NewsletterEditorProps {
   newsletter?: Newsletter;
 }
@@ -60,6 +64,8 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   const [isTesting, setIsTesting] = useState(false);
   // Live "Upcoming" + "Classes This Week" HTML, appended after the message.
   const [sectionsHtml, setSectionsHtml] = useState("");
+  // Live-preview mode renders the email beside the editor as you type.
+  const [livePreview, setLivePreview] = useState(true);
 
   const {
     register,
@@ -93,6 +99,50 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       active = false;
     };
   }, []);
+
+  // Restore the live-preview choice for this browser (defaults on).
+  useEffect(() => {
+    if (window.localStorage.getItem(LIVE_PREVIEW_KEY) === "false") {
+      setLivePreview(false);
+    }
+  }, []);
+
+  const toggleLivePreview = (next: boolean) => {
+    setLivePreview(next);
+    window.localStorage.setItem(LIVE_PREVIEW_KEY, String(next));
+  };
+
+  // Watch the fields shown in the email and debounce them so the live preview
+  // refreshes shortly after you pause typing rather than on every keystroke.
+  const watchedContent = useWatch({ control, name: "content" });
+  const watchedPreviewText = useWatch({ control, name: "previewText" });
+  const [debounced, setDebounced] = useState({
+    content: newsletter?.content ?? "",
+    previewText: newsletter?.previewText ?? "",
+  });
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebounced({
+        content: watchedContent ?? "",
+        previewText: watchedPreviewText ?? "",
+      });
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [watchedContent, watchedPreviewText]);
+
+  const livePreviewSrcDoc = useMemo(
+    () =>
+      livePreview
+        ? renderNewsletterHtml({
+            contentHtml: `${resolveMergeTags(
+              debounced.content || "<p>Start writing…</p>",
+            )}${sectionsHtml}`,
+            previewText: debounced.previewText,
+            unsubscribeUrl: "#",
+          })
+        : "",
+    [livePreview, debounced, sectionsHtml],
+  );
 
   const saveDraft = async (data: ComposeInputs) => {
     const result = newsletter
@@ -195,75 +245,109 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
 
   return (
     <form onSubmit={handleSubmit(onSaveDraft)} className="space-y-6">
-      <Card className="shadow-lg">
-        <CardContent className="pt-6 space-y-6">
-          <FormField label="Subject" error={errors.subject?.message} required>
-            <Input
-              {...register("subject")}
-              placeholder="e.g. July classes + a new workshop"
-              disabled={isSubmitting || isSending}
-            />
-          </FormField>
+      <div className="flex items-center justify-end gap-2">
+        <Label htmlFor="live-preview" className="text-sm text-muted-foreground">
+          Live preview
+        </Label>
+        <Switch
+          id="live-preview"
+          checked={livePreview}
+          onCheckedChange={toggleLivePreview}
+        />
+      </div>
 
-          <FormField label="Preview text" error={errors.previewText?.message}>
-            <Input
-              {...register("previewText")}
-              placeholder="Shown next to the subject in inboxes (optional)"
-              disabled={isSubmitting || isSending}
-            />
-          </FormField>
+      <div
+        className={
+          livePreview ? "grid gap-6 lg:grid-cols-2 lg:items-start" : undefined
+        }
+      >
+        <Card className="shadow-lg">
+          <CardContent className="pt-6 space-y-6">
+            <FormField label="Subject" error={errors.subject?.message} required>
+              <Input
+                {...register("subject")}
+                placeholder="e.g. July classes + a new workshop"
+                disabled={isSubmitting || isSending}
+              />
+            </FormField>
 
-          <FormField label="Body" error={errors.content?.message} required>
-            <Controller
-              name="content"
-              control={control}
-              render={({ field }) => (
-                <Tiptap
-                  initialContent={field.value}
-                  onChange={field.onChange}
-                  onEditorReady={handleEditorReady}
-                  placeholder="Write your newsletter…"
-                  isDisabled={isSubmitting || isSending}
-                  errorMessage={errors.content?.message}
-                  showCharacterCount={false}
-                />
-              )}
-            />
-          </FormField>
+            <FormField label="Preview text" error={errors.previewText?.message}>
+              <Input
+                {...register("previewText")}
+                placeholder="Shown next to the subject in inboxes (optional)"
+                disabled={isSubmitting || isSending}
+              />
+            </FormField>
 
-          <div className="space-y-2">
-            <Button
-              type="button"
-              variant="outline"
-              size="sm"
-              onClick={handleInsertGreeting}
-            >
-              <UserRound className="w-4 h-4" />
-              Insert greeting
-            </Button>
-            <p className="text-xs text-muted-foreground">
-              Tip: the greeting uses{" "}
-              <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
-                {"{{{contact.first_name}}}"}
-              </code>
-              , so people with a name see “Hey Aaron” and everyone else sees
-              “Hey.” Your <strong>Upcoming</strong> events and{" "}
-              <strong>Classes This Week</strong> are added automatically below
-              your message. Hit Preview to see the full email.
+            <FormField label="Body" error={errors.content?.message} required>
+              <Controller
+                name="content"
+                control={control}
+                render={({ field }) => (
+                  <Tiptap
+                    initialContent={field.value}
+                    onChange={field.onChange}
+                    onEditorReady={handleEditorReady}
+                    placeholder="Write your newsletter…"
+                    isDisabled={isSubmitting || isSending}
+                    errorMessage={errors.content?.message}
+                    showCharacterCount={false}
+                  />
+                )}
+              />
+            </FormField>
+
+            <div className="space-y-2">
+              <Button
+                type="button"
+                variant="outline"
+                size="sm"
+                onClick={handleInsertGreeting}
+              >
+                <UserRound className="w-4 h-4" />
+                Insert greeting
+              </Button>
+              <p className="text-xs text-muted-foreground">
+                Tip: the greeting uses{" "}
+                <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
+                  {"{{{contact.first_name}}}"}
+                </code>
+                , so people with a name see “Hey Aaron” and everyone else sees
+                “Hey.” Your <strong>Upcoming</strong> events and{" "}
+                <strong>Classes This Week</strong> are added automatically below
+                your message. The preview shows the finished email: your message
+                first, then those listings.
+              </p>
+            </div>
+          </CardContent>
+        </Card>
+
+        {livePreview && (
+          <div className="lg:sticky lg:top-6">
+            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Live preview
             </p>
+            <iframe
+              title="Live newsletter preview"
+              srcDoc={livePreviewSrcDoc}
+              sandbox=""
+              className="h-[70vh] w-full rounded-md border bg-white shadow-lg lg:h-[78vh]"
+            />
           </div>
-        </CardContent>
-      </Card>
+        )}
+      </div>
 
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div className="flex flex-wrap gap-2">
-          <Button
-            type="button"
-            variant="outline"
-            onClick={() => setIsPreviewOpen(true)}
-          >
-            <Eye className="w-4 h-4" /> Preview
-          </Button>
+          {!livePreview && (
+            <Button
+              type="button"
+              variant="outline"
+              onClick={() => setIsPreviewOpen(true)}
+            >
+              <Eye className="w-4 h-4" /> Preview
+            </Button>
+          )}
           <Button
             type="button"
             variant="outline"
