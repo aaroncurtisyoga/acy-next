@@ -684,8 +684,14 @@ function eventListItemHtml(
     ? `<span style="display:block; margin-top:8px; text-align:center;"><a href="${href}" style="display:inline-block; background-color:${COBALT}; color:#ffffff; text-decoration:none; font-weight:700; font-size:13px; letter-spacing:0.02em; padding:8px 16px; border-radius:4px;">Reserve your spot →</a></span>`
     : "";
 
+  // With a CTA button present the title needn't also be a link; without one
+  // (Classes This Week) the linked title is the only way through.
+  const title = withCta
+    ? `<strong>${event.title}</strong>`
+    : `<strong><a href="${href}">${event.title}</a></strong>`;
+
   const liAttr = description || cta ? ' style="margin-bottom:18px;"' : "";
-  return `<li${liAttr}><strong><a href="${href}">${event.title}</a></strong>, ${when}${location}${description}${cta}</li>`;
+  return `<li${liAttr}>${title}, ${when}${location}${description}${cta}</li>`;
 }
 
 /** Monday (ET) of the week containing `now`, as a YYYY-MM-DD key. */
