@@ -69,6 +69,8 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   // Which auto-sections to append below the message (both on by default).
   const [includeUpcoming, setIncludeUpcoming] = useState(true);
   const [includeClasses, setIncludeClasses] = useState(true);
+  // Optionally show each featured event's (truncated) description.
+  const [includeDescriptions, setIncludeDescriptions] = useState(false);
 
   const {
     register,
@@ -97,6 +99,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       const html = await getNewsletterEventSectionsHtml({
         includeUpcoming,
         includeClasses,
+        includeDescriptions,
       });
       if (active) setSectionsHtml(html);
     };
@@ -104,7 +107,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     return () => {
       active = false;
     };
-  }, [includeUpcoming, includeClasses]);
+  }, [includeUpcoming, includeClasses, includeDescriptions]);
 
   // Restore the live-preview choice for this browser (defaults on).
   useEffect(() => {
@@ -178,6 +181,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       const result = await sendTestNewsletter(getValues(), {
         includeUpcoming,
         includeClasses,
+        includeDescriptions,
       });
       if (result.status) {
         toast.success(result.message);
@@ -222,7 +226,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       const result = await sendNewsletter(
         saved.id,
         when === "scheduled" ? scheduledAt!.toISOString() : undefined,
-        { includeUpcoming, includeClasses },
+        { includeUpcoming, includeClasses, includeDescriptions },
       );
       if (!result.status) {
         toast.error(result.message);
@@ -361,6 +365,24 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
                       Classes this week
                     </Label>
                   </div>
+                </div>
+                <div className="mt-3 flex items-center gap-2">
+                  <Switch
+                    id="include-descriptions"
+                    checked={includeDescriptions}
+                    onCheckedChange={setIncludeDescriptions}
+                    disabled={isSending || !includeUpcoming}
+                  />
+                  <Label
+                    htmlFor="include-descriptions"
+                    className={`text-sm font-normal ${
+                      includeUpcoming
+                        ? "text-foreground"
+                        : "text-muted-foreground"
+                    }`}
+                  >
+                    Include event descriptions
+                  </Label>
                 </div>
                 <p className="mt-2.5 text-xs text-muted-foreground">
                   Turn off “Classes this week” to focus a send on just an

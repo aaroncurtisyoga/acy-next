@@ -20,7 +20,11 @@ import {
   NewsletterSubscriberUpdateSchema,
 } from "@/app/_lib/schema";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
-import { formatDateTime, toDateKey } from "@/app/_lib/utils";
+import {
+  formatDateTime,
+  richTextToPlainText,
+  toDateKey,
+} from "@/app/_lib/utils";
 import { serialize } from "@/app/_lib/utils/serialize";
 
 type SignupInputs = z.infer<typeof NewsletterFormSchema>;
@@ -31,6 +35,7 @@ type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 type EventSectionOptions = {
   includeUpcoming?: boolean;
   includeClasses?: boolean;
+  includeDescriptions?: boolean;
 };
 
 const NEWSLETTER_ADMIN_PATH = "/admin/newsletter";
@@ -625,8 +630,28 @@ async function reconcileScheduledNewsletters() {
 /* ------------------------- Admin: compose helpers ------------------------ */
 
 const NEWSLETTER_SITE_URL = "https://www.aaroncurtisyoga.com";
+const DESCRIPTION_MAX_CHARS = 160;
 
-function eventListItemHtml(event: EventWithLocationAndCategory): string {
+function escapeHtml(text: string): string {
+  return text
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;");
+}
+
+// Trim to a word boundary near the limit and add an ellipsis.
+function truncate(text: string, max: number): string {
+  if (text.length <= max) return text;
+  const slice = text.slice(0, max);
+  const lastSpace = slice.lastIndexOf(" ");
+  const cut = lastSpace > max * 0.6 ? slice.slice(0, lastSpace) : slice;
+  return `${cut.trimEnd()}…`;
+}
+
+function eventListItemHtml(
+  event: EventWithLocationAndCategory,
+  withDescription = false,
+): string {
   const { weekdayShort, monthShort, dayNumber, timeOnly } = formatDateTime(
     event.startDateTime,
   );
@@ -636,7 +661,21 @@ function eventListItemHtml(event: EventWithLocationAndCategory): string {
     event.isHostedExternally && event.externalRegistrationUrl
       ? event.externalRegistrationUrl
       : `${NEWSLETTER_SITE_URL}/events/${event.id}`;
-  return `<li><strong><a href="${href}">${event.title}</a></strong>, ${when}${location}</li>`;
+
+  // Descriptions are TipTap HTML on the site — flatten, truncate, re-escape
+  // (richTextToPlainText decodes entities back to raw <, >, & characters).
+  let description = "";
+  if (withDescription) {
+    const text = richTextToPlainText(event.description);
+    if (text) {
+      description = `<span style="display:block; margin-top:3px; color:#52525b; font-size:14px; line-height:1.5;">${escapeHtml(
+        truncate(text, DESCRIPTION_MAX_CHARS),
+      )}</span>`;
+    }
+  }
+
+  const liAttr = description ? ' style="margin-bottom:12px;"' : "";
+  return `<li${liAttr}><strong><a href="${href}">${event.title}</a></strong>, ${when}${location}${description}</li>`;
 }
 
 /** Monday (ET) of the week containing `now`, as a YYYY-MM-DD key. */
@@ -661,6 +700,7 @@ function getEtMondayIso(now: Date): string {
 async function buildEventSectionsHtml({
   includeUpcoming = true,
   includeClasses = true,
+  includeDescriptions = false,
 }: EventSectionOptions = {}): Promise<string> {
   if (!includeUpcoming && !includeClasses) return "";
   try {
@@ -671,7 +711,9 @@ async function buildEventSectionsHtml({
       const upcoming = await getFeaturedEvents(5).catch(() => []);
       if (upcoming.length > 0) {
         sections.push(
-          `<h2>Upcoming</h2><ul>${upcoming.map(eventListItemHtml).join("")}</ul>`,
+          `<h2>Upcoming</h2><ul>${upcoming
+            .map((event) => eventListItemHtml(event, includeDescriptions))
+            .join("")}</ul>`,
         );
       }
     }
@@ -690,7 +732,7 @@ async function buildEventSectionsHtml({
       if (classesThisWeek.length > 0) {
         sections.push(
           `<h2>Classes This Week</h2><ul>${classesThisWeek
-            .map(eventListItemHtml)
+            .map((event) => eventListItemHtml(event))
             .join("")}</ul>`,
         );
       }
