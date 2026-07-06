@@ -681,7 +681,7 @@ function eventListItemHtml(
   // A cobalt button so featured events get a clear call to action, not just a
   // linked title. Links to external registration when hosted elsewhere.
   const cta = withCta
-    ? `<span style="display:block; margin-top:8px; text-align:center;"><a href="${href}" style="display:inline-block; background-color:${COBALT}; color:#ffffff; text-decoration:none; font-weight:700; font-size:13px; letter-spacing:0.02em; padding:8px 16px; border-radius:4px;">Sign up →</a></span>`
+    ? `<span style="display:block; margin-top:8px; text-align:center;"><a href="${href}" style="display:inline-block; background-color:${COBALT}; color:#ffffff; text-decoration:none; font-weight:700; font-size:13px; letter-spacing:0.02em; padding:8px 16px; border-radius:4px;">Reserve your spot →</a></span>`
     : "";
 
   const liAttr = description || cta ? ' style="margin-bottom:18px;"' : "";
