@@ -630,6 +630,7 @@ async function reconcileScheduledNewsletters() {
 /* ------------------------- Admin: compose helpers ------------------------ */
 
 const NEWSLETTER_SITE_URL = "https://www.aaroncurtisyoga.com";
+const COBALT = "#2749e0";
 const DESCRIPTION_MAX_CHARS = 160;
 
 function escapeHtml(text: string): string {
@@ -650,7 +651,10 @@ function truncate(text: string, max: number): string {
 
 function eventListItemHtml(
   event: EventWithLocationAndCategory,
-  withDescription = false,
+  {
+    withDescription = false,
+    withCta = false,
+  }: { withDescription?: boolean; withCta?: boolean } = {},
 ): string {
   const { weekdayShort, monthShort, dayNumber, timeOnly } = formatDateTime(
     event.startDateTime,
@@ -674,8 +678,14 @@ function eventListItemHtml(
     }
   }
 
-  const liAttr = description ? ' style="margin-bottom:12px;"' : "";
-  return `<li${liAttr}><strong><a href="${href}">${event.title}</a></strong>, ${when}${location}${description}</li>`;
+  // A cobalt button so featured events get a clear call to action, not just a
+  // linked title. Links to external registration when hosted elsewhere.
+  const cta = withCta
+    ? `<span style="display:block; margin-top:8px;"><a href="${href}" style="display:inline-block; background-color:${COBALT}; color:#ffffff; text-decoration:none; font-weight:700; font-size:13px; letter-spacing:0.02em; padding:8px 16px; border-radius:4px;">Reserve your spot →</a></span>`
+    : "";
+
+  const liAttr = description || cta ? ' style="margin-bottom:18px;"' : "";
+  return `<li${liAttr}><strong><a href="${href}">${event.title}</a></strong>, ${when}${location}${description}${cta}</li>`;
 }
 
 /** Monday (ET) of the week containing `now`, as a YYYY-MM-DD key. */
@@ -712,7 +722,12 @@ async function buildEventSectionsHtml({
       if (upcoming.length > 0) {
         sections.push(
           `<h2>Upcoming</h2><ul>${upcoming
-            .map((event) => eventListItemHtml(event, includeDescriptions))
+            .map((event) =>
+              eventListItemHtml(event, {
+                withDescription: includeDescriptions,
+                withCta: true,
+              }),
+            )
             .join("")}</ul>`,
         );
       }
