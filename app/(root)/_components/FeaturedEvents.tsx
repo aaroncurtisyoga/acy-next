@@ -39,12 +39,13 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
   const { monthShort, dayNumber, timeOnly } = formatDateTime(
     event.startDateTime,
   );
-  const href =
-    event.isHostedExternally && event.externalRegistrationUrl
-      ? event.externalRegistrationUrl
-      : `/events/${event.id}`;
-  const isExternal =
-    event.isHostedExternally && !!event.externalRegistrationUrl;
+  // Synced events (Momence/DCBP) put their booking link in externalUrl; manual
+  // external events use externalRegistrationUrl. Link straight to whichever
+  // real booking page exists, else the on-site event page.
+  const bookingUrl = event.externalRegistrationUrl || event.externalUrl;
+  const opensOffsite =
+    (event.isHostedExternally || event.isExternal) && Boolean(bookingUrl);
+  const href = opensOffsite && bookingUrl ? bookingUrl : `/events/${event.id}`;
   const priceChip = event.isFree
     ? "Free"
     : event.price
@@ -65,7 +66,9 @@ function FeaturedEventCard({ event }: { event: EventWithLocationAndCategory }) {
   const reserveButton = (
     <Link
       href={href}
-      {...(isExternal ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      {...(opensOffsite
+        ? { target: "_blank", rel: "noopener noreferrer" }
+        : {})}
       className="inline-block bg-primary px-9 py-3.5 font-display text-base uppercase tracking-[0.08em] text-white transition hover:brightness-110"
     >
       Reserve
