@@ -9,17 +9,21 @@ import {
   Italic,
   Heading1,
   Heading2,
+  Heading3,
+  ImagePlus,
   Link as LinkIcon,
   List,
   ListOrdered,
   MessageSquareQuote,
   Minus,
+  RemoveFormatting,
   Strikethrough,
   Underline,
   Undo2,
   Redo2,
 } from "lucide-react";
 import { useState, memo } from "react";
+import ImageGalleryDialog from "@/app/_components/ImageGalleryDialog";
 import LinkDialog from "./LinkDialog";
 import EmojiPicker from "./EmojiPicker";
 
@@ -37,6 +41,7 @@ const formatShortcut = (mac: string, win: string) => {
 
 const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
   const [isLinkDialogOpen, setIsLinkDialogOpen] = useState(false);
+  const [isImageDialogOpen, setIsImageDialogOpen] = useState(false);
 
   // Subscribe to editor transactions so active/enabled states stay fresh —
   // the editor is created with shouldRerenderOnTransaction: false
@@ -53,6 +58,7 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
         isStrike: ctx.editor.isActive("strike"),
         isHeading1: ctx.editor.isActive("heading", { level: 1 }),
         isHeading2: ctx.editor.isActive("heading", { level: 2 }),
+        isHeading3: ctx.editor.isActive("heading", { level: 3 }),
         isBulletList: ctx.editor.isActive("bulletList"),
         isOrderedList: ctx.editor.isActive("orderedList"),
         isBlockquote: ctx.editor.isActive("blockquote"),
@@ -182,6 +188,22 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
           </Button>
         </SimpleTooltip>
 
+        <SimpleTooltip content="Clear formatting">
+          <Button
+            size="icon"
+            type="button"
+            onClick={() =>
+              editor.chain().focus().unsetAllMarks().clearNodes().run()
+            }
+            disabled={isDisabled}
+            variant="ghost"
+            className="h-8 w-8"
+            aria-label="Clear formatting"
+          >
+            <RemoveFormatting size={18} />
+          </Button>
+        </SimpleTooltip>
+
         <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
 
         {/* Headings */}
@@ -214,6 +236,22 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
             aria-label="Heading 2"
           >
             <Heading2 size={18} />
+          </Button>
+        </SimpleTooltip>
+
+        <SimpleTooltip content="Heading 3">
+          <Button
+            size="icon"
+            type="button"
+            onClick={() =>
+              editor.chain().focus().toggleHeading({ level: 3 }).run()
+            }
+            className={`h-8 w-8 ${state.isHeading3 ? "bg-accent" : ""}`}
+            disabled={isDisabled}
+            variant="ghost"
+            aria-label="Heading 3"
+          >
+            <Heading3 size={18} />
           </Button>
         </SimpleTooltip>
 
@@ -296,6 +334,23 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
           </Button>
         </SimpleTooltip>
 
+        {/* Image — only when the editor was created with the Image node */}
+        {editor.schema.nodes.image && (
+          <SimpleTooltip content="Insert Image">
+            <Button
+              size="icon"
+              type="button"
+              onClick={() => setIsImageDialogOpen(true)}
+              disabled={isDisabled}
+              variant="ghost"
+              className="h-8 w-8"
+              aria-label="Insert Image"
+            >
+              <ImagePlus size={18} />
+            </Button>
+          </SimpleTooltip>
+        )}
+
         <Separator orientation="vertical" className="mx-1 h-6 my-auto" />
 
         {/* Emoji */}
@@ -311,6 +366,16 @@ const Toolbar = memo(({ editor, isDisabled = false }: ToolbarProps) => {
         initialOpenInNewTab={state.isLink ? state.linkOpensInNewTab : true}
         hasExistingLink={state.isLink}
       />
+
+      {editor.schema.nodes.image && (
+        <ImageGalleryDialog
+          open={isImageDialogOpen}
+          onOpenChange={setIsImageDialogOpen}
+          onSelect={(url) =>
+            editor.chain().focus().setImage({ src: url }).run()
+          }
+        />
+      )}
     </>
   );
 });

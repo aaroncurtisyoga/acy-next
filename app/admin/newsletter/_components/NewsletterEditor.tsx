@@ -10,11 +10,12 @@ import { Editor } from "@tiptap/react";
 import { toast } from "sonner";
 import {
   CalendarClock,
+  CalendarPlus,
+  ChevronDown,
   Eye,
   Loader2,
   Save,
   Send,
-  UserRound,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -26,12 +27,21 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 import { DateTimePicker } from "@/components/ui/date-time-picker";
 import { FormField } from "@/components/ui/form-field";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Switch } from "@/components/ui/switch";
 import Tiptap from "@/app/_components/Tiptap";
+import { EmojiPickerPopover } from "@/app/_components/Tiptap/EmojiPicker";
+import { useUnsavedChangesGuard } from "@/app/_hooks/useUnsavedChangesGuard";
 import {
   renderNewsletterHtml,
   resolveMergeTags,
@@ -39,16 +49,24 @@ import {
 import {
   createNewsletter,
   getNewsletterEventSectionsHtml,
+  getSubscriberCount,
   sendNewsletter,
   sendTestNewsletter,
   updateNewsletter,
 } from "@/app/_lib/actions/newsletter.actions";
 import { NewsletterComposeSchema } from "@/app/_lib/schema";
 import { formatDateTime } from "@/app/_lib/utils";
+import InsertEventDialog from "@/app/admin/newsletter/_components/InsertEventDialog";
+import {
+  SNIPPETS,
+  STARTER_TEMPLATE_HTML,
+} from "@/app/admin/newsletter/_lib/templates";
 
 type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 
 const LIVE_PREVIEW_KEY = "acy:newsletter:live-preview";
+const AUTOSAVE_DELAY_MS = 2000;
+const SUBJECT_MAX = 150;
 
 interface NewsletterEditorProps {
   newsletter?: Newsletter;
@@ -57,8 +75,10 @@ interface NewsletterEditorProps {
 const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   const router = useRouter();
   const editorRef = useRef<Editor | null>(null);
+  const subjectInputRef = useRef<HTMLInputElement | null>(null);
   const [isPreviewOpen, setIsPreviewOpen] = useState(false);
   const [isSendOpen, setIsSendOpen] = useState(false);
+  const [isEventDialogOpen, setIsEventDialogOpen] = useState(false);
   const [scheduledAt, setScheduledAt] = useState<Date | undefined>();
   const [isSending, setIsSending] = useState(false);
   const [isTesting, setIsTesting] = useState(false);
@@ -66,25 +86,49 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   const [sectionsHtml, setSectionsHtml] = useState("");
   // Live-preview mode renders the email beside the editor as you type.
   const [livePreview, setLivePreview] = useState(true);
-  // Which auto-sections to append below the message (both on by default).
-  const [includeUpcoming, setIncludeUpcoming] = useState(true);
-  const [includeClasses, setIncludeClasses] = useState(true);
-  // Optionally show each featured event's (truncated) description.
-  const [includeDescriptions, setIncludeDescriptions] = useState(false);
+  // Shown in the Send dialog so "send to all subscribers" has a number on it.
+  const [subscriberCount, setSubscriberCount] = useState<{
+    count: number;
+    hasMore: boolean;
+  } | null>(null);
+
+  // The row this composer is editing. Starts null on /create — the first
+  // (auto)save creates it and swaps the URL in place via history.replaceState,
+  // deliberately NOT router.replace, which would remount the page mid-typing.
+  const newsletterIdRef = useRef<string | null>(newsletter?.id ?? null);
+  const [saveState, setSaveState] = useState<
+    "idle" | "saving" | "saved" | "error"
+  >(newsletter ? "saved" : "idle");
+  const [lastSavedAt, setLastSavedAt] = useState<Date | null>(
+    newsletter ? new Date(newsletter.updatedAt) : null,
+  );
+  const saveInFlightRef = useRef(false);
+  const autosaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  // A resolved save must not rewrite the URL or reschedule itself after the
+  // user has navigated away (the save request can outlive the composer).
+  const isMountedRef = useRef(true);
+  const busyRef = useRef(false);
 
   const {
     register,
     handleSubmit,
     control,
     getValues,
+    setValue,
     trigger,
-    formState: { errors, isSubmitting },
+    reset,
+    formState: { errors, isSubmitting, isDirty },
   } = useForm<ComposeInputs>({
     resolver: zodResolver(NewsletterComposeSchema),
     defaultValues: {
       subject: newsletter?.subject ?? "",
       previewText: newsletter?.previewText ?? "",
-      content: newsletter?.content ?? "",
+      // A new newsletter opens with the greeting/sign-off skeleton instead of
+      // a blank page.
+      content: newsletter?.content ?? STARTER_TEMPLATE_HTML,
+      includeUpcoming: newsletter?.includeUpcoming ?? true,
+      includeClasses: newsletter?.includeClasses ?? true,
+      includeDescriptions: newsletter?.includeDescriptions ?? false,
     },
   });
 
@@ -92,16 +136,47 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     editorRef.current = editor;
   }, []);
 
+  // Guard unsaved work across links, reload, and browser Back/Forward. Called
+  // here (above doPersist) so its history helpers are available to the save
+  // and send paths.
+  // Set once a Back-button leave has been confirmed, so an autosave that
+  // resolves mid-departure doesn't swap the URL out from under router.replace.
+  const leavingRef = useRef(false);
+  const { replaceGuardedUrl, releaseForNavigation } = useUnsavedChangesGuard(
+    isDirty || saveState === "saving",
+    // Complete an intercepted Back by replacing the editor entry with the list,
+    // so the user lands there and can't Back straight into the abandoned draft.
+    {
+      onLeave: () => {
+        leavingRef.current = true;
+        router.replace("/admin/newsletter");
+      },
+    },
+  );
+
+  const includeUpcoming = useWatch({ control, name: "includeUpcoming" });
+  const includeClasses = useWatch({ control, name: "includeClasses" });
+  const includeDescriptions = useWatch({
+    control,
+    name: "includeDescriptions",
+  });
+  const subjectValue = useWatch({ control, name: "subject" }) ?? "";
+  const previewTextValue = useWatch({ control, name: "previewText" }) ?? "";
+
   // Pull the same listings that get appended at send time so Preview matches.
   useEffect(() => {
     let active = true;
     const loadSections = async () => {
-      const html = await getNewsletterEventSectionsHtml({
-        includeUpcoming,
-        includeClasses,
-        includeDescriptions,
-      });
-      if (active) setSectionsHtml(html);
+      try {
+        const html = await getNewsletterEventSectionsHtml({
+          includeUpcoming,
+          includeClasses,
+          includeDescriptions,
+        });
+        if (active) setSectionsHtml(html);
+      } catch {
+        // Preview just omits the event sections until the next toggle change.
+      }
     };
     loadSections();
     return () => {
@@ -124,7 +199,6 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
   // Watch the fields shown in the email and debounce them so the live preview
   // refreshes shortly after you pause typing rather than on every keystroke.
   const watchedContent = useWatch({ control, name: "content" });
-  const watchedPreviewText = useWatch({ control, name: "previewText" });
   const [debounced, setDebounced] = useState({
     content: newsletter?.content ?? "",
     previewText: newsletter?.previewText ?? "",
@@ -133,11 +207,11 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     const timer = setTimeout(() => {
       setDebounced({
         content: watchedContent ?? "",
-        previewText: watchedPreviewText ?? "",
+        previewText: previewTextValue,
       });
     }, 300);
     return () => clearTimeout(timer);
-  }, [watchedContent, watchedPreviewText]);
+  }, [watchedContent, previewTextValue]);
 
   const livePreviewSrcDoc = useMemo(
     () =>
@@ -153,24 +227,198 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     [livePreview, debounced, sectionsHtml],
   );
 
-  const saveDraft = async (data: ComposeInputs) => {
-    const result = newsletter
-      ? await updateNewsletter(newsletter.id, data)
-      : await createNewsletter(data);
+  /**
+   * Persist the draft (creating the row on first save) and clear the form's
+   * dirty flag without touching field values, so the Tiptap cursor is never
+   * disturbed. Returns the saved row or null.
+   */
+  const doPersist = useCallback(
+    async (data: ComposeInputs, opts?: { revalidate?: boolean }) => {
+      const id = newsletterIdRef.current;
+      const result = id
+        ? await updateNewsletter(id, data, opts)
+        : await createNewsletter(data, opts);
 
-    if (!result.status || !result.data) {
-      toast.error(result.message ?? "Failed to save the draft.");
-      return null;
+      if (!result.status || !result.data) {
+        return { saved: null, message: result.message };
+      }
+      if (!id) {
+        newsletterIdRef.current = result.data.id;
+        // Only rewrite the URL if we're still the active page and not already
+        // leaving — the user may have confirmed the leave prompt while this
+        // request was in flight, and swapping the URL now would race the
+        // router.replace departure. Route through the guard so a live
+        // Back/Forward sentinel stays in sync with the new /{id} URL.
+        if (isMountedRef.current && !leavingRef.current) {
+          replaceGuardedUrl(`/admin/newsletter/${result.data.id}`);
+        }
+      }
+      if (isMountedRef.current) {
+        reset(data, { keepValues: true });
+        setSaveState("saved");
+        setLastSavedAt(new Date());
+      }
+      return { saved: result.data, message: undefined };
+    },
+    [reset, replaceGuardedUrl],
+  );
+
+  // All saves run through one queue: a manual Save/Send that lands while an
+  // autosave create is still in flight must wait for it, or /create would
+  // mint two rows (newsletterIdRef is only set once the create resolves).
+  const persistQueueRef = useRef<Promise<unknown>>(Promise.resolve());
+  const persistDraft = useCallback(
+    (data: ComposeInputs, opts?: { revalidate?: boolean }) => {
+      const run = () => doPersist(data, opts);
+      const next = persistQueueRef.current.then(run, run);
+      persistQueueRef.current = next.catch(() => undefined);
+      return next;
+    },
+    [doPersist],
+  );
+
+  const cancelPendingAutosave = useCallback(() => {
+    if (autosaveTimerRef.current) {
+      clearTimeout(autosaveTimerRef.current);
+      autosaveTimerRef.current = null;
     }
-    return result.data;
-  };
+  }, []);
+
+  const runAutosave = useCallback(async () => {
+    if (!isMountedRef.current || saveInFlightRef.current) return;
+    const values = getValues();
+    // Autosave only fires once the draft is valid (a subject and a real body);
+    // until then there's nothing worth a row in the database.
+    if (!NewsletterComposeSchema.safeParse(values).success) return;
+
+    saveInFlightRef.current = true;
+    setSaveState("saving");
+    try {
+      const { saved } = await persistDraft(values, { revalidate: false });
+      if (!saved) {
+        if (isMountedRef.current) setSaveState("error");
+        return;
+      }
+    } catch {
+      if (isMountedRef.current) setSaveState("error");
+      return;
+    } finally {
+      saveInFlightRef.current = false;
+    }
+
+    // Edits that landed while the save was in flight get their own pass —
+    // unless the composer unmounted (don't save work the user chose to
+    // abandon) or a manual save/send has taken over.
+    if (
+      isMountedRef.current &&
+      !busyRef.current &&
+      JSON.stringify(getValues()) !== JSON.stringify(values)
+    ) {
+      cancelPendingAutosave();
+      autosaveTimerRef.current = setTimeout(
+        () => void runAutosave(),
+        AUTOSAVE_DELAY_MS,
+      );
+    }
+  }, [getValues, persistDraft, cancelPendingAutosave]);
+
+  // Debounced autosave: any form change (while editable and dirty) schedules a
+  // save 2s after the last keystroke.
+  const watchedValues = useWatch({ control });
+  useEffect(() => {
+    if (!isDirty || isSubmitting || isSending) return undefined;
+    if (!NewsletterComposeSchema.safeParse(getValues()).success) {
+      return undefined;
+    }
+
+    cancelPendingAutosave();
+    autosaveTimerRef.current = setTimeout(
+      () => void runAutosave(),
+      AUTOSAVE_DELAY_MS,
+    );
+    return cancelPendingAutosave;
+  }, [
+    watchedValues,
+    isDirty,
+    isSubmitting,
+    isSending,
+    getValues,
+    runAutosave,
+    cancelPendingAutosave,
+  ]);
+
+  // Mirror the busy flags into a ref for the autosave tail (which runs after
+  // awaits, where state would be stale), and track mount for the same reason.
+  busyRef.current = isSubmitting || isSending;
+  useEffect(() => {
+    isMountedRef.current = true;
+    return () => {
+      isMountedRef.current = false;
+      if (autosaveTimerRef.current) clearTimeout(autosaveTimerRef.current);
+    };
+  }, []);
+
+  // Autosave only runs on a valid draft, so surface the distinction: without
+  // this, clearing the subject would silently stop autosave while the header
+  // still read "Saved".
+  const isDraftValid = useMemo(
+    () => NewsletterComposeSchema.safeParse(watchedValues).success,
+    [watchedValues],
+  );
+
+  // Re-render every 30s so "Saved · Xm ago" doesn't go stale.
+  const [, setAgeTick] = useState(0);
+  useEffect(() => {
+    if (!lastSavedAt) return undefined;
+    const timer = setInterval(() => setAgeTick((n) => n + 1), 30_000);
+    return () => clearInterval(timer);
+  }, [lastSavedAt]);
+
+  const savedAgoLabel = (() => {
+    if (!lastSavedAt) return "";
+    const seconds = (Date.now() - lastSavedAt.getTime()) / 1000;
+    if (seconds < 45) return "just now";
+    const minutes = Math.round(seconds / 60);
+    if (minutes < 60) return `${minutes}m ago`;
+    // Beyond a day, a bare time-of-day would read as "today" — show the date.
+    if (seconds < 24 * 3600) return formatDateTime(lastSavedAt).timeOnly;
+    return formatDateTime(lastSavedAt).dateTime;
+  })();
+
+  // Fetch the audience size when the Send dialog opens.
+  useEffect(() => {
+    if (!isSendOpen) return undefined;
+    let active = true;
+    setSubscriberCount(null);
+    getSubscriberCount()
+      .then((result) => {
+        if (active && result) {
+          setSubscriberCount({ count: result.count, hasMore: result.hasMore });
+        }
+      })
+      .catch(() => {
+        // Dialog copy falls back to "all subscribers" — no number, no crash.
+      });
+    return () => {
+      active = false;
+    };
+  }, [isSendOpen]);
 
   const onSaveDraft = async (data: ComposeInputs) => {
-    const saved = await saveDraft(data);
-    if (!saved) return;
-    toast.success("Draft saved");
-    if (!newsletter) {
-      router.replace(`/admin/newsletter/${saved.id}`);
+    cancelPendingAutosave();
+    try {
+      const { saved, message } = await persistDraft(data);
+      if (!saved) {
+        setSaveState("error");
+        toast.error(message ?? "Failed to save the draft.");
+        return;
+      }
+      toast.success("Draft saved");
+    } catch {
+      // A rejected server action (expired session, network drop) otherwise
+      // fails with no feedback at all.
+      setSaveState("error");
+      toast.error("Couldn't reach the server — check your connection.");
     }
   };
 
@@ -178,26 +426,26 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     if (!(await trigger())) return;
     setIsTesting(true);
     try {
-      const result = await sendTestNewsletter(getValues(), {
-        includeUpcoming,
-        includeClasses,
-        includeDescriptions,
-      });
+      const result = await sendTestNewsletter(getValues());
       if (result.status) {
         toast.success(result.message);
       } else {
         toast.error(result.message);
       }
+    } catch {
+      toast.error("Couldn't reach the server — check your connection.");
     } finally {
       setIsTesting(false);
     }
   };
 
+  const insertAtCursor = (html: string) => {
+    editorRef.current?.chain().focus().insertContent(html).run();
+  };
+
   const handleInsertGreeting = () => {
-    // Resend swaps {{{contact.first_name}}} for each person's name at send time.
-    // No fallback word and no trailing comma on purpose: with a name it reads
-    // "Hey Aaron"; with none it's just "Hey" (a trailing comma would leave a
-    // stray "Hey ," for the no-name folks).
+    // Resend swaps {{{contact.first_name}}} for each person's name at send
+    // time — greetings belong at the very top, so insert at the start.
     editorRef.current
       ?.chain()
       .focus("start")
@@ -217,21 +465,23 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       }
     }
 
+    cancelPendingAutosave();
     setIsSending(true);
     try {
-      // The broadcast is built from the saved row, so persist edits first
-      const saved = await saveDraft(getValues());
-      if (!saved) return;
+      // The broadcast is built from the saved row (content and section
+      // toggles), so persist edits first.
+      const { saved, message } = await persistDraft(getValues());
+      if (!saved) {
+        toast.error(message ?? "Failed to save the draft.");
+        return;
+      }
 
       const result = await sendNewsletter(
         saved.id,
         when === "scheduled" ? scheduledAt!.toISOString() : undefined,
-        { includeUpcoming, includeClasses, includeDescriptions },
       );
       if (!result.status) {
         toast.error(result.message);
-        // The draft row now exists even if this started from /create
-        if (!newsletter) router.replace(`/admin/newsletter/${saved.id}`);
         return;
       }
 
@@ -240,7 +490,18 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
           ? `Scheduled for ${formatDateTime(scheduledAt!).dateTime}`
           : "Newsletter sent!",
       );
-      router.push("/admin/newsletter");
+      // Consume the Back/Forward sentinel (if one is armed) by replacing it
+      // rather than pushing a new entry over it, so we don't leave a duplicate
+      // /{id} entry the user would have to Back past twice.
+      if (releaseForNavigation()) {
+        router.replace("/admin/newsletter");
+      } else {
+        router.push("/admin/newsletter");
+      }
+    } catch {
+      toast.error(
+        "Couldn't reach the server — nothing was sent. Check your connection and try again.",
+      );
     } finally {
       setIsSending(false);
     }
@@ -257,17 +518,76 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       unsubscribeUrl: "#",
     });
 
+  const insertSubjectEmoji = (char: string) => {
+    const input = subjectInputRef.current;
+    const current = getValues("subject") ?? "";
+    // A never-focused input reports selection 0/0 — "add an emoji to my
+    // subject" means append in that case, not prepend.
+    const hasCaret = input && document.activeElement === input;
+    const start = (hasCaret ? input.selectionStart : null) ?? current.length;
+    const end = (hasCaret ? input.selectionEnd : null) ?? current.length;
+    setValue("subject", current.slice(0, start) + char + current.slice(end), {
+      shouldDirty: true,
+      shouldValidate: true,
+    });
+    requestAnimationFrame(() => {
+      if (!input) return;
+      input.focus();
+      const caret = start + char.length;
+      input.setSelectionRange(caret, caret);
+    });
+  };
+
+  const subjectRegister = register("subject");
+
+  const charCounter = (length: number) => (
+    <p
+      className={`text-right text-xs ${
+        length > SUBJECT_MAX ? "text-destructive" : "text-muted-foreground"
+      }`}
+    >
+      {length}/{SUBJECT_MAX}
+    </p>
+  );
+
   return (
     <form onSubmit={handleSubmit(onSaveDraft)} className="space-y-6">
-      <div className="flex items-center justify-end gap-2">
-        <Label htmlFor="live-preview" className="text-sm text-muted-foreground">
-          Live preview
-        </Label>
-        <Switch
-          id="live-preview"
-          checked={livePreview}
-          onCheckedChange={toggleLivePreview}
-        />
+      <div className="flex items-center justify-between gap-3">
+        <div
+          className="flex items-center gap-1.5 text-xs text-muted-foreground"
+          aria-live="polite"
+        >
+          {saveState === "saving" ? (
+            <>
+              <Loader2 className="h-3 w-3 animate-spin" /> Saving…
+            </>
+          ) : saveState === "error" ? (
+            <span className="text-destructive">
+              Autosave failed — use Save draft
+            </span>
+          ) : isDirty && !isDraftValid ? (
+            <span className="text-amber-600">
+              Unsaved changes — autosave needs a valid subject and body
+            </span>
+          ) : isDirty ? (
+            <>Unsaved changes…</>
+          ) : saveState === "saved" && lastSavedAt ? (
+            <>Saved · {savedAgoLabel}</>
+          ) : null}
+        </div>
+        <div className="flex items-center gap-2">
+          <Label
+            htmlFor="live-preview"
+            className="text-sm text-muted-foreground"
+          >
+            Live preview
+          </Label>
+          <Switch
+            id="live-preview"
+            checked={livePreview}
+            onCheckedChange={toggleLivePreview}
+          />
+        </div>
       </div>
 
       <div
@@ -278,19 +598,40 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
         <Card className="shadow-lg">
           <CardContent className="pt-6 space-y-6">
             <FormField label="Subject" error={errors.subject?.message} required>
-              <Input
-                {...register("subject")}
-                placeholder="e.g. July classes + a new workshop"
-                disabled={isSubmitting || isSending}
-              />
+              <>
+                <div className="flex gap-1.5">
+                  <Input
+                    {...subjectRegister}
+                    ref={(el) => {
+                      subjectRegister.ref(el);
+                      subjectInputRef.current = el;
+                    }}
+                    placeholder="e.g. July classes + a new workshop"
+                    disabled={isSubmitting || isSending}
+                    className="flex-1"
+                  />
+                  <EmojiPickerPopover
+                    onSelect={insertSubjectEmoji}
+                    disabled={isSubmitting || isSending}
+                    onCloseAutoFocus={(e) => {
+                      e.preventDefault();
+                      subjectInputRef.current?.focus();
+                    }}
+                  />
+                </div>
+                {charCounter(subjectValue.length)}
+              </>
             </FormField>
 
             <FormField label="Preview text" error={errors.previewText?.message}>
-              <Input
-                {...register("previewText")}
-                placeholder="Shown next to the subject in inboxes (optional)"
-                disabled={isSubmitting || isSending}
-              />
+              <>
+                <Input
+                  {...register("previewText")}
+                  placeholder="Shown next to the subject in inboxes (optional)"
+                  disabled={isSubmitting || isSending}
+                />
+                {charCounter(previewTextValue.length)}
+              </>
             </FormField>
 
             <FormField label="Body" error={errors.content?.message} required>
@@ -306,6 +647,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
                     isDisabled={isSubmitting || isSending}
                     errorMessage={errors.content?.message}
                     showCharacterCount={false}
+                    enableImages
                   />
                 )}
               />
@@ -313,15 +655,37 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
 
             <div className="space-y-3">
               <div className="space-y-2">
-                <Button
-                  type="button"
-                  variant="outline"
-                  size="sm"
-                  onClick={handleInsertGreeting}
-                >
-                  <UserRound className="w-4 h-4" />
-                  Insert greeting
-                </Button>
+                <div className="flex flex-wrap gap-2">
+                  <DropdownMenu>
+                    <DropdownMenuTrigger asChild>
+                      <Button type="button" variant="outline" size="sm">
+                        Insert
+                        <ChevronDown className="w-4 h-4" />
+                      </Button>
+                    </DropdownMenuTrigger>
+                    <DropdownMenuContent align="start">
+                      <DropdownMenuItem onSelect={handleInsertGreeting}>
+                        Greeting (&ldquo;Hey [first name]&rdquo;)
+                      </DropdownMenuItem>
+                      {SNIPPETS.filter((s) => s.label !== "Greeting").map(
+                        (snippet) => (
+                          <DropdownMenuItem
+                            key={snippet.label}
+                            onSelect={() => insertAtCursor(snippet.html)}
+                          >
+                            {snippet.label}
+                          </DropdownMenuItem>
+                        ),
+                      )}
+                      <DropdownMenuSeparator />
+                      <DropdownMenuItem
+                        onSelect={() => setIsEventDialogOpen(true)}
+                      >
+                        <CalendarPlus className="w-4 h-4" /> Event card…
+                      </DropdownMenuItem>
+                    </DropdownMenuContent>
+                  </DropdownMenu>
+                </div>
                 <p className="text-xs text-muted-foreground">
                   Tip: the greeting uses{" "}
                   <code className="rounded bg-muted px-1 py-0.5 text-[11px]">
@@ -341,7 +705,11 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
                     <Switch
                       id="include-upcoming"
                       checked={includeUpcoming}
-                      onCheckedChange={setIncludeUpcoming}
+                      onCheckedChange={(checked) =>
+                        setValue("includeUpcoming", checked, {
+                          shouldDirty: true,
+                        })
+                      }
                       disabled={isSending}
                     />
                     <Label
@@ -355,7 +723,11 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
                     <Switch
                       id="include-classes"
                       checked={includeClasses}
-                      onCheckedChange={setIncludeClasses}
+                      onCheckedChange={(checked) =>
+                        setValue("includeClasses", checked, {
+                          shouldDirty: true,
+                        })
+                      }
                       disabled={isSending}
                     />
                     <Label
@@ -370,7 +742,11 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
                   <Switch
                     id="include-descriptions"
                     checked={includeDescriptions}
-                    onCheckedChange={setIncludeDescriptions}
+                    onCheckedChange={(checked) =>
+                      setValue("includeDescriptions", checked, {
+                        shouldDirty: true,
+                      })
+                    }
                     disabled={isSending || !includeUpcoming}
                   />
                   <Label
@@ -484,8 +860,23 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
           <DialogHeader>
             <DialogTitle>Send newsletter</DialogTitle>
             <DialogDescription>
-              Send to all subscribers now, or pick a time. Scheduled sends are
-              handled by Resend and can&apos;t be cancelled from here.
+              {subscriberCount !== null ? (
+                <>
+                  Sends to{" "}
+                  <strong>
+                    {subscriberCount.count}
+                    {subscriberCount.hasMore ? "+" : ""}
+                  </strong>{" "}
+                  {subscriberCount.count === 1 && !subscriberCount.hasMore
+                    ? "subscriber"
+                    : "subscribers"}{" "}
+                  now, or pick a time.
+                </>
+              ) : (
+                "Send to all subscribers now, or pick a time."
+              )}{" "}
+              Scheduled sends can be cancelled from the newsletters list until
+              they go out.
             </DialogDescription>
           </DialogHeader>
 
@@ -526,6 +917,12 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
           </DialogFooter>
         </DialogContent>
       </Dialog>
+
+      <InsertEventDialog
+        open={isEventDialogOpen}
+        onOpenChange={setIsEventDialogOpen}
+        onInsert={insertAtCursor}
+      />
     </form>
   );
 };

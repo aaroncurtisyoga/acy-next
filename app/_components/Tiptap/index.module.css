@@ -100,6 +100,21 @@
   margin: 2rem 0;
 }
 
+/* Images */
+.tiptap :global(img) {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.375rem;
+  margin: 1rem 0;
+  display: block;
+}
+
+/* --primary is a complete color value (Tailwind 4), not h/s/l channels */
+.tiptap :global(img.ProseMirror-selectednode) {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 /* Placeholder */
 .tiptap :global(.is-editor-empty:first-child::before) {
   color: #9ca3af;

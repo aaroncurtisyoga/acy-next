@@ -19,12 +19,9 @@ import {
   NewsletterSubscriberSchema,
   NewsletterSubscriberUpdateSchema,
 } from "@/app/_lib/schema";
+import { eventListItemHtml } from "@/app/_lib/email/event-html";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
-import {
-  formatDateTime,
-  richTextToPlainText,
-  toDateKey,
-} from "@/app/_lib/utils";
+import { toDateKey } from "@/app/_lib/utils";
 import { serialize } from "@/app/_lib/utils/serialize";
 
 type SignupInputs = z.infer<typeof NewsletterFormSchema>;
@@ -347,7 +344,10 @@ export async function getNewsletterById(id: string) {
   }
 }
 
-export async function createNewsletter(data: ComposeInputs) {
+export async function createNewsletter(
+  data: ComposeInputs,
+  opts?: { revalidate?: boolean },
+) {
   await requireAdmin();
   const validation = NewsletterComposeSchema.safeParse(data);
   if (!validation.success) {
@@ -358,7 +358,9 @@ export async function createNewsletter(data: ComposeInputs) {
     const newsletter = await prisma.newsletter.create({
       data: validation.data,
     });
-    revalidatePath(NEWSLETTER_ADMIN_PATH);
+    // Autosave passes revalidate: false — invalidating the router cache on
+    // every keystroke-debounce would churn the whole admin section for nothing.
+    if (opts?.revalidate !== false) revalidatePath(NEWSLETTER_ADMIN_PATH);
     return { status: true, data: serialize(newsletter) };
   } catch (error) {
     console.error("Failed to create newsletter:", error);
@@ -366,7 +368,11 @@ export async function createNewsletter(data: ComposeInputs) {
   }
 }
 
-export async function updateNewsletter(id: string, data: ComposeInputs) {
+export async function updateNewsletter(
+  id: string,
+  data: ComposeInputs,
+  opts?: { revalidate?: boolean },
+) {
   await requireAdmin();
   const validation = NewsletterComposeSchema.safeParse(data);
   if (!validation.success) {
@@ -386,7 +392,7 @@ export async function updateNewsletter(id: string, data: ComposeInputs) {
       where: { id },
       data: validation.data,
     });
-    revalidatePath(NEWSLETTER_ADMIN_PATH);
+    if (opts?.revalidate !== false) revalidatePath(NEWSLETTER_ADMIN_PATH);
     return { status: true, data: serialize(newsletter) };
   } catch (error) {
     console.error("Failed to update newsletter:", error);
@@ -404,8 +410,7 @@ export async function deleteNewsletter(id: string) {
     if (existing.status === "SCHEDULED") {
       return {
         status: false,
-        message:
-          "This newsletter is queued in Resend and can't be deleted here. Cancel it in the Resend dashboard first.",
+        message: "Cancel the scheduled send first, then delete the draft.",
       };
     }
 
@@ -431,6 +436,9 @@ export async function duplicateNewsletter(id: string) {
         subject: `${existing.subject} (copy)`,
         previewText: existing.previewText,
         content: existing.content,
+        includeUpcoming: existing.includeUpcoming,
+        includeClasses: existing.includeClasses,
+        includeDescriptions: existing.includeDescriptions,
       },
     });
     revalidatePath(NEWSLETTER_ADMIN_PATH);
@@ -443,11 +451,7 @@ export async function duplicateNewsletter(id: string) {
 
 /* ----------------------------- Admin: sending ---------------------------- */
 
-export async function sendNewsletter(
-  id: string,
-  scheduledAtIso?: string,
-  sectionOpts?: EventSectionOptions,
-) {
+export async function sendNewsletter(id: string, scheduledAtIso?: string) {
   await requireAdmin();
   try {
     const { segmentId, from } = getResendConfig();
@@ -458,6 +462,65 @@ export async function sendNewsletter(
     }
     if (newsletter.status !== "DRAFT") {
       return { status: false, message: "Only drafts can be sent." };
+    }
+
+    // A DRAFT that still carries a broadcast id means an earlier send attempt
+    // made it partway (or a scheduled send was cancelled mid-flight). Check
+    // Resend before creating a second broadcast so a retry can't double-send.
+    if (newsletter.resendBroadcastId) {
+      const { data: existing, error: getError } = await resend.broadcasts.get(
+        newsletter.resendBroadcastId,
+      );
+      // The SDK reports failures via `error`, not exceptions. A not_found just
+      // means the old broadcast is gone (safe to build a fresh one); anything
+      // else means we can't tell whether it already sent — refuse to risk a
+      // duplicate blast.
+      if (getError && getError.name !== "not_found") {
+        console.error("Failed to check existing broadcast:", getError);
+        return {
+          status: false,
+          message:
+            "Couldn't confirm the previous send attempt with Resend. Try again in a moment.",
+        };
+      }
+      if (existing?.status === "sent") {
+        await prisma.newsletter.update({
+          where: { id },
+          data: {
+            status: "SENT",
+            sentAt: existing.sent_at ? new Date(existing.sent_at) : new Date(),
+          },
+        });
+        revalidatePath(NEWSLETTER_ADMIN_PATH);
+        return {
+          status: false,
+          message: "This newsletter already went out — refresh the list.",
+        };
+      }
+      if (existing?.status === "queued") {
+        // Recover the schedule too, or reconciliation can never flip the row
+        // to SENT (it only looks at past-due scheduledAt values).
+        await prisma.newsletter.update({
+          where: { id },
+          data: {
+            status: "SCHEDULED",
+            scheduledAt: existing.scheduled_at
+              ? new Date(existing.scheduled_at)
+              : new Date(),
+          },
+        });
+        revalidatePath(NEWSLETTER_ADMIN_PATH);
+        return {
+          status: false,
+          message:
+            "This newsletter is already queued in Resend — refresh the list.",
+        };
+      }
+      // A leftover draft broadcast is stale (content may have changed since);
+      // clear it out and build a fresh one below.
+      if (existing) {
+        await resend.broadcasts.remove(newsletter.resendBroadcastId);
+      }
     }
 
     let scheduledAt: Date | undefined;
@@ -471,7 +534,13 @@ export async function sendNewsletter(
       }
     }
 
-    const sections = await buildEventSectionsHtml(sectionOpts);
+    // Section toggles live on the row (the composer saves before sending), so
+    // the broadcast always matches what the draft last showed.
+    const sections = await buildEventSectionsHtml({
+      includeUpcoming: newsletter.includeUpcoming,
+      includeClasses: newsletter.includeClasses,
+      includeDescriptions: newsletter.includeDescriptions,
+    });
     const html = renderNewsletterHtml({
       // Resend substitutes the merge tags per-recipient; we only append the
       // live event listings.
@@ -491,6 +560,14 @@ export async function sendNewsletter(
       console.error("Failed to create broadcast:", createResult.error);
       return { status: false, message: "Resend rejected the broadcast." };
     }
+
+    // Persist the broadcast id before sending: if anything past this point
+    // fails, the retry guard above finds this broadcast instead of minting a
+    // duplicate.
+    await prisma.newsletter.update({
+      where: { id },
+      data: { resendBroadcastId: createResult.data.id },
+    });
 
     const sendResult = await resend.broadcasts.send(
       createResult.data.id,
@@ -525,10 +602,7 @@ export async function sendNewsletter(
   }
 }
 
-export async function sendTestNewsletter(
-  data: ComposeInputs,
-  sectionOpts?: EventSectionOptions,
-) {
+export async function sendTestNewsletter(data: ComposeInputs) {
   await requireAdmin();
   const validation = NewsletterComposeSchema.safeParse(data);
   if (!validation.success) {
@@ -547,7 +621,13 @@ export async function sendTestNewsletter(
       };
     }
 
-    const sections = await buildEventSectionsHtml(sectionOpts);
+    // Test sends work off the (possibly unsaved) form state, so the toggles
+    // come from the submitted values rather than the row.
+    const sections = await buildEventSectionsHtml({
+      includeUpcoming: validation.data.includeUpcoming,
+      includeClasses: validation.data.includeClasses,
+      includeDescriptions: validation.data.includeDescriptions,
+    });
     const html = renderNewsletterHtml({
       // The transactional API doesn't substitute merge tags, so resolve them
       // here with the admin's own details for a realistic test.
@@ -597,6 +677,94 @@ export async function getSubscriberCount() {
 }
 
 /**
+ * Pull a scheduled newsletter back out of Resend's queue and return it to
+ * DRAFT so it can be edited or re-scheduled.
+ */
+export async function cancelScheduledNewsletter(id: string) {
+  await requireAdmin();
+  try {
+    const newsletter = await prisma.newsletter.findUnique({ where: { id } });
+    if (!newsletter) {
+      return { status: false, message: "Newsletter not found." };
+    }
+    if (newsletter.status !== "SCHEDULED") {
+      return {
+        status: false,
+        message: "Only scheduled sends can be cancelled.",
+      };
+    }
+
+    const backToDraft = () =>
+      prisma.newsletter.update({
+        where: { id },
+        data: {
+          status: "DRAFT",
+          scheduledAt: null,
+          sentAt: null,
+          resendBroadcastId: null,
+        },
+      });
+
+    // A SCHEDULED row without a broadcast id shouldn't exist, but if one does
+    // there's nothing queued in Resend to cancel — just unstick the row.
+    if (!newsletter.resendBroadcastId) {
+      await backToDraft();
+      revalidatePath(NEWSLETTER_ADMIN_PATH);
+      return { status: true, message: "Send cancelled — back to draft." };
+    }
+
+    const { data, error } = await resend.broadcasts.remove(
+      newsletter.resendBroadcastId,
+    );
+    if (error || !data?.deleted) {
+      // Removal can fail because the broadcast already went out — check, and
+      // reconcile the row instead of leaving it wrongly SCHEDULED.
+      const { data: broadcast, error: getError } = await resend.broadcasts.get(
+        newsletter.resendBroadcastId,
+      );
+      if (broadcast?.status === "sent") {
+        await prisma.newsletter.update({
+          where: { id },
+          data: {
+            status: "SENT",
+            sentAt: broadcast.sent_at
+              ? new Date(broadcast.sent_at)
+              : new Date(),
+          },
+        });
+        revalidatePath(NEWSLETTER_ADMIN_PATH);
+        return {
+          status: false,
+          message: "Too late — this newsletter already went out.",
+        };
+      }
+      if (!broadcast && getError?.name === "not_found") {
+        // Genuinely gone from Resend (e.g. cancelled in their dashboard) —
+        // nothing is queued, so just unstick the row. Only a confirmed 404
+        // takes this path: a transient failure must NOT report "cancelled"
+        // while the email is still queued.
+        await backToDraft();
+        revalidatePath(NEWSLETTER_ADMIN_PATH);
+        return { status: true, message: "Send cancelled — back to draft." };
+      }
+      console.error("Failed to cancel broadcast:", error, getError);
+      return {
+        status: false,
+        message:
+          "Resend couldn't cancel this send. Try again, or cancel it from the Resend dashboard.",
+      };
+    }
+
+    await backToDraft();
+    revalidatePath(NEWSLETTER_ADMIN_PATH);
+    return { status: true, message: "Send cancelled — back to draft." };
+  } catch (error) {
+    console.error("Failed to cancel scheduled newsletter:", error);
+    return { status: false, message: "Failed to cancel the scheduled send." };
+  }
+}
+
+/**
  * Newsletters scheduled through Resend are sent server-side by Resend, so our
  * rows can go stale. Reconcile any past-due SCHEDULED rows against the
  * broadcast status before listing.
@@ -628,75 +796,6 @@ async function reconcileScheduledNewsletters() {
 }
 
 /* ------------------------- Admin: compose helpers ------------------------ */
-
-const NEWSLETTER_SITE_URL = "https://www.aaroncurtisyoga.com";
-const COBALT = "#2749e0";
-const DESCRIPTION_MAX_CHARS = 160;
-
-function escapeHtml(text: string): string {
-  return text
-    .replace(/&/g, "&amp;")
-    .replace(/</g, "&lt;")
-    .replace(/>/g, "&gt;");
-}
-
-// Trim to a word boundary near the limit and add an ellipsis.
-function truncate(text: string, max: number): string {
-  if (text.length <= max) return text;
-  const slice = text.slice(0, max);
-  const lastSpace = slice.lastIndexOf(" ");
-  const cut = lastSpace > max * 0.6 ? slice.slice(0, lastSpace) : slice;
-  return `${cut.trimEnd()}…`;
-}
-
-function eventListItemHtml(
-  event: EventWithLocationAndCategory,
-  {
-    withDescription = false,
-    withCta = false,
-  }: { withDescription?: boolean; withCta?: boolean } = {},
-): string {
-  const { weekdayShort, monthShort, dayNumber, timeOnly } = formatDateTime(
-    event.startDateTime,
-  );
-  const when = `${weekdayShort}, ${monthShort} ${dayNumber} · ${timeOnly}`;
-  const location = event.location?.name ? ` · ${event.location.name}` : "";
-  // Synced events (Momence/DCBP) store their booking link in externalUrl;
-  // admin-created external events use externalRegistrationUrl. Link straight to
-  // whichever real booking page exists, else the event page on our site.
-  const bookingUrl = event.externalRegistrationUrl || event.externalUrl;
-  const href =
-    (event.isHostedExternally || event.isExternal) && bookingUrl
-      ? bookingUrl
-      : `${NEWSLETTER_SITE_URL}/events/${event.id}`;
-
-  // Descriptions are TipTap HTML on the site — flatten, truncate, re-escape
-  // (richTextToPlainText decodes entities back to raw <, >, & characters).
-  let description = "";
-  if (withDescription) {
-    const text = richTextToPlainText(event.description);
-    if (text) {
-      description = `<span style="display:block; margin-top:3px; color:#52525b; font-size:14px; font-style:italic; line-height:1.5;">${escapeHtml(
-        truncate(text, DESCRIPTION_MAX_CHARS),
-      )}</span>`;
-    }
-  }
-
-  // A cobalt button so featured events get a clear call to action, not just a
-  // linked title. Links to external registration when hosted elsewhere.
-  const cta = withCta
-    ? `<span style="display:block; margin-top:8px; text-align:center;"><a href="${href}" style="display:inline-block; background-color:${COBALT}; color:#ffffff; text-decoration:none; font-weight:700; font-size:13px; letter-spacing:0.02em; padding:8px 16px; border-radius:4px;">Sign Up</a></span>`
-    : "";
-
-  // With a CTA button present the title needn't also be a link; without one
-  // (Classes This Week) the linked title is the only way through.
-  const title = withCta
-    ? `<strong>${event.title}</strong>`
-    : `<strong><a href="${href}">${event.title}</a></strong>`;
-
-  const liAttr = description || cta ? ' style="margin-bottom:18px;"' : "";
-  return `<li${liAttr}>${title}, ${when}${location}${description}${cta}</li>`;
-}
 
 /** Monday (ET) of the week containing `now`, as a YYYY-MM-DD key. */
 function getEtMondayIso(now: Date): string {

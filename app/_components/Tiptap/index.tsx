@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "@tiptap/extension-image";
 import { CharacterCount, Placeholder } from "@tiptap/extensions";
 import {
   useEditor,
@@ -10,6 +11,8 @@ import {
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect, useCallback, useMemo, useRef, memo } from "react";
 import DOMPurify from "dompurify";
+import { toast } from "sonner";
+import { uploadEditorImage } from "@/app/_components/Tiptap/image-upload";
 import { isRichTextEmpty } from "@/app/_components/Tiptap/RichTextContent";
 import {
   looksLikeHtmlSource,
@@ -28,6 +31,8 @@ interface TiptapProps {
   maxLength?: number;
   showCharacterCount?: boolean;
   onEditorReady?: (editor: Editor) => void;
+  /** Registers the image node + upload-on-drop/paste. Keep constant per mount. */
+  enableImages?: boolean;
 }
 
 const Tiptap = memo(
@@ -41,6 +46,7 @@ const Tiptap = memo(
     maxLength,
     showCharacterCount = true,
     onEditorReady,
+    enableImages = false,
   }: TiptapProps) => {
     // Referenced from handlePaste (which is created before `editor` exists);
     // populated once the editor is ready, below.
@@ -60,6 +66,39 @@ const Tiptap = memo(
       },
       [onChange],
     );
+
+    // Upload to Vercel Blob, then insert the image node where it was dropped
+    // (or at the caret when no position is given). The loading toast is the
+    // only sign anything is happening on slow connections — without it a
+    // second paste (and a duplicate image) is almost guaranteed.
+    const insertUploadedImage = useCallback((file: File, pos?: number) => {
+      const toastId = toast.loading("Uploading image…");
+      uploadEditorImage(file)
+        .then((url) => {
+          const activeEditor = editorRef.current;
+          if (!activeEditor) return;
+          const node = {
+            type: "image",
+            attrs: { src: url, alt: file.name.replace(/\.[^.]+$/, "") },
+          };
+          if (pos !== undefined) {
+            // The document may have changed (or shrunk) during the upload —
+            // clamp so a stale drop position can't throw out of range.
+            const insertAt = Math.min(pos, activeEditor.state.doc.content.size);
+            activeEditor.chain().insertContentAt(insertAt, node).run();
+          } else {
+            activeEditor.chain().focus().insertContent(node).run();
+          }
+        })
+        .catch((error) => {
+          toast.error(
+            error instanceof Error ? error.message : "Failed to upload image",
+          );
+        })
+        .finally(() => {
+          toast.dismiss(toastId);
+        });
+    }, []);
 
     const extensions = useMemo(
       () => [
@@ -109,8 +148,12 @@ const Tiptap = memo(
         CharacterCount.configure({
           limit: maxLength,
         }),
+        // Block-level images, URL-only (no base64 blobs in stored HTML)
+        ...(enableImages
+          ? [Image.configure({ inline: false, allowBase64: false })]
+          : []),
       ],
-      [placeholder, maxLength],
+      [placeholder, maxLength, enableImages],
     );
 
     const editor = useEditor({
@@ -129,7 +172,27 @@ const Tiptap = memo(
         // blocks so raw HTML can still be pasted as code when that's intended.
         handlePaste: (_view, event) => {
           const activeEditor = editorRef.current;
-          if (!activeEditor || activeEditor.isActive("codeBlock")) return false;
+          if (!activeEditor) return false;
+
+          // Pasted image files (screenshots, copied images) upload to Blob
+          // and land at the caret. Only when there's no text flavor alongside:
+          // Office apps put both text AND a rendered bitmap on the clipboard,
+          // and the text is what the user means to paste.
+          if (enableImages) {
+            const hasTextFlavor = Boolean(
+              event.clipboardData?.getData("text/plain") ||
+              event.clipboardData?.getData("text/html"),
+            );
+            const imageFiles = Array.from(
+              event.clipboardData?.files ?? [],
+            ).filter((file) => file.type.startsWith("image/"));
+            if (imageFiles.length > 0 && !hasTextFlavor) {
+              imageFiles.forEach((file) => insertUploadedImage(file));
+              return true;
+            }
+          }
+
+          if (activeEditor.isActive("codeBlock")) return false;
 
           const source = stripCodeFence(
             event.clipboardData?.getData("text/plain") ?? "",
@@ -143,6 +206,23 @@ const Tiptap = memo(
               ? DOMPurify.sanitize(source, { ADD_ATTR: ["target"] })
               : source;
           activeEditor.commands.insertContent(clean);
+          return true;
+        },
+        // Dropped image files upload to Blob and land where they were dropped
+        // (`moved` means a node being dragged within the doc — let ProseMirror
+        // handle that natively).
+        handleDrop: (view, event, _slice, moved) => {
+          if (!enableImages || moved) return false;
+          const imageFiles = Array.from(event.dataTransfer?.files ?? []).filter(
+            (file) => file.type.startsWith("image/"),
+          );
+          if (imageFiles.length === 0) return false;
+
+          const coords = view.posAtCoords({
+            left: event.clientX,
+            top: event.clientY,
+          });
+          imageFiles.forEach((file) => insertUploadedImage(file, coords?.pos));
           return true;
         },
       },

@@ -117,7 +117,34 @@ model Newsletter {
   sentAt            DateTime?
   resendBroadcastId String?
 
+  // Which auto-sections get appended below the message at send time
+  includeUpcoming     Boolean @default(true)
+  includeClasses      Boolean @default(true)
+  includeDescriptions Boolean @default(false)
+
+  // Unique-recipient counters, incremented by the Resend webhook
+  deliveredCount Int @default(0)
+  openedCount    Int @default(0)
+  clickedCount   Int @default(0)
+  bouncedCount   Int @default(0)
+
+  emailEvents NewsletterEmailEvent[]
+
   @@index([status, scheduledAt])
+  @@index([resendBroadcastId])
+}
+
+// Dedup ledger for Resend webhook events: one row per (newsletter, recipient
+// email id, event type) so repeat opens/clicks by the same person count once.
+model NewsletterEmailEvent {
+  id           String     @id @default(uuid())
+  newsletterId String
+  emailId      String
+  type         String
+  createdAt    DateTime   @default(now())
+  newsletter   Newsletter @relation(fields: [newsletterId], references: [id], onDelete: Cascade)
+
+  @@unique([newsletterId, emailId, type])
 }
 
 enum NewsletterStatus {

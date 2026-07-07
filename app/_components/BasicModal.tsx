@@ -15,6 +15,9 @@ interface BasicModalProps {
   onOpenChange: (isOpen: boolean) => void;
   primaryAction?: () => void;
   primaryActionLabel?: string;
+  primaryActionDisabled?: boolean;
+  /** Dismiss-button label; override when "Cancel" would be ambiguous. */
+  cancelLabel?: string;
   placement?: "auto" | "top" | "center" | "bottom";
   hideButtons?: boolean;
 }
@@ -26,6 +29,8 @@ const BasicModal: FC<BasicModalProps> = ({
   onOpenChange,
   primaryAction,
   primaryActionLabel,
+  primaryActionDisabled = false,
+  cancelLabel = "Cancel",
   hideButtons = false,
 }) => {
   return (
@@ -42,10 +47,15 @@ const BasicModal: FC<BasicModalProps> = ({
           !hideButtons && (
             <DialogFooter>
               <Button variant="secondary" onClick={() => onOpenChange(false)}>
-                Cancel
+                {cancelLabel}
               </Button>
               {primaryAction && (
-                <Button onClick={primaryAction}>{primaryActionLabel}</Button>
+                <Button
+                  onClick={primaryAction}
+                  disabled={primaryActionDisabled}
+                >
+                  {primaryActionLabel}
+                </Button>
               )}
             </DialogFooter>
           )

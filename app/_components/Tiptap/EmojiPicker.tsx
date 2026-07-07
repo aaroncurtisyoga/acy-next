@@ -13,6 +13,13 @@ import {
 } from "@/components/ui/popover";
 import { EMOJI_GROUPS, type EmojiEntry } from "./emoji-data";
 
+interface EmojiPickerPopoverProps {
+  onSelect: (char: string) => void;
+  disabled?: boolean;
+  /** Radix onCloseAutoFocus — lets callers send focus back where it belongs. */
+  onCloseAutoFocus?: (event: Event) => void;
+}
+
 interface EmojiPickerProps {
   editor: Editor;
   isDisabled?: boolean;
@@ -29,7 +36,7 @@ const EmojiButton = ({
     type="button"
     // No focus() on insert: keeping DOM focus inside the popover leaves it open
     // so several emoji can be added in a row. onMouseDown-preventDefault keeps
-    // the editor's selection from collapsing before we insert at the cursor.
+    // the target's selection from collapsing before we insert at the cursor.
     onMouseDown={(e) => e.preventDefault()}
     onClick={() => onSelect(entry.char)}
     title={entry.name}
@@ -40,7 +47,15 @@ const EmojiButton = ({
   </button>
 );
 
-const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
+/**
+ * Searchable emoji popover, decoupled from any insertion target: the editor
+ * toolbar inserts into Tiptap, the composer inserts into the subject input.
+ */
+export const EmojiPickerPopover = ({
+  onSelect,
+  disabled = false,
+  onCloseAutoFocus,
+}: EmojiPickerPopoverProps) => {
   const [open, setOpen] = useState(false);
   const [query, setQuery] = useState("");
 
@@ -65,13 +80,6 @@ const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
     return matches;
   }, [q]);
 
-  const insertEmoji = (char: string) => {
-    // Insert at the editor's preserved selection without stealing focus, so
-    // the popover stays open. Emoji are plain text, so the sanitize step in
-    // the Tiptap onUpdate handler leaves them intact.
-    editor.chain().insertContent(char).run();
-  };
-
   const handleOpenChange = (next: boolean) => {
     setOpen(next);
     if (!next) setQuery("");
@@ -86,7 +94,7 @@ const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
             type="button"
             variant="ghost"
             className={`h-8 w-8 ${open ? "bg-accent" : ""}`}
-            disabled={isDisabled}
+            disabled={disabled}
             aria-label="Insert emoji"
           >
             <Smile size={18} />
@@ -97,12 +105,7 @@ const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
       <PopoverContent
         align="start"
         className="w-80 p-0"
-        // Return the caret to the editor when the picker closes rather than
-        // parking focus on the trigger button.
-        onCloseAutoFocus={(e) => {
-          e.preventDefault();
-          editor.commands.focus();
-        }}
+        onCloseAutoFocus={onCloseAutoFocus}
       >
         <div className="border-b p-2">
           <Input
@@ -122,7 +125,7 @@ const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
                   <EmojiButton
                     key={entry.char}
                     entry={entry}
-                    onSelect={insertEmoji}
+                    onSelect={onSelect}
                   />
                 ))}
               </div>
@@ -142,7 +145,7 @@ const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
                     <EmojiButton
                       key={entry.char}
                       entry={entry}
-                      onSelect={insertEmoji}
+                      onSelect={onSelect}
                     />
                   ))}
                 </div>
@@ -153,7 +156,24 @@ const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => {
       </PopoverContent>
     </Popover>
   );
-});
+};
+
+/** Toolbar emoji picker bound to a Tiptap editor. */
+const EmojiPicker = memo(({ editor, isDisabled = false }: EmojiPickerProps) => (
+  <EmojiPickerPopover
+    disabled={isDisabled}
+    // Insert at the editor's preserved selection without stealing focus, so
+    // the popover stays open. Emoji are plain text, so the sanitize step in
+    // the Tiptap onUpdate handler leaves them intact.
+    onSelect={(char) => editor.chain().insertContent(char).run()}
+    // Return the caret to the editor when the picker closes rather than
+    // parking focus on the trigger button.
+    onCloseAutoFocus={(e) => {
+      e.preventDefault();
+      editor.commands.focus();
+    }}
+  />
+));
 
 EmojiPicker.displayName = "EmojiPicker";
 

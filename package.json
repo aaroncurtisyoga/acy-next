@@ -53,6 +53,7 @@
     "@stripe/react-stripe-js": "^3.7.0",
     "@stripe/stripe-js": "^7.9.0",
     "@tailwindcss/postcss": "^4.1.12",
+    "@tiptap/extension-image": "3.27.1",
     "@tiptap/extensions": "^3.27.1",
     "@tiptap/pm": "^3.27.1",
     "@tiptap/react": "^3.27.1",

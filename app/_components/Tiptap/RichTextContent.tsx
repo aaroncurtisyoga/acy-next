@@ -54,8 +54,18 @@ const RichTextContent: FC<RichTextContentProps> = ({ content, className }) => {
         "code",
         "pre",
         "hr",
+        "img",
       ],
-      ALLOWED_ATTR: ["href", "target", "rel", "class"],
+      ALLOWED_ATTR: [
+        "href",
+        "target",
+        "rel",
+        "class",
+        "src",
+        "alt",
+        "width",
+        "height",
+      ],
     });
   }, [content]);
 

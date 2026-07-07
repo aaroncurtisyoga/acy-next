@@ -14,8 +14,10 @@ const CreateNewsletterPage: FC = () => {
       >
         <ArrowLeft className="h-4 w-4" /> Newsletters
       </Link>
+      {/* Same heading as the edit route: the first autosave swaps the URL to
+          /admin/newsletter/[id] without remounting, so the two must match. */}
       <h1 className="mb-6 font-display text-3xl uppercase text-foreground">
-        New Newsletter
+        Newsletter Draft
       </h1>
       <NewsletterEditor />
     </div>

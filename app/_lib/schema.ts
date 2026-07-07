@@ -43,6 +43,13 @@ export const NewsletterComposeSchema = z.object({
     .max(150, "Preview text must be 150 characters or fewer")
     .optional(),
   content: z.string().min(20, "Newsletter body is required"),
+  // Auto-sections appended below the message; persisted so a send always uses
+  // what the draft last showed, and so drafts reopen with the same toggles.
+  // Plain booleans (no .default()) keep the schema's input and output types
+  // identical, which react-hook-form's resolver typing requires.
+  includeUpcoming: z.boolean(),
+  includeClasses: z.boolean(),
+  includeDescriptions: z.boolean(),
 });
 
 export const EventFormBasicInfoSchema = z.object({
