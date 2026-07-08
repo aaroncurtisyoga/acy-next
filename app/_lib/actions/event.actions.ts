@@ -1,6 +1,7 @@
 "use server";
 
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { EVENTS_CACHE_TAG } from "@/app/_lib/constants/cache-tags";
 import prisma from "@/app/_lib/prisma";
 import {
   EventWithLocationAndCategory,
@@ -126,6 +127,7 @@ export async function createEvent({
     }
 
     revalidatePath(path);
+    revalidateTag(EVENTS_CACHE_TAG, { expire: 0 });
     return serialize(newEvent);
   } catch (error) {
     handleError(error);
@@ -169,6 +171,9 @@ export async function deleteEvent(
 
     if (deletedEvent) {
       console.log("[Event Deletion] Event deleted successfully from database");
+      revalidatePath("/");
+      revalidatePath("/admin/events");
+      revalidateTag(EVENTS_CACHE_TAG, { expire: 0 });
       return { success: true };
     }
     return { success: false };
@@ -336,6 +341,7 @@ export async function toggleEventFeatured(
     });
     revalidatePath("/");
     revalidatePath("/admin/events");
+    revalidateTag(EVENTS_CACHE_TAG, { expire: 0 });
     return { success: true };
   } catch (error) {
     handleError(error);
@@ -541,6 +547,7 @@ export async function updateEvent({
     }
 
     revalidatePath(path);
+    revalidateTag(EVENTS_CACHE_TAG, { expire: 0 });
 
     return serialize(updatedEvent);
   } catch (error) {

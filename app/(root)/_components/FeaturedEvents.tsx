@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { getFeaturedEvents } from "@/app/_lib/actions/event.actions";
+import { getFeaturedEventsCached as getFeaturedEvents } from "@/app/_lib/actions/event.queries";
 import { formatDateTime, richTextToPlainText } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 

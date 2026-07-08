@@ -1,9 +1,9 @@
 import { Suspense } from "react";
 import Link from "next/link";
 import {
-  getEventsByMonth,
-  getLastActiveEventDate,
-} from "@/app/_lib/actions/event.actions";
+  getEventsByMonthCached as getEventsByMonth,
+  getLastActiveEventDateCached as getLastActiveEventDate,
+} from "@/app/_lib/actions/event.queries";
 import { formatDateTime, cn, toDateKey } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import ScheduleToggle from "./ScheduleToggle";

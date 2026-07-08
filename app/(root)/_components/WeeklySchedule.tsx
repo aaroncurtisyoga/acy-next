@@ -1,8 +1,8 @@
 import Link from "next/link";
 import {
-  getEventsByWeek,
-  getLastActiveEventDate,
-} from "@/app/_lib/actions/event.actions";
+  getEventsByWeekCached as getEventsByWeek,
+  getLastActiveEventDateCached as getLastActiveEventDate,
+} from "@/app/_lib/actions/event.queries";
 import { formatDateTime, toDateKey } from "@/app/_lib/utils";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import WeekNavigation from "./WeekNavigation";
