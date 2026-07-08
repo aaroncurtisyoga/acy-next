@@ -5,14 +5,14 @@
  *   npx tsx scripts/import-subscribers.ts <path-to-mailchimp-export.csv>
  *
  * Expects RESEND_API_KEY and RESEND_SEGMENT_ID in the environment
- * (falls back to reading .env.local / .env from the repo root).
+ * (falls back to reading .env.local from the repo root).
  */
 import { readFileSync, existsSync } from "fs";
 import { resolve } from "path";
 import { Resend } from "resend";
 
 function loadEnvFallback() {
-  for (const file of [".env.local", ".env"]) {
+  for (const file of [".env.local"]) {
     const path = resolve(process.cwd(), file);
     if (!existsSync(path)) continue;
     for (const line of readFileSync(path, "utf8").split("\n")) {

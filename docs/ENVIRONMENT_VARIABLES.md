@@ -18,10 +18,10 @@ This document provides comprehensive documentation for all environment variables
 1. Copy the example environment file:
 
    ```bash
-   cp .env.example .env
+   cp .env.example .env.local
    ```
 
-2. Configure the required variables listed below in the `.env` file
+2. Configure the required variables listed below in the `.env.local` file
 
 ---
 

@@ -26,7 +26,7 @@ This app is designed to help current and future yoga students:
 ### Environment Configuration
 
 ```bash
-cp .env.example .env
+cp .env.example .env.local
 ```
 
 > For complete environment variable documentation, see [Environment Variables Reference Guide](docs/ENVIRONMENT_VARIABLES.md)
@@ -134,23 +134,15 @@ The application automatically syncs yoga classes from **two sources**:
 
 ## <a name="postgres">Postgres Database</a>
 
-You can use Prisma Studio to view and manage your Vercel Postgres database schema and data. Depending on the environment, use one of the following commands:
+You can use Prisma Studio to view and manage your Vercel Postgres database schema and data. The Prisma CLI reads `.env` by default, so load your `.env.local` explicitly:
 
-- **Local Development Database**:
+```bash
+dotenv -e .env.local -- npx prisma studio
+```
 
-  ```bash
-  npx prisma studio
-  ```
+Opens Prisma Studio using your `.env.local` configuration.
 
-  Opens Prisma Studio using your local `.env` configuration, connecting to your development database.
-
-- **Production Database**:
-  ```bash
-  dotenv -e .env.production -- npx prisma studio
-  ```
-  Opens Prisma Studio using the `.env.production` file, connecting to your production database.
-
-> **Tip**: Ensure each environment file has the correct `DATABASE_URL` for seamless connections.
+> **Tip**: Ensure `.env.local` has the correct `DATABASE_URL` for the database you want to connect to.
 
 ## <a name="analytics">Analytics & Tracking</a>
 
