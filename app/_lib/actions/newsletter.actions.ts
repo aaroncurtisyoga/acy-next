@@ -1,5 +1,6 @@
 "use server";
 
+import type { Newsletter } from "@prisma/client";
 import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
@@ -191,9 +192,18 @@ async function fetchAllSubscribers(): Promise<{
   subscribers: Subscriber[];
   capped: boolean;
   failed: boolean;
+  /**
+   * True only when every page was walked cleanly. A mid-pagination failure
+   * still yields a usable partial list for the admin view (failed stays
+   * false), but callers persisting counts must require complete — a partial
+   * total stored as "the audience size" reads as data, not as a gap.
+   */
+  complete: boolean;
 }> {
   const segmentId = process.env.RESEND_SEGMENT_ID;
-  if (!segmentId) return { subscribers: [], capped: false, failed: false };
+  if (!segmentId) {
+    return { subscribers: [], capped: false, failed: false, complete: false };
+  }
 
   const subscribers: Subscriber[] = [];
   let after: string | undefined;
@@ -206,7 +216,12 @@ async function fetchAllSubscribers(): Promise<{
     if (error || !data) {
       // A failure before we've read anything is a hard error worth surfacing;
       // a failure partway through still leaves a usable (if partial) list.
-      return { subscribers, capped: false, failed: subscribers.length === 0 };
+      return {
+        subscribers,
+        capped: false,
+        failed: subscribers.length === 0,
+        complete: false,
+      };
     }
 
     for (const contact of data.data) {
@@ -221,13 +236,13 @@ async function fetchAllSubscribers(): Promise<{
     }
 
     if (!data.has_more || data.data.length === 0) {
-      return { subscribers, capped: false, failed: false };
+      return { subscribers, capped: false, failed: false, complete: true };
     }
     after = data.data[data.data.length - 1].id;
   }
 
   // Fell out of the loop still seeing has_more — list is larger than the cap.
-  return { subscribers, capped: true, failed: false };
+  return { subscribers, capped: true, failed: false, complete: false };
 }
 
 export async function listSubscribers() {
@@ -336,8 +351,11 @@ export async function getNewsletters() {
     await reconcileScheduledNewsletters();
     const newsletters = await prisma.newsletter.findMany({
       orderBy: { updatedAt: "desc" },
+      // The list never renders the snapshot, and shipping every full email
+      // HTML to the table adds up fast. Only getNewsletterById needs it.
+      omit: { sentHtml: true },
     });
-    return serialize(newsletters);
+    return serialize(newsletters) as Newsletter[];
   } catch (error) {
     console.error("Failed to fetch newsletters:", error);
     return [];
@@ -583,20 +601,25 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       contentHtml: `${newsletter.content}${sections}`,
       previewText: newsletter.previewText ?? undefined,
     });
-    // Plain-text alternative (deliverability). Merge tags are resolved to
-    // their fallbacks here rather than trusting substitution in the text
-    // part — "Hey" beats a raw "{{{contact.first_name}}}" for text readers.
+    // Plain-text alternative (deliverability). Resend runs the same merge-tag
+    // substitution on the text part as on the html, so the tags stay raw here
+    // — resolving them early would strip per-recipient personalization.
     const text = renderNewsletterText({
-      contentHtml: resolveMergeTags(`${newsletter.content}${sections}`),
+      contentHtml: `${newsletter.content}${sections}`,
     });
 
-    // Audience size at send time gives the webhook counters a denominator
-    // ("Delivered 118 of 120"). Best-effort — never blocks the send.
+    // Audience size when the send is initiated ("Delivered 118 of 120").
+    // Best-effort and never blocks the send; only a complete page walk
+    // counts — persisting a partial total would read as data, not a gap.
+    // For scheduled sends this is the size at scheduling time; the UI drops
+    // the denominator if the audience outgrew it before the send fired.
     let recipientCount: number | null = null;
     try {
-      const { subscribers, failed } = await fetchAllSubscribers();
-      if (!failed) {
-        recipientCount = subscribers.filter((s) => !s.unsubscribed).length;
+      const audience = await fetchAllSubscribers();
+      if (audience.complete) {
+        recipientCount = audience.subscribers.filter(
+          (s) => !s.unsubscribed,
+        ).length;
       }
     } catch {
       // Counters just render without a denominator.
@@ -618,10 +641,16 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
 
     // Persist the broadcast id before sending: if anything past this point
     // fails, the retry guard above finds this broadcast instead of minting a
-    // duplicate.
+    // duplicate. The snapshot rides along so a send that succeeds but loses
+    // its final status update still knows exactly what Resend was handed —
+    // the retry guard only flips status and never rebuilds these.
     await prisma.newsletter.update({
       where: { id },
-      data: { resendBroadcastId: createResult.data.id },
+      data: {
+        resendBroadcastId: createResult.data.id,
+        sentHtml: html,
+        recipientCount,
+      },
     });
 
     const sendResult = await resend.broadcasts.send(
@@ -640,10 +669,6 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
         status: scheduledAt ? "SCHEDULED" : "SENT",
         scheduledAt: scheduledAt ?? null,
         sentAt: scheduledAt ? null : new Date(),
-        // Snapshot what actually went out — the event sections are rebuilt
-        // daily, so the sent view must not regenerate them later.
-        sentHtml: html,
-        recipientCount,
       },
     });
 

@@ -216,10 +216,14 @@ const NewsletterDetailPage: FC = () => {
               {
                 label: "Delivered",
                 // The at-send audience size turns a bare count into a
-                // deliverability check ("118 of 120").
-                value: newsletter.recipientCount
-                  ? `${newsletter.deliveredCount} of ${newsletter.recipientCount}`
-                  : newsletter.deliveredCount,
+                // deliverability check ("118 of 120"). Hidden once delivered
+                // exceeds it — a scheduled send's audience can grow between
+                // scheduling and sending, and "125 of 118" reads as nonsense.
+                value:
+                  newsletter.recipientCount &&
+                  newsletter.deliveredCount <= newsletter.recipientCount
+                    ? `${newsletter.deliveredCount} of ${newsletter.recipientCount}`
+                    : newsletter.deliveredCount,
               },
               {
                 label: "Opened",

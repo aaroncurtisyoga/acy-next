@@ -95,9 +95,13 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
   };
 
   const describeTooltip = (newsletter: Newsletter) => {
-    const delivered = newsletter.recipientCount
-      ? `Delivered ${newsletter.deliveredCount} of ${newsletter.recipientCount}`
-      : `Delivered ${newsletter.deliveredCount}`;
+    // Denominator only while it still makes sense — a scheduled send's
+    // audience can outgrow the count captured at scheduling time.
+    const delivered =
+      newsletter.recipientCount &&
+      newsletter.deliveredCount <= newsletter.recipientCount
+        ? `Delivered ${newsletter.deliveredCount} of ${newsletter.recipientCount}`
+        : `Delivered ${newsletter.deliveredCount}`;
     const complained =
       newsletter.complainedCount > 0
         ? ` · Spam complaints ${newsletter.complainedCount}`
@@ -133,11 +137,15 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
 
   const handleDuplicate = async (id: string) => {
     setBusyId(id);
+    // Stays busy through a successful navigation — re-enabling during the
+    // route transition invites a double-click and a stray second "(copy)".
+    let navigating = false;
     try {
       const result = await duplicateNewsletter(id);
       if (result.status && result.data) {
         // Straight into the copy — hunting for the "(copy)" row in the list
         // was the slowest step of the reuse loop.
+        navigating = true;
         toast.success("Draft duplicated");
         router.push(`/admin/newsletter/${result.data.id}`);
       } else {
@@ -145,7 +153,7 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
         await onChanged();
       }
     } finally {
-      setBusyId(null);
+      if (!navigating) setBusyId(null);
     }
   };
 

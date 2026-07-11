@@ -56,7 +56,10 @@ const NewsletterForm = () => {
             type="text"
             autoComplete="given-name"
             disabled={isSubmitting}
-            className="h-12 rounded-[4px] border-[#c3cbe4] bg-white text-base"
+            className={cn(
+              "h-12 rounded-[4px] border-[#c3cbe4] bg-white text-base",
+              errors.firstName && "border-destructive",
+            )}
           />
         </div>
         <div className="min-w-0 flex-1 basis-60">
@@ -84,8 +87,10 @@ const NewsletterForm = () => {
           {isSubmitting ? "Signing up..." : "Sign up"}
         </Button>
       </div>
-      {errors.email?.message ? (
-        <p className="mt-3 text-sm text-destructive">{errors.email.message}</p>
+      {errors.email?.message || errors.firstName?.message ? (
+        <p className="mt-3 text-sm text-destructive">
+          {errors.email?.message ?? errors.firstName?.message}
+        </p>
       ) : (
         <p
           className={cn(
