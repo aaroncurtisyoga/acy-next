@@ -29,6 +29,91 @@ export function resolveMergeTags(
   );
 }
 
+/**
+ * Placeholder strings shipped by the starter template and snippets — a send
+ * that still contains one is a mistake, full stop. Keep in sync with
+ * app/admin/newsletter/_lib/templates.ts.
+ */
+const TEMPLATE_PLACEHOLDERS = [
+  "[Your message here]",
+  "[Workshop name]",
+  "[When · where]",
+  "[What it is and why it's worth coming to]",
+];
+
+const VALID_MERGE_TAG =
+  /^\{\{\{\s*(?:contact\.(?:first_name|last_name|email)\s*(?:\|[^}]*)?|RESEND_UNSUBSCRIBE_URL\s*)\}\}\}$/;
+
+export interface NewsletterContentIssues {
+  /** Certain mistakes — sending is refused while any of these exist. */
+  blockers: string[];
+  /** Probable mistakes — surfaced in the Send dialog but not enforced. */
+  warnings: string[];
+}
+
+/**
+ * Pre-send sanity check for the newsletter body. Broadcasts fire with no undo,
+ * so template scaffolds ("[Your message here]") and merge tags Resend won't
+ * substitute (a typo like {{{contact.firstname}}}, or double braces) are
+ * blockers; other [bracketed] text — usually a note-to-self — is a warning.
+ * Checked by sendNewsletter and previewed in the composer's Send dialog.
+ */
+export function findNewsletterContentIssues(
+  html: string,
+): NewsletterContentIssues {
+  const blockers: string[] = [];
+  const warnings: string[] = [];
+  // Scan visible text so placeholders split across inline marks still match
+  // and curly braces inside attributes can't false-positive.
+  const text = html.replace(/<[^>]*>/g, " ").replace(/\s+/g, " ");
+
+  for (const placeholder of TEMPLATE_PLACEHOLDERS) {
+    if (text.includes(placeholder)) {
+      blockers.push(`replace the template placeholder “${placeholder}”`);
+    }
+  }
+
+  const bracketed = new Set(text.match(/\[[^\[\]]{1,80}\]/g) ?? []);
+  for (const match of bracketed) {
+    if (!TEMPLATE_PLACEHOLDERS.includes(match)) {
+      warnings.push(`“${match}” looks like an unfinished placeholder`);
+    }
+  }
+
+  const tagCandidates = new Set(text.match(/\{\{+[^{}]*\}\}+/g) ?? []);
+  for (const candidate of tagCandidates) {
+    if (!VALID_MERGE_TAG.test(candidate)) {
+      blockers.push(
+        `fix the merge tag “${candidate}” — only {{{contact.first_name}}}, {{{contact.last_name}}}, and {{{contact.email}}} (triple braces) get filled in`,
+      );
+    }
+  }
+
+  return { blockers, warnings };
+}
+
+/**
+ * Stamp every <img> with inline max-width/height styles. The <head> <style>
+ * rule that normally constrains images is stripped by some clients (Gmail for
+ * non-Gmail accounts, some Outlooks), and a full-resolution phone photo would
+ * otherwise render at native width and blow out the 600px layout. Inline
+ * styles survive those clients. No width attribute on purpose: without the
+ * intrinsic size we'd either upscale small images or do nothing.
+ */
+function makeImagesEmailSafe(html: string): string {
+  const IMG_STYLE = "max-width:100%;height:auto;";
+  return html.replace(/<img\b[^>]*>/gi, (tag) => {
+    const styleAttr = tag.match(/\bstyle\s*=\s*("([^"]*)"|'([^']*)')/i);
+    if (!styleAttr) {
+      return tag.replace(/^<img\b/i, `<img style="${IMG_STYLE}"`);
+    }
+    const existing = styleAttr[2] ?? styleAttr[3] ?? "";
+    if (/max-width/i.test(existing)) return tag;
+    const merged = `${existing.trim().replace(/;?$/, ";")}${IMG_STYLE}`;
+    return tag.replace(styleAttr[0], `style="${merged}"`);
+  });
+}
+
 interface RenderNewsletterHtmlParams {
   contentHtml: string;
   previewText?: string;
@@ -104,7 +189,7 @@ ${
         <tr>
           <td style="background-color:#ffffff; padding: 22px 36px 36px;">
             <div class="content" style="font-family: Helvetica, Arial, sans-serif; font-size: 16px; line-height: 1.6; color: #3f3f46;">
-              ${contentHtml}
+              ${makeImagesEmailSafe(contentHtml)}
             </div>
           </td>
         </tr>

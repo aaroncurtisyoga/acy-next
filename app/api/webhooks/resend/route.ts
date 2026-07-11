@@ -52,10 +52,23 @@ export async function POST(req: Request) {
 
   // Only broadcast (newsletter) emails carry a broadcast_id; test sends and
   // other transactional mail self-exclude here.
-  const data = event.data as { broadcast_id?: string; email_id?: string };
+  const data = event.data as {
+    broadcast_id?: string;
+    email_id?: string;
+    click?: { link?: string };
+  };
   if (!data.broadcast_id || !data.email_id) {
     return NextResponse.json({ received: true });
   }
+
+  // Click events also record WHICH link, so the admin can see per-link counts.
+  // Capped well under Postgres's ~2700-byte btree index-row limit even for
+  // fully multibyte URLs — an overflowing insert would roll back the whole
+  // transaction, counter bump included, on every webhook retry.
+  const clickedLink =
+    event.type === "email.clicked"
+      ? data.click?.link?.slice(0, 500)
+      : undefined;
 
   try {
     const newsletter = await prisma.newsletter.findFirst({
@@ -70,6 +83,9 @@ export async function POST(req: Request) {
     // the ledger row rolls back too, so Resend's retry can count the event
     // instead of hitting the dedup constraint and skipping it forever.
     await prisma.$transaction(async (tx) => {
+      // The link-less row is the per-recipient dedup ledger (one per
+      // newsletter/email/type) and is what drives the unique-recipient
+      // counters — clicking a second, different link must not bump the count.
       const inserted = await tx.newsletterEmailEvent.createMany({
         data: [
           {
@@ -84,6 +100,21 @@ export async function POST(req: Request) {
         await tx.newsletter.update({
           where: { id: newsletter.id },
           data: { [counter]: { increment: 1 } },
+        });
+      }
+      // Clicks additionally get one row per distinct link per recipient,
+      // powering the "Top clicked links" view (unique clickers per URL).
+      if (clickedLink) {
+        await tx.newsletterEmailEvent.createMany({
+          data: [
+            {
+              newsletterId: newsletter.id,
+              emailId: data.email_id!,
+              type: event.type,
+              link: clickedLink,
+            },
+          ],
+          skipDuplicates: true,
         });
       }
     });

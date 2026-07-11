@@ -33,6 +33,11 @@ export const NewsletterSubscriberUpdateSchema = z.object({
   unsubscribed: z.boolean().optional(),
 });
 
+// Resend rejects broadcast scheduled_at values more than 30 days out; the
+// composer's picker and sendNewsletter both enforce this so the failure is a
+// clear message instead of a generic send error.
+export const NEWSLETTER_SCHEDULE_MAX_DAYS = 30;
+
 export const NewsletterComposeSchema = z.object({
   subject: z
     .string()

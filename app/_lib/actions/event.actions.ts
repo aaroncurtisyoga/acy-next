@@ -294,13 +294,16 @@ export async function getEventById(eventId: string) {
 /**
  * Aaron's own upcoming one-off events (sound baths, workshops) — excludes
  * externally synced studio classes, which already appear in the weekly schedule.
+ * `from` is the "upcoming as of when?" cutoff: the newsletter passes its
+ * scheduled send time so a Friday-composed, Monday-sent email doesn't feature
+ * events that will already be over.
  */
-export async function getFeaturedEvents(limit = 2) {
+export async function getFeaturedEvents(limit = 2, from: Date = new Date()) {
   try {
     const events = await prisma.event.findMany({
       where: {
         isActive: true,
-        startDateTime: { gte: new Date() },
+        startDateTime: { gte: from },
         // Show anything explicitly featured (incl. synced events) plus
         // manually-created events, which default into the Upcoming band.
         OR: [{ isFeatured: true }, { sourceType: null, isExternal: false }],

@@ -4,6 +4,7 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 import { revalidatePath } from "next/cache";
 import { z } from "zod";
 import {
+  findNewsletterContentIssues,
   renderNewsletterHtml,
   resolveMergeTags,
 } from "@/app/_lib/email/newsletter-template";
@@ -14,6 +15,7 @@ import {
   getFeaturedEvents,
 } from "@/app/_lib/actions/event.actions";
 import {
+  NEWSLETTER_SCHEDULE_MAX_DAYS,
   NewsletterComposeSchema,
   NewsletterFormSchema,
   NewsletterSubscriberSchema,
@@ -33,6 +35,13 @@ type EventSectionOptions = {
   includeUpcoming?: boolean;
   includeClasses?: boolean;
   includeDescriptions?: boolean;
+  /**
+   * The moment the email will actually reach inboxes. Scheduled sends pass
+   * their send time so "Classes This Week" is the send week (not the
+   * compose-click week) and events that finish before the send are dropped.
+   * Defaults to now.
+   */
+  at?: Date;
 };
 
 const NEWSLETTER_ADMIN_PATH = "/admin/newsletter";
@@ -464,6 +473,19 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       return { status: false, message: "Only drafts can be sent." };
     }
 
+    // Broadcasts fire with no undo — refuse anything still carrying template
+    // scaffolding or a merge tag Resend won't substitute. The composer's Send
+    // dialog shows the same issues before this ever runs.
+    const { blockers } = findNewsletterContentIssues(newsletter.content);
+    if (blockers.length > 0) {
+      return {
+        status: false,
+        message: `Not sent — ${blockers[0]}${
+          blockers.length > 1 ? ` (+${blockers.length - 1} more)` : ""
+        }.`,
+      };
+    }
+
     // A DRAFT that still carries a broadcast id means an earlier send attempt
     // made it partway (or a scheduled send was cancelled mid-flight). Check
     // Resend before creating a second broadcast so a retry can't double-send.
@@ -532,14 +554,26 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
           message: "The scheduled time must be in the future.",
         };
       }
+      const maxSchedule = new Date(
+        Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000,
+      );
+      if (scheduledAt > maxSchedule) {
+        return {
+          status: false,
+          message: `Resend can schedule up to ${NEWSLETTER_SCHEDULE_MAX_DAYS} days ahead — pick an earlier time.`,
+        };
+      }
     }
 
     // Section toggles live on the row (the composer saves before sending), so
-    // the broadcast always matches what the draft last showed.
+    // the broadcast always matches what the draft last showed. Sections are
+    // built for the send moment: a Friday draft scheduled for Monday gets
+    // Monday's week, not Friday's leftovers.
     const sections = await buildEventSectionsHtml({
       includeUpcoming: newsletter.includeUpcoming,
       includeClasses: newsletter.includeClasses,
       includeDescriptions: newsletter.includeDescriptions,
+      at: scheduledAt,
     });
     const html = renderNewsletterHtml({
       // Resend substitutes the merge tags per-recipient; we only append the
@@ -673,6 +707,33 @@ export async function getSubscriberCount() {
   } catch (error) {
     console.error("Failed to fetch subscriber count:", error);
     return null;
+  }
+}
+
+export type NewsletterTopLink = { link: string; clicks: number };
+
+/**
+ * Unique clickers per URL for a sent newsletter, most-clicked first — which
+ * event or offering actually resonated. Fed by the Resend webhook's per-link
+ * ledger rows (link != ""); newsletters sent before link tracking existed
+ * simply return [].
+ */
+export async function getNewsletterTopLinks(
+  id: string,
+): Promise<NewsletterTopLink[]> {
+  await requireAdmin();
+  try {
+    const rows = await prisma.newsletterEmailEvent.groupBy({
+      by: ["link"],
+      where: { newsletterId: id, type: "email.clicked", link: { not: "" } },
+      _count: { link: true },
+      orderBy: { _count: { link: "desc" } },
+      take: 10,
+    });
+    return rows.map((row) => ({ link: row.link, clicks: row._count.link }));
+  } catch (error) {
+    console.error("Failed to fetch newsletter top links:", error);
+    return [];
   }
 }
 
@@ -820,14 +881,19 @@ async function buildEventSectionsHtml({
   includeUpcoming = true,
   includeClasses = true,
   includeDescriptions = false,
+  at,
 }: EventSectionOptions = {}): Promise<string> {
   if (!includeUpcoming && !includeClasses) return "";
   try {
-    const now = new Date();
+    // All "is this still upcoming?" math runs against the send moment, which
+    // for scheduled sends is in the future.
+    const sendTime = at ?? new Date();
     const sections: string[] = [];
 
     if (includeUpcoming) {
-      const upcoming = await getFeaturedEvents(5).catch(() => []);
+      // The cutoff goes into the query itself — post-fetch filtering would let
+      // events between now and a scheduled send starve the list.
+      const upcoming = await getFeaturedEvents(5, sendTime).catch(() => []);
       if (upcoming.length > 0) {
         sections.push(
           `<h2>Upcoming</h2><ul>${upcoming
@@ -845,13 +911,13 @@ async function buildEventSectionsHtml({
     if (includeClasses) {
       let weekEvents: EventWithLocationAndCategory[] = [];
       try {
-        weekEvents = await getEventsByWeek(getEtMondayIso(now));
+        weekEvents = await getEventsByWeek(getEtMondayIso(sendTime));
       } catch {
         weekEvents = [];
       }
-      // Only classes still to come this week — past ones are noise in an email.
+      // Only classes still to come in the send week — past ones are noise.
       const classesThisWeek = weekEvents.filter(
-        (event) => new Date(event.startDateTime) >= now,
+        (event) => new Date(event.startDateTime) >= sendTime,
       );
       if (classesThisWeek.length > 0) {
         sections.push(

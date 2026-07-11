@@ -43,6 +43,7 @@ import Tiptap from "@/app/_components/Tiptap";
 import { EmojiPickerPopover } from "@/app/_components/Tiptap/EmojiPicker";
 import { useUnsavedChangesGuard } from "@/app/_hooks/useUnsavedChangesGuard";
 import {
+  findNewsletterContentIssues,
   renderNewsletterHtml,
   resolveMergeTags,
 } from "@/app/_lib/email/newsletter-template";
@@ -54,7 +55,10 @@ import {
   sendTestNewsletter,
   updateNewsletter,
 } from "@/app/_lib/actions/newsletter.actions";
-import { NewsletterComposeSchema } from "@/app/_lib/schema";
+import {
+  NEWSLETTER_SCHEDULE_MAX_DAYS,
+  NewsletterComposeSchema,
+} from "@/app/_lib/schema";
 import { formatDateTime } from "@/app/_lib/utils";
 import InsertEventDialog from "@/app/admin/newsletter/_components/InsertEventDialog";
 import {
@@ -212,6 +216,19 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     }, 300);
     return () => clearTimeout(timer);
   }, [watchedContent, previewTextValue]);
+
+  // Pre-flight check shown in the Send dialog: template placeholders and
+  // broken merge tags block the send (the server refuses them too); other
+  // bracketed text is a "did you mean to leave this in?" warning.
+  const contentIssues = useMemo(
+    () =>
+      isSendOpen
+        ? findNewsletterContentIssues(getValues("content") ?? "")
+        : { blockers: [], warnings: [] },
+    // getValues is stable; re-check whenever the dialog opens.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    [isSendOpen],
+  );
 
   const livePreviewSrcDoc = useMemo(
     () =>
@@ -453,6 +470,14 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       .run();
   };
 
+  // The calendar can only disable whole days, so a time later on the 30th day
+  // still gets through it — this minute-level check drives the Schedule
+  // button and inline error instead of a dead-end toast.
+  const scheduleTooFar =
+    !!scheduledAt &&
+    scheduledAt.getTime() >
+      Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000;
+
   const handleSend = async (when: "now" | "scheduled") => {
     if (when === "scheduled") {
       if (!scheduledAt) {
@@ -461,6 +486,15 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
       }
       if (scheduledAt <= new Date()) {
         toast.error("The scheduled time must be in the future.");
+        return;
+      }
+      const maxSchedule = new Date(
+        Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000,
+      );
+      if (scheduledAt > maxSchedule) {
+        toast.error(
+          `Resend can schedule up to ${NEWSLETTER_SCHEDULE_MAX_DAYS} days ahead — pick an earlier time.`,
+        );
         return;
       }
     }
@@ -880,19 +914,56 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
             </DialogDescription>
           </DialogHeader>
 
+          {contentIssues.blockers.length > 0 && (
+            <div className="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">
+              <p className="font-medium">Fix before sending:</p>
+              <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                {contentIssues.blockers.map((issue) => (
+                  <li key={issue}>{issue}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+          {contentIssues.warnings.length > 0 && (
+            <div className="rounded-md border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-800">
+              <p className="font-medium">Double-check:</p>
+              <ul className="mt-1 list-disc space-y-0.5 pl-4">
+                {contentIssues.warnings.map((issue) => (
+                  <li key={issue}>{issue}</li>
+                ))}
+              </ul>
+            </div>
+          )}
+
           <DateTimePicker
             label="Schedule for later (optional)"
             value={scheduledAt}
             onChange={setScheduledAt}
             minDate={new Date()}
+            maxDate={
+              // Resend's broadcast scheduling window.
+              new Date(
+                Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000,
+              )
+            }
             placeholder="Pick a date and time"
+            error={
+              scheduleTooFar
+                ? `Resend can schedule up to ${NEWSLETTER_SCHEDULE_MAX_DAYS} days ahead — pick an earlier time.`
+                : undefined
+            }
           />
 
           <DialogFooter className="gap-2 sm:gap-0">
             <Button
               type="button"
               variant="outline"
-              disabled={isSending || !scheduledAt}
+              disabled={
+                isSending ||
+                !scheduledAt ||
+                scheduleTooFar ||
+                contentIssues.blockers.length > 0
+              }
               onClick={() => handleSend("scheduled")}
             >
               {isSending ? (
@@ -904,7 +975,7 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
             </Button>
             <Button
               type="button"
-              disabled={isSending}
+              disabled={isSending || contentIssues.blockers.length > 0}
               onClick={() => handleSend("now")}
             >
               {isSending ? (

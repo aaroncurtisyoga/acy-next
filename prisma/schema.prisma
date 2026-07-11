@@ -136,15 +136,20 @@ model Newsletter {
 
 // Dedup ledger for Resend webhook events: one row per (newsletter, recipient
 // email id, event type) so repeat opens/clicks by the same person count once.
+// Click events additionally get one row per clicked URL (link != ""), which
+// powers the "Top clicked links" view; the link-less row remains the ledger
+// entry that drives the unique-recipient clickedCount.
 model NewsletterEmailEvent {
   id           String     @id @default(uuid())
   newsletterId String
   emailId      String
   type         String
+  link         String     @default("")
   createdAt    DateTime   @default(now())
   newsletter   Newsletter @relation(fields: [newsletterId], references: [id], onDelete: Cascade)
 
-  @@unique([newsletterId, emailId, type])
+  @@unique([newsletterId, emailId, type, link])
+  @@index([newsletterId, type])
 }
 
 enum NewsletterStatus {

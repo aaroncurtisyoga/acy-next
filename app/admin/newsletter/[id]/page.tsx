@@ -16,6 +16,8 @@ import {
   cancelScheduledNewsletter,
   getNewsletterById,
   getNewsletterEventSectionsHtml,
+  getNewsletterTopLinks,
+  type NewsletterTopLink,
 } from "@/app/_lib/actions/newsletter.actions";
 import {
   renderNewsletterHtml,
@@ -27,6 +29,7 @@ const NewsletterDetailPage: FC = () => {
   const { id } = useParams<{ id: string }>();
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null);
   const [sectionsHtml, setSectionsHtml] = useState("");
+  const [topLinks, setTopLinks] = useState<NewsletterTopLink[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
@@ -38,14 +41,25 @@ const NewsletterDetailPage: FC = () => {
     // build the sections from the row's persisted toggles. Drafts render the
     // editor, which fetches its own live sections.
     if (data && data.status !== "DRAFT") {
-      const sections = await getNewsletterEventSectionsHtml({
-        includeUpcoming: data.includeUpcoming,
-        includeClasses: data.includeClasses,
-        includeDescriptions: data.includeDescriptions,
-      });
+      const [sections, links] = await Promise.all([
+        getNewsletterEventSectionsHtml({
+          includeUpcoming: data.includeUpcoming,
+          includeClasses: data.includeClasses,
+          includeDescriptions: data.includeDescriptions,
+          // A scheduled send's sections are built for its send moment, so
+          // preview the same thing here.
+          at:
+            data.status === "SCHEDULED" && data.scheduledAt
+              ? new Date(data.scheduledAt)
+              : undefined,
+        }),
+        data.status === "SENT" ? getNewsletterTopLinks(id) : [],
+      ]);
       setSectionsHtml(sections);
+      setTopLinks(links);
     } else {
       setSectionsHtml("");
+      setTopLinks([]);
     }
     setIsLoading(false);
   }, [id]);
@@ -185,6 +199,39 @@ const NewsletterDetailPage: FC = () => {
             images, which registers as an open.
           </p>
         </>
+      )}
+
+      {topLinks.length > 0 && (
+        <Card className="mb-6">
+          <CardContent className="p-4">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Top clicked links
+            </p>
+            <ul className="mt-2 space-y-1.5">
+              {topLinks.map(({ link, clicks }) => (
+                <li
+                  key={link}
+                  className="flex items-center justify-between gap-3 text-sm"
+                >
+                  <a
+                    href={link}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="truncate text-primary hover:underline"
+                    title={link}
+                  >
+                    {link
+                      .replace(/^https?:\/\/(www\.)?/, "")
+                      .replace(/\/$/, "")}
+                  </a>
+                  <span className="shrink-0 text-muted-foreground">
+                    {clicks} {clicks === 1 ? "person" : "people"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+          </CardContent>
+        </Card>
       )}
 
       <Card className="shadow-lg">
