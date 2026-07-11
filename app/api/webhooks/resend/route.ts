@@ -8,12 +8,19 @@ import resend from "@/app/_lib/resend";
 // email five times counts once.
 const COUNTER_BY_EVENT: Record<
   string,
-  "deliveredCount" | "openedCount" | "clickedCount" | "bouncedCount"
+  | "deliveredCount"
+  | "openedCount"
+  | "clickedCount"
+  | "bouncedCount"
+  | "complainedCount"
 > = {
   "email.delivered": "deliveredCount",
   "email.opened": "openedCount",
   "email.clicked": "clickedCount",
   "email.bounced": "bouncedCount",
+  // Spam complaints — the one signal that threatens future deliverability.
+  // Needs the event enabled on the webhook in the Resend dashboard.
+  "email.complained": "complainedCount",
 };
 
 export async function POST(req: Request) {

@@ -114,6 +114,77 @@ function makeImagesEmailSafe(html: string): string {
   });
 }
 
+/** Minimal entity decode for the plain-text part (TipTap escapes only these). */
+function decodeEntities(text: string): string {
+  return text
+    .replace(/&nbsp;/g, " ")
+    .replace(/&middot;/g, "·")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&amp;/g, "&");
+}
+
+interface RenderNewsletterTextParams {
+  contentHtml: string;
+  /** Same contract as renderNewsletterHtml — test sends pass a real URL. */
+  unsubscribeUrl?: string;
+}
+
+/**
+ * Plain-text alternative for the newsletter. A missing text/plain part is a
+ * classic spam-score ding, and deliverability is the whole game for a small
+ * personal list. Callers should resolve contact merge tags first (see
+ * resolveMergeTags) so text-only readers never see raw handlebars; the
+ * unsubscribe placeholder stays for Resend to substitute.
+ */
+export function renderNewsletterText({
+  contentHtml,
+  unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}",
+}: RenderNewsletterTextParams): string {
+  const body = contentHtml
+    // Links become "label (url)" so CTAs survive without markup. Skip
+    // self-referential labels to avoid "https://x (https://x)".
+    .replace(
+      /<a\b[^>]*href\s*=\s*(?:"([^"]*)"|'([^']*)')[^>]*>([\s\S]*?)<\/a>/gi,
+      (_match, hrefDq, hrefSq, label) => {
+        const href = (hrefDq ?? hrefSq ?? "").trim();
+        const labelText = label.replace(/<[^>]*>/g, "").trim();
+        if (!labelText) return href;
+        if (!href || labelText === href) return labelText;
+        return `${labelText} (${href})`;
+      },
+    )
+    // Structure → whitespace before all remaining tags are stripped.
+    .replace(/<br\s*\/?>/gi, "\n")
+    .replace(/<hr\b[^>]*>/gi, "\n\n---\n\n")
+    .replace(/<li\b[^>]*>/gi, "\n• ")
+    .replace(/<\/(?:h1|h2|h3|p|ul|ol|blockquote|div)>/gi, "\n\n")
+    .replace(/<\/li>/gi, "")
+    .replace(/<img\b[^>]*>/gi, "")
+    .replace(/<[^>]*>/g, "");
+
+  const text = decodeEntities(body)
+    .split("\n")
+    .map((line) => line.replace(/[ \t]+/g, " ").trim())
+    .join("\n")
+    .replace(/\n{3,}/g, "\n\n")
+    .trim();
+
+  return [
+    "aaron curtis yoga",
+    "",
+    text,
+    "",
+    "---",
+    `Home: ${SITE_URL}`,
+    `Classes: ${SITE_URL}/#this-week`,
+    `Unsubscribe: ${unsubscribeUrl}`,
+    "",
+  ].join("\n");
+}
+
 interface RenderNewsletterHtmlParams {
   contentHtml: string;
   previewText?: string;

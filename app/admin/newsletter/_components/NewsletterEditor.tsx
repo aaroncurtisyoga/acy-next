@@ -95,6 +95,9 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     count: number;
     hasMore: boolean;
   } | null>(null);
+  // Distinguish "still loading" from "couldn't fetch" so the dialog can say
+  // so instead of silently pretending nothing happened.
+  const [countFailed, setCountFailed] = useState(false);
 
   // The row this composer is editing. Starts null on /create — the first
   // (auto)save creates it and swaps the URL in place via history.replaceState,
@@ -407,14 +410,19 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     if (!isSendOpen) return undefined;
     let active = true;
     setSubscriberCount(null);
+    setCountFailed(false);
     getSubscriberCount()
       .then((result) => {
-        if (active && result) {
+        if (!active) return;
+        if (result) {
           setSubscriberCount({ count: result.count, hasMore: result.hasMore });
+        } else {
+          setCountFailed(true);
         }
       })
       .catch(() => {
-        // Dialog copy falls back to "all subscribers" — no number, no crash.
+        // Dialog copy says the count is unavailable — no number, no crash.
+        if (active) setCountFailed(true);
       });
     return () => {
       active = false;
@@ -906,6 +914,8 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
                     : "subscribers"}{" "}
                   now, or pick a time.
                 </>
+              ) : countFailed ? (
+                "Couldn't fetch the subscriber count — it will still send to all subscribers."
               ) : (
                 "Send to all subscribers now, or pick a time."
               )}{" "}
@@ -913,6 +923,16 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
               they go out.
             </DialogDescription>
           </DialogHeader>
+
+          {/* Last-glance check on WHAT is being sent, not just to whom. */}
+          <div className="rounded-md border border-border bg-muted/40 px-3 py-2">
+            <p className="truncate text-sm font-medium">{subjectValue}</p>
+            {previewTextValue ? (
+              <p className="truncate text-xs text-muted-foreground">
+                {previewTextValue}
+              </p>
+            ) : null}
+          </div>
 
           {contentIssues.blockers.length > 0 && (
             <div className="rounded-md border border-destructive/50 bg-destructive/10 px-3 py-2 text-sm text-destructive">

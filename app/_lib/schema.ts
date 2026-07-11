@@ -4,6 +4,12 @@ export const NewsletterFormSchema = z.object({
   email: z
     .string({ message: "Email address is required" })
     .email({ message: "Please enter a valid email address" }),
+  // Optional on purpose — a name makes the "Hey {{{contact.first_name}}}"
+  // greeting personal, but must never be a signup hurdle.
+  firstName: z
+    .string()
+    .max(100, "First name must be 100 characters or fewer")
+    .optional(),
 });
 
 export const NewsletterSubscriberSchema = z.object({

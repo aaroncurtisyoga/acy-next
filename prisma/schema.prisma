@@ -123,10 +123,20 @@ model Newsletter {
   includeDescriptions Boolean @default(false)
 
   // Unique-recipient counters, incremented by the Resend webhook
-  deliveredCount Int @default(0)
-  openedCount    Int @default(0)
-  clickedCount   Int @default(0)
-  bouncedCount   Int @default(0)
+  deliveredCount  Int @default(0)
+  openedCount     Int @default(0)
+  clickedCount    Int @default(0)
+  bouncedCount    Int @default(0)
+  complainedCount Int @default(0)
+
+  // Active-subscriber count captured at send time — the denominator that
+  // makes the counters comparable across sends as the list grows.
+  recipientCount Int?
+
+  // Exact rendered HTML handed to Resend at send/schedule time. The event
+  // sections change daily, so without this the sent view would rebuild them
+  // from today's data and silently misrepresent what went out.
+  sentHtml String?
 
   emailEvents NewsletterEmailEvent[]
 

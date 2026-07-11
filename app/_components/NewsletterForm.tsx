@@ -45,6 +45,20 @@ const NewsletterForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="w-full">
       <div className="flex flex-wrap items-stretch gap-3">
+        <div className="min-w-0 flex-1 basis-36">
+          <label htmlFor="newsletter-first-name" className="sr-only">
+            First name (optional)
+          </label>
+          <Input
+            {...register("firstName")}
+            id="newsletter-first-name"
+            placeholder="First name"
+            type="text"
+            autoComplete="given-name"
+            disabled={isSubmitting}
+            className="h-12 rounded-[4px] border-[#c3cbe4] bg-white text-base"
+          />
+        </div>
         <div className="min-w-0 flex-1 basis-60">
           <label htmlFor="newsletter-email" className="sr-only">
             Email address

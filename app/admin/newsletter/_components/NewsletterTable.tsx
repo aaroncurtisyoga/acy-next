@@ -2,6 +2,7 @@
 
 import { FC, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { Newsletter } from "@prisma/client";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -49,6 +50,7 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
   newsletters,
   onChanged,
 }) => {
+  const router = useRouter();
   const [busyId, setBusyId] = useState<string | null>(null);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
   const [newsletterToDelete, setNewsletterToDelete] =
@@ -78,18 +80,69 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
       newsletter.bouncedCount > 0;
     // Older sends predate the webhook; zeros there mean "no data", not "0 opens"
     if (!hasData) return null;
+    // Rates are comparable across sends as the list grows; raw counts move
+    // to the tooltip.
+    if (newsletter.deliveredCount > 0) {
+      const open = Math.round(
+        (newsletter.openedCount / newsletter.deliveredCount) * 100,
+      );
+      const click = Math.round(
+        (newsletter.clickedCount / newsletter.deliveredCount) * 100,
+      );
+      return `${open}% opened · ${click}% clicked`;
+    }
     return `${newsletter.openedCount} opened · ${newsletter.clickedCount} clicked`;
   };
+
+  const describeTooltip = (newsletter: Newsletter) => {
+    const delivered = newsletter.recipientCount
+      ? `Delivered ${newsletter.deliveredCount} of ${newsletter.recipientCount}`
+      : `Delivered ${newsletter.deliveredCount}`;
+    const complained =
+      newsletter.complainedCount > 0
+        ? ` · Spam complaints ${newsletter.complainedCount}`
+        : "";
+    return `${delivered} · Opened ${newsletter.openedCount} · Clicked ${newsletter.clickedCount} · Bounced ${newsletter.bouncedCount}${complained}. Opens are approximate — Apple Mail preloads images.`;
+  };
+
+  // "Was this send better than my usual?" needs a baseline: mean open/click
+  // rate over the most recent sends that have data.
+  const recentAverage = (() => {
+    const withData = newsletters
+      .filter((n) => n.status === "SENT" && n.deliveredCount > 0)
+      .sort((a, b) =>
+        (b.sentAt ? new Date(b.sentAt).getTime() : 0) >
+        (a.sentAt ? new Date(a.sentAt).getTime() : 0)
+          ? 1
+          : -1,
+      )
+      .slice(0, 10);
+    if (withData.length < 2) return null;
+    const mean = (fn: (n: Newsletter) => number) =>
+      Math.round(
+        (withData.reduce((sum, n) => sum + fn(n) / n.deliveredCount, 0) /
+          withData.length) *
+          100,
+      );
+    return {
+      count: withData.length,
+      open: mean((n) => n.openedCount),
+      click: mean((n) => n.clickedCount),
+    };
+  })();
 
   const handleDuplicate = async (id: string) => {
     setBusyId(id);
     try {
       const result = await duplicateNewsletter(id);
-      if (result.status) {
+      if (result.status && result.data) {
+        // Straight into the copy — hunting for the "(copy)" row in the list
+        // was the slowest step of the reuse loop.
         toast.success("Draft duplicated");
-        await onChanged();
+        router.push(`/admin/newsletter/${result.data.id}`);
       } else {
         toast.error(result.message);
+        await onChanged();
       }
     } finally {
       setBusyId(null);
@@ -138,6 +191,12 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
 
   return (
     <>
+      {recentAverage && (
+        <p className="mb-3 text-xs text-muted-foreground">
+          Average of your last {recentAverage.count} sends: {recentAverage.open}
+          % opened · {recentAverage.click}% clicked
+        </p>
+      )}
       <Table>
         <TableHeader>
           <TableRow>
@@ -171,9 +230,7 @@ const NewsletterTable: FC<NewsletterTableProps> = ({
                 </TableCell>
                 <TableCell className="text-muted-foreground text-sm">
                   {performance ? (
-                    <SimpleTooltip
-                      content={`Delivered ${newsletter.deliveredCount} · Bounced ${newsletter.bouncedCount}. Opens are approximate — Apple Mail preloads images.`}
-                    >
+                    <SimpleTooltip content={describeTooltip(newsletter)}>
                       <span>{performance}</span>
                     </SimpleTooltip>
                   ) : (

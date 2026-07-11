@@ -6,6 +6,7 @@ import { z } from "zod";
 import {
   findNewsletterContentIssues,
   renderNewsletterHtml,
+  renderNewsletterText,
   resolveMergeTags,
 } from "@/app/_lib/email/newsletter-template";
 import prisma from "@/app/_lib/prisma";
@@ -79,6 +80,7 @@ export async function addNewsletterEntry(data: SignupInputs) {
     const segmentId = process.env.RESEND_SEGMENT_ID;
     const { error } = await resend.contacts.create({
       email: formValidationResult.data.email,
+      firstName: formValidationResult.data.firstName?.trim() || undefined,
       segments: segmentId ? [{ id: segmentId }] : undefined,
     });
 
@@ -581,6 +583,24 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       contentHtml: `${newsletter.content}${sections}`,
       previewText: newsletter.previewText ?? undefined,
     });
+    // Plain-text alternative (deliverability). Merge tags are resolved to
+    // their fallbacks here rather than trusting substitution in the text
+    // part — "Hey" beats a raw "{{{contact.first_name}}}" for text readers.
+    const text = renderNewsletterText({
+      contentHtml: resolveMergeTags(`${newsletter.content}${sections}`),
+    });
+
+    // Audience size at send time gives the webhook counters a denominator
+    // ("Delivered 118 of 120"). Best-effort — never blocks the send.
+    let recipientCount: number | null = null;
+    try {
+      const { subscribers, failed } = await fetchAllSubscribers();
+      if (!failed) {
+        recipientCount = subscribers.filter((s) => !s.unsubscribed).length;
+      }
+    } catch {
+      // Counters just render without a denominator.
+    }
 
     const createResult = await resend.broadcasts.create({
       segmentId,
@@ -589,6 +609,7 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       previewText: newsletter.previewText ?? undefined,
       name: newsletter.subject,
       html,
+      text,
     });
     if (createResult.error || !createResult.data) {
       console.error("Failed to create broadcast:", createResult.error);
@@ -619,6 +640,10 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
         status: scheduledAt ? "SCHEDULED" : "SENT",
         scheduledAt: scheduledAt ?? null,
         sentAt: scheduledAt ? null : new Date(),
+        // Snapshot what actually went out — the event sections are rebuilt
+        // daily, so the sent view must not regenerate them later.
+        sentHtml: html,
+        recipientCount,
       },
     });
 
@@ -662,14 +687,15 @@ export async function sendTestNewsletter(data: ComposeInputs) {
       includeClasses: validation.data.includeClasses,
       includeDescriptions: validation.data.includeDescriptions,
     });
+    // The transactional API doesn't substitute merge tags, so resolve them
+    // here with the admin's own details for a realistic test.
+    const resolvedContent = `${resolveMergeTags(validation.data.content, {
+      firstName: user?.firstName ?? undefined,
+      lastName: user?.lastName ?? undefined,
+      email,
+    })}${sections}`;
     const html = renderNewsletterHtml({
-      // The transactional API doesn't substitute merge tags, so resolve them
-      // here with the admin's own details for a realistic test.
-      contentHtml: `${resolveMergeTags(validation.data.content, {
-        firstName: user?.firstName ?? undefined,
-        lastName: user?.lastName ?? undefined,
-        email,
-      })}${sections}`,
+      contentHtml: resolvedContent,
       previewText: validation.data.previewText,
       unsubscribeUrl: "#",
     });
@@ -679,6 +705,10 @@ export async function sendTestNewsletter(data: ComposeInputs) {
       to: email,
       subject: `[Test] ${validation.data.subject}`,
       html,
+      text: renderNewsletterText({
+        contentHtml: resolvedContent,
+        unsubscribeUrl: "#",
+      }),
     });
     if (error) {
       console.error("Failed to send test email:", error);
@@ -763,6 +793,10 @@ export async function cancelScheduledNewsletter(id: string) {
           scheduledAt: null,
           sentAt: null,
           resendBroadcastId: null,
+          // The snapshot described a broadcast that no longer exists; a
+          // re-send will bake and store a fresh one.
+          sentHtml: null,
+          recipientCount: null,
         },
       });
 
