@@ -3,7 +3,14 @@
 import { FC, useCallback, useEffect, useState } from "react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { ArrowLeft, CalendarOff, Copy, Loader2 } from "lucide-react";
+import {
+  ArrowLeft,
+  CalendarClock,
+  CalendarOff,
+  Copy,
+  ExternalLink,
+  Loader2,
+} from "lucide-react";
 import { Newsletter } from "@prisma/client";
 import { toast } from "sonner";
 import { Badge } from "@/components/ui/badge";
@@ -12,14 +19,19 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Spinner } from "@/components/ui/spinner";
 import BasicModal from "@/app/_components/BasicModal";
 import NewsletterEditor from "@/app/admin/newsletter/_components/NewsletterEditor";
+import { DateTimePicker } from "@/components/ui/date-time-picker";
 import {
   cancelScheduledNewsletter,
   duplicateNewsletter,
+  getNewsletterBouncedAddresses,
   getNewsletterById,
   getNewsletterEventSectionsHtml,
   getNewsletterTopLinks,
+  rescheduleNewsletter,
+  type NewsletterBouncedAddress,
   type NewsletterTopLink,
 } from "@/app/_lib/actions/newsletter.actions";
+import { NEWSLETTER_SCHEDULE_MAX_DAYS } from "@/app/_lib/schema";
 import {
   renderNewsletterHtml,
   resolveMergeTags,
@@ -33,9 +45,13 @@ const NewsletterDetailPage: FC = () => {
   const [newsletter, setNewsletter] = useState<Newsletter | null>(null);
   const [sectionsHtml, setSectionsHtml] = useState("");
   const [topLinks, setTopLinks] = useState<NewsletterTopLink[]>([]);
+  const [bounced, setBounced] = useState<NewsletterBouncedAddress[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isCancelOpen, setIsCancelOpen] = useState(false);
   const [isCancelling, setIsCancelling] = useState(false);
+  const [isRescheduleOpen, setIsRescheduleOpen] = useState(false);
+  const [rescheduleAt, setRescheduleAt] = useState<Date | undefined>();
+  const [isRescheduling, setIsRescheduling] = useState(false);
 
   const load = useCallback(async () => {
     const data = await getNewsletterById(id);
@@ -45,7 +61,7 @@ const NewsletterDetailPage: FC = () => {
     // newsletters sent before snapshots existed. Drafts render the editor,
     // which fetches its own live sections.
     if (data && data.status !== "DRAFT") {
-      const [sections, links] = await Promise.all([
+      const [sections, links, bouncedAddresses] = await Promise.all([
         data.sentHtml
           ? ""
           : getNewsletterEventSectionsHtml({
@@ -60,12 +76,15 @@ const NewsletterDetailPage: FC = () => {
                   : undefined,
             }),
         data.status === "SENT" ? getNewsletterTopLinks(id) : [],
+        data.status === "SENT" ? getNewsletterBouncedAddresses(id) : [],
       ]);
       setSectionsHtml(sections);
       setTopLinks(links);
+      setBounced(bouncedAddresses);
     } else {
       setSectionsHtml("");
       setTopLinks([]);
+      setBounced([]);
     }
     setIsLoading(false);
   }, [id]);
@@ -91,6 +110,47 @@ const NewsletterDetailPage: FC = () => {
     } catch {
       toast.error("Couldn't reach the server — check your connection.");
       setIsCopying(false);
+    }
+  };
+
+  const handleConfirmReschedule = async () => {
+    if (!newsletter || !rescheduleAt) return;
+    if (rescheduleAt <= new Date()) {
+      toast.error("The scheduled time must be in the future.");
+      return;
+    }
+    const maxSchedule = new Date(
+      Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000,
+    );
+    if (rescheduleAt > maxSchedule) {
+      toast.error(
+        `Resend can schedule up to ${NEWSLETTER_SCHEDULE_MAX_DAYS} days ahead — pick an earlier time.`,
+      );
+      return;
+    }
+
+    setIsRescheduling(true);
+    try {
+      const result = await rescheduleNewsletter(
+        newsletter.id,
+        rescheduleAt.toISOString(),
+      );
+      if (result.status) {
+        toast.success(
+          `Rescheduled for ${formatDateTime(rescheduleAt).dateTime}`,
+        );
+      } else {
+        toast.error(result.message);
+      }
+      setIsRescheduleOpen(false);
+      setRescheduleAt(undefined);
+      // Whatever happened (rescheduled, back to draft, or already sent), the
+      // row changed — refetch and re-render the right view.
+      await load();
+    } catch {
+      toast.error("Couldn't reach the server — check your connection.");
+    } finally {
+      setIsRescheduling(false);
     }
   };
 
@@ -196,15 +256,35 @@ const NewsletterDetailPage: FC = () => {
             )}
             Start a copy
           </Button>
-          {newsletter.status === "SCHEDULED" && (
-            <Button
-              variant="outline"
-              size="sm"
-              className="text-destructive border-destructive hover:bg-destructive/10 hover:text-destructive"
-              onClick={() => setIsCancelOpen(true)}
-            >
-              <CalendarOff className="h-4 w-4" /> Cancel send
+          {newsletter.resendBroadcastId && (
+            <Button variant="outline" size="sm" asChild>
+              <a
+                href={`https://resend.com/broadcasts/${newsletter.resendBroadcastId}`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                <ExternalLink className="h-4 w-4" /> View in Resend
+              </a>
             </Button>
+          )}
+          {newsletter.status === "SCHEDULED" && (
+            <>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={() => setIsRescheduleOpen(true)}
+              >
+                <CalendarClock className="h-4 w-4" /> Reschedule…
+              </Button>
+              <Button
+                variant="outline"
+                size="sm"
+                className="text-destructive border-destructive hover:bg-destructive/10 hover:text-destructive"
+                onClick={() => setIsCancelOpen(true)}
+              >
+                <CalendarOff className="h-4 w-4" /> Cancel send
+              </Button>
+            </>
           )}
         </div>
       </div>
@@ -294,6 +374,39 @@ const NewsletterDetailPage: FC = () => {
         </Card>
       )}
 
+      {bounced.length > 0 && (
+        <Card className="mb-6 border-amber-200">
+          <CardContent className="p-4">
+            <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+              Bounced or complained
+            </p>
+            <ul className="mt-2 space-y-1 text-sm">
+              {bounced.map((entry) => (
+                <li
+                  key={`${entry.recipient}-${entry.type}`}
+                  className="flex items-center justify-between gap-3"
+                >
+                  <span className="truncate">{entry.recipient}</span>
+                  <span className="shrink-0 text-muted-foreground">
+                    {entry.type === "email.bounced" ? "bounced" : "complained"}
+                  </span>
+                </li>
+              ))}
+            </ul>
+            <p className="mt-2 text-xs text-muted-foreground">
+              Often a typo&rsquo;d address — fix or remove it in{" "}
+              <Link
+                href="/admin/newsletter/subscribers"
+                className="underline hover:text-foreground"
+              >
+                Subscribers
+              </Link>
+              .
+            </p>
+          </CardContent>
+        </Card>
+      )}
+
       <Card className="shadow-lg">
         <CardContent className="pt-6">
           <iframe
@@ -317,6 +430,48 @@ const NewsletterDetailPage: FC = () => {
           />
         </CardContent>
       </Card>
+
+      <BasicModal
+        isOpen={isRescheduleOpen}
+        onOpenChange={(open: boolean) => {
+          setIsRescheduleOpen(open);
+          if (!open) setRescheduleAt(undefined);
+        }}
+        header="Reschedule send"
+        primaryAction={handleConfirmReschedule}
+        primaryActionLabel={isRescheduling ? "Rescheduling…" : "Reschedule"}
+        primaryActionDisabled={!rescheduleAt || isRescheduling}
+        cancelLabel="Keep the current time"
+      >
+        <div>
+          {newsletter.scheduledAt && (
+            <p className="mb-4 text-sm text-muted-foreground">
+              Currently scheduled for{" "}
+              {formatDateTime(newsletter.scheduledAt).dateTime}.
+            </p>
+          )}
+          <DateTimePicker
+            label="New send time"
+            value={rescheduleAt}
+            onChange={setRescheduleAt}
+            minDate={new Date()}
+            maxDate={
+              new Date(
+                Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000,
+              )
+            }
+            placeholder="Pick a date and time"
+          />
+          <p className="mt-3 text-xs text-muted-foreground">
+            The event sections are rebuilt for the new send time.
+          </p>
+          {isRescheduling && (
+            <p className="mt-3 flex items-center gap-2 text-sm text-muted-foreground">
+              <Loader2 className="h-4 w-4 animate-spin" /> Rescheduling…
+            </p>
+          )}
+        </div>
+      </BasicModal>
 
       <BasicModal
         isOpen={isCancelOpen}

@@ -5,3 +5,4 @@
  * both the cached readers and the mutating actions can reference the same tag.
  */
 export const EVENTS_CACHE_TAG = "events";
+export const NEWSLETTERS_CACHE_TAG = "newsletters";

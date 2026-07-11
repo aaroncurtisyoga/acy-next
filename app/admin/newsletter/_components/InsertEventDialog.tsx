@@ -1,9 +1,10 @@
 "use client";
 
-import { FC, useEffect, useState } from "react";
-import { CalendarDays } from "lucide-react";
+import { FC, useEffect, useMemo, useState } from "react";
+import { CalendarDays, Search } from "lucide-react";
 import { toast } from "sonner";
 import { Checkbox } from "@/components/ui/checkbox";
+import { Input } from "@/components/ui/input";
 import {
   Dialog,
   DialogContent,
@@ -40,11 +41,18 @@ const InsertEventDialog: FC<InsertEventDialogProps> = ({
     null,
   );
   const [withImage, setWithImage] = useState(true);
+  const [search, setSearch] = useState("");
 
+  // The synced studios produce many weekly classes, so the list needs both a
+  // generous cap and a filter — a hard-capped 25 could silently hide the one
+  // workshop worth featuring.
+  const FETCH_LIMIT = 100;
+
+  // Search resets on close (see handleOpenChange) so reopening starts fresh.
   useEffect(() => {
     if (!open) return undefined;
     let active = true;
-    getAllEvents({ query: "", category: "", limit: 25, page: 1 })
+    getAllEvents({ query: "", category: "", limit: FETCH_LIMIT, page: 1 })
       .then((result) => {
         if (active) setEvents(result?.data ?? []);
       })
@@ -61,13 +69,29 @@ const InsertEventDialog: FC<InsertEventDialogProps> = ({
     };
   }, [open]);
 
-  const handlePick = (event: EventWithLocationAndCategory) => {
-    onInsert(eventCardHtml(event, { withImage }));
-    onOpenChange(false);
+  const handleOpenChange = (next: boolean) => {
+    if (!next) setSearch("");
+    onOpenChange(next);
   };
 
+  const handlePick = (event: EventWithLocationAndCategory) => {
+    onInsert(eventCardHtml(event, { withImage }));
+    handleOpenChange(false);
+  };
+
+  const filtered = useMemo(() => {
+    if (!events) return null;
+    const query = search.trim().toLowerCase();
+    if (!query) return events;
+    return events.filter(
+      (event) =>
+        event.title.toLowerCase().includes(query) ||
+        (event.location?.name ?? "").toLowerCase().includes(query),
+    );
+  }, [events, search]);
+
   return (
-    <Dialog open={open} onOpenChange={onOpenChange}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent
         className="max-w-lg max-h-[85vh] flex flex-col"
         // handlePick focuses the editor; don't let Radix pull focus back to
@@ -81,6 +105,17 @@ const InsertEventDialog: FC<InsertEventDialogProps> = ({
             your cursor is.
           </DialogDescription>
         </DialogHeader>
+
+        <div className="relative">
+          <Search className="pointer-events-none absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+          <Input
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            placeholder="Search by name or location"
+            className="pl-9"
+            aria-label="Search events"
+          />
+        </div>
 
         <div className="flex items-center gap-2">
           <Checkbox
@@ -97,17 +132,19 @@ const InsertEventDialog: FC<InsertEventDialogProps> = ({
         </div>
 
         <div className="flex-1 overflow-y-auto min-h-0 -mx-1 px-1">
-          {events === null ? (
+          {filtered === null ? (
             <div className="flex justify-center py-10">
               <Spinner />
             </div>
-          ) : events.length === 0 ? (
+          ) : filtered.length === 0 ? (
             <p className="py-10 text-center text-sm text-muted-foreground">
-              No upcoming events found.
+              {search.trim()
+                ? "No events match your search."
+                : "No upcoming events found."}
             </p>
           ) : (
             <ul className="space-y-1">
-              {events.map((event) => (
+              {filtered.map((event) => (
                 <li key={event.id}>
                   <button
                     type="button"
@@ -143,6 +180,12 @@ const InsertEventDialog: FC<InsertEventDialogProps> = ({
                 </li>
               ))}
             </ul>
+          )}
+          {events !== null && events.length >= FETCH_LIMIT && (
+            <p className="border-t border-border py-2 text-center text-xs text-muted-foreground">
+              Showing the first {FETCH_LIMIT} upcoming events — use search to
+              narrow further out.
+            </p>
           )}
         </div>
       </DialogContent>

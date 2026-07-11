@@ -198,6 +198,12 @@ interface RenderNewsletterHtmlParams {
    * substitution happens there.
    */
   unsubscribeUrl?: string;
+  /**
+   * Public archive URL for this issue. Real sends pass it so image-blocking
+   * or mangled-rendering readers have an escape hatch; previews and test
+   * sends omit it (there's no archive page for an unsent draft).
+   */
+  viewInBrowserUrl?: string;
 }
 
 /**
@@ -209,6 +215,7 @@ export function renderNewsletterHtml({
   contentHtml,
   previewText,
   unsubscribeUrl = "{{{RESEND_UNSUBSCRIBE_URL}}}",
+  viewInBrowserUrl,
 }: RenderNewsletterHtmlParams): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -254,6 +261,15 @@ ${
   <tr>
     <td align="center" style="padding: 24px 16px;">
       <table role="presentation" width="600" cellpadding="0" cellspacing="0" style="max-width:600px;width:100%;">
+${
+  viewInBrowserUrl
+    ? `        <tr>
+          <td style="padding: 0 8px 8px; text-align: right; font-family: Helvetica, Arial, sans-serif; font-size: 11px; line-height: 1.4;">
+            <a href="${viewInBrowserUrl}" style="color:#71717a; text-decoration: underline;">View in browser</a>
+          </td>
+        </tr>`
+    : ""
+}
         <tr>
           <td style="background-color:#ffffff; border-top: 5px solid ${NAVY}; padding: 34px 36px 6px; text-align: center;">
             <a href="${SITE_URL}" style="font-family: Helvetica, Arial, sans-serif; font-size: 22px; font-weight: 600; font-style: italic; letter-spacing: -0.01em; color: ${INK}; text-decoration: none;">

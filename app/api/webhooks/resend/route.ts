@@ -62,6 +62,7 @@ export async function POST(req: Request) {
   const data = event.data as {
     broadcast_id?: string;
     email_id?: string;
+    to?: string | string[];
     click?: { link?: string };
   };
   if (!data.broadcast_id || !data.email_id) {
@@ -75,6 +76,15 @@ export async function POST(req: Request) {
   const clickedLink =
     event.type === "email.clicked"
       ? data.click?.link?.slice(0, 500)
+      : undefined;
+
+  // Bounces and complaints record WHO, so a typo'd address from an in-person
+  // signup is fixable instead of a mystery count.
+  const recipient =
+    event.type === "email.bounced" || event.type === "email.complained"
+      ? (Array.isArray(data.to) ? data.to[0] : data.to)
+          ?.slice(0, 320)
+          .toLowerCase()
       : undefined;
 
   try {
@@ -99,6 +109,7 @@ export async function POST(req: Request) {
             newsletterId: newsletter.id,
             emailId: data.email_id!,
             type: event.type,
+            recipient,
           },
         ],
         skipDuplicates: true,

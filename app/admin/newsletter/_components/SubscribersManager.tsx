@@ -39,8 +39,14 @@ const statusFilters: { value: StatusFilter; label: string }[] = [
 
 const csvCell = (value: string) => `"${String(value).replace(/"/g, '""')}"`;
 
+const DAY_MS = 24 * 60 * 60 * 1000;
+
 const SubscribersManager: FC = () => {
   const [subscribers, setSubscribers] = useState<Subscriber[]>([]);
+  // "Now" is impure, so it's captured once per load (in applyResult) and the
+  // growth stat derives from it + the live subscribers array — that way local
+  // edits (deleting someone) update the stat like the other cards.
+  const [loadedAt, setLoadedAt] = useState<number | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [loadError, setLoadError] = useState<string | null>(null);
   const [capped, setCapped] = useState(false);
@@ -59,10 +65,12 @@ const SubscribersManager: FC = () => {
         setLoadError(result.message ?? "Failed to load subscribers.");
         setSubscribers([]);
         setCapped(false);
+        setLoadedAt(null);
       } else {
         setLoadError(null);
         setSubscribers(result.subscribers);
         setCapped(result.capped);
+        setLoadedAt(Date.now());
       }
       setIsLoading(false);
     },
@@ -107,6 +115,15 @@ const SubscribersManager: FC = () => {
       unsubscribed: subscribers.length - subscribed,
     };
   }, [subscribers]);
+
+  // List growth is the slowest but most honest signal that the newsletter
+  // (and the classes it promotes) are landing.
+  const newLast30 = useMemo(() => {
+    if (loadedAt === null) return 0;
+    return subscribers.filter(
+      (s) => loadedAt - new Date(s.createdAt).getTime() <= 30 * DAY_MS,
+    ).length;
+  }, [subscribers, loadedAt]);
 
   const filtered = useMemo(() => {
     const query = search.trim().toLowerCase();
@@ -210,11 +227,12 @@ const SubscribersManager: FC = () => {
   return (
     <div className="space-y-6">
       {/* Stats */}
-      <div className="grid grid-cols-1 gap-3 sm:grid-cols-3 sm:gap-4">
+      <div className="grid grid-cols-2 gap-3 sm:grid-cols-4 sm:gap-4">
         {[
           { label: "Total", value: stats.total },
           { label: "Subscribed", value: stats.subscribed },
           { label: "Unsubscribed", value: stats.unsubscribed },
+          { label: "New (30 days)", value: newLast30 },
         ].map((stat) => (
           <Card key={stat.label} className="p-4">
             <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">

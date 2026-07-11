@@ -14,8 +14,10 @@ import {
   ChevronDown,
   Eye,
   Loader2,
+  Monitor,
   Save,
   Send,
+  Smartphone,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent } from "@/components/ui/card";
@@ -69,6 +71,7 @@ import {
 type ComposeInputs = z.infer<typeof NewsletterComposeSchema>;
 
 const LIVE_PREVIEW_KEY = "acy:newsletter:live-preview";
+const PREVIEW_WIDTH_KEY = "acy:newsletter:preview-width";
 const AUTOSAVE_DELAY_MS = 2000;
 const SUBJECT_MAX = 150;
 
@@ -196,12 +199,61 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
     if (window.localStorage.getItem(LIVE_PREVIEW_KEY) === "false") {
       setLivePreview(false);
     }
+    if (window.localStorage.getItem(PREVIEW_WIDTH_KEY) === "mobile") {
+      setMobilePreview(true);
+    }
   }, []);
 
   const toggleLivePreview = (next: boolean) => {
     setLivePreview(next);
     window.localStorage.setItem(LIVE_PREVIEW_KEY, String(next));
   };
+
+  // Most subscribers read on phones, so previewing at ~375px catches
+  // oversized images and cramped event cards before a test send would.
+  const [mobilePreview, setMobilePreview] = useState(false);
+  const toggleMobilePreview = (mobile: boolean) => {
+    setMobilePreview(mobile);
+    window.localStorage.setItem(
+      PREVIEW_WIDTH_KEY,
+      mobile ? "mobile" : "desktop",
+    );
+  };
+
+  const previewWidthToggle = (
+    <div
+      className="inline-flex rounded-md border border-border bg-muted/40 p-0.5"
+      role="group"
+      aria-label="Preview width"
+    >
+      <button
+        type="button"
+        onClick={() => toggleMobilePreview(false)}
+        aria-pressed={!mobilePreview}
+        title="Desktop width"
+        className={`rounded px-2 py-1 transition-colors ${
+          !mobilePreview
+            ? "bg-background text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        <Monitor className="h-3.5 w-3.5" />
+      </button>
+      <button
+        type="button"
+        onClick={() => toggleMobilePreview(true)}
+        aria-pressed={mobilePreview}
+        title="Phone width (375px)"
+        className={`rounded px-2 py-1 transition-colors ${
+          mobilePreview
+            ? "bg-background text-foreground shadow-sm"
+            : "text-muted-foreground hover:text-foreground"
+        }`}
+      >
+        <Smartphone className="h-3.5 w-3.5" />
+      </button>
+    </div>
+  );
 
   // Watch the fields shown in the email and debounce them so the live preview
   // refreshes shortly after you pause typing rather than on every keystroke.
@@ -813,14 +865,19 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
 
         {livePreview && (
           <div className="lg:sticky lg:top-6">
-            <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-              Live preview
-            </p>
+            <div className="mb-2 flex items-center justify-between">
+              <p className="text-xs font-medium uppercase tracking-wide text-muted-foreground">
+                Live preview
+              </p>
+              {previewWidthToggle}
+            </div>
             <iframe
               title="Live newsletter preview"
               srcDoc={livePreviewSrcDoc}
               sandbox=""
-              className="h-[70vh] w-full rounded-md border bg-white shadow-lg lg:h-[78vh]"
+              className={`h-[70vh] rounded-md border bg-white shadow-lg lg:h-[78vh] ${
+                mobilePreview ? "mx-auto block w-[375px] max-w-full" : "w-full"
+              }`}
             />
           </div>
         )}
@@ -885,11 +942,14 @@ const NewsletterEditor: FC<NewsletterEditorProps> = ({ newsletter }) => {
               How the email will look in most clients.
             </DialogDescription>
           </DialogHeader>
+          <div className="flex justify-end">{previewWidthToggle}</div>
           {isPreviewOpen && (
             <iframe
               title="Newsletter preview"
               srcDoc={previewHtml()}
-              className="w-full h-[60vh] rounded-md border bg-white"
+              className={`h-[60vh] rounded-md border bg-white ${
+                mobilePreview ? "mx-auto block w-[375px] max-w-full" : "w-full"
+              }`}
               sandbox=""
             />
           )}

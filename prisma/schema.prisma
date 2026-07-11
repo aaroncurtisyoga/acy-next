@@ -155,6 +155,10 @@ model NewsletterEmailEvent {
   emailId      String
   type         String
   link         String     @default("")
+  // Recipient address, recorded for bounce/complaint rows only — a bounce on
+  // a small personal list is usually a typo'd address the admin can fix, but
+  // only if the admin can see which address it was.
+  recipient    String?
   createdAt    DateTime   @default(now())
   newsletter   Newsletter @relation(fields: [newsletterId], references: [id], onDelete: Cascade)
 

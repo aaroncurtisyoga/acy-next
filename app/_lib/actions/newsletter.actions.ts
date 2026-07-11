@@ -2,7 +2,8 @@
 
 import type { Newsletter } from "@prisma/client";
 import { auth, currentUser } from "@clerk/nextjs/server";
-import { revalidatePath } from "next/cache";
+import { revalidatePath, revalidateTag } from "next/cache";
+import { NEWSLETTERS_CACHE_TAG } from "@/app/_lib/constants/cache-tags";
 import { z } from "zod";
 import {
   findNewsletterContentIssues,
@@ -23,7 +24,10 @@ import {
   NewsletterSubscriberSchema,
   NewsletterSubscriberUpdateSchema,
 } from "@/app/_lib/schema";
-import { eventListItemHtml } from "@/app/_lib/email/event-html";
+import {
+  eventListItemHtml,
+  NEWSLETTER_SITE_URL,
+} from "@/app/_lib/email/event-html";
 import { EventWithLocationAndCategory } from "@/app/_lib/types";
 import { toDateKey } from "@/app/_lib/utils";
 import { serialize } from "@/app/_lib/utils/serialize";
@@ -445,6 +449,10 @@ export async function deleteNewsletter(id: string) {
 
     await prisma.newsletter.delete({ where: { id } });
     revalidatePath(NEWSLETTER_ADMIN_PATH);
+    // Deleting a SENT newsletter removes it from the public archive.
+    if (existing.status === "SENT") {
+      revalidateTag(NEWSLETTERS_CACHE_TAG, { expire: 0 });
+    }
     return { status: true };
   } catch (error) {
     console.error("Failed to delete newsletter:", error);
@@ -534,6 +542,9 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
           },
         });
         revalidatePath(NEWSLETTER_ADMIN_PATH);
+        // This is a SENT transition like any other — the public archive (and
+        // any cached 404 for this id) must refresh.
+        revalidateTag(NEWSLETTERS_CACHE_TAG, { expire: 0 });
         return {
           status: false,
           message: "This newsletter already went out — refresh the list.",
@@ -600,6 +611,7 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
       // live event listings.
       contentHtml: `${newsletter.content}${sections}`,
       previewText: newsletter.previewText ?? undefined,
+      viewInBrowserUrl: `${NEWSLETTER_SITE_URL}/newsletter/${id}`,
     });
     // Plain-text alternative (deliverability). Resend runs the same merge-tag
     // substitution on the text part as on the html, so the tags stay raw here
@@ -673,6 +685,8 @@ export async function sendNewsletter(id: string, scheduledAtIso?: string) {
     });
 
     revalidatePath(NEWSLETTER_ADMIN_PATH);
+    // A send-now lands in the public archive immediately.
+    if (!scheduledAt) revalidateTag(NEWSLETTERS_CACHE_TAG, { expire: 0 });
     return { status: true, data: serialize(updated) };
   } catch (error) {
     console.error("Failed to send newsletter:", error);
@@ -765,7 +779,129 @@ export async function getSubscriberCount() {
   }
 }
 
+/* --------------------------- Public archive reads ------------------------ */
+
+export type NewsletterArchiveItem = {
+  id: string;
+  subject: string;
+  previewText: string | null;
+  sentAt: string | null;
+};
+
+export type PublicNewsletter = NewsletterArchiveItem & {
+  sentHtml: string | null;
+  content: string;
+};
+
+/**
+ * A row is publicly viewable once its email is (or must be) in inboxes:
+ * status SENT, or a past-due SCHEDULED row whose snapshot was baked at
+ * scheduling time. The latter matters because nothing flips SCHEDULED → SENT
+ * until the admin next opens the dashboard, while the emailed "View in
+ * browser" link starts getting clicked the moment Resend fires.
+ */
+function publiclyVisibleWhere(now: Date) {
+  return {
+    OR: [
+      { status: "SENT" as const },
+      {
+        status: "SCHEDULED" as const,
+        scheduledAt: { lte: now },
+        sentHtml: { not: null },
+      },
+    ],
+  };
+}
+
+/**
+ * Sent newsletters for the public Practice Notes archive. No auth on purpose —
+ * only reader-safe fields of publicly visible rows leave these functions.
+ * Consumed through the cached wrappers in newsletter.queries.ts so public and
+ * crawler traffic doesn't keep the Neon database awake.
+ *
+ * DB errors deliberately propagate: unstable_cache must never store a
+ * transient failure as an hour of empty archive / 404s. Pages catch and show
+ * a soft retry message instead.
+ */
+export async function getPublicNewsletters(): Promise<NewsletterArchiveItem[]> {
+  const now = new Date();
+  const newsletters = await prisma.newsletter.findMany({
+    where: publiclyVisibleWhere(now),
+    select: {
+      id: true,
+      subject: true,
+      previewText: true,
+      sentAt: true,
+      scheduledAt: true,
+    },
+  });
+  const items = newsletters
+    .map((n) => ({
+      id: n.id,
+      subject: n.subject,
+      previewText: n.previewText,
+      // A just-fired scheduled row has no sentAt yet; its send time is the
+      // scheduled time.
+      sentAt: n.sentAt ?? n.scheduledAt,
+    }))
+    .sort((a, b) => (b.sentAt?.getTime() ?? 0) - (a.sentAt?.getTime() ?? 0));
+  // serialize() JSON-round-trips, so Date becomes an ISO string at runtime.
+  return serialize(items) as unknown as NewsletterArchiveItem[];
+}
+
+export async function getPublicNewsletter(
+  id: string,
+): Promise<PublicNewsletter | null> {
+  const now = new Date();
+  const newsletter = await prisma.newsletter.findFirst({
+    where: { id, ...publiclyVisibleWhere(now) },
+    select: {
+      id: true,
+      subject: true,
+      previewText: true,
+      sentAt: true,
+      scheduledAt: true,
+      sentHtml: true,
+      content: true,
+    },
+  });
+  if (!newsletter) return null;
+  const { scheduledAt, ...rest } = newsletter;
+  const publicFields = { ...rest, sentAt: newsletter.sentAt ?? scheduledAt };
+  // serialize() JSON-round-trips, so Date becomes an ISO string at runtime.
+  return serialize(publicFields) as unknown as PublicNewsletter;
+}
+
 export type NewsletterTopLink = { link: string; clicks: number };
+
+export type NewsletterBouncedAddress = { recipient: string; type: string };
+
+/**
+ * Addresses that bounced or complained on a sent newsletter — on a small
+ * personal list these are usually fixable (typo'd signup) or worth knowing
+ * (someone forgot they subscribed). Only rows recorded since the webhook
+ * started storing recipients carry an address.
+ */
+export async function getNewsletterBouncedAddresses(
+  id: string,
+): Promise<NewsletterBouncedAddress[]> {
+  await requireAdmin();
+  try {
+    const rows = await prisma.newsletterEmailEvent.findMany({
+      where: {
+        newsletterId: id,
+        type: { in: ["email.bounced", "email.complained"] },
+        recipient: { not: null },
+      },
+      select: { recipient: true, type: true },
+      orderBy: { createdAt: "asc" },
+    });
+    return rows.map((row) => ({ recipient: row.recipient!, type: row.type }));
+  } catch (error) {
+    console.error("Failed to fetch bounced addresses:", error);
+    return [];
+  }
+}
 
 /**
  * Unique clickers per URL for a sent newsletter, most-clicked first — which
@@ -853,6 +989,7 @@ export async function cancelScheduledNewsletter(id: string) {
           },
         });
         revalidatePath(NEWSLETTER_ADMIN_PATH);
+        revalidateTag(NEWSLETTERS_CACHE_TAG, { expire: 0 });
         return {
           status: false,
           message: "Too late — this newsletter already went out.",
@@ -885,6 +1022,50 @@ export async function cancelScheduledNewsletter(id: string) {
 }
 
 /**
+ * Change a scheduled newsletter's send time in one step: pull the queued
+ * broadcast back to a draft, then immediately re-send with the new time. The
+ * re-send rebuilds the event sections and snapshot for the NEW send moment,
+ * which cancel-and-manually-reschedule would also require — this just saves
+ * the four screens in between.
+ */
+export async function rescheduleNewsletter(id: string, scheduledAtIso: string) {
+  await requireAdmin();
+
+  // Validate the new time BEFORE touching the queued broadcast — a bad pick
+  // must not de-schedule the newsletter it was supposed to move.
+  const newTime = new Date(scheduledAtIso);
+  if (isNaN(newTime.getTime()) || newTime <= new Date()) {
+    return {
+      status: false,
+      message: "The scheduled time must be in the future.",
+    };
+  }
+  const maxSchedule = new Date(
+    Date.now() + NEWSLETTER_SCHEDULE_MAX_DAYS * 24 * 60 * 60 * 1000,
+  );
+  if (newTime > maxSchedule) {
+    return {
+      status: false,
+      message: `Resend can schedule up to ${NEWSLETTER_SCHEDULE_MAX_DAYS} days ahead — pick an earlier time.`,
+    };
+  }
+
+  const cancelled = await cancelScheduledNewsletter(id);
+  if (!cancelled.status) return cancelled;
+
+  const sent = await sendNewsletter(id, scheduledAtIso);
+  if (!sent.status) {
+    return {
+      status: false,
+      message: `The original send was cancelled and the draft is safe, but re-scheduling failed: ${
+        sent.message ?? "unknown error."
+      } Open the draft and use Send… to pick a new time.`,
+    };
+  }
+  return { status: true, message: "Rescheduled.", data: sent.data };
+}
+
+/**
  * Newsletters scheduled through Resend are sent server-side by Resend, so our
  * rows can go stale. Reconcile any past-due SCHEDULED rows against the
  * broadcast status before listing.
@@ -894,6 +1075,7 @@ async function reconcileScheduledNewsletters() {
     where: { status: "SCHEDULED", scheduledAt: { lte: new Date() } },
   });
 
+  let flippedToSent = false;
   for (const newsletter of dueNewsletters) {
     if (!newsletter.resendBroadcastId) continue;
     try {
@@ -908,11 +1090,14 @@ async function reconcileScheduledNewsletters() {
             sentAt: data.sent_at ? new Date(data.sent_at) : new Date(),
           },
         });
+        flippedToSent = true;
       }
     } catch (error) {
       console.error(`Failed to reconcile newsletter ${newsletter.id}:`, error);
     }
   }
+  // A scheduled send that fired shows up in the public archive now.
+  if (flippedToSent) revalidateTag(NEWSLETTERS_CACHE_TAG, { expire: 0 });
 }
 
 /* ------------------------- Admin: compose helpers ------------------------ */
