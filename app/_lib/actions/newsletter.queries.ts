@@ -6,7 +6,7 @@ import {
 import { NEWSLETTERS_CACHE_TAG } from "@/app/_lib/constants/cache-tags";
 
 /**
- * Cached reads for the public Practice Notes archive, mirroring
+ * Cached reads for the public newsletter archive, mirroring
  * event.queries.ts: public/crawler traffic must not fire live Postgres
  * queries on every request, or the Neon database never scales to zero.
  *

@@ -814,7 +814,7 @@ function publiclyVisibleWhere(now: Date) {
 }
 
 /**
- * Sent newsletters for the public Practice Notes archive. No auth on purpose —
+ * Sent newsletters for the public newsletter archive. No auth on purpose —
  * only reader-safe fields of publicly visible rows leave these functions.
  * Consumed through the cached wrappers in newsletter.queries.ts so public and
  * crawler traffic doesn't keep the Neon database awake.

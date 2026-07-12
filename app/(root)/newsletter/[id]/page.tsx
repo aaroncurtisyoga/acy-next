@@ -19,13 +19,14 @@ export async function generateMetadata({
   const { id } = await params;
   try {
     const newsletter = await getPublicNewsletterCached(id);
-    if (!newsletter) return { title: "Practice Notes | Aaron Curtis Yoga" };
+    if (!newsletter) return { title: "The Newsletter" };
     return {
-      title: `${newsletter.subject} | Practice Notes`,
+      // Template appends the site name; the subject alone is the title.
+      title: newsletter.subject,
       description: newsletter.previewText ?? undefined,
     };
   } catch {
-    return { title: "Practice Notes | Aaron Curtis Yoga" };
+    return { title: "The Newsletter" };
   }
 }
 
@@ -55,7 +56,7 @@ const NewsletterIssuePage = async ({ params }: NewsletterIssuePageProps) => {
     // Transient DB failure (Neon waking up). Deliberately NOT cached — the
     // read throws instead of returning null — so a refresh retries.
     return (
-      <div className="mx-auto w-full max-w-screen-md px-4 py-16 text-center md:px-6">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 py-16 md:px-6 lg:px-12">
         <p className="text-muted-foreground">
           This issue is taking a moment to load — please refresh in a few
           seconds.
@@ -78,7 +79,9 @@ const NewsletterIssuePage = async ({ params }: NewsletterIssuePageProps) => {
   );
 
   return (
-    <div className="mx-auto w-full max-w-screen-md px-4 py-8 md:px-6 md:py-12">
+    // Same container as the rest of the site; the email itself is 600px and
+    // centers inside the frame below.
+    <div className="mx-auto w-full max-w-screen-2xl px-4 py-8 md:px-6 md:py-12 lg:px-12">
       <Link
         href="/newsletter"
         className="inline-flex items-center gap-1.5 text-sm text-muted-foreground transition-colors hover:text-foreground"

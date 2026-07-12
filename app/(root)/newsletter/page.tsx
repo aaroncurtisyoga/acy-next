@@ -5,9 +5,10 @@ import { getPublicNewslettersCached } from "@/app/_lib/actions/newsletter.querie
 import { formatDateTime } from "@/app/_lib/utils";
 
 export const metadata: Metadata = {
-  title: "Practice Notes | Aaron Curtis Yoga",
+  // The root layout's title template appends "| Aaron Curtis Yoga".
+  title: "The Newsletter",
   description:
-    "Past issues of Practice Notes — one short email a month: what I'm teaching, where to find me, and one small thing to take onto the mat.",
+    "Past issues of the newsletter — one short email a month: what I'm teaching, where to find me, and one small thing to take onto the mat.",
 };
 
 const NewsletterArchivePage = async () => {
@@ -18,7 +19,7 @@ const NewsletterArchivePage = async () => {
     // Transient DB failure (Neon waking up). Deliberately NOT cached — the
     // read throws instead of returning [] — so a refresh retries.
     return (
-      <div className="mx-auto w-full max-w-screen-md px-4 py-16 text-center md:px-6">
+      <div className="mx-auto w-full max-w-screen-2xl px-4 py-16 md:px-6 lg:px-12">
         <p className="text-muted-foreground">
           The archive is taking a moment to load — please refresh in a few
           seconds.
@@ -29,15 +30,16 @@ const NewsletterArchivePage = async () => {
 
   return (
     <div className="w-full">
-      <section className="mx-auto w-full max-w-screen-md px-4 py-12 md:px-6 md:py-16">
+      {/* Same container as NewsletterBand and every other section, so the
+          heading, the list, and the signup band below all share one left edge. */}
+      <section className="mx-auto w-full max-w-screen-2xl px-4 py-12 md:px-6 md:py-16 lg:px-12">
         <div className="h-1.5 w-9 bg-primary" aria-hidden="true" />
         <h1 className="mt-4 font-display text-4xl uppercase text-foreground md:text-5xl">
-          Practice Notes
+          The Newsletter
         </h1>
         <p className="mt-3 max-w-[52ch] text-base font-medium text-[#3c3f4c] md:text-[17px]">
-          Every issue of the newsletter, as it was sent. One short email a month
-          ~ what I&rsquo;m teaching, where to find me, and one small thing to
-          take onto the mat.
+          Every issue, as it was sent. One short email a month ~ what I&rsquo;m
+          teaching, where to find me, and one small thing to take onto the mat.
         </p>
 
         {newsletters.length === 0 ? (
@@ -46,7 +48,7 @@ const NewsletterArchivePage = async () => {
             up below so you don&rsquo;t miss it.
           </p>
         ) : (
-          <ul className="mt-8 divide-y divide-border">
+          <ul className="mt-8 max-w-3xl divide-y divide-border">
             {newsletters.map((newsletter) => (
               <li key={newsletter.id}>
                 <Link
