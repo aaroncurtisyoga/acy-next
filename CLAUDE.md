@@ -82,6 +82,16 @@ npx playwright test      # E2E tests
 - Database User ID stored back in Clerk `publicMetadata.userId`
 - Verified via Svix
 
+## Conventions (follow these when extending)
+
+- **Admin auth**: server actions call `requireAdmin()` from `app/_lib/auth.ts`; API route handlers call `assertAdminRequest()` (cron routes call `assertCronRequest()`) from `app/_lib/api-auth.ts`. Both standardize on `sessionClaims.metadata.role` to match `proxy.ts` — don't re-inline `currentUser()` role checks.
+- **Server-action error contract**: mutations surface failures by throwing — the catch does `return handleError(error)` (typed `never`), and the client wraps the call in try/catch. Read helpers may instead `console.error` + return an empty default for graceful degradation (see `getFeaturedEvents`).
+- **Reads vs writes**: server actions live in `*.actions.ts`. `*.queries.ts` holds `unstable_cache`-wrapped versions of public/hot reads (named `*Cached`) so public + crawler traffic doesn't keep the Neon DB awake — see `event.queries.ts`, `newsletter.queries.ts`. Bust the matching tag from `app/_lib/constants/cache-tags.ts` on mutation.
+- **Serialize at the server→client boundary**: return `serialize()` (`app/_lib/utils/serialize.ts`) for any Prisma object crossing into a client component; it returns a `Serialized<T>` (Dates become ISO strings).
+- **Hooks**: cross-feature hooks live in `app/_hooks`; feature-local hooks colocate with their feature (e.g. `app/admin/events/_components/hooks`).
+- **New sync source**: add a `SOURCE_TYPES` member (`app/_lib/constants`), a crawler in `crawlers/`, a `*-sync-service.ts` (clone an existing one), then wire it into `event-sync-service.ts`, the sync-status route, and the `admin/sync` dashboard.
+- **New admin CRUD resource**: `app/admin/categories` is the reference pattern for a simple single-resource CRUD (page + `_components` + `*.actions.ts` + Zod schema in `schema.ts` + a nav entry in `adminNavLinks`).
+
 ## Project Structure
 
 ```
@@ -99,13 +109,14 @@ app/
 │   ├── categories/            # Category management
 │   └── sync/                  # Sync status dashboard
 ├── api/
-│   ├── webhooks/{clerk,stripe} # Webhook handlers
+│   ├── webhooks/{clerk,stripe,resend} # Webhook handlers
 │   ├── cron/sync-events/       # Daily cron (8 AM UTC)
 │   ├── admin/sync/             # Manual sync endpoints
 │   ├── create-payment-intent/  # Stripe
 │   └── upload-blob/            # Vercel Blob
 ├── _lib/
-│   ├── actions/               # Server actions (event, user, category, order, newsletter, blob, google)
+│   ├── actions/               # Server actions (*.actions.ts) + cached reads (*.queries.ts)
+│   ├── auth.ts / api-auth.ts  # requireAdmin() + assertAdminRequest()/assertCronRequest()
 │   ├── crawlers/              # Bright Bear + DCBP scrapers
 │   ├── services/              # Sync orchestration, DB ops, location/category resolution
 │   ├── types/                 # TypeScript types
@@ -120,33 +131,40 @@ app/
 
 ## Database Schema
 
-6 models in `prisma/schema.prisma`:
+9 models in `prisma/schema.prisma`:
 
-- **Event** — title, dates, price, isFree, isHostedExternally, category, location, sourceType/sourceId (sync), googleEventId
-- **User** — clerkId (unique), email, name, photo
+- **Event** — title, dates, price, isFree, isFeatured, isHostedExternally, category, location, sourceType/sourceId (sync), googleEventId
+- **User** — clerkId (unique), email, firstName, lastName, photo
 - **Order** — stripeId, totalAmount, type (EVENT/PRIVATE_SESSION), buyer → User, event → Event
 - **EventUser** — join table (userId + eventId composite PK)
 - **Location** — name, formattedAddress, lat/lng, placeId (Google Places)
 - **Category** — name (unique)
+- **Newsletter** — subject, content (TipTap HTML), status (DRAFT/SCHEDULED/SENT), scheduledAt, `sentHtml` snapshot, delivery counters, resendBroadcastId
+- **NewsletterEmailEvent** — dedup ledger for Resend webhook events (opens/clicks/bounces); one row per (newsletter, emailId, type, link)
+- **Book** — reserved for a future reading-list feature; not wired to anything yet
+
+Enums: `OrderType` (EVENT, PRIVATE_SESSION), `NewsletterStatus` (DRAFT, SCHEDULED, SENT).
 
 Key constraint: `@@unique([sourceType, sourceId])` on Event prevents duplicate synced events.
 
 ## Key Files
 
-| File                                      | Purpose                                                      |
-| ----------------------------------------- | ------------------------------------------------------------ |
-| `app/_lib/prisma.ts`                      | Prisma client singleton (default export)                     |
-| `proxy.ts`                                | Clerk middleware — route protection + admin RBAC             |
-| `app/_lib/actions/event.actions.ts`       | Event CRUD server actions                                    |
-| `app/_lib/crawlers/`                      | Web scrapers for Bright Bear + DCBP                          |
-| `app/_lib/services/event-sync-service.ts` | Orchestrates sync pipeline                                   |
-| `app/_lib/utils/index.ts`                 | formatDateTime (ET timezone), handleError, URL query helpers |
-| `app/_lib/utils/serialize.ts`             | Prisma → plain object serializer                             |
-| `app/_lib/google-calendar.ts`             | Google Calendar API (service account)                        |
-| `app/_lib/schema.ts`                      | Zod validation schemas for forms                             |
-| `app/admin/events/_components/EventForm/` | Complex event creation/edit form                             |
-| `app/(root)/private-sessions/`            | Multi-step private session booking wizard                    |
-| `vercel.json`                             | Cron schedules + function timeouts                           |
+| File                                      | Purpose                                                       |
+| ----------------------------------------- | ------------------------------------------------------------- |
+| `app/_lib/prisma.ts`                      | Prisma client singleton (default export)                      |
+| `app/_lib/auth.ts`                        | `requireAdmin()` guard for server actions                     |
+| `app/_lib/api-auth.ts`                    | `assertAdminRequest()` / `assertCronRequest()` for API routes |
+| `proxy.ts`                                | Clerk middleware — route protection + admin RBAC              |
+| `app/_lib/actions/event.actions.ts`       | Event CRUD server actions                                     |
+| `app/_lib/crawlers/`                      | Web scrapers for Bright Bear + DCBP                           |
+| `app/_lib/services/event-sync-service.ts` | Orchestrates sync pipeline                                    |
+| `app/_lib/utils/index.ts`                 | formatDateTime (ET timezone), handleError, URL query helpers  |
+| `app/_lib/utils/serialize.ts`             | Prisma → plain object serializer                              |
+| `app/_lib/google-calendar.ts`             | Google Calendar API (service account)                         |
+| `app/_lib/schema.ts`                      | Zod validation schemas for forms                              |
+| `app/admin/events/_components/EventForm/` | Complex event creation/edit form                              |
+| `app/(root)/private-sessions/`            | Multi-step private session booking wizard                     |
+| `vercel.json`                             | Cron schedules + function timeouts                            |
 
 ## Env Vars
 

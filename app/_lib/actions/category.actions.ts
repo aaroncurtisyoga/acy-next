@@ -1,17 +1,10 @@
 "use server";
 
-import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/app/_lib/prisma";
+import { requireAdmin } from "@/app/_lib/auth";
 import { CreateCategoryParams } from "@/app/_lib/types";
 import { handleError } from "@/app/_lib/utils";
 import { serialize } from "@/app/_lib/utils/serialize";
-
-async function requireAdmin() {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
-  const user = await currentUser();
-  if (user?.publicMetadata?.role !== "admin") throw new Error("Forbidden");
-}
 
 export const createCategory = async ({
   categoryName,
@@ -28,8 +21,7 @@ export const createCategory = async ({
       newCategory: serialize(newCategory),
     };
   } catch (error) {
-    handleError(error);
-    return { status: false };
+    return handleError(error);
   }
 };
 
@@ -43,8 +35,7 @@ export const deleteCategory = async (categoryId: string) => {
     });
     return { status: true, deletedCategory: serialize(deletedCategory) };
   } catch (error) {
-    handleError(error);
-    return { status: false };
+    return handleError(error);
   }
 };
 

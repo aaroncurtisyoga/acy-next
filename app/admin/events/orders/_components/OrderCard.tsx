@@ -7,7 +7,7 @@ import AdminCard from "@/app/admin/_components/AdminCard";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 
 type OrderWithEventFieldsAndUserFields = Order & {
-  event: Pick<Event, "title">;
+  event: Pick<Event, "title"> | null;
   buyer: Pick<PrismaUser, "firstName" | "lastName">;
 };
 
@@ -23,11 +23,11 @@ const OrderCard: FC<OrderCardProps> = ({ order }) => {
         <div className="flex items-start justify-between gap-2">
           <div className="flex items-center gap-2 flex-1 min-w-0">
             <Ticket size={16} className="text-muted-foreground flex-shrink-0" />
-            <p className="font-medium truncate">{order.event.title}</p>
+            <p className="font-medium truncate">{order.event?.title ?? "—"}</p>
           </div>
           <div className="flex items-center gap-1 text-green-600 font-semibold flex-shrink-0">
             <DollarSign size={14} />
-            <span>{formatPrice(order.totalAmount)}</span>
+            <span>{formatPrice(order.totalAmount ?? "0")}</span>
           </div>
         </div>
 

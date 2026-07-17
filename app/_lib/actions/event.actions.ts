@@ -3,7 +3,9 @@
 import { revalidatePath, revalidateTag } from "next/cache";
 import { EVENTS_CACHE_TAG } from "@/app/_lib/constants/cache-tags";
 import prisma from "@/app/_lib/prisma";
+import { requireAdmin } from "@/app/_lib/auth";
 import {
+  EventWithDetails,
   EventWithLocationAndCategory,
   GetAllEventsParams,
   GetAllEventsResponse,
@@ -24,10 +26,9 @@ import { Prisma } from "@prisma/client";
 import { generateMockEvents } from "@/app/_lib/utils/mock-events";
 import {
   createCalendarEvent,
-  updateCalendarEvent,
   deleteCalendarEvent,
-  findCalendarEventByDatabaseId,
   buildCalendarEventData,
+  reconcileCalendarEvent,
 } from "@/app/_lib/google-calendar";
 
 export async function createEvent({
@@ -38,6 +39,8 @@ export async function createEvent({
   path: string;
 }) {
   try {
+    await requireAdmin();
+
     // Validate required fields
     if (!event.location || !event.location.placeId) {
       throw new Error("Location is required and must have a valid placeId");
@@ -139,6 +142,8 @@ export async function deleteEvent(
   eventId: string,
 ): Promise<{ success: boolean }> {
   try {
+    await requireAdmin();
+
     // First, get the event to check for Google Calendar ID
     const event = await prisma.event.findUnique({
       where: { id: eventId },
@@ -178,8 +183,7 @@ export async function deleteEvent(
     }
     return { success: false };
   } catch (error) {
-    handleError(error);
-    return { success: false };
+    return handleError(error);
   }
 }
 
@@ -238,7 +242,7 @@ export async function getAllEvents({
     const hasFiltersApplied: boolean = !!query || !!category;
 
     return {
-      data: serialize(events),
+      data: serialize(events) as unknown as EventWithLocationAndCategory[],
       hasFiltersApplied,
       totalPages: calculateTotalPages(eventsCount, limit),
       totalCount: eventsCount,
@@ -254,7 +258,9 @@ export async function getAllEvents({
   }
 }
 
-export async function getEventById(eventId: string) {
+export async function getEventById(
+  eventId: string,
+): Promise<EventWithDetails | null> {
   try {
     // In dev mode with MOCK_EVENTS=true, return mock event for UI testing
     const useMockEvents =
@@ -265,7 +271,10 @@ export async function getEventById(eventId: string) {
       const mockEvents = generateMockEvents(20);
       const mockEvent = mockEvents.find((e) => e.id === eventId);
       if (mockEvent) {
-        return serialize({ ...mockEvent, attendees: [] });
+        return serialize({
+          ...mockEvent,
+          attendees: [],
+        }) as unknown as EventWithDetails;
       }
     }
 
@@ -284,7 +293,7 @@ export async function getEventById(eventId: string) {
 
     if (!event) return null;
 
-    return serialize(event);
+    return serialize(event) as unknown as EventWithDetails;
   } catch (error) {
     handleError(error);
     return null;
@@ -316,7 +325,7 @@ export async function getFeaturedEvents(limit = 2, from: Date = new Date()) {
       },
     });
 
-    return serialize(events) as EventWithLocationAndCategory[];
+    return serialize(events) as unknown as EventWithLocationAndCategory[];
   } catch (error) {
     // Degrade gracefully: a failure here should hide the homepage Upcoming
     // section, not crash the whole page (handleError rethrows).
@@ -338,6 +347,7 @@ export async function toggleEventFeatured(
   isFeatured: boolean,
 ): Promise<{ success: boolean }> {
   try {
+    await requireAdmin();
     await prisma.event.update({
       where: { id: eventId },
       data: { isFeatured },
@@ -347,8 +357,7 @@ export async function toggleEventFeatured(
     revalidateTag(EVENTS_CACHE_TAG, { expire: 0 });
     return { success: true };
   } catch (error) {
-    handleError(error);
-    return { success: false };
+    return handleError(error);
   }
 }
 
@@ -368,7 +377,7 @@ export async function getEventsByWeek(weekStartISO: string) {
       },
     });
 
-    return serialize(events) as EventWithLocationAndCategory[];
+    return serialize(events) as unknown as EventWithLocationAndCategory[];
   } catch (error) {
     handleError(error);
     return [];
@@ -383,9 +392,9 @@ export async function updateEvent({
   path: string;
 }) {
   try {
+    await requireAdmin();
+
     const {
-      _id,
-      categoryId,
       category,
       location,
       startDateTime,
@@ -395,8 +404,10 @@ export async function updateEvent({
       ...eventData
     } = event;
 
-    // Use _id if provided, otherwise use id
-    const eventId = _id || event.id;
+    const eventId = event.id;
+    if (!eventId) {
+      return handleError("updateEvent called without an event id");
+    }
 
     // In dev mode with MOCK_EVENTS=true, simulate successful update for mock events
     const useMockEvents =
@@ -409,8 +420,7 @@ export async function updateEvent({
       return { success: true, id: eventId };
     }
 
-    // Use categoryId if provided, otherwise use category
-    const categoryToConnect = categoryId || category;
+    const categoryToConnect = category;
 
     // Convert datetime strings to ISO format
     let processedStartDateTime = startDateTime;
@@ -488,65 +498,29 @@ export async function updateEvent({
       },
     });
 
-    // Sync with Google Calendar
+    // Sync with Google Calendar (find-or-create-then-update lives in one place).
     const locationStr =
       updatedEvent.location?.formattedAddress ||
       updatedEvent.location?.name ||
       undefined;
     const calendarData = buildCalendarEventData(updatedEvent, locationStr);
 
-    if (updatedEvent.googleEventId) {
-      console.log(
-        "[Event Update] Syncing updated event with Google Calendar...",
-      );
-      const calendarResult = await updateCalendarEvent(
-        updatedEvent.googleEventId,
-        calendarData,
-      );
+    const calendarResult = await reconcileCalendarEvent(
+      eventId,
+      calendarData,
+      updatedEvent.googleEventId,
+    );
 
-      if (!calendarResult) {
-        console.warn(
-          "[Event Update] Google Calendar sync failed, but event was updated in database",
-        );
-      } else {
-        console.log("[Event Update] Google Calendar sync successful");
-      }
-    } else {
-      console.log(
-        "[Event Update] No Google Event ID found, checking for existing calendar event...",
-      );
-
-      const existingGoogleEvent = await findCalendarEventByDatabaseId(eventId);
-
-      let calendarResult;
-      if (existingGoogleEvent) {
-        console.log(
-          "[Event Update] Found existing Google Calendar event, updating...",
-        );
-        calendarResult = await updateCalendarEvent(
-          existingGoogleEvent.googleEventId,
-          calendarData,
-        );
-      } else {
-        console.log("[Event Update] Creating new calendar event...");
-        calendarResult = await createCalendarEvent({
-          ...calendarData,
-          databaseEventId: eventId,
-        });
-      }
-
-      if (calendarResult) {
-        console.log(
-          "[Event Update] Updating event with new Google Calendar details",
-        );
-        await prisma.event.update({
-          where: { id: eventId },
-          data: {
-            googleEventId: calendarResult.googleEventId,
-            googleEventLink: calendarResult.googleEventLink,
-          },
-        });
-      }
+    // Persist the link only when the row didn't already carry one; an existing
+    // googleEventId was just updated in place and needs no rewrite.
+    if (calendarResult && !updatedEvent.googleEventId) {
+      await prisma.event.update({
+        where: { id: eventId },
+        data: {
+          googleEventId: calendarResult.googleEventId,
+          googleEventLink: calendarResult.googleEventLink,
+        },
+      });
     }
 
     revalidatePath(path);
@@ -600,7 +574,7 @@ export async function getEventsByMonth({
       },
     });
 
-    return serialize(events) as EventWithLocationAndCategory[];
+    return serialize(events) as unknown as EventWithLocationAndCategory[];
   } catch (error) {
     handleError(error);
     return [];

@@ -15,7 +15,7 @@ import OrderCard from "@/app/admin/events/orders/_components/OrderCard";
 import { formatDateTime, formatPrice } from "@/app/_lib/utils";
 
 type OrderWithEventFieldsAndUserFields = Order & {
-  event: Pick<Event, "title">;
+  event: Pick<Event, "title"> | null;
   buyer: Pick<User, "firstName" | "lastName">;
 };
 
@@ -57,14 +57,14 @@ const OrdersTable: FC<OrdersTableProps> = ({ orders }) => {
             {orders.map((order) => (
               <TableRow key={order.id}>
                 <TableCell>{order.id}</TableCell>
-                <TableCell>{order.event.title}</TableCell>
+                <TableCell>{order.event?.title ?? "—"}</TableCell>
                 <TableCell>
                   {order.buyer.firstName} {order.buyer.lastName}
                 </TableCell>
                 <TableCell>
                   {formatDateTime(new Date(order.createdAt)).dateOnly}
                 </TableCell>
-                <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+                <TableCell>{formatPrice(order.totalAmount ?? "0")}</TableCell>
               </TableRow>
             ))}
           </TableBody>

@@ -39,12 +39,12 @@ const EventPage: FC<EventPageProps> = async ({ params }) => {
   }
 
   if (!event) {
-    handleError("Event Page: No event found");
+    return handleError("Event Page: No event found");
   }
 
   return (
     <section className="flex flex-col w-full md:items-center pb-10 gap-3">
-      <Hero imageUrl={event.imageUrl} />
+      <Hero imageUrl={event.imageUrl ?? ""} />
       <Subheading
         category={event.category.name}
         id={event.id}
@@ -60,7 +60,7 @@ const EventPage: FC<EventPageProps> = async ({ params }) => {
               endDateTime={event.endDateTime}
             />
             <Location location={event.location} />
-            <DescriptionRichTextEditor description={event.description} />
+            <DescriptionRichTextEditor description={event.description ?? ""} />
             <Attendees
               attendees={event.attendees.map((attendee) => attendee.user)}
             />

@@ -7,10 +7,13 @@ import { APIProvider, Map, Marker } from "@vis.gl/react-google-maps";
 interface GoogleMapProps extends Pick<Location, "lat" | "lng"> {}
 
 const GoogleMap: FC<GoogleMapProps> = ({ lat, lng }) => {
+  // Without coordinates there's nothing to plot — render nothing rather than
+  // centering the map on (0, 0).
+  if (lat == null || lng == null) return null;
   const position = { lat, lng };
 
   return (
-    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}>
+    <APIProvider apiKey={process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY ?? ""}>
       <div style={{ height: "400px", width: "400px" }}>
         <Map defaultCenter={position} defaultZoom={15}>
           <Marker position={position} />

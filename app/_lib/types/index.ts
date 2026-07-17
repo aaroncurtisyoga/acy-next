@@ -1,4 +1,11 @@
-import { Category, Event, Location, OrderType } from "@prisma/client";
+import {
+  Category,
+  Event,
+  EventUser,
+  Location,
+  OrderType,
+  User,
+} from "@prisma/client";
 
 export type GetAllEventsParams = {
   query: string;
@@ -73,6 +80,11 @@ export type PlaceDetails = {
 export type EventWithLocationAndCategory = Event & {
   location: Location;
   category: Category;
+};
+
+// Full event detail (adds attendees), as returned by getEventById.
+export type EventWithDetails = EventWithLocationAndCategory & {
+  attendees: (EventUser & { user: User })[];
 };
 
 export interface GetAllEventsResponse {

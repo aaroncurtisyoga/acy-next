@@ -94,8 +94,8 @@ const SubmitStep: FC = () => {
         isFree: formValues.isFree ?? false,
         category: formValues.category,
         location: {
-          name: formValues.location.name,
-          formattedAddress: formValues.location.formattedAddress,
+          name: formValues.location.name ?? "",
+          formattedAddress: formValues.location.formattedAddress ?? "",
           placeId: formValues.location.placeId,
           lat: formValues.location.lat,
           lng: formValues.location.lng,

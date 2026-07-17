@@ -6,12 +6,13 @@ import {
   withRetry,
   isBrowserlessRateLimit,
 } from "@/app/_lib/utils/retry-helper";
+import { SOURCE_TYPES } from "@/app/_lib/constants";
 
 export class BrightBearSyncService {
   private crawler = new BrightBearCrawler();
   private dbOperations = new EventDatabaseOperations();
   private locationCategoryService = new LocationCategoryService();
-  private sourceType = "MOMENCE";
+  private sourceType = SOURCE_TYPES.BRIGHT_BEAR;
 
   async syncEvents() {
     try {

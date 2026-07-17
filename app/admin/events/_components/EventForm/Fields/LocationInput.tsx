@@ -7,7 +7,7 @@ import { FormField } from "@/components/ui/form-field";
 import { cn } from "@/app/_lib/utils";
 import { Loader2 } from "lucide-react";
 import { placeDetails } from "@/app/_lib/actions/google.actions";
-import useAutocompleteSuggestions from "@/app/_lib/hooks/useAutocompleteSuggestions";
+import useAutocompleteSuggestions from "@/app/_hooks/useAutocompleteSuggestions";
 import { EventFormValues } from "@/app/admin/events/_components/EventForm/EventFormProvider";
 
 interface LocationInputProps {
@@ -56,7 +56,7 @@ const LocationInput: FC<LocationInputProps> = ({
     setIsOpen(false);
     try {
       const place = await placeDetails(placeId);
-      if (place) {
+      if (place && place.geometry) {
         setLocationValueInReactHookForm({
           formattedAddress: place.formatted_address,
           lat: place.geometry.location.lat,

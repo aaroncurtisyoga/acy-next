@@ -10,7 +10,8 @@ export const metadata: Metadata = {
 };
 
 type OrderWithEventFields = Order & {
-  event: Pick<Event, "title" | "id">;
+  // Private-session orders have no event, so this relation can be null.
+  event: Pick<Event, "title" | "id"> | null;
 };
 
 export type OrderResponse = {

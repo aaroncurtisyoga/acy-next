@@ -1,13 +1,11 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextResponse } from "next/server";
 import { EventSyncService } from "@/app/_lib/services/event-sync-service";
+import { assertCronRequest } from "@/app/_lib/api-auth";
 
-export async function GET(request: NextRequest) {
+export async function GET(request: Request) {
   try {
-    // Verify this is coming from Vercel Cron
-    const authHeader = request.headers.get("authorization");
-    if (authHeader !== `Bearer ${process.env.CRON_SECRET}`) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
+    const denied = assertCronRequest(request);
+    if (denied) return denied;
 
     const syncService = new EventSyncService();
     // Use sequential execution to avoid concurrent rate limits

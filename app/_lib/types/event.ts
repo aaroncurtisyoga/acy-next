@@ -20,14 +20,12 @@ export interface CreateEventData {
 }
 
 export interface UpdateEventData {
-  _id?: string;
   id?: string;
   title?: string;
   startDateTime?: string;
   endDateTime?: string;
   price?: string;
   isFree?: boolean;
-  categoryId?: string;
   category?: string;
   location?: {
     name?: string;

@@ -6,12 +6,13 @@ import {
   withRetry,
   isBrowserlessRateLimit,
 } from "@/app/_lib/utils/retry-helper";
+import { SOURCE_TYPES } from "@/app/_lib/constants";
 
 export class DCBPSyncService {
   private crawler = new DCBPCrawler();
   private dbOperations = new EventDatabaseOperations();
   private locationCategoryService = new LocationCategoryService();
-  private sourceType = "ZOOMSHIFT";
+  private sourceType = SOURCE_TYPES.DCBP;
 
   async syncEvents() {
     try {

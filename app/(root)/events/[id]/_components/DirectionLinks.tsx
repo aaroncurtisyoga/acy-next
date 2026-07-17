@@ -6,6 +6,8 @@ import { generateDirectionsUrl } from "@/app/_lib/utils/travelLinks";
 interface DirectionLinksProps extends Pick<Location, "lat" | "lng"> {}
 
 const DirectionLinks: FC<DirectionLinksProps> = ({ lat, lng }) => {
+  // Directions need coordinates; render nothing if the location has none.
+  if (lat == null || lng == null) return null;
   return (
     <div className={"w-full py-4 border-b"}>
       <p className={"text-center font-semibold text-foreground mb-6"}>

@@ -12,6 +12,7 @@ import {
   RefreshCw,
   ExternalLink,
 } from "lucide-react";
+import { OrderType } from "@prisma/client";
 import { TravelOption } from "@/app/_lib/types";
 
 export const unauthenticatedLinks = [
@@ -94,7 +95,23 @@ export const EventHistoryTableColumns = [
   "Type",
 ];
 
-export const orderTypeLabels = {
+// Typed against the Prisma OrderType enum so adding a new order type is a
+// compile error here (a missing label) rather than an `undefined` at render.
+export const orderTypeLabels: Record<OrderType, string> = {
   EVENT: "Event",
   PRIVATE_SESSION: "Private Session",
 };
+
+/**
+ * Canonical `Event.sourceType` values for synced events. `sourceType` is a
+ * plain String column (only two sources today, so deliberately not a Prisma
+ * enum), so this const is the single source of truth shared by the sync
+ * services and the sync-status route. Add a member here when wiring a new
+ * sync source.
+ */
+export const SOURCE_TYPES = {
+  BRIGHT_BEAR: "MOMENCE",
+  DCBP: "ZOOMSHIFT",
+} as const;
+
+export type SourceType = (typeof SOURCE_TYPES)[keyof typeof SOURCE_TYPES];

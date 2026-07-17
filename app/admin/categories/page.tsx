@@ -34,6 +34,7 @@ const AdminCategories: FC = () => {
     handleSubmit,
     reset,
     setError,
+    clearErrors,
     formState: { errors, isSubmitting },
   } = useForm<Inputs>({
     resolver: zodResolver(CategoryFormSchema),
@@ -86,7 +87,7 @@ const AdminCategories: FC = () => {
   const handleCancel = () => {
     setIsAddingCategory(false);
     reset();
-    setError("category", undefined);
+    clearErrors("category");
   };
 
   return (

@@ -4,7 +4,7 @@ import {
   createCalendarEvent,
   updateCalendarEvent,
   deleteCalendarEvent,
-  findCalendarEventByDatabaseId,
+  reconcileCalendarEvent,
 } from "@/app/_lib/google-calendar";
 
 // Concurrency limit to avoid overwhelming Google Calendar API
@@ -204,8 +204,8 @@ export class EventDatabaseOperations {
   private async updateExistingEvents(
     eventsToUpdate: SyncEventData[],
     existingMap: Map<
-      string,
-      { id: string; sourceId: string; googleEventId: string | null }
+      string | null,
+      { id: string; sourceId: string | null; googleEventId: string | null }
     >,
   ) {
     if (eventsToUpdate.length === 0) return;
@@ -319,66 +319,32 @@ export class EventDatabaseOperations {
     const results = await processInBatches(
       events,
       async ({ eventData, existingEvent, updatedEvent }) => {
-        // Check if Google Calendar event exists
-        const existingGoogleEvent = await findCalendarEventByDatabaseId(
-          existingEvent.id,
-        );
+        // Find-or-create-then-update, shared with the admin CRUD path.
+        const result = await reconcileCalendarEvent(existingEvent.id, {
+          title: eventData.title,
+          description: eventData.description || undefined,
+          startDateTime: eventData.startDateTime,
+          endDateTime: eventData.endDateTime,
+          location:
+            updatedEvent.location?.formattedAddress ||
+            updatedEvent.location?.name ||
+            undefined,
+          price: eventData.price || undefined,
+          isFree: eventData.isFree,
+          externalRegistrationUrl: eventData.externalUrl || undefined,
+        });
 
-        if (existingGoogleEvent) {
-          // Link existing Google Calendar event
+        if (result) {
           await prisma.event.update({
             where: { id: existingEvent.id },
             data: {
-              googleEventId: existingGoogleEvent.googleEventId,
-              googleEventLink: existingGoogleEvent.googleEventLink,
+              googleEventId: result.googleEventId,
+              googleEventLink: result.googleEventLink,
             },
           });
-
-          // Update the Google Calendar event
-          await updateCalendarEvent(existingGoogleEvent.googleEventId, {
-            title: eventData.title,
-            description: eventData.description || undefined,
-            startDateTime: eventData.startDateTime,
-            endDateTime: eventData.endDateTime,
-            location:
-              updatedEvent.location?.formattedAddress ||
-              updatedEvent.location?.name ||
-              undefined,
-            price: eventData.price || undefined,
-            isFree: eventData.isFree,
-            externalRegistrationUrl: eventData.externalUrl || undefined,
-          });
-
           return { action: "linked", title: eventData.title };
-        } else {
-          // Create new Google Calendar event
-          const calendarResult = await createCalendarEvent({
-            title: eventData.title,
-            description: eventData.description || undefined,
-            startDateTime: eventData.startDateTime,
-            endDateTime: eventData.endDateTime,
-            location:
-              updatedEvent.location?.formattedAddress ||
-              updatedEvent.location?.name ||
-              undefined,
-            price: eventData.price || undefined,
-            isFree: eventData.isFree,
-            externalRegistrationUrl: eventData.externalUrl || undefined,
-            databaseEventId: existingEvent.id,
-          });
-
-          if (calendarResult) {
-            await prisma.event.update({
-              where: { id: existingEvent.id },
-              data: {
-                googleEventId: calendarResult.googleEventId,
-                googleEventLink: calendarResult.googleEventLink,
-              },
-            });
-            return { action: "created", title: eventData.title };
-          }
-          return { action: "failed", title: eventData.title };
         }
+        return { action: "failed", title: eventData.title };
       },
       GOOGLE_CALENDAR_CONCURRENCY,
     );

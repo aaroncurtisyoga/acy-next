@@ -1,4 +1,4 @@
-import { getPublicCalendarLink } from "@/app/_lib/google-calendar";
+import { getPublicCalendarLink } from "@/app/_lib/utils/calendar-links";
 import CalendarSubscription from "./CalendarSubscription";
 
 interface CalendarSubscriptionWrapperProps {

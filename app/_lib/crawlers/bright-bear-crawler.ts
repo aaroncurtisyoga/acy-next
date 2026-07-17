@@ -1,4 +1,4 @@
-import { chromium } from "playwright-core";
+import { chromium, ElementHandle } from "playwright-core";
 import { toEasternDate } from "@/app/_lib/utils/timezone";
 
 interface MomenceClass {
@@ -70,7 +70,8 @@ export class BrightBearCrawler {
       console.log("🔍 Searching for instructor dropdown...");
 
       // Find the instructor dropdown by checking button text
-      let instructorDropdown = null;
+      let instructorDropdown: ElementHandle<HTMLElement | SVGElement> | null =
+        null;
       for (const dropdown of allDropdowns) {
         const buttonText = await dropdown.textContent();
         console.log(`Dropdown text: ${buttonText}`);
@@ -157,7 +158,7 @@ export class BrightBearCrawler {
       console.log("📊 Extracting session data from DOM...");
 
       const classes = await page.evaluate(() => {
-        const results = [];
+        const results: any[] = [];
         const debugInfo = {
           totalArticles: 0,
           articlesWithInstructor: 0,

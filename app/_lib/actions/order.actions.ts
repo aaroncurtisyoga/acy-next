@@ -19,7 +19,7 @@ import { buildOrderSearchConditions } from "@/app/_lib/utils/query-builders";
 import { serialize } from "@/app/_lib/utils/serialize";
 
 export const checkoutOrder = async (order: CheckoutOrderParams) => {
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
   const price = order.isFree ? 0 : Number(order.price) * 100;
 
   let checkoutSession: Stripe.Checkout.Session;
@@ -97,7 +97,7 @@ export async function getOrdersByEvent({
         },
       },
     });
-    return serialize(orders);
+    return serialize(orders) as unknown as typeof orders;
   } catch (error) {
     handleError(error);
     return [];
@@ -110,6 +110,10 @@ export async function getOrdersByUser({
   page,
 }: GetOrdersByUserParams) {
   try {
+    // No user → no orders (a signed-out/unknown buyer has none). Coercing the
+    // null away would drop the filter and return everyone's orders.
+    if (!userId) return { data: [], totalPages: 0 };
+
     const skipAmount = calculateSkipAmount(Number(page), limit);
     const whereConditions = { buyer: { id: userId } };
 
@@ -127,7 +131,7 @@ export async function getOrdersByUser({
     ]);
 
     return {
-      data: serialize(orders),
+      data: serialize(orders) as unknown as typeof orders,
       totalPages: calculateTotalPages(totalOrders, limit),
     };
   } catch (error) {

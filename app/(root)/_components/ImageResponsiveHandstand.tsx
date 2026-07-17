@@ -43,7 +43,7 @@ export default async function ImageResponsiveHandstand() {
         srcSet={mobile}
       />
       <source media="(min-width: 768px)" srcSet={desktop} />
-      <img alt={"Aaron doing handstand posture"} {...rest} />
+      <img {...rest} alt={"Aaron doing handstand posture"} />
     </picture>
   );
 }

@@ -60,8 +60,8 @@ export async function POST(req: Request) {
     const user = {
       clerkId: id!,
       email: email_addresses[0].email_address,
-      firstName: first_name,
-      lastName: last_name,
+      firstName: first_name ?? "",
+      lastName: last_name ?? "",
       photo: image_url,
     };
     try {
@@ -92,8 +92,8 @@ export async function POST(req: Request) {
       const updatedUser = await prisma.user.update({
         where: { clerkId: id! },
         data: {
-          firstName: first_name,
-          lastName: last_name,
+          firstName: first_name ?? "",
+          lastName: last_name ?? "",
           photo: image_url,
         },
       });

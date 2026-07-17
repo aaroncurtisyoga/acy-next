@@ -6,7 +6,7 @@ import { Event, OrderType } from "@prisma/client";
 import { loadStripe } from "@stripe/stripe-js";
 import { checkoutOrder } from "@/app/_lib/actions/order.actions";
 
-loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY);
+loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 type CheckoutProps = { event: Event; userId: string };
 
@@ -33,7 +33,7 @@ const CheckoutButton: FC<CheckoutProps> = ({ event, userId }) => {
       eventId: event.id,
       isFree: event.isFree,
       name: event.title,
-      price: event.price,
+      price: event.price ?? "0",
       type: OrderType.EVENT,
     };
 

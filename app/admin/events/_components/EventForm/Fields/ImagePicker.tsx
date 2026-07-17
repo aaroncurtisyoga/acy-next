@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useState, useCallback } from "react";
+import { ListBlobResultBlob } from "@vercel/blob";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/app/_lib/utils";
@@ -28,7 +29,7 @@ interface ImagePickerProps {
 }
 
 const ImagePicker: FC<ImagePickerProps> = ({ errors, setValue, control }) => {
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState<ListBlobResultBlob[]>([]);
   const [selectedImgUrl, setSelectedImgUrl] = useState(null);
   const [isUploading, setIsUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);

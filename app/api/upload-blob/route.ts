@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
 import { put } from "@vercel/blob";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { assertAdminRequest } from "@/app/_lib/api-auth";
 
 /*
    Vercel Blob Documentation:
@@ -8,18 +8,8 @@ import { auth, currentUser } from "@clerk/nextjs/server";
 */
 export async function POST(request: Request): Promise<NextResponse> {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const user = await currentUser();
-    const isAdmin = user?.publicMetadata?.role === "admin";
-
-    if (!isAdmin) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+    const denied = await assertAdminRequest();
+    if (denied) return denied;
 
     const { searchParams } = new URL(request.url);
     const filename = searchParams.get("filename");
@@ -57,6 +47,13 @@ export async function POST(request: Request): Promise<NextResponse> {
     if (contentLength && parseInt(contentLength) > MAX_SIZE) {
       return NextResponse.json(
         { error: "File too large. Maximum size is 10MB." },
+        { status: 400 },
+      );
+    }
+
+    if (!request.body) {
+      return NextResponse.json(
+        { error: "Request body is required" },
         { status: 400 },
       );
     }

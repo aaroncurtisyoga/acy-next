@@ -1,7 +1,7 @@
 "use server";
 
-import { auth, currentUser } from "@clerk/nextjs/server";
 import prisma from "@/app/_lib/prisma";
+import { requireAdmin } from "@/app/_lib/auth";
 import { handleError } from "@/app/_lib/utils";
 import {
   calculateSkipAmount,
@@ -9,13 +9,6 @@ import {
 } from "@/app/_lib/utils/pagination";
 import { buildUserSearchConditions } from "@/app/_lib/utils/query-builders";
 import { serialize } from "@/app/_lib/utils/serialize";
-
-async function requireAdmin() {
-  const { userId } = await auth();
-  if (!userId) throw new Error("Unauthorized");
-  const user = await currentUser();
-  if (user?.publicMetadata?.role !== "admin") throw new Error("Forbidden");
-}
 
 export async function getAllUsers({ query, limit = 8, page = 1 }) {
   try {
@@ -60,7 +53,6 @@ export async function deleteUser(
     }
     return { success: false };
   } catch (error) {
-    handleError(error);
-    return { success: false };
+    return handleError(error);
   }
 }

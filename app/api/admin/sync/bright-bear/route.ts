@@ -1,21 +1,11 @@
 import { NextResponse, after } from "next/server";
-import { auth, currentUser } from "@clerk/nextjs/server";
 import { EventSyncService } from "@/app/_lib/services/event-sync-service";
+import { assertAdminRequest } from "@/app/_lib/api-auth";
 
 export async function POST() {
   try {
-    const { userId } = await auth();
-
-    if (!userId) {
-      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
-    }
-
-    const user = await currentUser();
-    const isAdmin = user?.publicMetadata?.role === "admin";
-
-    if (!isAdmin) {
-      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
-    }
+    const denied = await assertAdminRequest();
+    if (denied) return denied;
 
     // Fire-and-forget: run sync in background after response is sent
     after(async () => {

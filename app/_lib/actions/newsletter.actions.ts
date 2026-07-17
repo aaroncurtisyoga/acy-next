@@ -1,8 +1,9 @@
 "use server";
 
 import type { Newsletter } from "@prisma/client";
-import { auth, currentUser } from "@clerk/nextjs/server";
+import { currentUser } from "@clerk/nextjs/server";
 import { revalidatePath, revalidateTag } from "next/cache";
+import { requireAdmin } from "@/app/_lib/auth";
 import { NEWSLETTERS_CACHE_TAG } from "@/app/_lib/constants/cache-tags";
 import { z } from "zod";
 import {
@@ -53,13 +54,6 @@ type EventSectionOptions = {
 const NEWSLETTER_ADMIN_PATH = "/admin/newsletter";
 
 /* -------------------------------- Helpers -------------------------------- */
-
-async function requireAdmin() {
-  const { sessionClaims } = await auth();
-  if (sessionClaims?.metadata?.role !== "admin") {
-    throw new Error("Unauthorized: admin role required");
-  }
-}
 
 function getResendConfig() {
   const segmentId = process.env.RESEND_SEGMENT_ID;
@@ -359,7 +353,7 @@ export async function getNewsletters() {
       // HTML to the table adds up fast. Only getNewsletterById needs it.
       omit: { sentHtml: true },
     });
-    return serialize(newsletters) as Newsletter[];
+    return serialize(newsletters) as unknown as Newsletter[];
   } catch (error) {
     console.error("Failed to fetch newsletters:", error);
     return [];
@@ -370,7 +364,7 @@ export async function getNewsletterById(id: string) {
   await requireAdmin();
   try {
     const newsletter = await prisma.newsletter.findUnique({ where: { id } });
-    return newsletter ? serialize(newsletter) : null;
+    return newsletter ? (serialize(newsletter) as unknown as Newsletter) : null;
   } catch (error) {
     console.error("Failed to fetch newsletter:", error);
     return null;
@@ -779,98 +773,10 @@ export async function getSubscriberCount() {
   }
 }
 
-/* --------------------------- Public archive reads ------------------------ */
-
-export type NewsletterArchiveItem = {
-  id: string;
-  subject: string;
-  previewText: string | null;
-  sentAt: string | null;
-};
-
-export type PublicNewsletter = NewsletterArchiveItem & {
-  sentHtml: string | null;
-  content: string;
-};
-
-/**
- * A row is publicly viewable once its email is (or must be) in inboxes:
- * status SENT, or a past-due SCHEDULED row whose snapshot was baked at
- * scheduling time. The latter matters because nothing flips SCHEDULED → SENT
- * until the admin next opens the dashboard, while the emailed "View in
- * browser" link starts getting clicked the moment Resend fires.
- */
-function publiclyVisibleWhere(now: Date) {
-  return {
-    OR: [
-      { status: "SENT" as const },
-      {
-        status: "SCHEDULED" as const,
-        scheduledAt: { lte: now },
-        sentHtml: { not: null },
-      },
-    ],
-  };
-}
-
-/**
- * Sent newsletters for the public newsletter archive. No auth on purpose —
- * only reader-safe fields of publicly visible rows leave these functions.
- * Consumed through the cached wrappers in newsletter.queries.ts so public and
- * crawler traffic doesn't keep the Neon database awake.
- *
- * DB errors deliberately propagate: unstable_cache must never store a
- * transient failure as an hour of empty archive / 404s. Pages catch and show
- * a soft retry message instead.
- */
-export async function getPublicNewsletters(): Promise<NewsletterArchiveItem[]> {
-  const now = new Date();
-  const newsletters = await prisma.newsletter.findMany({
-    where: publiclyVisibleWhere(now),
-    select: {
-      id: true,
-      subject: true,
-      previewText: true,
-      sentAt: true,
-      scheduledAt: true,
-    },
-  });
-  const items = newsletters
-    .map((n) => ({
-      id: n.id,
-      subject: n.subject,
-      previewText: n.previewText,
-      // A just-fired scheduled row has no sentAt yet; its send time is the
-      // scheduled time.
-      sentAt: n.sentAt ?? n.scheduledAt,
-    }))
-    .sort((a, b) => (b.sentAt?.getTime() ?? 0) - (a.sentAt?.getTime() ?? 0));
-  // serialize() JSON-round-trips, so Date becomes an ISO string at runtime.
-  return serialize(items) as unknown as NewsletterArchiveItem[];
-}
-
-export async function getPublicNewsletter(
-  id: string,
-): Promise<PublicNewsletter | null> {
-  const now = new Date();
-  const newsletter = await prisma.newsletter.findFirst({
-    where: { id, ...publiclyVisibleWhere(now) },
-    select: {
-      id: true,
-      subject: true,
-      previewText: true,
-      sentAt: true,
-      scheduledAt: true,
-      sentHtml: true,
-      content: true,
-    },
-  });
-  if (!newsletter) return null;
-  const { scheduledAt, ...rest } = newsletter;
-  const publicFields = { ...rest, sentAt: newsletter.sentAt ?? scheduledAt };
-  // serialize() JSON-round-trips, so Date becomes an ISO string at runtime.
-  return serialize(publicFields) as unknown as PublicNewsletter;
-}
+// The public archive reads (getPublicNewsletter[s]) live in
+// newsletter.queries.ts, alongside their cached wrappers — they take no auth,
+// so keeping them out of this "use server" admin module makes that trust
+// boundary a file boundary.
 
 export type NewsletterTopLink = { link: string; clicks: number };
 

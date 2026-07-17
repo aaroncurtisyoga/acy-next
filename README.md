@@ -19,7 +19,7 @@ This app is designed to help current and future yoga students:
 - Learn about Aaron Curtis
 - Find weekly schedules
 - Sign up for the newsletter
-- Register for events (_work in progress_)
+- Register for events
 
 ## <a name="quick-start">Quick Start</a>
 

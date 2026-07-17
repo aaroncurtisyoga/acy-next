@@ -77,10 +77,10 @@ export default function EditEventPage() {
           category: event.category?.id ?? undefined,
           location: event.location
             ? {
-                formattedAddress: event.location.formattedAddress,
+                formattedAddress: event.location.formattedAddress ?? undefined,
                 lat: event.location.lat ?? undefined,
                 lng: event.location.lng ?? undefined,
-                name: event.location.name,
+                name: event.location.name ?? undefined,
                 placeId: event.location.placeId ?? undefined,
               }
             : undefined,

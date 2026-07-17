@@ -349,30 +349,47 @@ export const deleteCalendarEvent = async (googleEventId: string) => {
   }
 };
 
-// Get public calendar subscription link
-export const getPublicCalendarLink = () => {
-  const calendarId = process.env.GOOGLE_CALENDAR_ID;
-
-  if (!calendarId) {
-    console.error(
-      "[Google Calendar] Missing GOOGLE_CALENDAR_ID environment variable",
-    );
-    return null;
+/**
+ * Reconcile an event's Google Calendar entry — the single find-or-create-then-
+ * update composition shared by the admin CRUD path (event.actions) and the
+ * sync path (event-database-operations):
+ *
+ *   1. If we already know the Google event id, update it in place.
+ *   2. Otherwise find one previously stamped with this database id and update it.
+ *   3. Otherwise create a new event, stamping the database id for next time.
+ *
+ * Returns the { googleEventId, googleEventLink } to persist, or null if the
+ * calendar op failed. Never throws — the underlying calls swallow their own
+ * errors so a calendar hiccup can't fail the surrounding database write.
+ */
+export const reconcileCalendarEvent = async (
+  databaseEventId: string,
+  data: CalendarEventInput,
+  knownGoogleEventId?: string | null,
+): Promise<{ googleEventId: string; googleEventLink: string } | null> => {
+  if (knownGoogleEventId) {
+    const updated = await updateCalendarEvent(knownGoogleEventId, data);
+    if (!updated?.googleEventId || !updated?.googleEventLink) return null;
+    return {
+      googleEventId: updated.googleEventId,
+      googleEventLink: updated.googleEventLink,
+    };
   }
 
-  // Google Calendar public URL format
-  const googleCalendarUrl = `https://calendar.google.com/calendar/u/0?cid=${Buffer.from(calendarId).toString("base64")}`;
+  const existing = await findCalendarEventByDatabaseId(databaseEventId);
+  if (existing) {
+    const updated = await updateCalendarEvent(existing.googleEventId, data);
+    // Keep the link even if the content update failed — the event exists.
+    return {
+      googleEventId: updated?.googleEventId ?? existing.googleEventId,
+      googleEventLink: updated?.googleEventLink ?? existing.googleEventLink,
+    };
+  }
 
-  // iCal format for Apple Calendar, Outlook, etc.
-  const icalUrl = `https://calendar.google.com/calendar/ical/${encodeURIComponent(calendarId)}/public/basic.ics`;
-
-  console.log("[Google Calendar] Generated public calendar links:", {
-    google: googleCalendarUrl,
-    ical: icalUrl,
-  });
-
+  const created = await createCalendarEvent({ ...data, databaseEventId });
+  if (!created?.googleEventId || !created?.googleEventLink) return null;
   return {
-    googleCalendarUrl,
-    icalUrl,
+    googleEventId: created.googleEventId,
+    googleEventLink: created.googleEventLink,
   };
 };

@@ -95,7 +95,9 @@ const TableCategoryManagement: FC<CategoryManagementTableProps> = ({
         onOpenChange={onOpenChange}
         isOpen={isOpen}
         header={"Delete Category"}
-        primaryAction={() => handleDeleteCategory(categoryToDelete?.id)}
+        primaryAction={() =>
+          categoryToDelete && handleDeleteCategory(categoryToDelete.id)
+        }
         primaryActionLabel={"Delete Category"}
       >
         <div>

@@ -263,7 +263,7 @@ export class DCBPCrawler {
       console.log(`📍 Schedule page: ${schedulePageUrl}`);
 
       // Get classes from current month and next 2 months (3 months total)
-      const allClasses = [];
+      const allClasses: any[] = [];
       const monthsToCheck = 3; // Check current month + next 2 months
 
       console.log(

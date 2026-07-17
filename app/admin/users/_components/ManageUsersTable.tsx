@@ -1,6 +1,7 @@
 "use client";
 
 import { FC, useEffect, useState } from "react";
+import { User } from "@prisma/client";
 import {
   Table,
   TableBody,
@@ -24,8 +25,8 @@ import { handleError } from "@/app/_lib/utils";
 const ManageUsersTable: FC = () => {
   const [loading, setLoading] = useState(true);
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
-  const [selectedUser, setSelectedUser] = useState(null);
-  const [users, setUsers] = useState([]);
+  const [selectedUser, setSelectedUser] = useState<User | null>(null);
+  const [users, setUsers] = useState<User[]>([]);
   const [page /*, setPage */] = useState(1);
   const [searchText /*, setSearchText */] = useState("");
 
@@ -47,6 +48,7 @@ const ManageUsersTable: FC = () => {
   }, [page, searchText]);
 
   const handleDeleteUser = async () => {
+    if (!selectedUser) return;
     const response = await deleteUser(selectedUser.id);
 
     if (response.success) {
@@ -59,7 +61,7 @@ const ManageUsersTable: FC = () => {
     return <TableLoading columns={TableManageUsersColumns} />;
   }
 
-  const handleUserDeleteClick = (user: any) => {
+  const handleUserDeleteClick = (user: User) => {
     setSelectedUser(user);
     onOpen();
   };

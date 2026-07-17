@@ -172,6 +172,8 @@ enum NewsletterStatus {
   SENT
 }
 
+// Reserved for a future reading-list feature. Not wired to any route, query,
+// or server action yet — safe to build on or drop.
 model Book {
   id                 String    @id @default(uuid())
   createdAt          DateTime  @default(now())

@@ -47,7 +47,7 @@ const PurchaseHistoryTable: FC<EventHistoryTableProps> = ({ orders }) => {
             <TableCell>
               {formatDateTime(new Date(order.createdAt)).dateOnly}
             </TableCell>
-            <TableCell>{formatPrice(order.totalAmount)}</TableCell>
+            <TableCell>{formatPrice(order.totalAmount ?? "0")}</TableCell>
             <TableCell>
               {order.event?.id ? (
                 <Link
