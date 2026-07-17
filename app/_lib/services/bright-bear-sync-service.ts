@@ -55,6 +55,7 @@ export class BrightBearSyncService {
 
       const deactivatedCount = await this.dbOperations.deactivateOldEvents(
         this.sourceType,
+        externalClasses.length,
       );
 
       console.log(

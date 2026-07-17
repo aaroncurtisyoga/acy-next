@@ -359,7 +359,24 @@ export class EventDatabaseOperations {
     );
   }
 
-  async deactivateOldEvents(sourceType: string): Promise<number> {
+  async deactivateOldEvents(
+    sourceType: string,
+    scrapedCount: number,
+  ): Promise<number> {
+    // Safety guard: an empty scrape is far more likely a crawler/selector
+    // failure (Momence/ZoomShift markup changed, filter no longer matches,
+    // dates unparseable) than a genuinely empty schedule. Because deactivation
+    // keys only on a stale `lastSynced`, a 0-result run would sweep away every
+    // future event for this source — silently wiping a weekly-teaching
+    // instructor's classes. Skip deactivation entirely and let the existing
+    // rows stand until a successful scrape refreshes their `lastSynced`.
+    if (scrapedCount === 0) {
+      console.warn(
+        `[Cron Sync] Skipping ${sourceType} deactivation: crawler returned 0 events (treated as a scrape failure, not an empty schedule).`,
+      );
+      return 0;
+    }
+
     const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000);
 
     // Find events that need to be deactivated

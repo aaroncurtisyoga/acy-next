@@ -53,6 +53,7 @@ export class DCBPSyncService {
 
       const deactivatedCount = await this.dbOperations.deactivateOldEvents(
         this.sourceType,
+        externalClasses.length,
       );
 
       return {
