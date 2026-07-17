@@ -17,6 +17,7 @@ import resend from "@/app/_lib/resend";
 import {
   getEventsByWeek,
   getFeaturedEvents,
+  getNextEventStart,
 } from "@/app/_lib/actions/event.actions";
 import {
   NEWSLETTER_SCHEDULE_MAX_DAYS,
@@ -1059,22 +1060,34 @@ async function buildEventSectionsHtml({
     }
 
     if (includeClasses) {
-      let weekEvents: EventWithLocationAndCategory[] = [];
-      try {
-        weekEvents = await getEventsByWeek(getEtMondayIso(sendTime));
-      } catch {
-        weekEvents = [];
-      }
-      // Only classes still to come in the send week — past ones are noise.
-      const classesThisWeek = weekEvents.filter(
-        (event) => new Date(event.startDateTime) >= sendTime,
-      );
-      if (classesThisWeek.length > 0) {
-        sections.push(
-          `<h2>Classes This Week</h2><ul>${classesThisWeek
-            .map((event) => eventListItemHtml(event))
-            .join("")}</ul>`,
+      // Roll forward past empty weeks: anchor on the next upcoming event so the
+      // classes block shows the following week's schedule instead of going
+      // blank once the current week is over. Stays blank only when nothing at
+      // all is on the calendar ahead of the send moment.
+      const nextStart = await getNextEventStart(sendTime);
+      if (nextStart) {
+        const weekMondayIso = getEtMondayIso(nextStart);
+        let weekEvents: EventWithLocationAndCategory[] = [];
+        try {
+          weekEvents = await getEventsByWeek(weekMondayIso);
+        } catch {
+          weekEvents = [];
+        }
+        // Only classes still to come — past ones (in the current week) are noise.
+        const classesThisWeek = weekEvents.filter(
+          (event) => new Date(event.startDateTime) >= sendTime,
         );
+        if (classesThisWeek.length > 0) {
+          const heading =
+            weekMondayIso === getEtMondayIso(sendTime)
+              ? "Classes This Week"
+              : "Upcoming Classes";
+          sections.push(
+            `<h2>${heading}</h2><ul>${classesThisWeek
+              .map((event) => eventListItemHtml(event))
+              .join("")}</ul>`,
+          );
+        }
       }
     }
 

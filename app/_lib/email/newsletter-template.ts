@@ -1,4 +1,6 @@
 const SITE_URL = "https://www.aaroncurtisyoga.com";
+const INSTAGRAM_URL = "https://www.instagram.com/aaroncurtisyoga/";
+const YOUTUBE_URL = "https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw";
 const COBALT = "#2749e0";
 const NAVY = "#131826";
 const INK = "#222222";
@@ -182,8 +184,10 @@ export function renderNewsletterText({
     text,
     "",
     "---",
-    `Home: ${SITE_URL}`,
-    `Classes: ${SITE_URL}/#this-week`,
+    `Instagram: ${INSTAGRAM_URL}`,
+    `YouTube: ${YOUTUBE_URL}`,
+    "",
+    `You're receiving this because you signed up at ${SITE_URL}`,
     `Unsubscribe: ${unsubscribeUrl}`,
     "",
   ].join("\n");
@@ -285,15 +289,25 @@ ${
           </td>
         </tr>
         <tr>
-          <td style="padding: 26px 8px 0; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 2; color: #71717a;">
-            <a href="${SITE_URL}" style="color:${INK}; font-weight:700; text-decoration:none; text-transform: lowercase;">home</a>
-            &nbsp;&middot;&nbsp;
-            <a href="${SITE_URL}/#this-week" style="color:${INK}; font-weight:700; text-decoration:none; text-transform: lowercase;">classes</a>
-            &nbsp;&middot;&nbsp;
-            <a href="https://www.instagram.com/aaroncurtisyoga/" style="color:${INK}; font-weight:700; text-decoration:none; text-transform: lowercase;">instagram</a>
-            &nbsp;&middot;&nbsp;
-            <a href="https://www.youtube.com/channel/UCwwNWri2IhKxXKmQkCpj-uw" style="color:${INK}; font-weight:700; text-decoration:none; text-transform: lowercase;">youtube</a>
-            <br>
+          <td style="padding: 26px 8px 4px; text-align: center;">
+            <table role="presentation" cellpadding="0" cellspacing="0" border="0" align="center" style="margin: 0 auto;">
+              <tr>
+                <td style="padding: 0 7px;">
+                  <a href="${INSTAGRAM_URL}" style="text-decoration: none;">
+                    <img src="${SITE_URL}/email/instagram.png" width="28" height="28" alt="Instagram" style="display: block; border: 0; width: 28px; height: 28px;">
+                  </a>
+                </td>
+                <td style="padding: 0 7px;">
+                  <a href="${YOUTUBE_URL}" style="text-decoration: none;">
+                    <img src="${SITE_URL}/email/youtube.png" width="28" height="28" alt="YouTube" style="display: block; border: 0; width: 28px; height: 28px;">
+                  </a>
+                </td>
+              </tr>
+            </table>
+          </td>
+        </tr>
+        <tr>
+          <td style="padding: 4px 8px 0; text-align: center; font-family: Helvetica, Arial, sans-serif; font-size: 12px; line-height: 2; color: #71717a;">
             You're receiving this email because you signed up at
             <a href="${SITE_URL}" style="color:#71717a;">aaroncurtisyoga.com</a>.
             <br>

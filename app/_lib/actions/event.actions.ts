@@ -361,6 +361,28 @@ export async function toggleEventFeatured(
   }
 }
 
+/**
+ * Start time of the soonest still-upcoming active event (any source), or null
+ * when nothing is on the calendar ahead of `from`. Lets the newsletter roll its
+ * weekly-classes block forward to the next week that actually has events instead
+ * of going blank the moment the current week is over.
+ */
+export async function getNextEventStart(
+  from: Date = new Date(),
+): Promise<Date | null> {
+  try {
+    const next = await prisma.event.findFirst({
+      where: { isActive: true, startDateTime: { gte: from } },
+      orderBy: { startDateTime: "asc" },
+      select: { startDateTime: true },
+    });
+    return next ? new Date(next.startDateTime) : null;
+  } catch (error) {
+    console.error("[getNextEventStart] Failed to fetch next event:", error);
+    return null;
+  }
+}
+
 export async function getEventsByWeek(weekStartISO: string) {
   try {
     const { start, end } = buildWeekDateRange(new Date(weekStartISO));
